@@ -1,21 +1,45 @@
 <template>
     <div :class="cssClass">
-        <b-progress
-            class="page-loading-bar has-margin-bottom-0"
-            size="is-small"
-            type="is-info"
-            v-if="loading"
-        />
+        <!-- Standard View -->
+        <div class="is-flex is-flex-column is-flex-grow-1" v-if="!$slots['sidebar']">
+            <b-progress class="page-loading-bar has-margin-bottom-0" size="is-small" type="is-info" v-if="loading" />
 
-        <slot name="header"></slot>
+            <slot name="header"></slot>
 
-        <slot name="body">
-            <div class="section has-padding-all-3">
-                <div class="container">
-                    <slot></slot>
+            <slot name="body">
+                <div class="section has-padding-all-3">
+                    <div class="container">
+                        <slot></slot>
+                    </div>
                 </div>
+            </slot>
+        </div>
+
+        <!-- Sidebar View -->
+        <div class="is-flex is-flex-row" v-else>
+            <div class="is-hidden-touch">
+                <slot name="sidebar"></slot>
             </div>
-        </slot>
+
+            <div class="is-flex-grow-1">
+                <b-progress
+                    class="page-loading-bar has-margin-bottom-0"
+                    size="is-small"
+                    type="is-info"
+                    v-if="loading"
+                />
+
+                <slot name="header"></slot>
+
+                <slot name="body">
+                    <div class="section has-padding-all-3">
+                        <div class="container">
+                            <slot></slot>
+                        </div>
+                    </div>
+                </slot>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -39,7 +63,7 @@ export default class Page extends Vue {
     background!: string;
 
     get cssClass() {
-        return `is-flex is-flex-column is-flex-grow-1 has-background-${this.background.split('-')[1]}`;
+        return `has-background-${this.background.split('-')[1]}`;
     }
 }
 </script>

@@ -1,18 +1,31 @@
 <template>
-    <page>
+    <page background="is-white">
         <template v-slot:header>
             <page-header>
                 <calendar-navbar />
             </page-header>
         </template>
 
-        <template v-slot:body>
-            <div class="has-background-white">
-                <calendar-day-view v-if="view == 'day'" />
+        <template v-slot:sidebar>
+            <div class="calendar-sidebar has-h-100 has-background-light">
+                reee
             </div>
         </template>
+
+        <!-- <div class="is-flex is-flex-row"> -->
+        <!-- <div class="has-background-white calendar-sidebar">
+                    REEE
+                </div> -->
+
+        <calendar-day-view v-if="view == 'day'" />
     </page>
 </template>
+
+<style lang="sass" scoped>
+.calendar-sidebar
+    width: 300px
+    border-right: 1px solid $grey-lighter
+</style>
 
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';

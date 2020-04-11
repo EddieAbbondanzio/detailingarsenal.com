@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="has-padding-y-2 has-background-white has-w-100 is-fixed has-background-light">
+        <div class="has-padding-y-2 has-background-white is-fixed" style="z-index: 20;">
             <div
                 class="is-flex is-flex-row is-justify-content-space-between is-align-items-center"
                 style="height: 41.5px;"
             >
                 <a
-                    class="has-text-decoration-none has-text-left has-text-dark has-margin-left-3 is-flex is-flex-row is-align-items-center"
+                    class="has-text-decoration-none has-text-left has-text-dark is-flex is-flex-row is-align-items-center has-margin-left-3-mobile"
                     type="is-text"
                     @click="$refs.datepickerModal.show()"
                     title="Select date"
@@ -15,14 +15,12 @@
                         icon-left="calendar"
                         type="is-text"
                         size="is-medium"
-                        class="is-hidden-mobile has-padding-right-2"
+                        class="is-hidden-mobile has-padding-right-2 has-padding-left-3"
                         title="Select date"
                     />
 
                     <div class="is-flex is-flex-row-tablet is-flex-column-mobile">
-                        <p
-                            class="is-size-7 is-size-6-tablet has-margin-right-1-tablet"
-                        >{{ dateTitle }}</p>
+                        <p class="is-size-7 is-size-6-tablet has-margin-right-1-tablet">{{ dateTitle }}</p>
                         <span class="is-size-6-mobile">{{ dateDescription }}</span>
                     </div>
                 </a>
@@ -45,7 +43,8 @@
                             size="is-small"
                             title="Go to today"
                             @click="onTodayClick"
-                        >Today</b-button>
+                            >Today</b-button
+                        >
                         <b-button
                             class="has-margin-bottom-0"
                             outlined
@@ -62,19 +61,22 @@
                             size="is-small"
                             native-value="day"
                             title="Switch to day view"
-                        >Day</b-radio-button>
+                            >Day</b-radio-button
+                        >
                         <b-radio-button
                             v-model="calendarView"
                             size="is-small"
                             native-value="week"
                             title="Switch to week view"
-                        >Week</b-radio-button>
+                            >Week</b-radio-button
+                        >
                         <b-radio-button
                             v-model="calendarView"
                             size="is-small"
                             native-value="month"
                             title="Switch to month view"
-                        >Month</b-radio-button>
+                            >Month</b-radio-button
+                        >
                     </b-field>
 
                     <b-button

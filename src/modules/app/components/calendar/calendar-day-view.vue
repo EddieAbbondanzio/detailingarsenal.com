@@ -1,6 +1,6 @@
 <template>
     <div
-        class="is-flex is-flex-column"
+        class="day-view is-flex is-flex-column"
         ref="dayView"
         v-touch:swipe.right="onPreviousSwipe"
         v-touch:swipe.left="onNextSwipe"
@@ -24,11 +24,18 @@
 </template>
 
 <style lang="sass" scoped>
+.day-view
+    border-top: 1px solid $grey-lighter
+
 .hour-key
     border-right: 1px solid $grey-lighter
 
 .hour-block
     border-bottom: 1px solid $grey-lighter
+    border-left: 1px solid $grey-lighter
+    border-right: 1px solid $grey-lighter
+
+
 
 .has-w-40px
     width: 40px
