@@ -5,19 +5,25 @@
                 class="is-flex is-flex-row is-justify-content-space-between is-align-items-center"
                 style="height: 41.5px;"
             >
+                <!-- Touch date header -->
                 <a
-                    class="has-text-decoration-none has-text-left has-text-dark is-flex is-flex-row is-align-items-center has-margin-left-3"
+                    class="has-text-decoration-none has-text-left has-text-dark is-flex is-flex-row is-align-items-center has-margin-left-3 is-hidden-desktop"
                     type="is-text"
                     @click="$refs.datepickerModal.show()"
                     title="Select date"
                 >
-                    <div class="is-flex is-flex-row-tablet is-flex-column-mobile">
-                        <p
-                            class="is-size-7 is-size-6-tablet has-margin-right-1-tablet"
-                        >{{ dateTitle }}</p>
+                    <div class="is-flex is-flex-column-mobile">
+                        <p class="is-size-7 is-size-6-tablet">{{ dateTitle }}</p>
                         <span class="is-size-6-mobile">{{ dateDescription }}</span>
                     </div>
                 </a>
+
+                <!-- Desktop date header -->
+                <div class="is-flex is-flex-row is-hidden-touch has-margin-x-3">
+                    <p
+                        class="is-size-4 is-size-5-tablet has-text-weight-bold"
+                    >{{ dateTitle }}{{ dateDescription }}</p>
+                </div>
 
                 <div class="is-flex is-flex-row is-align-items-center is-justify-content-end">
                     <div
