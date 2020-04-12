@@ -32,7 +32,7 @@
             </div>
 
             <div class="day is-flex is-flex-row is-flex-grow-1" v-for="day in days" :key="day.day">
-                <div :class="determineBlockBackground(hour.raw)">&nbsp;</div>
+                <div :class="determineBlockBackground(day.day, hour.raw)">&nbsp;</div>
             </div>
         </div>
     </div>
@@ -117,10 +117,13 @@ export default class CalendarWeekView extends Vue {
         }
     }
 
-    determineBlockBackground(raw: number) {
-        // if (this.hoursOfOp != null && this.hoursOfOp.containsTime(raw)) {
-        // return 'is-flex-grow-1 has-background-white';
-        // }
+    determineBlockBackground(day: number, hour: number) {
+        const settingsStore = getModule(SettingsStore, this.$store);
+        const hoursOfOp = settingsStore.hoursOfOperation.getHoursForDay(day);
+
+        if (hoursOfOp != null && hoursOfOp.containsTime(hour)) {
+            return 'is-flex-grow-1 has-background-white';
+        }
 
         return 'is-flex-grow-1 has-background-white-bis';
     }
