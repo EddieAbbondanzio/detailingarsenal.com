@@ -48,7 +48,7 @@
                         />
                     </div>
 
-                    <b-field class="has-margin-bottom-0">
+                    <b-field class="has-margin-bottom-0 has-margin-right-3-desktop">
                         <b-radio-button
                             v-model="calendarView"
                             size="is-small"
@@ -70,6 +70,7 @@
                     </b-field>
 
                     <b-button
+                        class="is-hidden-desktop"
                         icon-left="calendar-plus"
                         type="is-text"
                         size="is-medium"

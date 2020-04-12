@@ -7,24 +7,15 @@
         </template>
 
         <template v-slot:sidebar>
-            <div class="calendar-sidebar has-h-100 has-background-light">
-                reee
-            </div>
+            <calendar-sidebar />
         </template>
-
-        <!-- <div class="is-flex is-flex-row"> -->
-        <!-- <div class="has-background-white calendar-sidebar">
-                    REEE
-                </div> -->
 
         <calendar-day-view v-if="view == 'day'" />
     </page>
 </template>
 
 <style lang="sass" scoped>
-.calendar-sidebar
-    width: 300px
-    border-right: 1px solid $grey-lighter
+
 </style>
 
 <script lang="ts">
@@ -33,12 +24,14 @@ import CalendarNavbar from '@/modules/app/components/calendar/calendar-navbar.vu
 import { getModule } from 'vuex-module-decorators';
 import CalendarStore from '../../store/calendar/calendar-store';
 import CalendarDayView from '@/modules/app/components/calendar/calendar-day-view.vue';
+import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.vue';
 
 @Component({
     name: 'calendar',
     components: {
         CalendarNavbar,
-        CalendarDayView
+        CalendarDayView,
+        CalendarSidebar
     }
 })
 export default class Calendar extends Vue {

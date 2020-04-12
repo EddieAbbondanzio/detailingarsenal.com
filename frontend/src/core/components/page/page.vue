@@ -16,7 +16,9 @@
             <slot name="header"></slot>
 
             <!-- Page body -->
-            <div class="is-flex is-flex-row is-flex-grow-1 has-overflow-y-scroll">
+            <div
+                class="is-flex is-flex-row is-flex-grow-1 has-overflow-y-scroll is-justify-content-center"
+            >
                 <div class="container has-margin-all-3">
                     <slot></slot>
                 </div>
@@ -41,7 +43,9 @@
                 <slot name="header"></slot>
 
                 <!-- Page body -->
-                <div class="is-flex is-flex-row is-flex-grow-1 has-overflow-y-scroll">
+                <div
+                    class="is-flex is-flex-row is-flex-grow-1 has-overflow-y-scroll is-justify-content-center"
+                >
                     <div class="container has-margin-all-3">
                         <slot></slot>
                     </div>
