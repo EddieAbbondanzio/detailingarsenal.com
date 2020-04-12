@@ -16,8 +16,8 @@
             <slot name="header"></slot>
 
             <!-- Page body -->
-            <div class="has-overflow-y-scroll">
-                <div class="container has-padding-all-3">
+            <div class="is-flex is-flex-row is-flex-grow-1 has-overflow-y-scroll">
+                <div class="container has-margin-all-3">
                     <slot></slot>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <slot name="sidebar"></slot>
             </div>
 
-            <div class="is-flex-grow-1">
+            <div class="is-flex is-flex-column is-flex-grow-1">
                 <b-progress
                     class="page-loading-bar has-margin-bottom-0"
                     size="is-small"
@@ -41,8 +41,8 @@
                 <slot name="header"></slot>
 
                 <!-- Page body -->
-                <div class="has-overflow-y-scroll">
-                    <div class="container has-padding-all-3">
+                <div class="is-flex is-flex-row is-flex-grow-1 has-overflow-y-scroll">
+                    <div class="container has-margin-all-3">
                         <slot></slot>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="day-view is-flex is-flex-column"
+        class="day-view is-flex is-flex-column is-flex-grow-1"
         ref="dayView"
         v-touch:swipe.right="onPreviousSwipe"
         v-touch:swipe.left="onNextSwipe"
@@ -12,7 +12,9 @@
             :id="`block-${hour.hour}-${hour.period}`"
         >
             <!-- Axis -->
-            <div class="hour-key is-flex is-flex-row has-w-40px is-justify-content-end has-padding-right-1">
+            <div
+                class="hour-key is-flex is-flex-row has-w-40px is-justify-content-end has-padding-right-1"
+            >
                 <span class="is-size-6">{{ hour.hour }}</span>
                 <span class="is-size-7 has-text-grey">{{ hour.period }}</span>
             </div>

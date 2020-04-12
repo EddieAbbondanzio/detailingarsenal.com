@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" class="is-flex is-flex-column is-flex-grow-1" style="height: 100vh!important;">
         <router-view v-if="!isLoggingIn" />
         <loading-splash v-else />
     </div>
@@ -26,6 +26,7 @@ import LoadingSplash from '@/core/components/loading-splash.vue';
 export default class App extends Vue {
     get isLoggingIn() {
         const userStore = getModule(UserStore, this.$store);
+        // return true;
         return userStore.isLoading;
     }
 

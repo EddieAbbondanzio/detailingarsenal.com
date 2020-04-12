@@ -1,5 +1,5 @@
 <template>
-    <div class="is-flex is-flex-column" style="height: 100vh;">
+    <div class="is-flex is-flex-column is-flex-grow-1 has-overflow-y-hidden">
         <app-navbar />
 
         <div class="app-content has-overflow-y-hidden is-flex is-flex-column is-flex-grow-1">
