@@ -1,5 +1,5 @@
 <template>
-    <div class="box is-radiusless has-padding-all-0 has-margin-bottom-0">
+    <div class="box is-radiusless has-padding-all-0 has-margin-bottom-0" style="z-index: 20;">
         <slot>
             <!-- Mobile -->
             <div class="has-padding-x-3 is-hidden-tablet">
@@ -15,7 +15,9 @@
                     </ul>
                 </nav>
 
-                <div class="is-flex is-flex-row is-align-items-center is-justify-content-space-between has-margin-y-2">
+                <div
+                    class="is-flex is-flex-row is-align-items-center is-justify-content-space-between has-margin-y-2"
+                >
                     <div class="is-flex is-flex-row is-align-items-center">
                         <back-button v-if="backButton" :to="backButtonTo" />
 
@@ -41,8 +43,16 @@
                     <div class="is-flex is-flex-row-tablet is-justify-content-space-between-tablet">
                         <div>
                             <div class="is-flex is-flex-row">
-                                <div class="is-flex is-flex-column is-justify-content-center" v-if="icon != null">
-                                    <b-icon class="has-margin-right-3" :icon="icon" size="is-large" type="is-primary" />
+                                <div
+                                    class="is-flex is-flex-column is-justify-content-center"
+                                    v-if="icon != null"
+                                >
+                                    <b-icon
+                                        class="has-margin-right-3"
+                                        :icon="icon"
+                                        size="is-large"
+                                        type="is-primary"
+                                    />
                                 </div>
                                 <div>
                                     <h1 class="is-size-4-mobile is-size-3 title">{{ title }}</h1>

@@ -116,11 +116,6 @@ export default class CalendarDayView extends Vue {
             let openHour = Math.floor(this.hoursOfOp.open / 60);
             const openPeriod = this.hoursOfOp.open >= 720 ? 'pm' : 'am';
 
-            // navbars hide top of screen.
-            if (openHour > 2) {
-                openHour -= 2;
-            }
-
             const hourElement = (this.$refs.dayView as HTMLDivElement).querySelector(
                 `#block-${openHour}-${openPeriod}`
             );
