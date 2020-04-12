@@ -1,0 +1,2 @@
+# Ignore database as it's just a dev env setup
+database/

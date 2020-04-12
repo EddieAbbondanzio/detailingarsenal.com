@@ -1,8 +1,0 @@
-$types: (('w','width'), ('h', 'height'))
-$sizes: (25, 50, 75, 100)
-
-@each $abbr, $prop in $types
-    @each $size in $sizes
-        // Example: .has-w-100
-        .has-#{$abbr}-#{$size}
-            #{$prop}: #{$size}%!important

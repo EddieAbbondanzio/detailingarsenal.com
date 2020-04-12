@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kernel\Kernel.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+      <RootNamespace>DetailingArsenal.Domain</RootNamespace>
+    
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable> 
+  </PropertyGroup>
+
+</Project>
