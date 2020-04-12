@@ -6,7 +6,7 @@
             v-if="!$slots['sidebar']"
         >
             <b-progress
-                class="page-loading-bar has-margin-bottom-0"
+                class="is-absolute page-loading-bar has-margin-bottom-0"
                 size="is-small"
                 type="is-info"
                 v-if="loading"
@@ -53,6 +53,9 @@
 
 <style lang="sass">
 .page-loading-bar
+    left: 0px
+    right: 0px
+    
     progress
         height: 6px!important
 </style>
