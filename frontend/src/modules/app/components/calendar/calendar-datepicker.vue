@@ -80,7 +80,16 @@ export default class CalendarDatepicker extends Vue {
         return this.viewing.format('MMMM YYYY');
     }
 
-    value: Date = new Date();
+    get value() {
+        const calendarStore = getModule(CalendarStore, this.$store);
+        return calendarStore.date;
+    }
+
+    set value(v: Date) {
+        const calendarStore = getModule(CalendarStore, this.$store);
+        calendarStore.jumpDate(v);
+    }
+
     viewing: Moment = moment();
 
     dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -89,10 +98,6 @@ export default class CalendarDatepicker extends Vue {
 
     mounted() {
         this.generateDays();
-
-        // Pull in the current date from vuex
-        const calendarStore = getModule(CalendarStore, this.$store);
-        this.value = calendarStore.date;
     }
 
     getDayStyles(week: number, day: number) {
@@ -137,6 +142,7 @@ export default class CalendarDatepicker extends Vue {
             .startOf('month')
             .add(number - 1, 'days')
             .toDate();
+
         this.generateDays();
     }
 

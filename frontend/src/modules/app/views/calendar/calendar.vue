@@ -11,6 +11,7 @@
         </template>
 
         <calendar-day-view v-if="view == 'day'" />
+        <calendar-week-view v-if="view == 'week'" />
     </page>
 </template>
 
@@ -24,6 +25,7 @@ import CalendarNavbar from '@/modules/app/components/calendar/calendar-navbar.vu
 import { getModule } from 'vuex-module-decorators';
 import CalendarStore from '../../store/calendar/calendar-store';
 import CalendarDayView from '@/modules/app/components/calendar/calendar-day-view.vue';
+import CalendarWeekView from '@/modules/app/components/calendar/calendar-week-view.vue';
 import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.vue';
 
 @Component({
@@ -31,6 +33,7 @@ import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.
     components: {
         CalendarNavbar,
         CalendarDayView,
+        CalendarWeekView,
         CalendarSidebar
     }
 })

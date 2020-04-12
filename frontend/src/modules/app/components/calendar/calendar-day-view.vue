@@ -53,37 +53,15 @@ import SettingsStore from '../../store/settings/settings-store';
 import CalendarStore from '../../store/calendar/calendar-store';
 import store from '../../../../core/store';
 import { HoursOfOperationDay } from '../../api';
+import { hours } from './hours';
 
 @Component({
     name: 'calendar-day-view'
 })
 export default class CalendarDayView extends Vue {
-    hours = [
-        { hour: 12, period: 'am', raw: 0 },
-        { hour: 1, period: 'am', raw: 1 * 60 },
-        { hour: 2, period: 'am', raw: 2 * 60 },
-        { hour: 3, period: 'am', raw: 3 * 60 },
-        { hour: 4, period: 'am', raw: 4 * 60 },
-        { hour: 5, period: 'am', raw: 5 * 60 },
-        { hour: 6, period: 'am', raw: 6 * 60 },
-        { hour: 7, period: 'am', raw: 7 * 60 },
-        { hour: 8, period: 'am', raw: 8 * 60 },
-        { hour: 9, period: 'am', raw: 9 * 60 },
-        { hour: 10, period: 'am', raw: 10 * 60 },
-        { hour: 11, period: 'am', raw: 11 * 60 },
-        { hour: 12, period: 'pm', raw: 12 * 60 },
-        { hour: 1, period: 'pm', raw: 13 * 60 },
-        { hour: 2, period: 'pm', raw: 14 * 60 },
-        { hour: 3, period: 'pm', raw: 15 * 60 },
-        { hour: 4, period: 'pm', raw: 16 * 60 },
-        { hour: 5, period: 'pm', raw: 17 * 60 },
-        { hour: 6, period: 'pm', raw: 18 * 60 },
-        { hour: 7, period: 'pm', raw: 19 * 60 },
-        { hour: 8, period: 'pm', raw: 20 * 60 },
-        { hour: 9, period: 'pm', raw: 21 * 60 },
-        { hour: 10, period: 'pm', raw: 22 * 60 },
-        { hour: 11, period: 'pm', raw: 23 * 60 }
-    ];
+    get hours() {
+        return hours;
+    }
 
     unsub: (() => void) | null = null;
     hoursOfOp: HoursOfOperationDay | null = null;

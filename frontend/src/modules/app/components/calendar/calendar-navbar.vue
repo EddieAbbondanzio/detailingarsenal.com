@@ -22,7 +22,7 @@
                 <div class="is-flex is-flex-row is-hidden-touch has-margin-x-3">
                     <p
                         class="is-size-4 is-size-5-tablet has-text-weight-bold"
-                    >{{ dateTitle }}{{ dateDescription }}</p>
+                    >{{ dateTitle }}{{ ' '}}{{ dateDescription }}</p>
                 </div>
 
                 <div class="is-flex is-flex-row is-align-items-center is-justify-content-end">

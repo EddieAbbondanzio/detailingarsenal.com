@@ -11,7 +11,7 @@
 </template>
 
 <style lang="sass" scoped>
-+mobile
++touch
     .app-content
         margin-bottom: 50px
 </style>
