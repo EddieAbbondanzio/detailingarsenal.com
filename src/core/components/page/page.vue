@@ -1,23 +1,31 @@
 <template>
-    <div :class="cssClass">
-        <!-- Standard View -->
-        <div class="is-flex is-flex-column is-flex-grow-1" v-if="!$slots['sidebar']">
-            <b-progress class="page-loading-bar has-margin-bottom-0" size="is-small" type="is-info" v-if="loading" />
+    <div id="page" :class="cssClass">
+        <!-- No sidebar -->
+        <div
+            class="is-flex is-flex-column is-flex-grow-1 has-overflow-y-hidden"
+            v-if="!$slots['sidebar']"
+        >
+            <b-progress
+                class="page-loading-bar has-margin-bottom-0"
+                size="is-small"
+                type="is-info"
+                v-if="loading"
+            />
 
+            <!-- Page header -->
             <slot name="header"></slot>
 
-            <slot name="body">
-                <div class="section has-padding-all-3">
-                    <div class="container">
-                        <slot></slot>
-                    </div>
+            <!-- Page body -->
+            <div class="has-overflow-y-scroll">
+                <div class="container has-padding-all-3">
+                    <slot></slot>
                 </div>
-            </slot>
+            </div>
         </div>
 
         <!-- Sidebar View -->
-        <div class="is-flex is-flex-row" v-else>
-            <div class="is-hidden-touch">
+        <div class="is-flex is-flex-row is-flex-grow-1 has-overflow-y-hidden" v-else>
+            <div class="is-hidden-mobile">
                 <slot name="sidebar"></slot>
             </div>
 
@@ -29,15 +37,15 @@
                     v-if="loading"
                 />
 
+                <!-- Page header -->
                 <slot name="header"></slot>
 
-                <slot name="body">
-                    <div class="section has-padding-all-3">
-                        <div class="container">
-                            <slot></slot>
-                        </div>
+                <!-- Page body -->
+                <div class="has-overflow-y-scroll">
+                    <div class="container has-padding-all-3">
+                        <slot></slot>
                     </div>
-                </slot>
+                </div>
             </div>
         </div>
     </div>
@@ -63,7 +71,9 @@ export default class Page extends Vue {
     background!: string;
 
     get cssClass() {
-        return `has-background-${this.background.split('-')[1]}`;
+        return `has-background-${
+            this.background.split('-')[1]
+        } has-overflow-y-hidden is-flex is-flex-column is-flex-grow-1`;
     }
 }
 </script>

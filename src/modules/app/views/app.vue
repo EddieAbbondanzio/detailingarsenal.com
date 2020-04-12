@@ -1,12 +1,19 @@
 <template>
-    <div id="app-container" class="is-flex is-flex-column is-flex-grow-1">
+    <div class="is-flex is-flex-column" style="height: 100vh;">
         <app-navbar />
-        <router-view />
+
+        <div class="app-content has-overflow-y-hidden is-flex is-flex-column is-flex-grow-1">
+            <router-view />
+        </div>
+
         <app-footer />
     </div>
 </template>
 
 <style lang="sass" scoped>
++mobile
+    .app-content
+        margin-bottom: 50px
 </style>
 
 <script lang="ts">

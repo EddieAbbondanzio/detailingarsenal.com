@@ -9,20 +9,9 @@
 @import '_position.sass'
 @import '_border.sass'
 
-
-// html
-    // height: 100%
-
-// body
-        // min-height: 100%
-    // display: flex
-    // flex-direction: column
-
-// #app
-    // flex-grow: 1
-    // display: flex
-    // flex-direction: column
-    // align-items: stretch
+// Content div has the scroll bar    
+html, body
+    overflow: hidden!important
 
 
 @each $name, $color in $colors
@@ -30,6 +19,7 @@
         &:hover
             background-color: lighten(nth($color, 1), 2%)!important
             cursor: pointer
+
 
 .has-border-bottom-1-light
     border-bottom: 1px solid $light
@@ -39,6 +29,9 @@
 
 .has-overflow-y-scroll
     overflow-y: scroll
+
+.has-overflow-y-hidden
+    overflow-y: hidden!important
 
 
 .modal

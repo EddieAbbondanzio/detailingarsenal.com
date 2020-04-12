@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="has-padding-y-2 has-background-white is-fixed" style="z-index: 20;">
+        <div class="has-padding-y-2 has-background-white" style="z-index: 20;">
             <div
                 class="is-flex is-flex-row is-justify-content-space-between is-align-items-center"
                 style="height: 41.5px;"
@@ -90,8 +90,6 @@
 
             <calendar-datepicker-modal ref="datepickerModal" />
         </div>
-
-        <div style="height:57.5px!important">&nbsp;</div>
     </div>
 </template>
 

@@ -1,8 +1,5 @@
 <template>
     <div class="is-hidden-desktop">
-        <!-- A fixed position div is removed from the flow. -->
-        <div style="margin-bottom: 50px!important">&nbsp;</div>
-
         <div class="app-footer box has-padding-all-1">
             <nav class="level is-mobile">
                 <div class="level-item" v-for="link in links" :key="link.title">
@@ -22,7 +19,7 @@
 
 <style lang="sass" scoped>
 .app-footer
-    position: fixed
+    position: absolute
     left: 0px
     right: 0px
     bottom: 0px
