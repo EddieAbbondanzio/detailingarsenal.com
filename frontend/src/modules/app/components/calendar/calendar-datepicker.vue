@@ -44,16 +44,21 @@
 
 <style lang="sass" scoped>
 .day
+
     a
         padding: 4px
         color: $dark
 
     &.is-selected
-        background-color: lighten($primary, 10%)
+        background-color: lighten($primary, 10%)!important
         border-radius: 4px
 
         a
             color: $white!important
+
+    &.is-today
+        border-radius: 4px
+        background-color: $grey-lighter
 
 .days
     display: flex
@@ -91,14 +96,27 @@ export default class CalendarDatepicker extends Vue {
     }
 
     getDayStyles(week: number, day: number) {
+        const today = moment();
         const rawOffset = week * 7 + day;
         const number = this.days[rawOffset - this.offset];
 
-        if (this.value.getDate() == number && this.value.getMonth() == this.viewing.month()) {
-            return 'day is-selected';
-        } else {
-            return 'day';
+        let classes = 'day';
+
+        // Is the date actively being viewed?
+        if (
+            this.value.getDate() == number &&
+            this.value.getMonth() == this.viewing.month() &&
+            this.value.getFullYear() == this.viewing.year()
+        ) {
+            classes += ' is-selected';
         }
+
+        //Is the date today?
+        if (number == today.date() && this.viewing.month() == today.month() && this.viewing.year() == today.year()) {
+            classes += ' is-today';
+        }
+
+        return classes;
     }
 
     getDayNumber(week: number, day: number) {
