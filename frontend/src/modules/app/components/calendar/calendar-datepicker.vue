@@ -64,16 +64,19 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import moment, { Moment } from 'moment';
+import { getModule } from 'vuex-module-decorators';
+import CalendarStore from '../../store/calendar/calendar-store';
 
 @Component({
-    name: 'calendar-datpicker'
+    name: 'calendar-datepicker'
 })
-export default class Calendarvaluepicker extends Vue {
+export default class CalendarDatepicker extends Vue {
     get title() {
-        return this.value.format('MMMM YYYY');
+        return this.viewing.format('MMMM YYYY');
     }
 
-    value: Moment = moment();
+    value: Date = new Date();
+    viewing: Moment = moment();
 
     dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     days: number[] = [];
@@ -81,13 +84,17 @@ export default class Calendarvaluepicker extends Vue {
 
     mounted() {
         this.generateDays();
+
+        // Pull in the current date from vuex
+        const calendarStore = getModule(CalendarStore, this.$store);
+        this.value = calendarStore.date;
     }
 
     getDayStyles(week: number, day: number) {
         const rawOffset = week * 7 + day;
         const number = this.days[rawOffset - this.offset];
 
-        if (this.value.date() == number) {
+        if (this.value.getDate() == number && this.value.getMonth() == this.viewing.month()) {
             return 'day is-selected';
         } else {
             return 'day';
@@ -108,34 +115,37 @@ export default class Calendarvaluepicker extends Vue {
     onDay(week: number, day: number) {
         const rawOffset = week * 7 + day;
         const number = this.days[rawOffset - this.offset];
-        this.value = this.value.startOf('month').add(number - 1, 'days');
+        this.value = this.viewing
+            .startOf('month')
+            .add(number - 1, 'days')
+            .toDate();
         this.generateDays();
     }
 
     onToday() {
-        this.value = moment();
+        this.viewing = moment();
         this.generateDays();
     }
 
     onNext() {
-        this.value = moment(this.value).add(1, 'month');
+        this.viewing = moment(this.viewing).add(1, 'month');
         this.generateDays();
     }
 
     onPrevious() {
-        this.value = moment(this.value).subtract(1, 'month');
+        this.viewing = moment(this.viewing).subtract(1, 'month');
         this.generateDays();
     }
 
     generateDays() {
         this.days.length = 0;
-        const dayCount = this.value.daysInMonth();
+        const dayCount = this.viewing.daysInMonth();
 
         for (let i = 1; i <= dayCount; i++) {
             this.days.push(i);
         }
 
-        this.offset = moment(this.value)
+        this.offset = moment(this.viewing)
             .startOf('month')
             .day();
     }
