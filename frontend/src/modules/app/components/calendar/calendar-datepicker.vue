@@ -107,9 +107,14 @@ export default class CalendarDatepicker extends Vue {
 
         let classes = 'day';
 
+        const calendarStore = getModule(CalendarStore, this.$store);
+        const period = calendarStore.view == 'day' ? 1 : 7;
+        const offset = number - this.value.getDate();
+
         // Is the date actively being viewed?
         if (
-            this.value.getDate() == number &&
+            offset < period &&
+            offset >= 0 &&
             this.value.getMonth() == this.viewing.month() &&
             this.value.getFullYear() == this.viewing.year()
         ) {
