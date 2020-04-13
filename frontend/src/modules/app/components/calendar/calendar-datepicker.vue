@@ -29,7 +29,10 @@
 
             <div class="days">
                 <div v-for="d in [0, 1, 2, 3, 4, 5, 6]" :key="d">
-                    <div class="has-text-weight-bold" style="padding: 4px;">{{ dayNames[d] }}</div>
+                    <div
+                        class="has-text-weight-bold has-text-right"
+                        style="padding: 4px;"
+                    >{{ dayNames[d] }}</div>
 
                     <div v-for="w in [0, 1, 2, 3, 4, 5, 6]" :key="w">
                         <div :class="getDayStyles(w,d)" style="height: 24px; text-align: end;">
@@ -64,6 +67,10 @@
     display: flex
     flex-direction: row
     justify-content: space-between
+
+    > div
+        width: calc(100% / 7) // fuck it
+
 </style>
 
 <script lang="ts">
