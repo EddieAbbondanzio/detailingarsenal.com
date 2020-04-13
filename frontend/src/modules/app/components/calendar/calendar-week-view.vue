@@ -1,19 +1,22 @@
 <template>
-    <div class="week is-flex is-flex-column is-flex-grow-1" ref="dayView">
+    <div
+        class="calendar is-flex is-flex-column is-flex-grow-1 has-border-right has-border-top has-border-left"
+        ref="dayView"
+    >
         <div
-            class="hour-row is-flex is-flex-row has-background-white"
+            class="has-border-bottom is-flex is-flex-row has-background-white"
             style="position: sticky; top: 0px;"
         >
             <div class="hour-key has-w-40px">&nbsp;</div>
 
             <div
                 style="flex: 1 1 0"
-                class="day is-flex is-flex-row is-justify-content-center"
+                class="has-border-left day is-flex is-flex-row is-justify-content-center"
                 v-for="day in days"
                 :key="day.day"
             >
                 <span
-                    class="is-hidden-widescreen"
+                    class="is-hidden-widescreen is-size-7-mobile"
                 >{{ day.name.substring(0,2) }}&nbsp;{{ day.date.getDate() }}</span>
                 <span
                     class="is-hidden-touch is-hidden-desktop-only"
@@ -22,56 +25,28 @@
         </div>
 
         <div
-            class="hour-row has-h-80px is-flex is-flex-row"
+            class="has-border-bottom has-h-80px is-flex is-flex-row"
             v-for="hour in hours"
             :key="`${hour.hour}-${hour.period}`"
             :id="`block-${hour.hour}-${hour.period}`"
         >
             <!-- Axis -->
-            <div
-                class="hour-key is-flex is-flex-row has-w-40px is-justify-content-end has-padding-right-1"
-            >
+            <div class="is-flex is-flex-row has-w-40px is-justify-content-end has-padding-right-1">
                 <span class="is-size-6">{{ hour.hour }}</span>
                 <span class="is-size-7 has-text-grey">{{ hour.period }}</span>
             </div>
 
-            <div class="day is-flex is-flex-row is-flex-grow-1" v-for="day in days" :key="day.day">
+            <div
+                class="has-border-left is-flex is-flex-row is-flex-grow-1"
+                v-for="day in days"
+                :key="day.day"
+            >
                 <div :class="determineBlockBackground(day.day, hour.raw)">&nbsp;</div>
             </div>
         </div>
     </div>
 </template>
 
-<style lang="sass" scoped>
-.week
-    border-left: 1px solid $grey-lighter
-    border-top: 1px solid $grey-lighter
-    border-bottom: 1px solid $grey-lighter
-
-    .hour-row
-        border-bottom: 1px solid $grey-lighter
-
-    .day
-        border-right: 1px solid $grey-lighter
-
-
-.hour-key
-    border-right: 1px solid $grey-lighter
-
-.hour-block
-    border-bottom: 1px solid $grey-lighter
-    border-left: 1px solid $grey-lighter
-    border-right: 1px solid $grey-lighter
-
-.has-h-40px
-    height: 40px
-
-.has-w-40px
-    width: 40px
-
-.has-h-80px
-    height: 80px
-</style>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -116,7 +91,7 @@ export default class CalendarWeekView extends Vue {
         const earliestHour = settingsStore.hoursOfOperation.getEarliestOpening();
 
         // If hours of operation are set for the day, auto scroll to the first hour.
-        let openHour = Math.floor(earliestHour / 60);
+        let openHour = Math.floor(earliestHour / 60) - 1;
         const openPeriod = earliestHour >= 720 ? 'pm' : 'am';
 
         const hourElement = (this.$refs.dayView as HTMLDivElement).querySelector(`#block-${openHour}-${openPeriod}`);
