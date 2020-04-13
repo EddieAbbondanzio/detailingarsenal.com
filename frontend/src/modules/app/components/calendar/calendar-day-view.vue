@@ -75,9 +75,13 @@ export default class CalendarDayView extends Vue {
             let openHour = Math.floor(this.hoursOfOp.open / 60) - 1;
             const openPeriod = this.hoursOfOp.open >= 720 ? 'pm' : 'am';
 
-            const hourElement = (this.$refs.dayView as HTMLDivElement).querySelector(
-                `#block-${openHour}-${openPeriod}`
-            );
+            const ref = this.$refs.dayView as HTMLDivElement;
+
+            if (ref == null) {
+                return;
+            }
+
+            const hourElement = ref.querySelector(`#block-${openHour}-${openPeriod}`);
 
             hourElement!.scrollIntoView();
         }

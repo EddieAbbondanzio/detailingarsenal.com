@@ -67,12 +67,12 @@
                             native-value="week"
                             title="Switch to week view"
                         >Week</b-radio-button>
-                        <b-radio-button
+                        <!-- <b-radio-button
                             v-model="calendarView"
                             size="is-small"
                             native-value="month"
                             title="Switch to month view"
-                        >Month</b-radio-button>
+                        >Month</b-radio-button>-->
                     </b-field>
 
                     <b-button

@@ -1,7 +1,7 @@
 <template>
     <div
         class="calendar is-flex is-flex-column is-flex-grow-1 has-border-right has-border-top has-border-left"
-        ref="dayView"
+        ref="weekView"
     >
         <div
             class="has-border-bottom is-flex is-flex-row has-background-white"
@@ -86,6 +86,12 @@ export default class CalendarWeekView extends Vue {
         this.scrollToOpenHour();
     }
 
+    beforeDestroy() {
+        if (this.unsub != null) {
+            this.unsub();
+        }
+    }
+
     scrollToOpenHour() {
         const settingsStore = getModule(SettingsStore, this.$store);
         const earliestHour = settingsStore.hoursOfOperation.getEarliestOpening();
@@ -94,7 +100,13 @@ export default class CalendarWeekView extends Vue {
         let openHour = Math.floor(earliestHour / 60) - 1;
         const openPeriod = earliestHour >= 720 ? 'pm' : 'am';
 
-        const hourElement = (this.$refs.dayView as HTMLDivElement).querySelector(`#block-${openHour}-${openPeriod}`);
+        const ref = this.$refs.weekView as HTMLDivElement;
+
+        if (ref == null) {
+            return;
+        }
+
+        const hourElement = ref.querySelector(`#block-${openHour}-${openPeriod}`);
 
         hourElement!.scrollIntoView();
     }
