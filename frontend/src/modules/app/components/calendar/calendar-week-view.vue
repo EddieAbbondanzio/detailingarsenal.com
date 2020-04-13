@@ -1,6 +1,9 @@
 <template>
-    <div class="week is-flex is-flex-column is-flex-grow-1">
-        <div class="hour-row is-flex is-flex-row">
+    <div class="week is-flex is-flex-column is-flex-grow-1" ref="dayView">
+        <div
+            class="hour-row is-flex is-flex-row has-background-white"
+            style="position: sticky; top: 0px;"
+        >
             <div class="hour-key has-w-40px">&nbsp;</div>
 
             <div
@@ -22,6 +25,7 @@
             class="hour-row has-h-80px is-flex is-flex-row"
             v-for="hour in hours"
             :key="`${hour.hour}-${hour.period}`"
+            :id="`block-${hour.hour}-${hour.period}`"
         >
             <!-- Axis -->
             <div
@@ -99,10 +103,25 @@ export default class CalendarWeekView extends Vue {
         this.unsub = store.subscribe((mut, s) => {
             if (mut.type == 'calendar/SET_DATE') {
                 this.generateDates(mut.payload);
+                this.scrollToOpenHour();
             }
         });
 
         this.generateDates(calendarStore.date);
+        this.scrollToOpenHour();
+    }
+
+    scrollToOpenHour() {
+        const settingsStore = getModule(SettingsStore, this.$store);
+        const earliestHour = settingsStore.hoursOfOperation.getEarliestOpening();
+
+        // If hours of operation are set for the day, auto scroll to the first hour.
+        let openHour = Math.floor(earliestHour / 60);
+        const openPeriod = earliestHour >= 720 ? 'pm' : 'am';
+
+        const hourElement = (this.$refs.dayView as HTMLDivElement).querySelector(`#block-${openHour}-${openPeriod}`);
+
+        hourElement!.scrollIntoView();
     }
 
     generateDates(date: Date) {

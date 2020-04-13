@@ -37,8 +37,6 @@
     border-left: 1px solid $grey-lighter
     border-right: 1px solid $grey-lighter
 
-
-
 .has-w-40px
     width: 40px
 
@@ -74,9 +72,11 @@ export default class CalendarDayView extends Vue {
 
         this.unsub = store.subscribe((mut, s) => {
             if (mut.type == 'calendar/SET_DATE') {
-                this.onDateChange(mut.payload);
+                this.scrollToOpenHour(mut.payload);
             }
         });
+
+        this.scrollToOpenHour(calendarStore.date);
     }
 
     beforeDestroy() {
@@ -85,7 +85,7 @@ export default class CalendarDayView extends Vue {
         }
     }
 
-    onDateChange(date: Date) {
+    scrollToOpenHour(date: Date) {
         const settingsStore = getModule(SettingsStore, this.$store);
         this.hoursOfOp = settingsStore.hoursOfOperation.getHoursForDay(date.getDay())!;
 
