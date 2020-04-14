@@ -20,7 +20,15 @@
             </div>
 
             <!-- Block -->
-            <div :class="determineBlockBackground(hour.raw)">&nbsp;</div>
+            <div :class="determineBlockBackground(hour.raw)">
+                <div class="has-h-20px" @click="onIntervalClick(hour.raw, 0)">&nbsp;</div>
+                <div
+                    class="has-h-20px has-border-bottom-1-light"
+                    @click="onIntervalClick(hour.raw,0)"
+                >&nbsp;</div>
+                <div class="has-h-20px" @click="onIntervalClick(hour.raw, 2)">&nbsp;</div>
+                <div class="has-h-20px" @click="onIntervalClick(hour.raw, 2)">&nbsp;</div>
+            </div>
         </div>
     </div>
 </template>
@@ -87,6 +95,11 @@ export default class CalendarDayView extends Vue {
         }
     }
 
+    async onIntervalClick(hour: number, interval: 0 | 1 | 2 | 3) {
+        console.log('hour: ', hour);
+        console.log('interval: ', interval);
+    }
+
     onPreviousSwipe() {
         const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.adjustDate({ direction: 'previous', step: 'day' });
@@ -99,10 +112,10 @@ export default class CalendarDayView extends Vue {
 
     determineBlockBackground(raw: number) {
         if (this.hoursOfOp != null && this.hoursOfOp.containsTime(raw)) {
-            return 'is-flex-grow-1 has-background-white';
+            return 'block is-flex-grow-1 has-background-white';
         }
 
-        return 'is-flex-grow-1 has-background-white-bis';
+        return 'block is-flex-grow-1 has-background-white-bis';
     }
 }
 </script>
