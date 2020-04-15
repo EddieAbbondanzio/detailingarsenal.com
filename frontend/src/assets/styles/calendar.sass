@@ -1,6 +1,24 @@
 $calendar-border:  $grey-lighter
 
 .calendar
+    .hour
+        position: relative
+
+    .block
+        background-color: $primary
+        border-radius: 4px
+        position: absolute
+        left: 1em
+        right: 1em
+        z-index: 20
+
+        &.is-resizing
+            background-color: rgba($primary, .5)!important
+            pointer-events: none        
+
+    .interval:nth-child(2)
+        border-bottom: 1px solid $calendar-border
+
     .has-w-40px
         width: 40px
 

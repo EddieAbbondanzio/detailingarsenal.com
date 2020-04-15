@@ -3,6 +3,8 @@ import { InitableModule } from '@/core/store/initable-module';
 import { CalendarView } from '@/modules/app/store/calendar/calendar-view';
 import moment from 'moment';
 import { TimeUtils } from '@/core';
+import { Appointment } from '@/modules/app/api/calendar/entities/appointment';
+import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
 
 /**
  * Store for the Calendar view.
@@ -12,6 +14,12 @@ export default class CalendarStore extends InitableModule {
     view: CalendarView = 'day';
     date: Date = new Date();
 
+    blocks: AppointmentBlock[] = [];
+
+    get pendingBlocks(): AppointmentBlock[] {
+        return this.blocks.filter(b => b.meta.pending);
+    }
+
     @Mutation
     SET_VIEW(view: CalendarView) {
         this.view = view;
@@ -20,6 +28,30 @@ export default class CalendarStore extends InitableModule {
     @Mutation
     SET_DATE(date: Date) {
         this.date = date;
+    }
+
+    @Mutation
+    ADD_BLOCK(block: AppointmentBlock) {
+        this.blocks.push(block);
+    }
+
+    @Mutation
+    SET_BLOCKS(blocks: AppointmentBlock[]) {
+        this.blocks = blocks;
+    }
+
+    @Mutation
+    RESIZE_BLOCK({ block, time, duration }: { block: AppointmentBlock; time: number; duration: number }) {
+        block.time = time;
+        block.duration = duration;
+
+        this.blocks = [...this.blocks.filter(b => b != block), block];
+    }
+
+    @Mutation
+    REMOVE_RESIZING_FLAG(block: AppointmentBlock) {
+        block.meta.resizing = false;
+        this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Action({ rawError: true })

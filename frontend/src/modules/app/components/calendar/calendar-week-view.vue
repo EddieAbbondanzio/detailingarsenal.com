@@ -1,6 +1,6 @@
 <template>
     <div
-        class="calendar is-flex is-flex-column is-flex-grow-1 has-border-right has-border-top has-border-left"
+        class="calendar is-flex is-flex-column is-flex-grow-1 has-border-right has-border-top has-border-left is-unselectable"
         ref="weekView"
     >
         <div

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="calendar has-border-right has-border-top has-border-left is-flex is-flex-column is-flex-grow-1"
+        class="calendar has-border-right has-border-top has-border-left is-flex is-flex-column is-flex-grow-1 is-relative is-unselectable"
         ref="dayView"
         v-touch:swipe.right="onPreviousSwipe"
         v-touch:swipe.left="onNextSwipe"
@@ -9,7 +9,7 @@
             class="has-h-80px is-flex is-flex-row has-border-bottom"
             v-for="hour in hours"
             :key="`${hour.hour}-${hour.period}`"
-            :id="`block-${hour.hour}-${hour.period}`"
+            :id="`hour-${hour.hour}-${hour.period}`"
         >
             <!-- Axis -->
             <div
@@ -19,15 +19,22 @@
                 <span class="is-size-7 has-text-grey">{{ hour.period }}</span>
             </div>
 
-            <!-- Block -->
-            <div :class="determineBlockBackground(hour.raw)">
-                <div class="has-h-20px" @click="onIntervalClick(hour.raw, 0)">&nbsp;</div>
+            <!-- Hour -->
+            <div :class="determineHourBackground(hour.raw)">
                 <div
-                    class="has-h-20px has-border-bottom-1-light"
-                    @click="onIntervalClick(hour.raw,0)"
-                >&nbsp;</div>
-                <div class="has-h-20px" @click="onIntervalClick(hour.raw, 2)">&nbsp;</div>
-                <div class="has-h-20px" @click="onIntervalClick(hour.raw, 2)">&nbsp;</div>
+                    v-for="i in [0,1,2,3]"
+                    :key="i"
+                    class="interval has-h-20px"
+                    @mousedown.prevent="onDragStart(hour.raw + i * 15)"
+                    @mouseover.self.stop="onDragUpdate(hour.raw + i * 15)"
+                >
+                    <calendar-block
+                        @mousedown.stop="onBlockDragStart"
+                        @mouseup.stop="onBlockDragEnd"
+                        v-if="getBlock(hour.raw + i * 15)"
+                        :value="getBlock(hour.raw + i * 15)"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -41,17 +48,39 @@ import CalendarStore from '../../store/calendar/calendar-store';
 import store from '../../../../core/store';
 import { HoursOfOperationDay } from '../../api';
 import { hours } from './hours';
+import { AppointmentBlock } from '../../api/calendar/entities/appointment-block';
+import CalendarBlock from '@/modules/app/components/calendar/calendar-block.vue';
+import { duration } from 'moment';
 
 @Component({
-    name: 'calendar-day-view'
+    name: 'calendar-day-view',
+    components: {
+        CalendarBlock
+    }
 })
 export default class CalendarDayView extends Vue {
     get hours() {
         return hours;
     }
 
+    get date() {
+        const calendarStore = getModule(CalendarStore, this.$store);
+        return calendarStore.date;
+    }
+
+    get pendingBlocks() {
+        const calendarStore = getModule(CalendarStore, this.$store);
+        return calendarStore.pendingBlocks;
+    }
+
+    get resizingBlock() {
+        return this.pendingBlocks.find(b => b.meta.resizing)!;
+    }
+
     unsub: (() => void) | null = null;
     hoursOfOp: HoursOfOperationDay | null = null;
+
+    isMouseDown: boolean = false;
 
     async mounted() {
         const calendarStore = getModule(CalendarStore, this.$store);
@@ -66,11 +95,109 @@ export default class CalendarDayView extends Vue {
         });
 
         this.scrollToOpenHour(calendarStore.date);
+
+        window.addEventListener('mouseup', this.onDragEnd);
+        window.addEventListener('click', this.onDragClick);
     }
 
     beforeDestroy() {
         if (this.unsub != null) {
             this.unsub();
+        }
+
+        window.removeEventListener('mouseup', this.onDragEnd);
+        window.removeEventListener('click', this.onDragClick);
+    }
+
+    getBlock(time: number) {
+        const calendarStore = getModule(CalendarStore, this.$store);
+        return this.pendingBlocks.find(b => b.time == time);
+    }
+
+    onBlockDragStart(el: Event) {
+        (el.target as HTMLDivElement).classList.add('is-dragging');
+        console.log(el.target);
+    }
+
+    onBlockDragEnd(el: Event) {
+        (el.target as HTMLDivElement).classList.remove('is-dragging');
+    }
+
+    onDragStart(time: number) {
+        this.isMouseDown = true;
+
+        // assume user wants to do X:00 or X:30
+        time -= time % 30;
+
+        const block = new AppointmentBlock(this.date, time, 30, { pending: true, resizing: true });
+        block.meta.initialTime = time;
+
+        const calendarStore = getModule(CalendarStore, this.$store);
+        calendarStore.ADD_BLOCK(block);
+    }
+
+    onDragUpdate(time: number) {
+        if (!this.isMouseDown) {
+            return;
+        }
+
+        const calendarStore = getModule(CalendarStore, this.$store);
+        time -= time % 30;
+
+        // Need to ensure the block has a sticky side that never changes. See google Calendar
+
+        // Down
+        if (this.resizingBlock.time < time) {
+            // Going down, but we went up first
+            if (this.resizingBlock.meta.initialTime != this.resizingBlock.time) {
+                const offset = time - this.resizingBlock.time;
+                calendarStore.RESIZE_BLOCK({
+                    block: this.resizingBlock,
+                    time: this.resizingBlock.time + offset,
+                    duration: this.resizingBlock.duration - offset
+                });
+            } else {
+                const offset = time - this.resizingBlock.time;
+                calendarStore.RESIZE_BLOCK({
+                    block: this.resizingBlock,
+                    time: this.resizingBlock.time,
+                    duration: offset
+                });
+            }
+        }
+        // Up
+        else {
+            const offset = this.resizingBlock.time - time;
+            let duration = this.resizingBlock.duration + offset;
+
+            if (this.resizingBlock.meta.initialTime == this.resizingBlock.time) {
+                duration -= 30;
+            }
+
+            calendarStore.RESIZE_BLOCK({
+                block: this.resizingBlock,
+                time: this.resizingBlock.time - offset,
+                duration: duration
+            });
+        }
+    }
+
+    onDragEnd() {
+        console.log('mouseUp');
+        if (!this.isMouseDown) {
+            return;
+        }
+
+        this.isMouseDown = false;
+
+        const calendarStore = getModule(CalendarStore, this.$store);
+        calendarStore.REMOVE_RESIZING_FLAG(this.resizingBlock);
+    }
+
+    onDragClick() {
+        // if no mouse up event occured, force stop the dragging
+        if (this.isMouseDown) {
+            this.isMouseDown = false;
         }
     }
 
@@ -89,15 +216,10 @@ export default class CalendarDayView extends Vue {
                 return;
             }
 
-            const hourElement = ref.querySelector(`#block-${openHour}-${openPeriod}`);
+            const hourElement = ref.querySelector(`#hour-${openHour}-${openPeriod}`);
 
             hourElement!.scrollIntoView();
         }
-    }
-
-    async onIntervalClick(hour: number, interval: 0 | 1 | 2 | 3) {
-        console.log('hour: ', hour);
-        console.log('interval: ', interval);
     }
 
     onPreviousSwipe() {
@@ -110,12 +232,12 @@ export default class CalendarDayView extends Vue {
         calendarStore.adjustDate({ direction: 'next', step: 'day' });
     }
 
-    determineBlockBackground(raw: number) {
+    determineHourBackground(raw: number) {
         if (this.hoursOfOp != null && this.hoursOfOp.containsTime(raw)) {
-            return 'block is-flex-grow-1 has-background-white';
+            return 'hour is-flex-grow-1 has-background-white';
         }
 
-        return 'block is-flex-grow-1 has-background-white-bis';
+        return 'hour is-flex-grow-1 has-background-white-bis';
     }
 }
 </script>
