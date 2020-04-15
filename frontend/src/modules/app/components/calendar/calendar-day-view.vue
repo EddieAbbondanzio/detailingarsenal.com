@@ -142,42 +142,30 @@ export default class CalendarDayView extends Vue {
         }
 
         const calendarStore = getModule(CalendarStore, this.$store);
-        time -= time % 30;
-
-        // Need to ensure the block has a sticky side that never changes. See google Calendar
 
         // Down
         if (this.resizingBlock.time < time) {
             // Going down, but we went up first
-            if (this.resizingBlock.meta.initialTime != this.resizingBlock.time) {
-                const offset = time - this.resizingBlock.time;
+            if (this.resizingBlock.meta.initialTime > this.resizingBlock.time) {
                 calendarStore.RESIZE_BLOCK({
                     block: this.resizingBlock,
-                    time: this.resizingBlock.time + offset,
-                    duration: this.resizingBlock.duration - offset
+                    time: time,
+                    duration: this.resizingBlock.meta.initialTime - time
                 });
             } else {
-                const offset = time - this.resizingBlock.time;
                 calendarStore.RESIZE_BLOCK({
                     block: this.resizingBlock,
-                    time: this.resizingBlock.time,
-                    duration: offset
+                    time: this.resizingBlock.meta.initialTime,
+                    duration: time - this.resizingBlock.meta.initialTime
                 });
             }
         }
         // Up
         else {
-            const offset = this.resizingBlock.time - time;
-            let duration = this.resizingBlock.duration + offset;
-
-            if (this.resizingBlock.meta.initialTime == this.resizingBlock.time) {
-                duration -= 30;
-            }
-
             calendarStore.RESIZE_BLOCK({
                 block: this.resizingBlock,
-                time: this.resizingBlock.time - offset,
-                duration: duration
+                time: time,
+                duration: this.resizingBlock.meta.initialTime - time
             });
         }
     }
