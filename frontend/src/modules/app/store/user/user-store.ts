@@ -1,10 +1,11 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { User } from '@/modules/app/api/user/entities/user';
 import { api } from '@/modules/app/api/api';
 import { InitableModule } from '@/core/store/initable-module';
+import store from '@/core/store/index';
 
-@Module({ namespaced: true, name: 'user' })
-export default class UserStore extends InitableModule {
+@Module({ namespaced: true, name: 'user', dynamic: true, store })
+class UserStore extends InitableModule {
     public isAuthenticated: boolean = false;
     public isLoading: boolean = true;
     public user: User = null!;
@@ -53,3 +54,5 @@ export default class UserStore extends InitableModule {
         this.context.commit('SET_USER', u);
     }
 }
+
+export default getModule(UserStore);

@@ -25,12 +25,11 @@
                     v-for="i in [0,1,2,3]"
                     :key="i"
                     class="interval has-h-20px"
-                    @mousedown.self.stop="onDragStart(hour.raw + i * 15)"
-                    @mouseover.self.stop="onDragUpdate(hour.raw + i * 15)"
+                    @mousedown.self.stop="onCreateDragStart(hour.raw + i * 15)"
+                    @mouseover.self.stop="onMouseOverInterval(hour.raw + i * 15)"
                 >
                     <calendar-block
-                        @mousedown.stop="onBlockDragStart"
-                        @mouseup.stop="onBlockDragEnd"
+                        @mousedown.self.stop="onBlockDragStart(hour.raw + i * 15)"
                         v-if="getBlock(hour.raw + i * 15)"
                         :value="getBlock(hour.raw + i * 15)"
                     />
@@ -42,7 +41,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
 import SettingsStore from '../../store/settings/settings-store';
 import CalendarStore from '../../store/calendar/calendar-store';
 import store from '../../../../core/store';
@@ -51,6 +49,8 @@ import { hours } from './hours';
 import { AppointmentBlock } from '../../api/calendar/entities/appointment-block';
 import CalendarBlock from '@/modules/app/components/calendar/calendar-block.vue';
 import { duration } from 'moment';
+import calendarStore from '../../store/calendar/calendar-store';
+import settingsStore from '../../store/settings/settings-store';
 
 @Component({
     name: 'calendar-day-view',
@@ -64,12 +64,10 @@ export default class CalendarDayView extends Vue {
     }
 
     get date() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         return calendarStore.date;
     }
 
     get pendingBlocks() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         return calendarStore.pendingBlocks;
     }
 
@@ -79,13 +77,9 @@ export default class CalendarDayView extends Vue {
 
     unsub: (() => void) | null = null;
     hoursOfOp: HoursOfOperationDay | null = null;
-
-    isMouseDown: boolean = false;
+    currentAction: 'creating-block' | 'moving-block' | null = null;
 
     async mounted() {
-        const calendarStore = getModule(CalendarStore, this.$store);
-        const settingsStore = getModule(SettingsStore, this.$store);
-
         await settingsStore.init();
 
         this.unsub = store.subscribe((mut, s) => {
@@ -96,8 +90,8 @@ export default class CalendarDayView extends Vue {
 
         this.scrollToOpenHour(calendarStore.date);
 
-        window.addEventListener('mouseup', this.onDragEnd);
-        window.addEventListener('click', this.onDragClick);
+        window.addEventListener('mouseup', this.onMouseUp);
+        window.addEventListener('click', this.onCreateDragClick);
     }
 
     beforeDestroy() {
@@ -105,26 +99,37 @@ export default class CalendarDayView extends Vue {
             this.unsub();
         }
 
-        window.removeEventListener('mouseup', this.onDragEnd);
-        window.removeEventListener('click', this.onDragClick);
+        window.removeEventListener('mouseup', this.onMouseUp);
+        window.removeEventListener('click', this.onCreateDragClick);
     }
 
     getBlock(time: number) {
-        const calendarStore = getModule(CalendarStore, this.$store);
         return this.pendingBlocks.find(b => b.time == time);
     }
 
-    onBlockDragStart(el: Event) {
-        (el.target as HTMLDivElement).classList.add('is-dragging');
-        console.log(el.target);
+    onBlockDragStart(time: number) {
+        if (this.currentAction != null) {
+            return;
+        }
+
+        const block = this.getBlock(time);
+        calendarStore.ADD_BLOCK_META({ block: this.modifyingBlock, meta: { name: 'modifying', value: true } });
+
+        this.currentAction = 'moving-block';
     }
 
-    onBlockDragEnd(el: Event) {
-        (el.target as HTMLDivElement).classList.remove('is-dragging');
+    onBlockDragEnd() {
+        if (this.currentAction != 'moving-block') {
+            return;
+        }
+
+        calendarStore.REMOVE_BLOCK_META({ block: this.modifyingBlock, name: 'modifying' });
+
+        this.currentAction = 'moving-block';
     }
 
-    onDragStart(time: number) {
-        this.isMouseDown = true;
+    onCreateDragStart(time: number) {
+        this.currentAction = 'creating-block';
 
         // assume user wants to do X:00 or X:30
         time -= time % 30;
@@ -132,67 +137,62 @@ export default class CalendarDayView extends Vue {
         const block = new AppointmentBlock(this.date, time, 30, { pending: true, modifying: true });
         block.meta.initialTime = time;
 
-        const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.ADD_BLOCK(block);
     }
 
-    onDragUpdate(time: number) {
-        if (!this.isMouseDown) {
-            return;
-        }
-
-        const calendarStore = getModule(CalendarStore, this.$store);
-
-        // Down
-        if (this.modifyingBlock.time < time) {
-            // Going down, but we went up first
-            if (this.modifyingBlock.meta.initialTime > this.modifyingBlock.time) {
+    onMouseOverInterval(time: number) {
+        if (this.currentAction == 'creating-block') {
+            // Down
+            if (this.modifyingBlock.time < time) {
+                // Going down, but we went up first
+                if (this.modifyingBlock.meta.initialTime > this.modifyingBlock.time) {
+                    calendarStore.RESIZE_BLOCK({
+                        block: this.modifyingBlock,
+                        time: time,
+                        duration: this.modifyingBlock.meta.initialTime - time
+                    });
+                } else {
+                    calendarStore.RESIZE_BLOCK({
+                        block: this.modifyingBlock,
+                        time: this.modifyingBlock.meta.initialTime,
+                        duration: time - this.modifyingBlock.meta.initialTime
+                    });
+                }
+            }
+            // Up
+            else {
                 calendarStore.RESIZE_BLOCK({
                     block: this.modifyingBlock,
                     time: time,
                     duration: this.modifyingBlock.meta.initialTime - time
                 });
-            } else {
-                calendarStore.RESIZE_BLOCK({
-                    block: this.modifyingBlock,
-                    time: this.modifyingBlock.meta.initialTime,
-                    duration: time - this.modifyingBlock.meta.initialTime
-                });
             }
-        }
-        // Up
-        else {
-            calendarStore.RESIZE_BLOCK({
+        } else if (this.currentAction == 'moving-block') {
+            calendarStore.MOVE_BLOCK({
                 block: this.modifyingBlock,
-                time: time,
-                duration: this.modifyingBlock.meta.initialTime - time
+                time: time
             });
         }
     }
 
-    onDragEnd() {
-        if (!this.isMouseDown) {
-            return;
+    onMouseUp() {
+        if (this.currentAction == 'creating-block' || this.currentAction == 'moving-block') {
+            this.currentAction = null;
+
+            calendarStore.REMOVE_BLOCK_META({ block: this.modifyingBlock, name: 'modifying' });
         }
-
-        this.isMouseDown = false;
-
-        const calendarStore = getModule(CalendarStore, this.$store);
-        calendarStore.REMOVE_MODIFY_FLAG(this.modifyingBlock);
     }
 
-    onDragClick() {
+    onCreateDragClick() {
         // if no mouse up event occured, force stop the dragging
-        if (this.isMouseDown) {
-            this.isMouseDown = false;
+        if (this.currentAction == 'creating-block') {
+            this.currentAction = null;
 
-            const calendarStore = getModule(CalendarStore, this.$store);
-            calendarStore.REMOVE_MODIFY_FLAG(this.modifyingBlock);
+            calendarStore.REMOVE_BLOCK_META({ block: this.modifyingBlock, name: 'modifying' });
         }
     }
 
     scrollToOpenHour(date: Date) {
-        const settingsStore = getModule(SettingsStore, this.$store);
         this.hoursOfOp = settingsStore.hoursOfOperation.getHoursForDay(date.getDay())!;
 
         // If hours of operation are set for the day, auto scroll to the first hour.
@@ -213,12 +213,10 @@ export default class CalendarDayView extends Vue {
     }
 
     onPreviousSwipe() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.adjustDate({ direction: 'previous', step: 'day' });
     }
 
     onNextSwipe() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.adjustDate({ direction: 'next', step: 'day' });
     }
 

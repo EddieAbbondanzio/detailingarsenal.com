@@ -1,16 +1,16 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import { CalendarView } from '@/modules/app/store/calendar/calendar-view';
 import moment from 'moment';
 import { TimeUtils } from '@/core';
-import { Appointment } from '@/modules/app/api/calendar/entities/appointment';
 import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
+import store from '@/core/store/index';
 
 /**
  * Store for the Calendar view.
  */
-@Module({ namespaced: true, name: 'calendar' })
-export default class CalendarStore extends InitableModule {
+@Module({ namespaced: true, name: 'calendar', store, dynamic: true })
+class CalendarStore extends InitableModule {
     view: CalendarView = 'day';
     date: Date = new Date();
 
@@ -49,14 +49,20 @@ export default class CalendarStore extends InitableModule {
     }
 
     @Mutation
-    public SET_MODIFY_FLAG(block: AppointmentBlock) {
-        block.meta.modifying = true;
+    MOVE_BLOCK({ block, time }: { block: AppointmentBlock; time: number }) {
+        block.time = time;
         this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
-    REMOVE_MODIFY_FLAG(block: AppointmentBlock) {
-        block.meta.modifying = false;
+    ADD_BLOCK_META({ block, meta }: { block: AppointmentBlock; meta: { name: string; value: any } }) {
+        block.meta[meta.name] = meta.value;
+        this.blocks = [...this.blocks.filter(b => b != block), block];
+    }
+
+    @Mutation
+    REMOVE_BLOCK_META({ block, name }: { block: AppointmentBlock; name: string }) {
+        block.meta[name] = undefined;
         this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
@@ -124,3 +130,5 @@ export default class CalendarStore extends InitableModule {
         this.context.commit('SET_DATE', m.toDate());
     }
 }
+
+export default getModule(CalendarStore);

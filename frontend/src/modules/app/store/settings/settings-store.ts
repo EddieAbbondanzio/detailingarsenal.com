@@ -1,4 +1,4 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { VehicleCategory } from '@/modules/app/api/settings/entities/vehicle-category';
 import { Employee } from '@/modules/app/api/settings/entities/employee';
 import { Business } from '@/modules/app/api/settings/entities/business';
@@ -14,12 +14,13 @@ import { UpdateService } from '@/modules/app/api/settings/data-transfer-objects/
 import { api } from '@/modules/app/api/api';
 import { InitableModule } from '@/core/store/initable-module';
 import { UpdateHoursOfOperation } from '@/modules/app/api/settings/data-transfer-objects/update-hours-of-operation';
+import store from '@/core/store/index';
 
 /**
  * Store for the service view.
  */
-@Module({ namespaced: true, name: 'settings' })
-export default class SettingsStore extends InitableModule {
+@Module({ namespaced: true, name: 'settings', dynamic: true, store })
+class SettingsStore extends InitableModule {
     /**
      * Vehicle categories used by the user to organize price / time.
      */
@@ -222,3 +223,5 @@ export default class SettingsStore extends InitableModule {
         this.context.commit('DELETE_SERVICE', service);
     }
 }
+
+export default getModule(SettingsStore);

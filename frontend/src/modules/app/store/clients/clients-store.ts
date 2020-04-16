@@ -1,15 +1,16 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { Client } from '@/modules/app/api/clients/entities/client';
 import { InitableModule } from '@/core/store/initable-module';
 import { CreateClient } from '@/modules/app/api/clients/data-transfer-objects/create-client';
 import { UpdateClient } from '@/modules/app/api/clients/data-transfer-objects/update-client';
-import { api } from '@/modules/app/api/api';
+import store from '@/core/store/index';
+import { api } from '@/modules/app/api';
 
 /**
  * Store for the schedule view.
  */
-@Module({ namespaced: true, name: 'clients' })
-export default class ClientsStore extends InitableModule {
+@Module({ namespaced: true, name: 'clients', dynamic: true, store })
+class ClientsStore extends InitableModule {
     clients: Client[] = [];
 
     @Mutation
@@ -59,3 +60,5 @@ export default class ClientsStore extends InitableModule {
         this.context.commit('DELETE_CLIENT', client);
     }
 }
+
+export default getModule(ClientsStore);
