@@ -47,9 +47,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import ClientsStore from '../../store/clients/clients-store';
-import { getModule } from 'vuex-module-decorators';
 import { Client } from '../../api';
+import clientsStore from '../../store/clients/clients-store';
 
 @Component({
     name: 'clients'
@@ -59,20 +58,17 @@ export default class Clients extends Vue {
     public loading: boolean = true;
 
     get count() {
-        const clientStore = getModule(ClientsStore, this.$store);
-        return clientStore.clients.length;
+        return clientsStore.clients.length;
     }
 
     public async created() {
-        const clientStore = getModule(ClientsStore, this.$store);
-        await clientStore.init();
+        await clientsStore.init();
         this.loading = false;
-        this.clients = clientStore.clients;
+        this.clients = clientsStore.clients;
     }
 
     public onSearchChange(input: string) {
-        const clientStore = getModule(ClientsStore, this.$store);
-        this.clients = clientStore.clients.filter(c => c.name.toLowerCase().includes(input.toLowerCase()));
+        this.clients = clientsStore.clients.filter(c => c.name.toLowerCase().includes(input.toLowerCase()));
     }
 }
 </script>

@@ -41,8 +41,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '../../../store/settings/settings-store';
+import settingsStore from '../../../store/settings/settings-store';
 
 @Component({
     name: 'business'
@@ -51,12 +50,10 @@ export default class BusinessView extends Vue {
     public loading: boolean = true;
 
     get business() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.business;
     }
 
     public async created() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
         this.loading = false;
     }

@@ -40,10 +40,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
-import { getModule } from 'vuex-module-decorators';
-import ClientsStore from '../../store/clients/clients-store';
 import { toast } from '../../../../core';
 import { displayError } from '../../utils/display-error/display-error';
+import clientsStore from '../../store/clients/clients-store';
 
 @Component({
     name: 'create-client',
@@ -61,8 +60,7 @@ export default class CreateClient extends Vue {
         this.loading = true;
 
         try {
-            const clientStore = getModule(ClientsStore, this.$store);
-            await clientStore.createClient({
+            await clientsStore.createClient({
                 name: this.name,
                 phone: this.phone,
                 email: this.email

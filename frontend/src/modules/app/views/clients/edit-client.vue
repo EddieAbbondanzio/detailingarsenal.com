@@ -45,10 +45,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
-import { getModule } from 'vuex-module-decorators';
-import ClientsStore from '../../store/clients/clients-store';
 import { toast } from '../../../../core';
 import { displayError } from '../../utils/display-error/display-error';
+import clientsStore from '../../store/clients/clients-store';
 
 @Component({
     name: 'create-client',
@@ -58,8 +57,7 @@ import { displayError } from '../../utils/display-error/display-error';
 })
 export default class CreateClient extends Vue {
     get client() {
-        const clientStore = getModule(ClientsStore, this.$store);
-        return clientStore.clients.find(c => c.id == this.$route.params.id)!;
+        return clientsStore.clients.find(c => c.id == this.$route.params.id)!;
     }
 
     name: string = '';
@@ -68,10 +66,9 @@ export default class CreateClient extends Vue {
     loading: boolean = false;
 
     async created() {
-        const clientStore = getModule(ClientsStore, this.$store);
-        await clientStore.init();
+        await clientsStore.init();
 
-        const c = await clientStore.clients.find(c => c.id == this.$route.params.id);
+        const c = await clientsStore.clients.find(c => c.id == this.$route.params.id);
 
         if (c == null) {
             throw new Error(`No client found for ${this.$route.params.id}`);
@@ -86,8 +83,7 @@ export default class CreateClient extends Vue {
         this.loading = true;
 
         try {
-            const clientStore = getModule(ClientsStore, this.$store);
-            await clientStore.updateClient({
+            await clientsStore.updateClient({
                 id: this.$route.params.id,
                 name: this.name,
                 phone: this.phone,

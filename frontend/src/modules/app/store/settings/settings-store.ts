@@ -128,7 +128,6 @@ class SettingsStore extends InitableModule {
 
         this.context.commit('SET_BUSINESS', business);
         this.context.commit('SET_VEHICLE_CATEGORIES', vehicleCategories);
-        // this.context.commit('SET_EMPLOYEES', employees);
         this.context.commit('SET_HOURS_OF_OPERATION', hoursOfOp);
         this.context.commit('SET_SERVICES', services);
     }
@@ -136,14 +135,12 @@ class SettingsStore extends InitableModule {
     @Action({ rawError: true })
     public async createVehicleCategory(createVehicleCategory: CreateVehicleCategory) {
         var vc = await api.settings.vehicleCategory.createVehicleCategory(createVehicleCategory);
-
         this.context.commit('CREATE_VEHICLE_CATEGORY', vc);
     }
 
     @Action({ rawError: true })
     public async updateVehicleCategory(updateVehicleCategory: UpdateVehicleCategory) {
         var vc = await api.settings.vehicleCategory.updateVehicleCategory(updateVehicleCategory);
-
         this.context.commit('UPDATE_VEHICLE_CATEGORY', vc);
     }
 
@@ -154,7 +151,6 @@ class SettingsStore extends InitableModule {
     @Action({ rawError: true })
     public async deleteVehicleCategory(vehicleCategory: VehicleCategory) {
         var vc = await api.settings.vehicleCategory.deleteVehicleCategory(vehicleCategory);
-
         this.context.commit('DELETE_VEHICLE_CATEGORY', vehicleCategory);
     }
 

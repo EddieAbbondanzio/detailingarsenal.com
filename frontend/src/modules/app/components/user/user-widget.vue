@@ -36,16 +36,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import UserStore from '../../store/user/user-store';
+import userStore from '../../store/user/user-store';
 
 @Component({
     name: 'user-widget'
 })
 export default class UserWidget extends Vue {
     get email() {
-        const userStore = getModule(UserStore, this.$store);
-
         if (userStore.user == null) {
             return '';
         }
@@ -54,7 +51,6 @@ export default class UserWidget extends Vue {
     }
 
     public async onLogoutClick() {
-        const userStore = getModule(UserStore, this.$store);
         await userStore.logout();
     }
 }

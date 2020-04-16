@@ -60,8 +60,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '@/modules/app/store/settings/settings-store';
+import settingsStore from '@/modules/app/store/settings/settings-store';
 
 @Component({
     name: 'hours-of-operation'
@@ -70,12 +69,10 @@ export default class HoursOfOperation extends Vue {
     public loading: boolean = true;
 
     get days() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.hoursOfOperation != null ? settingsStore.hoursOfOperation.days : [];
     }
 
     public async created() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
         this.loading = false;
     }

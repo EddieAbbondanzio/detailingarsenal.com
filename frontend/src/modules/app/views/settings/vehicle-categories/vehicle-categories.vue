@@ -45,12 +45,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
 import { VehicleCategory } from '@/modules/app/api';
-import SettingsStore from '@/modules/app/store/settings/settings-store';
 import { confirmDelete } from '@/modules/app/utils/confirm-delete/confirm-delete';
 import { toast } from '@/core';
 import { displayError } from '../../../utils/display-error/display-error';
+import settingsStore from '@/modules/app/store/settings/settings-store';
 
 /**
  * Settings page for managing vehicle categories.
@@ -62,17 +61,14 @@ export default class VehicleCategories extends Vue {
     loading: boolean = true;
 
     get count() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.vehicleCategories.length;
     }
 
     get vehicleCategories() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.vehicleCategories;
     }
 
     async created() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
         this.loading = false;
     }
@@ -87,7 +83,6 @@ export default class VehicleCategories extends Vue {
         if (del) {
             try {
                 this.loading = true;
-                const settingsStore = getModule(SettingsStore, this.$store);
                 await settingsStore.deleteVehicleCategory(vc);
 
                 toast(`Delete vehicle category ${vc.name}`);

@@ -76,8 +76,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import moment, { Moment } from 'moment';
-import { getModule } from 'vuex-module-decorators';
-import CalendarStore from '../../store/calendar/calendar-store';
+import calendarStore from '../../store/calendar/calendar-store';
 
 @Component({
     name: 'calendar-datepicker'
@@ -88,12 +87,10 @@ export default class CalendarDatepicker extends Vue {
     }
 
     get value() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         return calendarStore.date;
     }
 
     set value(v: Date) {
-        const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.jumpDate(v);
     }
 
@@ -114,7 +111,6 @@ export default class CalendarDatepicker extends Vue {
 
         let classes = 'day';
 
-        const calendarStore = getModule(CalendarStore, this.$store);
         const period = calendarStore.view == 'day' ? 1 : 7;
         const offset = number - this.value.getDate();
 

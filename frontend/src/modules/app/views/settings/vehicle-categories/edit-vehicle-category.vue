@@ -39,11 +39,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '@/modules/app/store/settings/settings-store';
 import { ValidationError, SpecificationError, toast } from '@/core';
 import { displayError } from '@/modules/app/utils/display-error/display-error';
 import InputTextField from '@/core/components/input/input-text-field.vue';
+import settingsStore from '@/modules/app/store/settings/settings-store';
 
 /**
  * View to edit a vehicle category.
@@ -58,7 +57,6 @@ export default class EditVehicleCategory extends Vue {
 
     async created() {
         const id = this.$route.params.id;
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
 
         const vc = settingsStore.vehicleCategories.find(vc => vc.id == id);
@@ -82,8 +80,6 @@ export default class EditVehicleCategory extends Vue {
             name: this.name,
             description: this.description
         };
-
-        const settingsStore = getModule(SettingsStore, this.$store);
 
         try {
             await settingsStore.updateVehicleCategory(update);

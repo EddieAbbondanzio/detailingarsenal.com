@@ -22,11 +22,10 @@
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import CalendarNavbar from '@/modules/app/components/calendar/calendar-navbar.vue';
-import { getModule } from 'vuex-module-decorators';
-import CalendarStore from '../../store/calendar/calendar-store';
 import CalendarDayView from '@/modules/app/components/calendar/calendar-day-view.vue';
 import CalendarWeekView from '@/modules/app/components/calendar/calendar-week-view.vue';
 import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.vue';
+import calendarStore from '../../store/calendar/calendar-store';
 
 @Component({
     name: 'calendar',
@@ -39,7 +38,6 @@ import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.
 })
 export default class Calendar extends Vue {
     get view() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         return calendarStore.view;
     }
 }

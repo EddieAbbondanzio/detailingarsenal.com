@@ -145,10 +145,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
 import { ValidationObserver } from 'vee-validate';
 import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '../../../store/settings/settings-store';
 import { SpecificationError, toast } from '@/core';
 import { displayError } from '@/modules/app/utils/display-error/display-error';
 import { VehicleCategory } from '../../../api';
+import settingsStore from '@/modules/app/store/settings/settings-store';
 
 @Component({
     name: 'create-service',
@@ -167,12 +167,10 @@ export default class CreateService extends Vue {
     pricingMethod: string = 'fixed';
 
     get vehicleCategories() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.vehicleCategories;
     }
 
     async created() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
     }
 
@@ -210,7 +208,6 @@ export default class CreateService extends Vue {
     public async onSubmit() {
         try {
             this.loading = true;
-            const settingsStore = getModule(SettingsStore, this.$store);
             await settingsStore.createService({
                 name: this.name,
                 description: this.description,

@@ -38,8 +38,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { AppointmentBlock } from '../../api/calendar/entities/appointment-block';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '../../store/settings/settings-store';
 import settingsStore from '../../store/settings/settings-store';
 
 @Component({

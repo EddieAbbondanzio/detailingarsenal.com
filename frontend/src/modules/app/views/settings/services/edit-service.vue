@@ -153,16 +153,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
-import { getModule } from 'vuex-module-decorators';
 import InputFeedback from '@/components/common/input/input-feedback.vue';
 import ErrorMessage from '@/components/common/input/error-message.vue';
-import SettingsStore from '../../../store/settings/settings-store';
 import { ServiceConfiguration } from '../../../api/settings/entities/service-configuration';
 import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import { SpecificationError, toast } from '@/core';
 import { VehicleCategory } from '@/modules/app/api';
 import { displayError } from '../../../utils/display-error/display-error';
+import settingsStore from '../../../store/settings/settings-store';
 
 @Component({
     name: 'edit-service',
@@ -182,13 +181,11 @@ export default class EditService extends Vue {
     pricingMethod: string = 'fixed';
 
     get vehicleCategories() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.vehicleCategories;
     }
 
     async created() {
         const id = this.$route.params.id;
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
         const service = settingsStore.services.find(s => s.id == id)!;
 
@@ -236,7 +233,6 @@ export default class EditService extends Vue {
     async onSubmit() {
         try {
             this.loading = true;
-            const settingsStore = getModule(SettingsStore, this.$store);
             await settingsStore.updateService({
                 id: this.$route.params.id,
                 name: this.name,

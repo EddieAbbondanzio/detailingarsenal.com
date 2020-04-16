@@ -52,11 +52,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { hours } from './hours';
 import { days } from './days';
-import { getModule } from 'vuex-module-decorators';
-import CalendarStore from '../../store/calendar/calendar-store';
-import SettingsStore from '../../store/settings/settings-store';
-import store from '../../../../core/store';
 import moment from 'moment';
+import settingsStore from '../../store/settings/settings-store';
+import calendarStore from '../../store/calendar/calendar-store';
 
 @Component({
     name: 'calendar-week-view'
@@ -70,9 +68,6 @@ export default class CalendarWeekView extends Vue {
     unsub: (() => void) | null = null;
 
     async mounted() {
-        const calendarStore = getModule(CalendarStore, this.$store);
-        const settingsStore = getModule(SettingsStore, this.$store);
-
         await settingsStore.init();
 
         this.unsub = store.subscribe((mut, s) => {
@@ -93,7 +88,6 @@ export default class CalendarWeekView extends Vue {
     }
 
     scrollToOpenHour() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         const earliestHour = settingsStore.hoursOfOperation.getEarliestOpening();
 
         // If hours of operation are set for the day, auto scroll to the first hour.
@@ -124,7 +118,6 @@ export default class CalendarWeekView extends Vue {
     }
 
     determineBlockBackground(day: number, hour: number) {
-        const settingsStore = getModule(SettingsStore, this.$store);
         const hoursOfOp = settingsStore.hoursOfOperation.getHoursForDay(day);
 
         if (hoursOfOp != null && hoursOfOp.containsTime(hour)) {

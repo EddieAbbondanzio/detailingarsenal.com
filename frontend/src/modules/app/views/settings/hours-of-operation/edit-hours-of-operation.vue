@@ -99,13 +99,12 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
 import { ValidationObserver } from 'vee-validate';
-import { getModule } from 'vuex-module-decorators';
 import { DayOfTheWeek } from '@/modules/app/store/day-of-the-week';
-import SettingsStore from '../../../store/settings/settings-store';
 import { TimeUtils, toast } from '../../../../../core';
 import { HoursOfOperationDay } from '@/modules/app/api';
 import { displayError } from '../../../utils/display-error/display-error';
 import { UpdateHoursOfOperation } from '../../../api/settings/data-transfer-objects/update-hours-of-operation';
+import settingsStore from '@/modules/app/store/settings/settings-store';
 
 /**
  * View to edit hours of operation.
@@ -139,7 +138,6 @@ export default class EditHoursOfOperation extends Vue {
         }
 
         const id = Number.parseInt(this.$route.params.id);
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
 
         const hoursOfOp = settingsStore.hoursOfOperation;
@@ -185,7 +183,6 @@ export default class EditHoursOfOperation extends Vue {
 
     public async onSubmit() {
         this.loading = true;
-        const settingsStore = getModule(SettingsStore, this.$store);
         const hoursOfOp: UpdateHoursOfOperation = { id: settingsStore.hoursOfOperation.id, days: [] };
 
         for (let i = 0; i < this.days.length; i++) {

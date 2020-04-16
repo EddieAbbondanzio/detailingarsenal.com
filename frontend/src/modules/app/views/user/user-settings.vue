@@ -35,24 +35,21 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import UserStore from '@/modules/app/store/user/user-store';
 import { http } from '@/core/api/http';
+import userStore from '@/modules/app/store/user/user-store';
 
 @Component({
     name: 'user-settings'
 })
 export default class UserSettings extends Vue {
     get user() {
-        const userStore = getModule(UserStore, this.$store);
         return userStore.user;
     }
 
     public loading: boolean = true;
 
     async created() {
-        const userStore = getModule(UserStore, this.$store);
         await userStore.init();
-
         this.loading = false;
     }
 }

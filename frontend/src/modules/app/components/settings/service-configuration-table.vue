@@ -55,8 +55,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { VehicleCategory } from '../../api';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '../../store/settings/settings-store';
+import settingsStore from '../../store/settings/settings-store';
 
 @Component({
     name: 'service-configuration-table'
@@ -66,12 +65,10 @@ export default class ServiceConfigurationTable extends Vue {
     value: ServiceConfigurationTableRow[] = [];
 
     get vehicleCategories() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.vehicleCategories;
     }
 
     async created() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
         this.addEmptyRow();
     }

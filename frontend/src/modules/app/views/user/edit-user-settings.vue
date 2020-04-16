@@ -35,16 +35,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import UserStore from '../../store/user/user-store';
 import { toast } from '@/core';
+import userStore from '../../store/user/user-store';
 
 @Component({
     name: 'edit-user-settings'
 })
 export default class EditUserSettings extends Vue {
     get user() {
-        const userStore = getModule(UserStore, this.$store);
         return userStore.user;
     }
 
@@ -54,9 +52,7 @@ export default class EditUserSettings extends Vue {
     public loading: boolean = true;
 
     public async created() {
-        const userStore = getModule(UserStore, this.$store);
-        await userStore.init;
-
+        await userStore.init();
         this.email = JSON.parse(JSON.stringify(userStore.user.email));
 
         if (userStore.user.name != null) {
@@ -68,7 +64,6 @@ export default class EditUserSettings extends Vue {
 
     public async onSubmit() {
         this.loading = true;
-        const userStore = getModule(UserStore, this.$store);
 
         await userStore.updateUser({ name: this.name });
 

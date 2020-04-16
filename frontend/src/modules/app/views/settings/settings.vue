@@ -34,9 +34,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '../../store/settings/settings-store';
 import { RawLocation } from 'vue-router';
+import settingsStore from '../../store/settings/settings-store';
 
 @Component({
     name: 'settings'
@@ -70,8 +69,7 @@ export default class Settings extends Vue {
     ];
 
     public async created() {
-        const settingsStore = getModule(SettingsStore, this.$store);
-        settingsStore.init();
+        await settingsStore.init();
     }
 }
 </script>

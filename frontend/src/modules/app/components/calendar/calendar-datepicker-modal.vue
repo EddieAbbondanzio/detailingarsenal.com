@@ -33,8 +33,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import moment from 'moment';
-import { getModule } from 'vuex-module-decorators';
-import CalendarStore from '../../store/calendar/calendar-store';
+import calendarStore from '../../store/calendar/calendar-store';
 
 @Component({
     name: 'calendar-datepicker-modal'
@@ -52,15 +51,13 @@ export default class CalendarDatepickerModal extends Vue {
     date: Date = new Date();
 
     show() {
-        const store = getModule(CalendarStore, this.$store);
-        this.date = store.date;
+        this.date = calendarStore.date;
 
         this.isActive = true;
     }
 
     setDate() {
-        const store = getModule(CalendarStore, this.$store);
-        store.jumpDate(this.date);
+        calendarStore.jumpDate(this.date);
         this.isActive = false;
     }
 }

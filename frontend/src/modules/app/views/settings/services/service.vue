@@ -106,9 +106,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '../../../store/settings/settings-store';
 import { Service } from '../../../api';
+import settingsStore from '../../../store/settings/settings-store';
 
 @Component({
     name: 'service'
@@ -119,7 +118,6 @@ export default class ServiceView extends Vue {
 
     async created() {
         this.loading = true;
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
         this.service = settingsStore.services.find(s => s.id == this.$route.params.id)!;
 
@@ -127,9 +125,7 @@ export default class ServiceView extends Vue {
     }
 
     getVehicleCategoryName(vcId: string) {
-        const settingsStore = getModule(SettingsStore, this.$store);
         const vc = settingsStore.vehicleCategories.find(vc => vc.id == vcId);
-
         return vc == null ? 'Any' : vc.name;
     }
 }

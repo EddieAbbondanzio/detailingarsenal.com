@@ -42,10 +42,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '../../../store/settings/settings-store';
 import { UpdateBusiness } from '../../../api';
 import { toast } from '../../../../../core';
+import settingsStore from '@/modules/app/store/settings/settings-store';
 
 @Component({
     name: 'edit-business'
@@ -57,7 +56,6 @@ export default class EditBusiness extends Vue {
     public loading: boolean = true;
 
     public async created() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
 
         this.name = settingsStore.business.name || '';
@@ -68,7 +66,6 @@ export default class EditBusiness extends Vue {
 
     public async onSubmit() {
         this.loading = true;
-        const settingsStore = getModule(SettingsStore, this.$store);
 
         const update: UpdateBusiness = {
             id: settingsStore.business.id

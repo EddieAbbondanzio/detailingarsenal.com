@@ -71,12 +71,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import ClientsStore from '../../store/clients/clients-store';
-import { getModule } from 'vuex-module-decorators';
 import { confirmDelete } from '../../utils/confirm-delete/confirm-delete';
 import { toast } from '../../../../core';
 import { displayError } from '../../utils/display-error/display-error';
 import ClientWidget from '@/modules/app/components/clients/client-widget.vue';
+import clientsStore from '../../store/clients/clients-store';
 
 @Component({
     name: 'client',
@@ -88,14 +87,12 @@ export default class Client extends Vue {
     loading = false;
 
     get client() {
-        const clientStore = getModule(ClientsStore, this.$store);
-        return clientStore.clients.find(c => c.id == this.$route.params.id)!;
+        return clientsStore.clients.find(c => c.id == this.$route.params.id)!;
     }
 
     async created() {
         this.loading = true;
-        const clientStore = getModule(ClientsStore, this.$store);
-        await clientStore.init();
+        await clientsStore.init();
         this.loading = false;
     }
 
@@ -109,8 +106,7 @@ export default class Client extends Vue {
         if (deleteConfirmed) {
             try {
                 this.loading = true;
-                const clientStore = getModule(ClientsStore, this.$store);
-                await clientStore.deleteClient(this.client);
+                await clientsStore.deleteClient(this.client);
 
                 toast(`Deleted client ${this.client.name}`);
                 this.$router.push({ name: 'clients' });

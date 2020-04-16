@@ -39,12 +39,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import SettingsStore from '../../../store/settings/settings-store';
 import { Service } from '@/modules/app/api';
 import { confirmDelete } from '@/modules/app/utils/confirm-delete/confirm-delete';
 import { toast } from '@/core';
 import { displayError } from '../../../utils/display-error/display-error';
+import settingsStore from '../../../store/settings/settings-store';
 
 @Component({
     name: 'services'
@@ -53,17 +52,14 @@ export default class Services extends Vue {
     public loading: boolean = true;
 
     get count() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.services.length;
     }
 
     get services() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         return settingsStore.services;
     }
 
     public async created() {
-        const settingsStore = getModule(SettingsStore, this.$store);
         await settingsStore.init();
 
         this.loading = false;
@@ -79,7 +75,6 @@ export default class Services extends Vue {
         if (del) {
             try {
                 this.loading = true;
-                const settingsStore = getModule(SettingsStore, this.$store);
                 await settingsStore.deleteService(s);
 
                 toast(`Delete vehicle category ${s.name}`);

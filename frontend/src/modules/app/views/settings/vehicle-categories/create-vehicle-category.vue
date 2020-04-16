@@ -46,9 +46,9 @@ import { getModule } from 'vuex-module-decorators';
 import ErrorMessage from '@/components/common/input/error-message.vue';
 import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '../../../../../core/components/input/input-text-field.vue';
-import SettingsStore from '../../../store/settings/settings-store';
 import { ValidationError, toast, SpecificationError } from '../../../../../core';
 import { displayError } from '../../../utils/display-error/display-error';
+import settingsStore from '../../../store/settings/settings-store';
 
 /**
  * View to create a new vehicle category.
@@ -66,7 +66,6 @@ export default class CreateVehicleCategory extends Vue {
 
     public async onSubmit() {
         this.loading = true;
-        const settingsStore = getModule(SettingsStore, this.$store);
         const create = { name: this.name, description: this.description };
 
         try {

@@ -92,11 +92,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import CalendarStore from '../../store/calendar/calendar-store';
 import { CalendarView } from '../../store/calendar/calendar-view';
 import CalendarDatepickerModal from './calendar-datepicker-modal.vue';
 import moment from 'moment';
+import calendarStore from '../../store/calendar/calendar-store';
 
 @Component({
     name: 'calendar-navbar',
@@ -106,17 +105,14 @@ import moment from 'moment';
 })
 export default class CalendarNavbar extends Vue {
     get calendarView() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         return calendarStore.view;
     }
 
     set calendarView(val: CalendarView) {
-        const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.changeView(val);
     }
 
     get dateTitle() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         switch (calendarStore.view) {
             case 'day':
                 return 'Day of ';
@@ -130,7 +126,6 @@ export default class CalendarNavbar extends Vue {
     }
 
     get dateDescription() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         switch (calendarStore.view) {
             case 'day':
                 return moment(calendarStore.date).format('MMMM Do YYYY');
@@ -144,17 +139,14 @@ export default class CalendarNavbar extends Vue {
     }
 
     onPreviousClick() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.adjustDate({ direction: 'previous', step: calendarStore.view });
     }
 
     onTodayClick() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.jumpDate(new Date());
     }
 
     onNextClick() {
-        const calendarStore = getModule(CalendarStore, this.$store);
         calendarStore.adjustDate({ direction: 'next', step: calendarStore.view });
     }
 }

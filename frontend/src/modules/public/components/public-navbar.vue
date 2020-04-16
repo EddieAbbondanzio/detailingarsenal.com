@@ -36,15 +36,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
 import UserStore from '../../app/store/user/user-store';
+import userStore from '../../app/store/user/user-store';
 
 @Component({
     name: 'public-navbar'
 })
 export default class PublicNavbar extends Vue {
     onLogin() {
-        const userStore = getModule(UserStore, this.$store);
         return userStore.login();
     }
 }
