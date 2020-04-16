@@ -49,8 +49,14 @@ export default class CalendarStore extends InitableModule {
     }
 
     @Mutation
-    REMOVE_RESIZING_FLAG(block: AppointmentBlock) {
-        block.meta.resizing = false;
+    public SET_MODIFY_FLAG(block: AppointmentBlock) {
+        block.meta.modifying = true;
+        this.blocks = [...this.blocks.filter(b => b != block), block];
+    }
+
+    @Mutation
+    REMOVE_MODIFY_FLAG(block: AppointmentBlock) {
+        block.meta.modifying = false;
         this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 

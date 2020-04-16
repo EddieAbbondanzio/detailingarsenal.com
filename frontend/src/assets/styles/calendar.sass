@@ -5,6 +5,7 @@ $calendar-border:  $grey-lighter
         position: relative
 
     .block
+        color: $white
         background-color: $primary
         border-radius: 4px
         position: absolute
@@ -12,7 +13,7 @@ $calendar-border:  $grey-lighter
         right: 1em
         z-index: 20
 
-        &.is-resizing
+        &.is-modifying
             background-color: rgba($primary, .5)!important
             pointer-events: none        
 

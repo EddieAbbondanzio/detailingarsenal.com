@@ -25,7 +25,7 @@
                     v-for="i in [0,1,2,3]"
                     :key="i"
                     class="interval has-h-20px"
-                    @mousedown.prevent="onDragStart(hour.raw + i * 15)"
+                    @mousedown.self.stop="onDragStart(hour.raw + i * 15)"
                     @mouseover.self.stop="onDragUpdate(hour.raw + i * 15)"
                 >
                     <calendar-block
@@ -73,8 +73,8 @@ export default class CalendarDayView extends Vue {
         return calendarStore.pendingBlocks;
     }
 
-    get resizingBlock() {
-        return this.pendingBlocks.find(b => b.meta.resizing)!;
+    get modifyingBlock() {
+        return this.pendingBlocks.find(b => b.meta.modifying)!;
     }
 
     unsub: (() => void) | null = null;
@@ -129,7 +129,7 @@ export default class CalendarDayView extends Vue {
         // assume user wants to do X:00 or X:30
         time -= time % 30;
 
-        const block = new AppointmentBlock(this.date, time, 30, { pending: true, resizing: true });
+        const block = new AppointmentBlock(this.date, time, 30, { pending: true, modifying: true });
         block.meta.initialTime = time;
 
         const calendarStore = getModule(CalendarStore, this.$store);
@@ -144,34 +144,33 @@ export default class CalendarDayView extends Vue {
         const calendarStore = getModule(CalendarStore, this.$store);
 
         // Down
-        if (this.resizingBlock.time < time) {
+        if (this.modifyingBlock.time < time) {
             // Going down, but we went up first
-            if (this.resizingBlock.meta.initialTime > this.resizingBlock.time) {
+            if (this.modifyingBlock.meta.initialTime > this.modifyingBlock.time) {
                 calendarStore.RESIZE_BLOCK({
-                    block: this.resizingBlock,
+                    block: this.modifyingBlock,
                     time: time,
-                    duration: this.resizingBlock.meta.initialTime - time
+                    duration: this.modifyingBlock.meta.initialTime - time
                 });
             } else {
                 calendarStore.RESIZE_BLOCK({
-                    block: this.resizingBlock,
-                    time: this.resizingBlock.meta.initialTime,
-                    duration: time - this.resizingBlock.meta.initialTime
+                    block: this.modifyingBlock,
+                    time: this.modifyingBlock.meta.initialTime,
+                    duration: time - this.modifyingBlock.meta.initialTime
                 });
             }
         }
         // Up
         else {
             calendarStore.RESIZE_BLOCK({
-                block: this.resizingBlock,
+                block: this.modifyingBlock,
                 time: time,
-                duration: this.resizingBlock.meta.initialTime - time
+                duration: this.modifyingBlock.meta.initialTime - time
             });
         }
     }
 
     onDragEnd() {
-        console.log('mouseUp');
         if (!this.isMouseDown) {
             return;
         }
@@ -179,13 +178,16 @@ export default class CalendarDayView extends Vue {
         this.isMouseDown = false;
 
         const calendarStore = getModule(CalendarStore, this.$store);
-        calendarStore.REMOVE_RESIZING_FLAG(this.resizingBlock);
+        calendarStore.REMOVE_MODIFY_FLAG(this.modifyingBlock);
     }
 
     onDragClick() {
         // if no mouse up event occured, force stop the dragging
         if (this.isMouseDown) {
             this.isMouseDown = false;
+
+            const calendarStore = getModule(CalendarStore, this.$store);
+            calendarStore.REMOVE_MODIFY_FLAG(this.modifyingBlock);
         }
     }
 
