@@ -8,7 +8,9 @@
                     tag="a"
                     @click="$router.push({ name: 'calendar' })"
                 >
-                    <h1 class="is-size-5-mobile is-size-4-tablet has-font-family-pacifico">Detailing Arsenal</h1>
+                    <h1
+                        class="is-size-5-mobile is-size-4-tablet has-font-family-pacifico"
+                    >Detailing Arsenal</h1>
                 </b-navbar-item>
             </template>
 
@@ -19,18 +21,19 @@
                     exact
                     tag="router-link"
                     :to="{ name: 'calendar' }"
-                    >Calendar</b-navbar-item
-                >
-                <b-navbar-item class="is-flex-tablet is-hidden-mobile" exact tag="router-link" :to="{ name: 'clients' }"
-                    >Clients</b-navbar-item
-                >
+                >Calendar</b-navbar-item>
+                <b-navbar-item
+                    class="is-flex-tablet is-hidden-mobile"
+                    exact
+                    tag="router-link"
+                    :to="{ name: 'clients' }"
+                >Clients</b-navbar-item>
                 <b-navbar-item
                     class="is-flex-tablet is-hidden-mobile"
                     exact
                     tag="router-link"
                     :to="{ name: 'settings' }"
-                    >Settings</b-navbar-item
-                >
+                >Settings</b-navbar-item>
             </template>
 
             <template slot="end">
@@ -41,7 +44,10 @@
 
             <!-- Hack.  -->
             <template slot="burger">
-                <user-widget class="is-hidden-desktop is-align-self-center" style="margin-left: auto;" />
+                <user-widget
+                    class="is-hidden-desktop is-align-self-center"
+                    style="margin-left: auto;"
+                />
             </template>
         </b-navbar>
     </div>
@@ -62,9 +68,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import UserStore from '../store/user/user-store';
 import UserWidget from '@/modules/app/components/user/user-widget.vue';
+import userStore from '../store/user/user-store';
 
 @Component({
     name: 'app-navbar',
@@ -74,17 +79,14 @@ import UserWidget from '@/modules/app/components/user/user-widget.vue';
 })
 export default class AppNavbar extends Vue {
     get isLoading() {
-        const userStore = getModule(UserStore, this.$store);
         return userStore.isLoading;
     }
 
     get isAuthenticated() {
-        const userStore = getModule(UserStore, this.$store);
         return userStore.isAuthenticated;
     }
 
     public async onLoginClick() {
-        const userStore = getModule(UserStore, this.$store);
         await userStore.login();
     }
 }

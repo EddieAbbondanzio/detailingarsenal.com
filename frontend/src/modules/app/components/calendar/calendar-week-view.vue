@@ -55,6 +55,7 @@ import { days } from './days';
 import moment from 'moment';
 import settingsStore from '../../store/settings/settings-store';
 import calendarStore from '../../store/calendar/calendar-store';
+import store from '../../../../core/store';
 
 @Component({
     name: 'calendar-week-view'

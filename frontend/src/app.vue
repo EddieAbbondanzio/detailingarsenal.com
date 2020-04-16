@@ -13,9 +13,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import UserStore from '@/modules/app/store/user/user-store';
 import LoadingSplash from '@/core/components/loading-splash.vue';
+import userStore from './modules/app/store/user/user-store';
 
 @Component({
     name: 'app',
@@ -25,13 +24,10 @@ import LoadingSplash from '@/core/components/loading-splash.vue';
 })
 export default class App extends Vue {
     get isLoggingIn() {
-        const userStore = getModule(UserStore, this.$store);
-        // return true;
         return userStore.isLoading;
     }
 
     async created() {
-        const userStore = getModule(UserStore, this.$store);
         await userStore.init();
 
         // Redirect logged in users to the calendar
