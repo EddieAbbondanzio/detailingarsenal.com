@@ -63,7 +63,6 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<ServiceConfiguration, ServiceConfigurationDto>();
                 config.CreateMap<HoursOfOperation, HoursOfOperationDto>();
                 config.CreateMap<HoursOfOperationDay, HoursOfOperationDayDto>();
-                config.CreateMap<Employee, EmployeeDto>();
                 config.CreateMap<Appointment, AppointmentDto>();
                 config.CreateMap<AppointmentBlock, AppointmentBlockDto>();
             });
@@ -106,16 +105,6 @@ namespace DetailingArsenal.Api {
             services.AddTransient<UpdateBusinessValidator>();
             services.AddTransient<ActionHandler<UpdateBusinessCommand, BusinessDto>, UpdateBusinessHandler>();
             services.AddTransient<IBusEventHandler<NewUserEvent>, NewUserBusinessCreator>();
-
-            // Employees
-            services.AddTransient<IEmployeeRepo, EmployeeRepo>();
-            services.AddTransient<ActionHandler<GetEmployeesQuery, List<EmployeeDto>>, GetEmployeesHandler>();
-            services.AddTransient<ActionHandler<DeleteEmployeeCommand>, DeleteEmployeeHandler>();
-            services.AddTransient<DeleteEmployeeValidator>();
-            services.AddTransient<UpdateEmployeeValidator>();
-            services.AddTransient<CreateEmployeeValidator>();
-            services.AddTransient<ActionHandler<CreateEmployeeCommand, EmployeeDto>, CreateEmployeeHandler>();
-            services.AddTransient<ActionHandler<UpdateEmployeeCommand, EmployeeDto>, UpdateEmployeeHandler>();
 
             // Hours Of Operation
             services.AddTransient<IHoursOfOperationRepo, HoursOfOperationRepo>();
