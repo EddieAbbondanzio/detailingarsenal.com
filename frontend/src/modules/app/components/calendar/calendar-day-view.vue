@@ -25,11 +25,12 @@
                     v-for="i in [0,1,2,3]"
                     :key="i"
                     class="interval has-h-20px"
-                    @mousedown.self.stop="onCreateDragStart(hour.raw + i * 15)"
-                    @mouseover.self.stop="onMouseOverInterval(hour.raw + i * 15)"
+                    @mousedown.left.self.stop="onCreateDragStart(hour.raw + i * 15)"
+                    @mouseover.left.self.stop="onMouseOverInterval(hour.raw + i * 15)"
                 >
                     <calendar-block
-                        @mousedown.self.stop="onBlockDragStart(hour.raw + i * 15)"
+                        @moveStart="onBlockDragStart(hour.raw + i * 15)"
+                        @resizeStart="onBlockResizeStart(hour.raw + i * 15)"
                         v-if="getBlock(hour.raw + i * 15)"
                         :value="getBlock(hour.raw + i * 15)"
                     />
@@ -51,6 +52,7 @@ import CalendarBlock from '@/modules/app/components/calendar/calendar-block.vue'
 import { duration } from 'moment';
 import calendarStore from '../../store/calendar/calendar-store';
 import settingsStore from '../../store/settings/settings-store';
+import AppointmentBlockManipulator from '@/modules/app/mixins/calendar/appointment-block-manipulator';
 
 @Component({
     name: 'calendar-day-view',
@@ -58,7 +60,7 @@ import settingsStore from '../../store/settings/settings-store';
         CalendarBlock
     }
 })
-export default class CalendarDayView extends Vue {
+export default class CalendarDayView extends AppointmentBlockManipulator {
     get hours() {
         return hours;
     }
@@ -77,7 +79,7 @@ export default class CalendarDayView extends Vue {
 
     unsub: (() => void) | null = null;
     hoursOfOp: HoursOfOperationDay | null = null;
-    currentAction: 'creating-block' | 'moving-block' | null = null;
+    currentAction: 'creating-block' | 'moving-block' | 'resizing-block' | null = null;
 
     async mounted() {
         await settingsStore.init();
@@ -112,9 +114,8 @@ export default class CalendarDayView extends Vue {
             return;
         }
 
-        const block = this.getBlock(time);
-        calendarStore.ADD_BLOCK_META({ block: this.modifyingBlock, meta: { name: 'modifying', value: true } });
-
+        const block = this.getBlock(time)!;
+        this.addModifyingFlag(block);
         this.currentAction = 'moving-block';
     }
 
@@ -123,9 +124,18 @@ export default class CalendarDayView extends Vue {
             return;
         }
 
-        calendarStore.REMOVE_BLOCK_META({ block: this.modifyingBlock, name: 'modifying' });
-
+        this.removeModifyingFlag(this.modifyingBlock);
         this.currentAction = 'moving-block';
+    }
+
+    onBlockResizeStart(time: number) {
+        if (this.currentAction != null) {
+            return;
+        }
+
+        const block = this.getBlock(time)!;
+        this.addModifyingFlag(block);
+        this.currentAction = 'resizing-block';
     }
 
     onCreateDragStart(time: number) {
@@ -141,45 +151,17 @@ export default class CalendarDayView extends Vue {
     }
 
     onMouseOverInterval(time: number) {
-        if (this.currentAction == 'creating-block') {
-            // Down
-            if (this.modifyingBlock.time < time) {
-                // Going down, but we went up first
-                if (this.modifyingBlock.meta.initialTime > this.modifyingBlock.time) {
-                    calendarStore.RESIZE_BLOCK({
-                        block: this.modifyingBlock,
-                        time: time,
-                        duration: this.modifyingBlock.meta.initialTime - time
-                    });
-                } else {
-                    calendarStore.RESIZE_BLOCK({
-                        block: this.modifyingBlock,
-                        time: this.modifyingBlock.meta.initialTime,
-                        duration: time - this.modifyingBlock.meta.initialTime
-                    });
-                }
-            }
-            // Up
-            else {
-                calendarStore.RESIZE_BLOCK({
-                    block: this.modifyingBlock,
-                    time: time,
-                    duration: this.modifyingBlock.meta.initialTime - time
-                });
-            }
+        if (this.currentAction == 'creating-block' || this.currentAction == 'resizing-block') {
+            this.resizeBlock(this.modifyingBlock, time);
         } else if (this.currentAction == 'moving-block') {
-            calendarStore.MOVE_BLOCK({
-                block: this.modifyingBlock,
-                time: time
-            });
+            this.moveBlock(this.modifyingBlock, time);
         }
     }
 
     onMouseUp() {
-        if (this.currentAction == 'creating-block' || this.currentAction == 'moving-block') {
+        if (this.currentAction != null) {
             this.currentAction = null;
-
-            calendarStore.REMOVE_BLOCK_META({ block: this.modifyingBlock, name: 'modifying' });
+            this.saveBlockChanges(this.modifyingBlock);
         }
     }
 
@@ -188,7 +170,7 @@ export default class CalendarDayView extends Vue {
         if (this.currentAction == 'creating-block') {
             this.currentAction = null;
 
-            calendarStore.REMOVE_BLOCK_META({ block: this.modifyingBlock, name: 'modifying' });
+            this.removeModifyingFlag(this.modifyingBlock);
         }
     }
 

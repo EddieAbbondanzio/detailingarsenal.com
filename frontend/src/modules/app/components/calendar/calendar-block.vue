@@ -1,38 +1,23 @@
 <template>
-    <div
-        :class="classes"
-        :style="styles"
-        @mousedown.stop="$emit('mousedown', $event)"
-        @mouseup="$emit('mouseup', $event)"
-    >
-        <div class="block-resizer is-top">&nbsp;</div>
-
+    <div :class="classes" :style="styles" @mousedown.left.stop="$emit('moveStart', $event)">
         <!-- Appointment Info -->
         <div class="block-content is-flex is-flex-column is-size-7">
             <span class="has-margin-right-1">{{ name }}</span>
             <span>{{ start | twelveHourFormat }} - {{ end | twelveHourFormat }}</span>
         </div>
 
-        <div class="block-resizer is-bottom">&nbsp;</div>
+        <div class="block-resizer" @mousedown.left.stop="$emit('resizeStart', $event)">&nbsp;</div>
     </div>
 </template>
 
 <style lang="sass" scoped>
-.block-content
-    cursor: grab
-
 .block-resizer
     cursor: ns-resize
     height: 8px
     position: absolute
     left: 0
     right: 0
-
-    &.is-top
-        top: 0
-
-    &.is-bottom
-        bottom: 0
+    bottom: 0
 </style>
 
 <script lang="ts">
@@ -65,7 +50,8 @@ export default class CalendarBlock extends Vue {
 
     get styles() {
         return {
-            height: `${(this.value.duration / 15) * 20}px`
+            height: `${(this.value.duration / 15) * 20}px`,
+            cursor: 'grab'
         };
     }
 
@@ -82,9 +68,5 @@ export default class CalendarBlock extends Vue {
             'is-modifying': this.value.meta.modifying
         };
     }
-
-    onDragStart() {}
-
-    onDragEnd() {}
 }
 </script>
