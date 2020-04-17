@@ -29,7 +29,7 @@
                     @mouseover.left.self.stop="onMouseOverInterval(hour.raw + i * 15)"
                 >
                     <calendar-block
-                        @moveStart="onBlockDragStart(hour.raw + i * 15)"
+                        @moveStart="onBlockMoveStart(hour.raw + i * 15)"
                         @resizeStart="onBlockResizeStart(hour.raw + i * 15)"
                         v-if="getBlock(hour.raw + i * 15)"
                         :value="getBlock(hour.raw + i * 15)"
@@ -109,7 +109,7 @@ export default class CalendarDayView extends AppointmentBlockManipulator {
         return this.pendingBlocks.find(b => b.time == time);
     }
 
-    onBlockDragStart(time: number) {
+    onBlockMoveStart(time: number) {
         if (this.currentAction != null) {
             return;
         }

@@ -17,49 +17,48 @@ export default class AppointmentBlockManipulator extends Vue {
         calendarStore.REMOVE_BLOCK_META({ block, name: BLOCK_MODIFY_FLAG });
     }
 
-    resizeBlock(block: AppointmentBlock, time: number) {
+    /**
+     * Resize an existing block.
+     * @param block The block to adjust.
+     * @param endTime The new end time of the block.
+     */
+    resizeBlock(block: AppointmentBlock, endTime: number) {
+        let startTime = 0,
+            duration = 0;
+
         // Easy peazy. We're resizing an existing block.
         if (block.meta.initialTime == null) {
-            calendarStore.RESIZE_BLOCK({
-                block,
-                time: block.time,
-                duration: time - block.time + 15
-            });
-
-            return;
+            startTime = block.time;
+            duration = endTime - block.time;
         }
-
         // Down
-        if (block.time < time) {
+        else if (block.time < endTime) {
             // Going down, but we went up first
             if (block.meta.initialTime > block.time) {
-                calendarStore.RESIZE_BLOCK({
-                    block,
-                    time: time,
-                    duration: block.meta.initialTime - time + 15
-                });
+                startTime = endTime;
+                duration = block.meta.initialTime - endTime + 15;
             } else {
-                calendarStore.RESIZE_BLOCK({
-                    block,
-                    time: block.meta.initialTime,
-                    duration: time - block.meta.initialTime + 15
-                });
+                startTime = block.meta.initialTime;
+                duration = endTime - block.meta.initialTime + 15;
             }
         }
         // Up
         else {
-            calendarStore.RESIZE_BLOCK({
-                block,
-                time: time,
-                duration: block.meta.initialTime - time + 15
-            });
+            startTime = endTime;
+            duration = block.meta.initialTime - endTime + 15;
         }
+
+        calendarStore.RESIZE_BLOCK({
+            block,
+            time: startTime,
+            duration: Math.max(duration, 15)
+        });
     }
 
     /**
      * Start moving a block to a new time.
      * @param block The block to move.
-     * @param time The new time of the block.
+     * @param time The new start time of the block.
      */
     moveBlock(block: AppointmentBlock, time: number) {
         // Check if we need to set an offset to handle the mouse being starting in a different interval than the block
