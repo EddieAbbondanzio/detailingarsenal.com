@@ -55,6 +55,11 @@ class CalendarStore extends InitableModule {
     }
 
     @Mutation
+    DELETE_BLOCK(block: AppointmentBlock) {
+        this.blocks = [...this.blocks.filter(b => b != block)];
+    }
+
+    @Mutation
     ADD_BLOCK_META({ block, meta }: { block: AppointmentBlock; meta: { name: string; value: any } }) {
         block.meta[meta.name] = meta.value;
         this.blocks = [...this.blocks.filter(b => b != block), block];

@@ -31,6 +31,7 @@
                     <calendar-block
                         @moveStart="onBlockMoveStart(hour.raw + i * 15)"
                         @resizeStart="onBlockResizeStart(hour.raw + i * 15)"
+                        @delete="onBlockDelete(hour.raw + i * 15)"
                         v-if="getBlock(hour.raw + i * 15)"
                         :value="getBlock(hour.raw + i * 15)"
                     />
@@ -136,6 +137,11 @@ export default class CalendarDayView extends AppointmentBlockManipulator {
         const block = this.getBlock(time)!;
         this.addModifyingFlag(block);
         this.currentAction = 'resizing-block';
+    }
+
+    onBlockDelete(time: number) {
+        const block = this.getBlock(time)!;
+        this.deleteBlock(block);
     }
 
     onCreateDragStart(time: number) {

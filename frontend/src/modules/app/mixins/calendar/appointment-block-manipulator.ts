@@ -17,6 +17,10 @@ export default class AppointmentBlockManipulator extends Vue {
         calendarStore.REMOVE_BLOCK_META({ block, name: BLOCK_MODIFY_FLAG });
     }
 
+    deleteBlock(block: AppointmentBlock) {
+        calendarStore.DELETE_BLOCK(block);
+    }
+
     /**
      * Resize an existing block.
      * @param block The block to adjust.

@@ -1,5 +1,7 @@
 <template>
     <div :class="classes" :style="styles" @mousedown.left.stop="$emit('moveStart', $event)">
+        <a class="delete" @click="$emit('delete', $event)" @mousedown.stop></a>
+
         <!-- Appointment Info -->
         <div class="block-content is-flex is-flex-column is-size-7">
             <span class="has-margin-right-1">{{ name }}</span>
@@ -11,13 +13,19 @@
 </template>
 
 <style lang="sass" scoped>
-.block-resizer
-    cursor: ns-resize
-    height: 8px
-    position: absolute
-    left: 0
-    right: 0
-    bottom: 0
+.block
+    .delete
+        position: absolute
+        top: 4px
+        right: 4px   
+
+    .block-resizer
+        cursor: ns-resize
+        height: 8px
+        position: absolute
+        left: 0px
+        right: 0px
+        bottom: 0px
 </style>
 
 <script lang="ts">
