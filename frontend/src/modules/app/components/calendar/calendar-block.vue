@@ -37,6 +37,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { AppointmentBlock } from '../../api/calendar/entities/appointment-block';
 import settingsStore from '../../store/settings/settings-store';
+import calendarStore from '../../store/calendar/calendar-store';
 
 @Component({
     name: 'calendar-block'
@@ -62,9 +63,12 @@ export default class CalendarBlock extends Vue {
     }
 
     get styles() {
+        const activeBlock = calendarStore.pendingBlocks.find(b => b.meta.modifying);
+
         return {
             height: `${(this.value.duration / 15) * 20}px`,
-            cursor: 'grab'
+            cursor: 'grab',
+            'pointer-events': activeBlock != null && activeBlock == this.value ? 'auto' : 'none'
         };
     }
 
@@ -78,7 +82,8 @@ export default class CalendarBlock extends Vue {
             'has-padding-y-2': this.value.duration > 30,
             'is-flex-row': isCompact,
             block: true,
-            'is-modifying': this.value.meta.modifying
+            'is-modifying': this.value.meta.modifying,
+            'is-pending': this.value.meta.pending && !this.value.meta.modifying
         };
     }
 }
