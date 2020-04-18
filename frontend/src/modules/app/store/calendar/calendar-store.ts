@@ -12,7 +12,7 @@ import store from '@/core/store/index';
 @Module({ namespaced: true, name: 'calendar', store, dynamic: true })
 class CalendarStore extends InitableModule {
     view: CalendarView = 'day';
-    date: Date = new Date();
+    date: Date = new Date(new Date().toDateString());
 
     blocks: AppointmentBlock[] = [];
 
@@ -27,7 +27,7 @@ class CalendarStore extends InitableModule {
 
     @Mutation
     SET_DATE(date: Date) {
-        this.date = date;
+        this.date = new Date(date.toDateString());
     }
 
     @Mutation

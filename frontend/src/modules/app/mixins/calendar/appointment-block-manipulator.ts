@@ -17,6 +17,17 @@ export default class AppointmentBlockManipulator extends Vue {
         calendarStore.REMOVE_BLOCK_META({ block, name: BLOCK_MODIFY_FLAG });
     }
 
+    createBlock(date: Date, time: number, duration = 30) {
+        const timelessDate = new Date(date.toDateString());
+
+        const block = new AppointmentBlock(timelessDate, time, duration, { pending: true, modifying: true });
+        block.meta.initialTime = time;
+
+        calendarStore.ADD_BLOCK(block);
+        console.log(block);
+        return block;
+    }
+
     deleteBlock(block: AppointmentBlock) {
         calendarStore.DELETE_BLOCK(block);
     }

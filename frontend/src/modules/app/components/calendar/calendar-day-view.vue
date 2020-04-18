@@ -50,7 +50,7 @@ import { HoursOfOperationDay } from '../../api';
 import { hours } from './hours';
 import { AppointmentBlock } from '../../api/calendar/entities/appointment-block';
 import CalendarBlock from '@/modules/app/components/calendar/calendar-block.vue';
-import { duration } from 'moment';
+import moment, { duration } from 'moment';
 import calendarStore from '../../store/calendar/calendar-store';
 import settingsStore from '../../store/settings/settings-store';
 import AppointmentBlockManipulator from '@/modules/app/mixins/calendar/appointment-block-manipulator';
@@ -95,6 +95,7 @@ export default class CalendarDayView extends AppointmentBlockManipulator {
 
         window.addEventListener('mouseup', this.onMouseUp);
         window.addEventListener('click', this.onCreateDragClick);
+        console.log(this.date);
     }
 
     beforeDestroy() {
@@ -107,7 +108,7 @@ export default class CalendarDayView extends AppointmentBlockManipulator {
     }
 
     getBlock(time: number) {
-        return this.pendingBlocks.find(b => b.time == time);
+        return this.pendingBlocks.find(b => b.time == time && moment(b.date).isSame(this.date, 'day'));
     }
 
     onBlockMoveStart(time: number) {
@@ -149,11 +150,7 @@ export default class CalendarDayView extends AppointmentBlockManipulator {
 
         // assume user wants to do X:00 or X:30
         time -= time % 30;
-
-        const block = new AppointmentBlock(this.date, time, 30, { pending: true, modifying: true });
-        block.meta.initialTime = time;
-
-        calendarStore.ADD_BLOCK(block);
+        this.createBlock(this.date, time, 30);
     }
 
     onMouseOverInterval(time: number) {

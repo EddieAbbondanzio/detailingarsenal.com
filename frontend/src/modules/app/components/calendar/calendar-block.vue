@@ -1,6 +1,11 @@
 <template>
     <div :class="classes" :style="styles" @mousedown.left.stop="$emit('moveStart', $event)">
-        <a class="delete" @click="$emit('delete', $event)" @mousedown.stop></a>
+        <a
+            class="delete"
+            @click="$emit('delete', $event)"
+            @mousedown.stop
+            v-if="value.meta.pending"
+        ></a>
 
         <!-- Appointment Info -->
         <div class="block-content is-flex is-flex-column is-size-7">
