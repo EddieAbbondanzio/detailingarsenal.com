@@ -10,8 +10,8 @@
             <calendar-sidebar />
         </template>
 
-        <calendar-day-view v-if="view == 'day'" />
-        <calendar-week-view v-if="view == 'week'" />
+        <calendar-day v-if="view == 'day'" />
+        <calendar-week v-if="view == 'week'" />
     </page>
 </template>
 
@@ -22,8 +22,8 @@
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import CalendarNavbar from '@/modules/app/components/calendar/calendar-navbar.vue';
-import CalendarDayView from '@/modules/app/components/calendar/calendar-day-view.vue';
-import CalendarWeekView from '@/modules/app/components/calendar/calendar-week-view.vue';
+import CalendarDay from '@/modules/app/components/calendar/calendar-day.vue';
+import CalendarWeek from '@/modules/app/components/calendar/calendar-week.vue';
 import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.vue';
 import calendarStore from '../../store/calendar/calendar-store';
 
@@ -31,8 +31,8 @@ import calendarStore from '../../store/calendar/calendar-store';
     name: 'calendar',
     components: {
         CalendarNavbar,
-        CalendarDayView,
-        CalendarWeekView,
+        CalendarDay,
+        CalendarWeek,
         CalendarSidebar
     }
 })

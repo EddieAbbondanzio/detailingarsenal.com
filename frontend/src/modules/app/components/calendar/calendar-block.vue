@@ -68,12 +68,13 @@ export default class CalendarBlock extends Vue {
         return {
             height: `${(this.value.duration / 15) * 20}px`,
             cursor: 'grab',
-            'pointer-events': activeBlock != null && activeBlock == this.value ? 'auto' : 'none'
+            'pointer-events': activeBlock == null ? 'auto' : 'none'
         };
     }
 
     get classes() {
         const isCompact = this.value.duration <= 15;
+        console.log(this.value.meta.modifying);
 
         return {
             'is-flex': true,

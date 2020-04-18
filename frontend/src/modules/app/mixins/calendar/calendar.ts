@@ -8,7 +8,11 @@ export const BLOCK_MOUSE_OFFSET = 'mouseOffset';
 export const BLOCK_INITIAL_TIME = 'initialTime';
 
 @Component
-export default class AppointmentBlockManipulator extends Vue {
+export default class Calendar extends Vue {
+    get date() {
+        return calendarStore.date;
+    }
+
     addModifyingFlag(block: AppointmentBlock) {
         calendarStore.ADD_BLOCK_META({ block, meta: { name: BLOCK_MODIFY_FLAG, value: true } });
     }
@@ -24,7 +28,6 @@ export default class AppointmentBlockManipulator extends Vue {
         block.meta.initialTime = time;
 
         calendarStore.ADD_BLOCK(block);
-        console.log(block);
         return block;
     }
 

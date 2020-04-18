@@ -53,7 +53,7 @@ import CalendarBlock from '@/modules/app/components/calendar/calendar-block.vue'
 import moment, { duration } from 'moment';
 import calendarStore from '../../store/calendar/calendar-store';
 import settingsStore from '../../store/settings/settings-store';
-import AppointmentBlockManipulator from '@/modules/app/mixins/calendar/appointment-block-manipulator';
+import Calendar from '@/modules/app/mixins/calendar/calendar';
 
 @Component({
     name: 'calendar-day-view',
@@ -61,13 +61,9 @@ import AppointmentBlockManipulator from '@/modules/app/mixins/calendar/appointme
         CalendarBlock
     }
 })
-export default class CalendarDayView extends AppointmentBlockManipulator {
+export default class CalendarDayView extends Calendar {
     get hours() {
         return hours;
-    }
-
-    get date() {
-        return calendarStore.date;
     }
 
     get pendingBlocks() {
@@ -95,7 +91,6 @@ export default class CalendarDayView extends AppointmentBlockManipulator {
 
         window.addEventListener('mouseup', this.onMouseUp);
         window.addEventListener('click', this.onCreateDragClick);
-        console.log(this.date);
     }
 
     beforeDestroy() {

@@ -56,11 +56,12 @@ import moment from 'moment';
 import settingsStore from '../../store/settings/settings-store';
 import calendarStore from '../../store/calendar/calendar-store';
 import store from '../../../../core/store';
+import Calendar from '../../mixins/calendar/calendar';
 
 @Component({
     name: 'calendar-week-view'
 })
-export default class CalendarWeekView extends Vue {
+export default class CalendarWeek extends Calendar {
     get hours() {
         return hours;
     }
