@@ -2,7 +2,7 @@ using FluentMigrator;
 
 namespace DetailingArsenal.Infrastructure.Persistence.Migrations {
     [Migration(2020_03_20_0, "Create hours_of_operations table")]
-    public class CreateHoursOfOperationTableMigration : Migration {
+    public class CreateHoursOfOperationTable : Migration {
         public override void Up() {
             Create.Table("hours_of_operations")
                 .WithColumn("id").AsGuid().PrimaryKey()

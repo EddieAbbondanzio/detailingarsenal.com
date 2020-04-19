@@ -3,7 +3,7 @@ using FluentMigrator;
 namespace DetailingArsenal.Infrastructure.Persistence.Migrations {
     // Needs to be ran first since other tables reference it.
     [Migration(2020_00_00_0, "Create users table")]
-    public class CreateUserTableMigration : Migration {
+    public class CreateUserTable : Migration {
         public override void Up() {
             Create.Table("users")
                 .WithColumn("id").AsGuid().PrimaryKey()
