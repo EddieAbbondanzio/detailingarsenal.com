@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace DetailingArsenal.Application {
     public class CreateAppointmentCommand : IAction {
         public Guid ServiceId { get; set; }
-        public Guid VehicleCategoryId { get; set; }
         public Guid ClientId { get; set; }
         public decimal Price { get; set; }
         public int Duration { get; set; }

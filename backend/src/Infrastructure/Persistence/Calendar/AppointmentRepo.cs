@@ -74,8 +74,8 @@ namespace DetailingArsenal.Infrastructure.Persistence {
         public async Task Add(Appointment entity) {
             await Connection.ExecuteAsync(
                 @"insert into appointments 
-                (id, user_id, service_id, vehicle_category_id, client_id, price, notes)
-                values (@Id, @UserId, @ServiceId, @VehicleCategoryId, @ClientId, @Price, @Notes);",
+                (id, user_id, service_id, client_id, price, notes)
+                values (@Id, @UserId, @ServiceId, @ClientId, @Price, @Notes);",
                 entity
             );
 
@@ -90,7 +90,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
         public async Task Update(Appointment entity) {
             await Connection.ExecuteAsync(
                 @"update appointments set
-                user_id = @UserId, service_id = @ServiceId, vehicle_category_id = @VehicleCategoryId, client_id = @ClientId, price = @Price, notes = @Notes
+                user_id = @UserId, service_id = @ServiceId, client_id = @ClientId, price = @Price, notes = @Notes
                  where id = @Id",
                 entity
             );

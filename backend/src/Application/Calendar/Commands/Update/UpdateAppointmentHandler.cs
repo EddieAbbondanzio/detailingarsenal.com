@@ -25,7 +25,6 @@ namespace DetailingArsenal.Application {
             }
 
             appointment.ServiceId = appointment.ServiceId;
-            appointment.VehicleCategoryId = appointment.VehicleCategoryId;
             appointment.ClientId = client.Id;
             appointment.Price = appointment.Price;
             appointment.Notes = appointment.Notes;

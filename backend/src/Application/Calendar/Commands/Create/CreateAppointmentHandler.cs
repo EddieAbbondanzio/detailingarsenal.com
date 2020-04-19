@@ -22,7 +22,6 @@ namespace DetailingArsenal.Application {
                 Id = Guid.NewGuid(),
                 UserId = user!.Id,
                 ServiceId = command.ServiceId,
-                VehicleCategoryId = command.VehicleCategoryId,
                 ClientId = client.Id,
                 Price = command.Price,
                 Notes = command.Notes

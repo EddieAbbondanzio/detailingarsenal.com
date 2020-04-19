@@ -13,11 +13,6 @@ namespace DetailingArsenal.Domain {
         /// </summary>
         public Guid ServiceId { get; set; }
 
-        /// <summary>
-        /// Id of the vehicle category of the vehicle being serviced.
-        /// </summary>
-        public Guid VehicleCategoryId { get; set; }
-
         public Guid ClientId { get; set; }
 
         /// <summary>
