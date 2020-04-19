@@ -21,7 +21,7 @@
                 <b-button
                     class="has-margin-left-1"
                     type="is-light"
-                    @click="$router.go(-1)"
+                    @click="onCancel()"
                     :disabled="loading"
                 >Cancel</b-button>
             </slot>
@@ -71,8 +71,19 @@ export default class InputForm extends Vue {
     @Prop({ default: false })
     errorSummary!: boolean;
 
+    @Prop({ default: false })
+    preventCancelDefault!: boolean;
+
     onSubmit() {
         this.$emit('submit');
+    }
+
+    onCancel() {
+        if (!this.preventCancelDefault) {
+            this.$router.go(-1);
+        }
+
+        this.$emit('cancel');
     }
 }
 </script>
