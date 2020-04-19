@@ -14,6 +14,7 @@ import InputFormErrorSummary from './components/input/input-form-error-summary.v
 import InputTextField from './components/input/input-text-field.vue';
 import InputSelect from './components/input/input-select.vue';
 import InputCheckbox from './components/input/input-checkbox.vue';
+import InputGroup from './components/input/input-group.vue';
 import InputErrorMessage from './components/input/input-error-message.vue';
 import BackButton from './components/buttons/back-button.vue';
 import CreateButton from './components/buttons/create-button.vue';
@@ -50,6 +51,7 @@ export default {
         Vue.component('input-text-field', InputTextField);
         Vue.component('input-select', InputSelect);
         Vue.component('input-checkbox', InputCheckbox);
+        Vue.component('input-group', InputGroup);
         Vue.component('input-error-message', InputErrorMessage);
         Vue.component('edit-delete-dropdown', EditDeleteDropdown);
         Vue.component(Phone.name, Phone);

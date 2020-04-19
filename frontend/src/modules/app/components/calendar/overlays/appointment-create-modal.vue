@@ -4,33 +4,53 @@
             <div class="modal-card-head">
                 <p class="is-size-3">Create appointment</p>
             </div>
-            <div class="modal-card-body is-flex is-flex-column is-align-items-center">
-                <input-form>
-                    <input-select label="Service" v-model="service">
-                        <option
-                            v-for="service in services"
-                            :key="service.id"
-                            :value="service"
-                        >{{ service.name }}</option>
-                    </input-select>
+            <div class="modal-card-body is-flex is-flex-row is-align-items-center">
+                <input-form class="is-flex-grow-1">
+                    <input-group>
+                        <input-select label="Service" v-model="service">
+                            <option
+                                v-for="service in services"
+                                :key="service.id"
+                                :value="service"
+                            >{{ service.name }}</option>
+                        </input-select>
 
-                    <input-select
-                        label="Vehicle Category"
-                        v-model="vehicleCategory"
-                        v-if="!isFixedPrice()"
-                    >
-                        <option
-                            v-for="config in configurations"
-                            :key="config.id"
-                            :value="config"
-                        >{{ config.vehicleCategoryId }}</option>
-                    </input-select>
+                        <input-select
+                            label="Vehicle Category"
+                            v-model="vehicleCategory"
+                            v-if="service != null && isVariablePrice()"
+                        >
+                            <option
+                                v-for="vc in vehicleCategories"
+                                :key="vc.id"
+                                :value="vc"
+                            >{{ vc.name }}</option>
+                        </input-select>
+                    </input-group>
+
+                    <div class="column is-4">
+                        <input-text-field label="Price" v-model.number="price" />
+                    </div>
+
+                    <div class="column is-4">
+                        <input-text-field
+                            label="Estimated Time"
+                            v-model="estimatedTime"
+                            :disabled="true"
+                        />
+                    </div>
+
+                    <div class="column is-8">
+                        <input-text-field label="Name" />
+                    </div>
+
+                    <div class="column is-4">
+                        <input-text-field label="Phone" />
+                    </div>
+                    <div class="column is-4">
+                        <input-text-field label="Email" />
+                    </div>
                 </input-form>
-            </div>
-
-            <div class="modal-card-foot has-background-white has-border-top-0 is-radiusless">
-                <b-button type="is-primary">Create</b-button>
-                <b-button type="is-light" @click="hide">Cancel</b-button>
             </div>
         </div>
     </b-modal>
@@ -51,10 +71,14 @@ export default class AppointmentCreateModal extends Vue {
         return settingsStore.services;
     }
 
-    get configurations() {
+    get vehicleCategories() {
         if (this.service == null) {
             return [];
-        } else return this.service.configurations;
+        } else {
+            return this.service.configurations.map(c =>
+                settingsStore.vehicleCategories.find(vc => vc.id == c.vehicleCategoryId)
+            );
+        }
     }
 
     isActive: boolean = false;
@@ -62,6 +86,8 @@ export default class AppointmentCreateModal extends Vue {
 
     service: Service | null = null;
     vehicleCategory: VehicleCategory | null = null;
+    price: number | null = null;
+    estimatedTime: number | null = null;
 
     created() {
         settingsStore.init();
@@ -89,8 +115,8 @@ export default class AppointmentCreateModal extends Vue {
         calendarStore.CLEAR_BLOCKS();
     }
 
-    isFixedPrice() {
-        return this.service != null && this.service.pricingMethod == 'Fixed';
+    isVariablePrice() {
+        return this.service!.pricingMethod != 'Fixed';
     }
 }
 </script>

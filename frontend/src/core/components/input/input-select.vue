@@ -11,7 +11,12 @@
             v-slot="{ errors, classes }"
             ref="validator"
         >
-            <b-select :value="value" @input="onInput" :class="classes" :disabled="disabled">
+            <b-select
+                :value="value"
+                @input="onInput"
+                :class="{...classes, 'is-fullwidth': true }"
+                :disabled="disabled"
+            >
                 <slot></slot>
             </b-select>
             <input-error-message v-if="!hideErrors" :text="errors[0]" />
