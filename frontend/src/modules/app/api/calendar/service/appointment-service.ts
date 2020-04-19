@@ -28,14 +28,7 @@ export class AppointmentService {
     }
 
     _map(data: any): Appointment {
-        const appointment = new Appointment(
-            data.serviceId,
-            data.vehicleCategoryId,
-            data.clientId,
-            data.price,
-            [],
-            data.notes
-        );
+        const appointment = new Appointment(data.serviceId, data.clientId, data.price, [], data.notes);
 
         const blocks = data.blocks.map((t: any) => {
             const block = new AppointmentBlock(t.date, t.time, t.duration);

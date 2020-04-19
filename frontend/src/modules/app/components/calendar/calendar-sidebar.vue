@@ -6,6 +6,7 @@
             class="has-w-100 has-margin-bottom-3"
             type="is-success"
             icon-left="calendar-plus"
+            @click="onCreateClick"
         >Create appointment</b-button>
 
         <calendar-datepicker class="has-w-100" />
@@ -21,6 +22,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CalendarDatepicker from '@/modules/app/components/calendar/calendar-datepicker.vue';
+import calendarStore from '../../store/calendar/calendar-store';
 
 @Component({
     name: 'calendar-sidebar',
@@ -28,5 +30,9 @@ import CalendarDatepicker from '@/modules/app/components/calendar/calendar-datep
         CalendarDatepicker
     }
 })
-export default class CalendarSidebar extends Vue {}
+export default class CalendarSidebar extends Vue {
+    onCreateClick() {
+        calendarStore.SET_CREATE_STEP('details');
+    }
+}
 </script>

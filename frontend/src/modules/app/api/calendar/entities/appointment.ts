@@ -8,7 +8,6 @@ export class Appointment extends Entity {
     /**
      * Create a new appointment.
      * @param serviceId The id of the service being performed.
-     * @param vehicleCategoryId The id of the vehicle category being worked on.
      * @param price The price in dollars.
      * @param duration The minutes it will take.
      * @param blocks The times the appointment is on.
@@ -16,7 +15,6 @@ export class Appointment extends Entity {
      */
     constructor(
         public serviceId: string,
-        public vehicleCategoryId: string,
         public clientId: string,
         public price: number,
         public blocks: AppointmentBlock[],

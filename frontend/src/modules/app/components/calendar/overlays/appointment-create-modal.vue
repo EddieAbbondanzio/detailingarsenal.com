@@ -6,8 +6,24 @@
             </div>
             <div class="modal-card-body is-flex is-flex-column is-align-items-center">
                 <input-form>
-                    <input-select label="Service">
-                        <option v-for="service in services" :key="service.id">{{ service.name }}</option>
+                    <input-select label="Service" v-model="service">
+                        <option
+                            v-for="service in services"
+                            :key="service.id"
+                            :value="service"
+                        >{{ service.name }}</option>
+                    </input-select>
+
+                    <input-select
+                        label="Vehicle Category"
+                        v-model="vehicleCategory"
+                        v-if="!isFixedPrice()"
+                    >
+                        <option
+                            v-for="config in configurations"
+                            :key="config.id"
+                            :value="config"
+                        >{{ config.vehicleCategoryId }}</option>
                     </input-select>
                 </input-form>
             </div>
@@ -25,6 +41,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import store from '../../../../../core/store';
 import calendarStore from '../../../store/calendar/calendar-store';
 import settingsStore from '../../../store/settings/settings-store';
+import { Service, VehicleCategory } from '../../../api';
 
 @Component({
     name: 'appointment-create-modal'
@@ -34,9 +51,17 @@ export default class AppointmentCreateModal extends Vue {
         return settingsStore.services;
     }
 
-    isActive: boolean = false;
+    get configurations() {
+        if (this.service == null) {
+            return [];
+        } else return this.service.configurations;
+    }
 
+    isActive: boolean = false;
     unsub: (() => void) | null = null;
+
+    service: Service | null = null;
+    vehicleCategory: VehicleCategory | null = null;
 
     created() {
         settingsStore.init();
@@ -62,6 +87,10 @@ export default class AppointmentCreateModal extends Vue {
         this.isActive = false;
         calendarStore.CLEAR_CREATE_STEP();
         calendarStore.CLEAR_BLOCKS();
+    }
+
+    isFixedPrice() {
+        return this.service != null && this.service.pricingMethod == 'Fixed';
     }
 }
 </script>

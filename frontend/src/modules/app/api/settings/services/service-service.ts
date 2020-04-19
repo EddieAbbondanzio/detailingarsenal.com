@@ -14,17 +14,7 @@ export class ServiceService {
                 return [];
             }
 
-            return res.data.map((s: any) => {
-                const service = new Service(
-                    s.name,
-                    s.description,
-                    s.pricingMethod,
-                    s.configurations.map((c: any) => new ServiceConfiguration(c.vehicleCategoryId, c.price, c.duration))
-                );
-                service.id = s.id;
-
-                return service;
-            });
+            return res.data.map((s: any) => this._map(s));
         } catch (e) {
             if (e.response == null || e.response.status == 404) {
                 return [];
@@ -36,30 +26,34 @@ export class ServiceService {
 
     async createService(createService: CreateService): Promise<Service> {
         const res = await http.post('settings/service', createService);
-        const s = new Service(
-            res.data.name,
-            res.data.description,
-            res.data.pricingMethod,
-            res.data.configurations.map((c: any) => new ServiceConfiguration(c.vehicleCategoryId, c.price, c.duration))
-        );
+        const s = this._map(res.data);
 
-        s.id = res.data.id;
         return s;
     }
 
     async updateService(updateService: UpdateService): Promise<Service> {
         const res = await http.put(`settings/service/${updateService.id}`, updateService);
-        const s = new Service(
-            res.data.name,
-            res.data.description,
-            res.data.pricingMethod,
-            res.data.configurations.map((c: any) => new ServiceConfiguration(c.vehicleCategoryId, c.price, c.duration))
-        );
-        s.id = res.data.id;
+        const s = this._map(res.data);
         return s;
     }
 
     async deleteService(id: string) {
         await http.delete(`settings/service/${id}`);
+    }
+
+    _map(d: any): Service {
+        const s = new Service(
+            d.name,
+            d.description,
+            d.pricingMethod,
+            d.configurations.map((c: any) => {
+                const config = new ServiceConfiguration(c.vehicleCategoryId, c.price, c.duration);
+                config.id = c.id;
+
+                return config;
+            })
+        );
+        s.id = d.id;
+        return s;
     }
 }
