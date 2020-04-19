@@ -22,6 +22,8 @@
                 <div class="container has-margin-all-3">
                     <slot></slot>
                 </div>
+
+                <slot name="overlays"></slot>
             </div>
         </div>
 
@@ -49,6 +51,8 @@
                     <div class="container has-margin-all-3">
                         <slot></slot>
                     </div>
+
+                    <slot name="overlays"></slot>
                 </div>
             </div>
         </div>

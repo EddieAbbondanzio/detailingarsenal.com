@@ -5,6 +5,7 @@ import moment from 'moment';
 import { TimeUtils } from '@/core';
 import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
 import store from '@/core/store/index';
+import { CalendarCreateStep } from '@/modules/app/store/calendar/calendar-create-step';
 
 /**
  * Store for the Calendar view.
@@ -13,6 +14,7 @@ import store from '@/core/store/index';
 class CalendarStore extends InitableModule {
     view: CalendarView = 'day';
     date: Date = new Date(new Date().toDateString());
+    createStep: CalendarCreateStep | null = null;
 
     blocks: AppointmentBlock[] = [];
 
@@ -38,6 +40,11 @@ class CalendarStore extends InitableModule {
     @Mutation
     SET_BLOCKS(blocks: AppointmentBlock[]) {
         this.blocks = blocks;
+    }
+
+    @Mutation
+    CLEAR_BLOCKS() {
+        this.blocks = [];
     }
 
     @Mutation
@@ -69,6 +76,16 @@ class CalendarStore extends InitableModule {
     REMOVE_BLOCK_META({ block, name }: { block: AppointmentBlock; name: string }) {
         block.meta[name] = undefined;
         this.blocks = [...this.blocks.filter(b => b != block), block];
+    }
+
+    @Mutation
+    SET_CREATE_STEP(step: CalendarCreateStep) {
+        this.createStep = step;
+    }
+
+    @Mutation
+    CLEAR_CREATE_STEP() {
+        this.createStep = null;
     }
 
     @Action({ rawError: true })

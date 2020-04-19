@@ -12,6 +12,11 @@
 
         <calendar-day v-if="view == 'day'" />
         <calendar-week v-if="view == 'week'" />
+
+        <template v-slot:overlays>
+            <time-selection-snackbar v-if="hasPendingBlocks" />
+            <appointment-create-modal />
+        </template>
     </page>
 </template>
 
@@ -26,6 +31,8 @@ import CalendarDay from '@/modules/app/components/calendar/calendar-day.vue';
 import CalendarWeek from '@/modules/app/components/calendar/calendar-week.vue';
 import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.vue';
 import calendarStore from '../../store/calendar/calendar-store';
+import TimeSelectionSnackbar from '@/modules/app/components/calendar/overlays/time-selection-snackbar.vue';
+import AppointmentCreateModal from '@/modules/app/components/calendar/overlays/appointment-create-modal.vue';
 
 @Component({
     name: 'calendar',
@@ -33,12 +40,18 @@ import calendarStore from '../../store/calendar/calendar-store';
         CalendarNavbar,
         CalendarDay,
         CalendarWeek,
-        CalendarSidebar
+        CalendarSidebar,
+        TimeSelectionSnackbar,
+        AppointmentCreateModal
     }
 })
 export default class Calendar extends Vue {
     get view() {
         return calendarStore.view;
+    }
+
+    get hasPendingBlocks() {
+        return calendarStore.pendingBlocks.length > 0;
     }
 }
 </script>

@@ -4,6 +4,7 @@
         ref="dayView"
         v-touch:swipe.right="onPreviousSwipe"
         v-touch:swipe.left="onNextSwipe"
+        style="margin-bottom: 128px!important"
     >
         <div
             class="has-h-80px is-flex is-flex-row has-border-bottom"
@@ -56,12 +57,12 @@ import settingsStore from '../../store/settings/settings-store';
 import Calendar from '@/modules/app/mixins/calendar/calendar';
 
 @Component({
-    name: 'calendar-day-view',
+    name: 'calendar-day',
     components: {
         CalendarBlock
     }
 })
-export default class CalendarDayView extends Calendar {
+export default class CalendarDay extends Calendar {
     get hours() {
         return hours;
     }

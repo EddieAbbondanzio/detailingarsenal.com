@@ -74,7 +74,6 @@ export default class CalendarBlock extends Vue {
 
     get classes() {
         const isCompact = this.value.duration <= 15;
-        console.log(this.value.meta.modifying);
 
         return {
             'is-flex': true,
