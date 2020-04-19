@@ -1,6 +1,7 @@
 import { ServiceConfiguration } from '@/modules/app/api/settings/entities/service-configuration';
 import { VehicleCategory } from '@/modules/app/api/settings/entities/vehicle-category';
 import { Entity } from '@/core';
+import { ServicePricingMethod } from '@/modules/app/api/settings/value-objects/service-pricing-method';
 
 /**
  * Service archtype that can be used to create jobs from.
@@ -15,7 +16,12 @@ export class Service extends Entity {
      * @param description Text description of the service.
      * @param configurations The configurations for pricing and duration.
      */
-    constructor(public name: string, public description?: string, public configurations: ServiceConfiguration[] = []) {
+    constructor(
+        public name: string,
+        public description: string | null,
+        public pricingMethod: ServicePricingMethod,
+        public configurations: ServiceConfiguration[] = []
+    ) {
         super();
 
         if (name.length > Service.NAME_MAX_LENGTH) {

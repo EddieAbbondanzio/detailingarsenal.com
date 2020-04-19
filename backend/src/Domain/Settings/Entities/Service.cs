@@ -36,6 +36,8 @@ namespace DetailingArsenal.Domain {
             }
         }
 
+        public ServicePricingMethod PricingMethod { get; set; }
+
         /// <summary>
         /// Possible configurations allowing for different durations and prices based on vehicle category.
         /// </summary>

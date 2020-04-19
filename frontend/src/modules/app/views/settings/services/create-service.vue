@@ -40,18 +40,18 @@
                 <b-field>
                     <b-radio-button
                         v-model="pricingMethod"
-                        native-value="fixed"
+                        native-value="Fixed"
                         @input="onPricingMethodInput"
                     >Fixed</b-radio-button>
                     <b-radio-button
                         v-model="pricingMethod"
-                        native-value="by-vehicle-category"
+                        native-value="ByVehicleCategory"
                         @input="onPricingMethodInput"
                     >By vehicle category</b-radio-button>
                 </b-field>
             </b-field>
 
-            <div v-if="pricingMethod == 'fixed'">
+            <div v-if="pricingMethod == 'Fixed'">
                 <b-field grouped>
                     <input-text-field
                         v-model.number="configs[0].price"
@@ -149,6 +149,7 @@ import { SpecificationError, toast } from '@/core';
 import { displayError } from '@/modules/app/utils/display-error/display-error';
 import { VehicleCategory } from '../../../api';
 import settingsStore from '@/modules/app/store/settings/settings-store';
+import { ServicePricingMethod } from '../../../api/settings/value-objects/service-pricing-method';
 
 @Component({
     name: 'create-service',
@@ -164,7 +165,7 @@ export default class CreateService extends Vue {
     configs: { vehicleCategory: VehicleCategory | null; price: number | null; duration: number | null }[] = [
         { vehicleCategory: null, price: null, duration: null }
     ];
-    pricingMethod: string = 'fixed';
+    pricingMethod: ServicePricingMethod = 'Fixed';
 
     get vehicleCategories() {
         return settingsStore.vehicleCategories;
@@ -192,7 +193,7 @@ export default class CreateService extends Vue {
     }
 
     onPricingMethodInput() {
-        if (this.pricingMethod == 'fixed') {
+        if (this.pricingMethod == 'Fixed') {
             this.configs.splice(1);
         }
     }
@@ -211,6 +212,7 @@ export default class CreateService extends Vue {
             await settingsStore.createService({
                 name: this.name,
                 description: this.description,
+                pricingMethod: this.pricingMethod,
                 configurations: this.configs.map(c => ({
                     vehicleCategoryId: c.vehicleCategory != null ? c.vehicleCategory.id : null,
                     price: c.price || 0,

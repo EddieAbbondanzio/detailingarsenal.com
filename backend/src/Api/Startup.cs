@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DetailingArsenal.Domain;
 using AutoMapper;
 using DetailingArsenal.Infrastructure;
+using System.Text.Json.Serialization;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -51,6 +52,8 @@ namespace DetailingArsenal.Api {
                 cfg.Filters.Add(typeof(SpecificationExceptionMiddleware));
             }).AddJsonOptions(opts => {
                 opts.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
+                opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                opts.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
             // Mapping

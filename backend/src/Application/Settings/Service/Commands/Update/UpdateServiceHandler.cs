@@ -24,6 +24,7 @@ namespace DetailingArsenal.Application {
 
             service.Name = input.Name;
             service.Description = input.Description;
+            service.PricingMethod = input.PricingMethod;
             service.Configurations = input.Configurations.Select(c => new ServiceConfiguration() {
                 Id = Guid.NewGuid(),
                 ServiceId = service.Id,

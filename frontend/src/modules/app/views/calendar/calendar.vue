@@ -53,5 +53,10 @@ export default class Calendar extends Vue {
     get hasPendingBlocks() {
         return calendarStore.pendingBlocks.length > 0;
     }
+
+    beforeDestroy() {
+        calendarStore.CLEAR_BLOCKS();
+        calendarStore.CLEAR_CREATE_STEP();
+    }
 }
 </script>
