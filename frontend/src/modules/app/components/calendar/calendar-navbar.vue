@@ -81,6 +81,7 @@
                         type="is-text"
                         size="is-medium"
                         title="Create new appointment"
+                        @click="onCreateClick"
                     />
                 </div>
             </div>
@@ -148,6 +149,10 @@ export default class CalendarNavbar extends Vue {
 
     onNextClick() {
         calendarStore.adjustDate({ direction: 'next', step: calendarStore.view });
+    }
+
+    onCreateClick() {
+        calendarStore.SET_CREATE_STEP('details');
     }
 }
 </script>
