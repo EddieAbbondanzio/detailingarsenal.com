@@ -1,13 +1,29 @@
 <template>
-    <b-modal :active.sync="isActive" :has-modal-card="true">
+    <b-modal
+        :active.sync="isActive"
+        :has-modal-card="true"
+        :can-cancel="canCancel"
+        @close="hide(true)"
+    >
         <div class="modal-card">
             <div class="modal-card-head">
                 <p class="is-size-3">Create appointment</p>
             </div>
-            <div class="modal-card-body is-flex is-flex-row is-align-items-center">
-                <input-form class="is-flex-grow-1">
-                    <input-group>
-                        <input-select label="Service" v-model="service">
+            <div
+                class="modal-card-body has-padding-all-0 is-flex is-flex-row is-align-items-center"
+            >
+                <input-form class="is-flex-grow-1" :preventCancelDefault="true" @cancel="hide()">
+                    <div>
+                        <p class="is-size-5">Details</p>
+                        <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
+                    </div>
+
+                    <input-group multiline>
+                        <input-select
+                            label="Service"
+                            v-model="service"
+                            @input="() => { price = null; populateServiceDetails() }"
+                        >
                             <option
                                 v-for="service in services"
                                 :key="service.id"
@@ -19,6 +35,7 @@
                             label="Vehicle Category"
                             v-model="vehicleCategory"
                             v-if="service != null && isVariablePrice()"
+                            @input="populateServiceDetails()"
                         >
                             <option
                                 v-for="vc in vehicleCategories"
@@ -28,28 +45,69 @@
                         </input-select>
                     </input-group>
 
-                    <div class="column is-4">
+                    <input-group multiline>
                         <input-text-field label="Price" v-model.number="price" />
-                    </div>
 
-                    <div class="column is-4">
                         <input-text-field
                             label="Estimated Time"
                             v-model="estimatedTime"
                             :disabled="true"
+                            title="Estimated time from service configuration"
                         />
+                    </input-group>
+
+                    <div>
+                        <p class="is-size-5">Time(s)</p>
+                        <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
                     </div>
 
-                    <div class="column is-8">
-                        <input-text-field label="Name" />
+                    <div class="has-margin-bottom-3">
+                        <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-3">
+                            <input-datepicker
+                                class="has-margin-x-1 has-margin-y-0"
+                                title="Start date"
+                                v-model="startDate"
+                            />
+
+                            <input-timepicker
+                                class="has-margin-x-1 has-margin-y-0"
+                                title="Start time"
+                                v-model="startTime"
+                            />
+
+                            <span class="has-margin-x-1">-</span>
+
+                            <input-datepicker
+                                class="has-margin-x-1 has-margin-y-0"
+                                title="End date"
+                                v-model="endDate"
+                            />
+
+                            <input-timepicker
+                                class="has-margin-x-1 has-margin-y-0"
+                                title="End time"
+                                v-model="endTime"
+                            />
+                        </div>
+
+                        <b-button type="is-primary" @click="onCalendarClick">Calendar</b-button>
                     </div>
 
-                    <div class="column is-4">
+                    <div>
+                        <p class="is-size-5">Client</p>
+                        <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
+                    </div>
+
+                    <input-text-field label="Name" />
+
+                    <input-group multiline>
                         <input-text-field label="Phone" />
-                    </div>
-                    <div class="column is-4">
                         <input-text-field label="Email" />
-                    </div>
+                    </input-group>
+
+                    <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
+
+                    <input-text-field label="Notes" type="textarea" />
                 </input-form>
             </div>
         </div>
@@ -61,7 +119,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import store from '../../../../../core/store';
 import calendarStore from '../../../store/calendar/calendar-store';
 import settingsStore from '../../../store/settings/settings-store';
-import { Service, VehicleCategory } from '../../../api';
+import { Service, VehicleCategory, ServiceConfiguration } from '../../../api';
+import { duration } from '@/core';
 
 @Component({
     name: 'appointment-create-modal'
@@ -81,13 +140,26 @@ export default class AppointmentCreateModal extends Vue {
         }
     }
 
+    get canCancel() {
+        if (this.service != null || this.price != null) {
+            return ['x'];
+        } else {
+            return ['x', 'escape', 'outside'];
+        }
+    }
+
     isActive: boolean = false;
     unsub: (() => void) | null = null;
 
     service: Service | null = null;
     vehicleCategory: VehicleCategory | null = null;
     price: number | null = null;
-    estimatedTime: number | null = null;
+    estimatedTime: string | null = null;
+
+    startDate: Date | null = null;
+    startTime: number | null = null;
+    endDate: Date | null = null;
+    endTime: number | null = null;
 
     created() {
         settingsStore.init();
@@ -107,16 +179,62 @@ export default class AppointmentCreateModal extends Vue {
 
     show() {
         this.isActive = true;
+
+        if (calendarStore.pendingBlocks.length > 0) {
+            this.startDate = calendarStore.pendingBlocks[0].date;
+            this.startTime = calendarStore.pendingBlocks[0].time;
+            this.endDate = calendarStore.pendingBlocks[0].date;
+            this.endTime = calendarStore.pendingBlocks[0].time + calendarStore.pendingBlocks[0].duration;
+        }
     }
 
-    hide() {
+    hide(clear: boolean = true) {
         this.isActive = false;
-        calendarStore.CLEAR_CREATE_STEP();
-        calendarStore.CLEAR_BLOCKS();
+
+        if (clear) {
+            this.service = null;
+            this.price = null;
+            this.estimatedTime = null;
+
+            this.startTime = null;
+            this.startDate = null;
+            this.endDate = null;
+            this.endTime = null;
+
+            calendarStore.CLEAR_CREATE_STEP();
+            calendarStore.CLEAR_BLOCKS();
+        }
+    }
+
+    populateServiceDetails() {
+        if (this.service == null) {
+            return null;
+        }
+
+        let config: ServiceConfiguration | null = null;
+
+        if (this.service.pricingMethod == 'Fixed') {
+            config = this.service.configurations[0];
+        } else if (this.vehicleCategory != null) {
+            config = this.service.getConfigurationForVehicleCategory(this.vehicleCategory)!;
+        }
+
+        if (config != null) {
+            this.price = config.price;
+            this.estimatedTime = duration(config.duration);
+        } else {
+            this.price == null;
+            this.estimatedTime = null;
+        }
     }
 
     isVariablePrice() {
         return this.service!.pricingMethod != 'Fixed';
+    }
+
+    onCalendarClick() {
+        calendarStore.SET_CREATE_STEP('selections');
+        this.hide(false);
     }
 }
 </script>

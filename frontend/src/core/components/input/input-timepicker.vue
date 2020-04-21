@@ -18,6 +18,8 @@
                 :placeholder="placeholder"
                 :disabled="disabled"
                 editable
+                hour-format="12"
+                :increment-minutes="15"
                 @input="onInput"
                 @focus="$emit('focus')"
                 @blur="$emit('blur')"

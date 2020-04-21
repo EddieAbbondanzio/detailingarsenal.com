@@ -7,8 +7,6 @@ import { currency } from '@/core/filters/currency';
 import { fullDate } from '@/core/filters/full-date';
 import { date } from '@/core/filters/date';
 
-import DurationPicker from './components/input/duration-picker.vue';
-
 import InputForm from './components/input/input-form.vue';
 import InputFormErrorSummary from './components/input/input-form-error-summary.vue';
 import InputTextField from './components/input/input-text-field.vue';
@@ -16,6 +14,8 @@ import InputSelect from './components/input/input-select.vue';
 import InputCheckbox from './components/input/input-checkbox.vue';
 import InputGroup from './components/input/input-group.vue';
 import InputErrorMessage from './components/input/input-error-message.vue';
+import InputDatepicker from '@/core/components/input/input-datepicker.vue';
+import InputTimepicker from '@/core/components/input/input-timepicker.vue';
 import BackButton from './components/buttons/back-button.vue';
 import CreateButton from './components/buttons/create-button.vue';
 import EditButton from './components/buttons/edit-button.vue';
@@ -53,12 +53,11 @@ export default {
         Vue.component('input-checkbox', InputCheckbox);
         Vue.component('input-group', InputGroup);
         Vue.component('input-error-message', InputErrorMessage);
+        Vue.component(InputDatepicker.name, InputDatepicker);
+        Vue.component(InputTimepicker.name, InputTimepicker);
         Vue.component('edit-delete-dropdown', EditDeleteDropdown);
         Vue.component(Phone.name, Phone);
         Vue.component(Email.name, Email);
-
-        // Deprecate?
-        Vue.component('duration-picker', DurationPicker);
 
         Vue.filter('currency', currency);
         Vue.filter('duration', duration);
