@@ -29,21 +29,6 @@ http.interceptors.request.use(async config => {
     return config;
 });
 
-// Convert outgoing dates to mm/dd/yyyy format
-http.interceptors.request.use(config => {
-    config.transformRequest = (data, headers) => {
-        traverse(data, (obj, key, val) => {
-            if (val instanceof Date) {
-                obj[key] = moment(val).format('MM/DD/YYYY');
-            }
-        });
-
-        return JSON.stringify(data);
-    };
-
-    return config;
-});
-
 // trim out empty strings going out
 http.interceptors.request.use(config => {
     config.transformRequest = (data, headers) => {
@@ -62,7 +47,10 @@ http.interceptors.request.use(config => {
 // Look for incoming dates and parse them
 http.interceptors.response.use(response => {
     traverse(response.data, (obj, key, val) => {
-        if (typeof val == 'string' && /(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d/.test(val)) {
+        if (
+            typeof val == 'string' &&
+            /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/.test(val)
+        ) {
             obj[key] = new Date(val);
         }
     });

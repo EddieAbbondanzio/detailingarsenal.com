@@ -32,9 +32,8 @@ namespace DetailingArsenal.Application {
             appointment.Blocks = input.Blocks.Select(t => new AppointmentBlock() {
                 Id = Guid.NewGuid(),
                 AppointmentId = appointment.Id,
-                Time = t.Time,
-                Date = t.Date,
-                Duration = t.Duration
+                Start = t.Start,
+                End = t.End
             }).ToList();
 
             await appointmentRepo.Update(appointment);

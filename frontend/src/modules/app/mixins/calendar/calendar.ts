@@ -2,6 +2,7 @@ import Component from 'vue-class-component';
 import Vue from 'vue';
 import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
 import calendarStore from '@/modules/app/store/calendar/calendar-store';
+import moment from 'moment';
 
 export const BLOCK_MODIFY_FLAG = 'modifying';
 export const BLOCK_MOUSE_OFFSET = 'mouseOffset';
@@ -13,6 +14,17 @@ export default class Calendar extends Vue {
         return calendarStore.date;
     }
 
+    getBlock(time: number) {
+        const minutes = time % 60;
+        const hours = (time - minutes) / 60;
+
+        const start = moment(this.date)
+            .hours(hours)
+            .minutes(minutes);
+
+        return calendarStore.pendingBlocks.find(b => moment(b.start).isSame(start, 'minutes'));
+    }
+
     addModifyingFlag(block: AppointmentBlock) {
         calendarStore.ADD_BLOCK_META({ block, meta: { name: BLOCK_MODIFY_FLAG, value: true } });
     }
@@ -22,21 +34,22 @@ export default class Calendar extends Vue {
     }
 
     createBlock(date: Date, time: number, duration = 30) {
-        const timelessDate = new Date(date.toDateString());
+        const end = moment(date)
+            .add(time + duration, 'minutes')
+            .toDate();
 
-        const block = new AppointmentBlock(timelessDate, time, duration, { pending: true, modifying: true });
+        const block = new AppointmentBlock(date, end, { pending: true, modifying: true });
         block.meta.initialTime = time;
-
         calendarStore.ADD_BLOCK(block);
         return block;
     }
 
-    updateBlockDate(block: AppointmentBlock, date: Date) {
-        calendarStore.UPDATE_BLOCK_DATE({ block, date });
+    updateBlockStart(block: AppointmentBlock, date: Date) {
+        calendarStore.UPDATE_BLOCK_START({ block, start: date });
     }
 
-    updateBlockTime(block: AppointmentBlock, time: number) {
-        calendarStore.UPDATE_BLOCK_TIME({ block, time });
+    updateBlockEnd(block: AppointmentBlock, date: Date) {
+        calendarStore.UPDATE_BLOCK_END({ block, end: date });
     }
 
     deleteBlock(block: AppointmentBlock) {
@@ -74,30 +87,56 @@ export default class Calendar extends Vue {
             duration = block.meta.initialTime - endTime + 15;
         }
 
-        calendarStore.RESIZE_BLOCK({
+        const start = moment(block.start)
+            .startOf('day')
+            .add(startTime, 'minutes')
+            .toDate();
+        const end = moment(block.start)
+            .startOf('day')
+            .add(startTime + Math.max(duration, 15), 'minutes')
+            .toDate();
+
+        calendarStore.UPDATE_BLOCK_START({
             block,
-            time: startTime,
-            duration: Math.max(duration, 15)
+            start
+        });
+
+        calendarStore.UPDATE_BLOCK_END({
+            block,
+            end
         });
     }
 
     /**
      * Start moving a block to a new time.
      * @param block The block to move.
-     * @param time The new start time of the block.
+     * @param startTime The new start time of the block.
      */
-    moveBlock(block: AppointmentBlock, time: number) {
+    moveBlock(block: AppointmentBlock, startTime: number) {
         // Check if we need to set an offset to handle the mouse being starting in a different interval than the block
         if (block.meta.mouseOffset == null) {
             calendarStore.ADD_BLOCK_META({
                 block,
-                meta: { name: BLOCK_MOUSE_OFFSET, value: time - block.time }
+                meta: { name: BLOCK_MOUSE_OFFSET, value: startTime - block.time }
             });
         }
 
-        calendarStore.MOVE_BLOCK({
+        const duration = block.duration;
+
+        const start = moment(block.start)
+            .startOf('day')
+            .add(startTime - block.meta.mouseOffset, 'minutes');
+
+        calendarStore.UPDATE_BLOCK_START({
             block,
-            time: time - block.meta.mouseOffset
+            start: start.toDate()
+        });
+
+        const end = start.add(duration, 'minutes');
+
+        calendarStore.UPDATE_BLOCK_END({
+            block,
+            end: end.toDate()
         });
     }
 

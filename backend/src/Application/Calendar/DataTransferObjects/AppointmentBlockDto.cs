@@ -2,8 +2,7 @@ using System;
 
 namespace DetailingArsenal.Application {
     public class AppointmentBlockDto : IDataTransferObject {
-        public DateTime Date { get; set; }
-        public int Time { get; set; }
-        public int Duration { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
     }
 }

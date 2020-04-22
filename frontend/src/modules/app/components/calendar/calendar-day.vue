@@ -103,10 +103,6 @@ export default class CalendarDay extends Calendar {
         window.removeEventListener('click', this.onCreateDragClick);
     }
 
-    getBlock(time: number) {
-        return this.pendingBlocks.find(b => b.time == time && moment(b.date).isSame(this.date, 'day'));
-    }
-
     onBlockMoveStart(time: number) {
         if (this.currentAction != null) {
             return;

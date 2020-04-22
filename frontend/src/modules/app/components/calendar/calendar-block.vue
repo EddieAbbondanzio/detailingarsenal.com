@@ -10,7 +10,7 @@
         <!-- Appointment Info -->
         <div class="block-content is-flex is-flex-column is-size-7">
             <span class="has-margin-right-1">{{ name }}</span>
-            <span>{{ start | twelveHourFormat }} - {{ end | twelveHourFormat }}</span>
+            <span>{{ start }} - {{ end }}</span>
         </div>
 
         <div class="block-resizer" @mousedown.left.stop="$emit('resizeStart', $event)">&nbsp;</div>
@@ -38,6 +38,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { AppointmentBlock } from '../../api/calendar/entities/appointment-block';
 import settingsStore from '../../store/settings/settings-store';
 import calendarStore from '../../store/calendar/calendar-store';
+import moment from 'moment';
 
 @Component({
     name: 'calendar-block'
@@ -55,11 +56,11 @@ export default class CalendarBlock extends Vue {
     }
 
     get start() {
-        return this.value.time;
+        return moment(this.value.start).format('hh:mm a');
     }
 
     get end() {
-        return this.value.time + this.value.duration;
+        return moment(this.value.end).format('hh:mm a');
     }
 
     get styles() {

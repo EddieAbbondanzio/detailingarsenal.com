@@ -35,7 +35,7 @@ export class Appointment extends Entity {
         const dayM = moment(date);
 
         return this.blocks.filter(b => {
-            const blockM = moment(b.date);
+            const blockM = moment(b.start);
             return blockM.isSame(dayM, 'day');
         });
     }
@@ -44,7 +44,7 @@ export class Appointment extends Entity {
         const weekM = moment(date);
 
         return this.blocks.filter(b => {
-            const blockM = moment(b.date);
+            const blockM = moment(b.start);
             return blockM.isSame(weekM, 'week');
         });
     }

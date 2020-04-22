@@ -19,7 +19,7 @@ class CalendarStore extends InitableModule {
     blocks: AppointmentBlock[] = [];
 
     get pendingBlocks(): AppointmentBlock[] {
-        return this.blocks.filter(b => b.meta.pending).sort((a, b) => (a.date < b.date ? -1 : 1));
+        return this.blocks.filter(b => b.meta.pending).sort((a, b) => (a.start < b.start ? -1 : 1));
     }
 
     @Mutation
@@ -45,20 +45,6 @@ class CalendarStore extends InitableModule {
     @Mutation
     CLEAR_BLOCKS() {
         this.blocks = [];
-    }
-
-    @Mutation
-    RESIZE_BLOCK({ block, time, duration }: { block: AppointmentBlock; time: number; duration: number }) {
-        block.time = time;
-        block.duration = duration;
-
-        this.blocks = [...this.blocks.filter(b => b != block), block];
-    }
-
-    @Mutation
-    MOVE_BLOCK({ block, time }: { block: AppointmentBlock; time: number }) {
-        block.time = time;
-        this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
@@ -89,14 +75,14 @@ class CalendarStore extends InitableModule {
     }
 
     @Mutation
-    UPDATE_BLOCK_DATE({ block, date }: { block: AppointmentBlock; date: Date }) {
-        block.date = date;
+    UPDATE_BLOCK_START({ block, start }: { block: AppointmentBlock; start: Date }) {
+        block.start = start;
         this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
-    UPDATE_BLOCK_TIME({ block, time }: { block: AppointmentBlock; time: number }) {
-        block.time = time;
+    UPDATE_BLOCK_END({ block, end }: { block: AppointmentBlock; end: Date }) {
+        block.end = end;
         this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
