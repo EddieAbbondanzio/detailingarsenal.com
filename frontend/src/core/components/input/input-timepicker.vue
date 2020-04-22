@@ -14,7 +14,7 @@
             <b-timepicker
                 icon="clock-outline"
                 :class="classes"
-                :value="date"
+                :value="value"
                 :placeholder="placeholder"
                 :disabled="disabled"
                 editable
@@ -48,8 +48,8 @@ export default class InputTimepicker extends Vue {
     @Prop()
     rules!: string;
 
-    @Prop({ default: 0 })
-    value!: number;
+    @Prop()
+    value!: Date;
 
     @Prop({ default: false })
     disabled!: boolean;
@@ -63,43 +63,12 @@ export default class InputTimepicker extends Vue {
     @Prop()
     placeholder!: string | null;
 
-    private date: Date = new Date();
-
     get vid() {
         if (this.id != null) {
             return this.id;
         } else {
             return this.label;
         }
-    }
-
-    created() {
-        const minutes = this.value % 60;
-        const hours = (this.value - minutes) / 60;
-
-        this.date.setHours(hours);
-        this.date.setMinutes(minutes);
-    }
-
-    @Watch('value')
-    public onValueChange() {
-        this.date = new Date();
-
-        const minutes = this.value % 60;
-        const hours = (this.value - minutes) / 60;
-
-        this.date.setHours(hours);
-        this.date.setMinutes(minutes);
-    }
-
-    /**
-     * Listen for a change from the timepicker so we can
-     * update our local v-model.
-     */
-    @Watch('date')
-    public onDateChange() {
-        const minutes = this.date.getHours() * 60 + this.date.getMinutes();
-        this.$emit('input', minutes);
     }
 
     onInput(val: any) {
