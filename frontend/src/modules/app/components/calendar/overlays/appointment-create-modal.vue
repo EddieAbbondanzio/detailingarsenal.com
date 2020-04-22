@@ -62,20 +62,28 @@
                     </div>
 
                     <div class="has-margin-bottom-3">
-                        <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-3">
+                        <div v-if="blocks.length > 1"></div>
+
+                        <div
+                            class="is-flex is-flex-row is-align-items-center has-margin-bottom-1"
+                            v-for="(block, i) in blocks"
+                            :key="i"
+                        >
                             <input-datepicker
                                 class="has-margin-x-1 has-margin-y-0"
                                 title="Start date"
-                                v-model="startDate"
+                                :value="block.date"
+                                @input="inp => updateBlockDate(block, inp)"
                             />
 
                             <input-timepicker
                                 class="has-margin-x-1 has-margin-y-0"
                                 title="Start time"
-                                v-model="startTime"
+                                :value="block.time"
+                                @input="inp => updateBlockTime(block, inp)"
                             />
 
-                            <span class="has-margin-x-1">-</span>
+                            <span class="has-margin-x-1">to</span>
 
                             <input-datepicker
                                 class="has-margin-x-1 has-margin-y-0"
@@ -88,9 +96,15 @@
                                 title="End time"
                                 v-model="endTime"
                             />
+
+                            <a class="delete has-margin-x-1" @click="deleteBlock(block)"></a>
                         </div>
 
-                        <b-button type="is-primary" @click="onCalendarClick">Calendar</b-button>
+                        <b-button
+                            class="has-margin-top-3"
+                            type="is-primary"
+                            @click="onCalendarClick"
+                        >Select on calendar</b-button>
                     </div>
 
                     <div>
@@ -121,11 +135,13 @@ import calendarStore from '../../../store/calendar/calendar-store';
 import settingsStore from '../../../store/settings/settings-store';
 import { Service, VehicleCategory, ServiceConfiguration } from '../../../api';
 import { duration } from '@/core';
+import { AppointmentBlock } from '../../../api/calendar/entities/appointment-block';
+import Calendar from '../../../mixins/calendar/calendar';
 
 @Component({
     name: 'appointment-create-modal'
 })
-export default class AppointmentCreateModal extends Vue {
+export default class AppointmentCreateModal extends Calendar {
     get services() {
         return settingsStore.services;
     }
@@ -146,6 +162,10 @@ export default class AppointmentCreateModal extends Vue {
         } else {
             return ['x', 'escape', 'outside'];
         }
+    }
+
+    get blocks() {
+        return calendarStore.pendingBlocks;
     }
 
     isActive: boolean = false;

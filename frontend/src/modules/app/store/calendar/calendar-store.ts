@@ -19,7 +19,7 @@ class CalendarStore extends InitableModule {
     blocks: AppointmentBlock[] = [];
 
     get pendingBlocks(): AppointmentBlock[] {
-        return this.blocks.filter(b => b.meta.pending);
+        return this.blocks.filter(b => b.meta.pending).sort((a, b) => (a.date < b.date ? -1 : 1));
     }
 
     @Mutation
@@ -86,6 +86,18 @@ class CalendarStore extends InitableModule {
     @Mutation
     CLEAR_CREATE_STEP() {
         this.createStep = null;
+    }
+
+    @Mutation
+    UPDATE_BLOCK_DATE({ block, date }: { block: AppointmentBlock; date: Date }) {
+        block.date = date;
+        this.blocks = [...this.blocks.filter(b => b != block), block];
+    }
+
+    @Mutation
+    UPDATE_BLOCK_TIME({ block, time }: { block: AppointmentBlock; time: number }) {
+        block.time = time;
+        this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Action({ rawError: true })

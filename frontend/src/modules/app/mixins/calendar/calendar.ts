@@ -31,6 +31,14 @@ export default class Calendar extends Vue {
         return block;
     }
 
+    updateBlockDate(block: AppointmentBlock, date: Date) {
+        calendarStore.UPDATE_BLOCK_DATE({ block, date });
+    }
+
+    updateBlockTime(block: AppointmentBlock, time: number) {
+        calendarStore.UPDATE_BLOCK_TIME({ block, time });
+    }
+
     deleteBlock(block: AppointmentBlock) {
         calendarStore.DELETE_BLOCK(block);
     }
