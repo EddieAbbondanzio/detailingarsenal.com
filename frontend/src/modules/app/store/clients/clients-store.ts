@@ -13,6 +13,10 @@ import { api } from '@/modules/app/api';
 class ClientsStore extends InitableModule {
     clients: Client[] = [];
 
+    get search() {
+        return (name: string) => this.clients.filter(c => c.name.toLowerCase().includes(name.toLowerCase()));
+    }
+
     @Mutation
     SET_CLIENTS(clients: Client[]) {
         this.clients = clients;

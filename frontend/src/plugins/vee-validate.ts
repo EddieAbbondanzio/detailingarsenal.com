@@ -101,5 +101,5 @@ extend('decimal', {
 
         return splitInput[1].length <= decimalPlaces;
     },
-    message: `{_field_} must be a decimal with no more than {decimalPlaces} decimal places`
+    message: `{_field_} must be a decimal with {decimalPlaces} or less decimal places`
 });

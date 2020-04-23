@@ -10,6 +10,7 @@ import { date } from '@/core/filters/date';
 import InputForm from './components/input/input-form.vue';
 import InputFormErrorSummary from './components/input/input-form-error-summary.vue';
 import InputTextField from './components/input/input-text-field.vue';
+import InputAutocomplete from './components/input/input-autocomplete.vue';
 import InputSelect from './components/input/input-select.vue';
 import InputCheckbox from './components/input/input-checkbox.vue';
 import InputGroup from './components/input/input-group.vue';
@@ -49,6 +50,7 @@ export default {
         Vue.component('input-form', InputForm);
         Vue.component('input-form-error-summary', InputFormErrorSummary);
         Vue.component('input-text-field', InputTextField);
+        Vue.component('input-autocomplete', InputAutocomplete);
         Vue.component('input-select', InputSelect);
         Vue.component('input-checkbox', InputCheckbox);
         Vue.component('input-group', InputGroup);

@@ -3,7 +3,6 @@ import { ClientInfo } from '@/modules/app/api/calendar/data-transfer-objects/cli
 
 export type CreateAppointment = {
     serviceId: string;
-    vehicleCategoryId: string;
     price: number;
     blocks: CreateAppointmentBlock[];
     clientId: string;

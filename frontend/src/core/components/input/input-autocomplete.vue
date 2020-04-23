@@ -11,18 +11,23 @@
             v-slot="{ errors, classes }"
             ref="validator"
         >
-            <b-input
-                :icon="iconLeft"
+            <b-autocomplete
                 :type="type"
                 :class="classes"
                 :value="value"
+                :field="field"
+                :data="data"
                 :placeholder="placeholder"
                 :disabled="disabled"
-                :maxlength="maxLength"
+                :open-on-focus="true"
                 @input="onInput"
                 @focus="$emit('focus')"
                 @blur="$emit('blur')"
-            ></b-input>
+            >
+                <template v-slot:footer>
+                    <slot name="footer"></slot>
+                </template>
+            </b-autocomplete>
             <input-error-message v-if="!hideErrors" :text="errors[0]" />
         </validation-provider>
     </b-field>
@@ -31,13 +36,10 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-/**
- * Text field that supports validation, and can have a required * indicator.
- */
 @Component({
-    name: 'input-text-field'
+    name: 'input-auto-complete'
 })
-export default class InputTextField extends Vue {
+export default class InputAutoComplete extends Vue {
     @Prop({ default: null })
     id!: string | null;
 
@@ -49,6 +51,12 @@ export default class InputTextField extends Vue {
 
     @Prop()
     rules!: string;
+
+    @Prop()
+    data!: any[];
+
+    @Prop()
+    field!: string;
 
     @Prop()
     value!: any;
@@ -66,13 +74,7 @@ export default class InputTextField extends Vue {
     type!: string;
 
     @Prop()
-    iconLeft!: string;
-
-    @Prop()
     placeholder!: string | null;
-
-    @Prop()
-    maxLength!: string | null;
 
     get vid() {
         if (this.id != null) {

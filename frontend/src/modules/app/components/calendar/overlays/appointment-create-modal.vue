@@ -5,14 +5,19 @@
         :can-cancel="canCancel"
         @close="hide(true)"
     >
-        <div class="modal-card">
+        <div class="card">
             <div class="modal-card-head">
                 <p class="is-size-3">Create appointment</p>
             </div>
             <div
                 class="modal-card-body has-padding-all-0 is-flex is-flex-row is-align-items-center"
             >
-                <input-form class="is-flex-grow-1" :preventCancelDefault="true" @cancel="hide()">
+                <input-form
+                    class="is-flex-grow-1"
+                    :preventCancelDefault="true"
+                    @submit="submit()"
+                    @cancel="hide()"
+                >
                     <div>
                         <p class="is-size-5">Details</p>
                         <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
@@ -21,6 +26,8 @@
                     <input-group multiline>
                         <input-select
                             label="Service"
+                            :required="true"
+                            rules="required"
                             v-model="service"
                             @input="() => { price = null; populateServiceDetails() }"
                         >
@@ -33,6 +40,7 @@
 
                         <input-select
                             label="Vehicle Category"
+                            :required="true"
                             v-model="vehicleCategory"
                             v-if="service != null && isVariablePrice()"
                             @input="populateServiceDetails()"
@@ -46,7 +54,12 @@
                     </input-group>
 
                     <input-group multiline>
-                        <input-text-field label="Price" v-model.number="price" />
+                        <input-text-field
+                            label="Price"
+                            :required="true"
+                            rules="required|decimal:2"
+                            v-model.number="price"
+                        />
 
                         <input-text-field
                             label="Estimated Time"
@@ -56,6 +69,7 @@
                         />
                     </input-group>
 
+                    <!-- Times -->
                     <div>
                         <p class="is-size-5">Time(s)</p>
                         <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
@@ -72,32 +86,31 @@
                             <input-datepicker
                                 class="has-margin-x-1 has-margin-y-0"
                                 title="Start date"
-                                :value="block.date"
-                                @input="inp => updateBlockDate(block, inp)"
+                                :value="block.start"
+                                @input="inp => updateBlockStart(block, inp)"
                             />
 
                             <input-timepicker
                                 class="has-margin-x-1 has-margin-y-0"
                                 title="Start time"
-                                :value="block.time"
-                                @input="inp => updateBlockTime(block, inp)"
+                                :value="block.start"
+                                @input="inp => updateBlockStart(block, inp)"
                             />
 
                             <span class="has-margin-x-1">to</span>
 
-                            <input-datepicker
-                                class="has-margin-x-1 has-margin-y-0"
-                                title="End date"
-                                v-model="endDate"
-                            />
-
                             <input-timepicker
                                 class="has-margin-x-1 has-margin-y-0"
                                 title="End time"
-                                v-model="endTime"
+                                :value="block.end"
+                                @input="inp => updateBlockEnd(block, inp)"
                             />
 
-                            <a class="delete has-margin-x-1" @click="deleteBlock(block)"></a>
+                            <a
+                                class="delete has-margin-x-1"
+                                @click="deleteBlock(block)"
+                                v-if="blocks.length > 1"
+                            ></a>
                         </div>
 
                         <b-button
@@ -112,16 +125,60 @@
                         <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
                     </div>
 
-                    <input-text-field label="Name" />
+                    <b-field label="Name" class="is-required">
+                        <validation-provider
+                            name="Name"
+                            rules="required"
+                            v-slot="{ classes, errors }"
+                        >
+                            <b-autocomplete
+                                icon="account"
+                                :class="classes"
+                                v-model="client.name"
+                                :data="filteredClients"
+                                :open-on-focus="true"
+                                @select="onClientSelected"
+                                @blur="onClientBlur"
+                                field="name"
+                            >
+                                <template v-slot="{ option }">
+                                    <div style="height: 42px">
+                                        <p>{{ option.name }}</p>
+                                        <span v-if="option.phone != null">
+                                            <b-icon icon="phone" size="is-small" />
+                                            {{ option.phone }}
+                                        </span>
+                                        <span v-if="option.email != null">
+                                            <b-icon icon="email" size="is-small" />
+                                            {{ option.phone }}
+                                        </span>
+                                    </div>
+                                </template>
+                            </b-autocomplete>
+                            <input-error-message :text="errors[0]" />
+                        </validation-provider>
+                    </b-field>
+
+                    <div
+                        v-if="isNewClient"
+                        class="is-flex is-flex-row is-align-items-center has-text-success"
+                    >
+                        <b-icon icon="account-plus" class="has-margin-right-1" />New client will be created
+                    </div>
 
                     <input-group multiline>
-                        <input-text-field label="Phone" />
-                        <input-text-field label="Email" />
+                        <input-text-field iconLeft="phone" label="Phone" v-model="client.phone" />
+                        <input-text-field iconLeft="email" label="Email" v-model="client.email" />
                     </input-group>
 
                     <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
 
-                    <input-text-field label="Notes" type="textarea" />
+                    <input-text-field
+                        label="Notes"
+                        rules="max:1024"
+                        :maxLength="1024"
+                        type="textarea"
+                    />
                 </input-form>
             </div>
         </div>
@@ -133,10 +190,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import store from '../../../../../core/store';
 import calendarStore from '../../../store/calendar/calendar-store';
 import settingsStore from '../../../store/settings/settings-store';
-import { Service, VehicleCategory, ServiceConfiguration } from '../../../api';
+import { Service, VehicleCategory, ServiceConfiguration, Client } from '../../../api';
 import { duration } from '@/core';
 import { AppointmentBlock } from '../../../api/calendar/entities/appointment-block';
 import Calendar from '../../../mixins/calendar/calendar';
+import clientsStore from '../../../store/clients/clients-store';
+import { displayError } from '../../../utils/display-error/display-error';
 
 @Component({
     name: 'appointment-create-modal'
@@ -168,6 +227,18 @@ export default class AppointmentCreateModal extends Calendar {
         return calendarStore.pendingBlocks;
     }
 
+    get filteredClients() {
+        if (this.client.name == null) {
+            return clientsStore.clients;
+        } else {
+            return clientsStore.search(this.client.name);
+        }
+    }
+
+    get isNewClient() {
+        return this.client.name != null && this.client.id == null;
+    }
+
     isActive: boolean = false;
     unsub: (() => void) | null = null;
 
@@ -176,13 +247,16 @@ export default class AppointmentCreateModal extends Calendar {
     price: number | null = null;
     estimatedTime: string | null = null;
 
-    startDate: Date | null = null;
-    startTime: number | null = null;
-    endDate: Date | null = null;
-    endTime: number | null = null;
+    client: {
+        id: string | null;
+        name: string | null;
+        phone: string | null;
+        email: string | null;
+    } = { id: null, name: null, phone: null, email: null };
 
     created() {
         settingsStore.init();
+        clientsStore.init();
 
         this.unsub = store.subscribe((m, s) => {
             if (m.type == 'calendar/SET_CREATE_STEP' && m.payload == 'details') {
@@ -190,6 +264,8 @@ export default class AppointmentCreateModal extends Calendar {
             }
         });
     }
+
+    mounted() {}
 
     beforeDestroy() {
         if (this.unsub != null) {
@@ -199,13 +275,6 @@ export default class AppointmentCreateModal extends Calendar {
 
     show() {
         this.isActive = true;
-
-        if (calendarStore.pendingBlocks.length > 0) {
-            this.startDate = calendarStore.pendingBlocks[0].date;
-            this.startTime = calendarStore.pendingBlocks[0].time;
-            this.endDate = calendarStore.pendingBlocks[0].date;
-            this.endTime = calendarStore.pendingBlocks[0].time + calendarStore.pendingBlocks[0].duration;
-        }
     }
 
     hide(clear: boolean = true) {
@@ -215,11 +284,6 @@ export default class AppointmentCreateModal extends Calendar {
             this.service = null;
             this.price = null;
             this.estimatedTime = null;
-
-            this.startTime = null;
-            this.startDate = null;
-            this.endDate = null;
-            this.endTime = null;
 
             calendarStore.CLEAR_CREATE_STEP();
             calendarStore.CLEAR_BLOCKS();
@@ -252,9 +316,49 @@ export default class AppointmentCreateModal extends Calendar {
         return this.service!.pricingMethod != 'Fixed';
     }
 
+    async submit() {
+        try {
+            let clientId = this.client.id;
+
+            if (this.isNewClient) {
+                var c = await clientsStore.createClient({
+                    name: this.client.name!,
+                    email: this.client.email!,
+                    phone: this.client.phone!
+                });
+
+                clientId = c.id;
+            }
+
+            this.hide();
+        } catch (err) {
+            displayError(err);
+        }
+    }
+
     onCalendarClick() {
         calendarStore.SET_CREATE_STEP('selections');
         this.hide(false);
+    }
+
+    onClientSelected(opt: Client | null) {
+        if (opt == null) {
+            this.client.id = null;
+            this.client.name = null;
+            this.client.phone = null;
+            this.client.email = null;
+        } else {
+            this.client.id = opt.id;
+            this.client.phone = opt.phone;
+            this.client.email = opt.email;
+        }
+    }
+
+    onClientBlur() {
+        if (this.client.id == null) {
+            this.client.phone = null;
+            this.client.email = null;
+        }
     }
 }
 </script>

@@ -8,8 +8,15 @@ export const BLOCK_MODIFY_FLAG = 'modifying';
 export const BLOCK_MOUSE_OFFSET = 'mouseOffset';
 export const BLOCK_INITIAL_TIME = 'initialTime';
 
+/**
+ * Mixin to create, resize, move, or update appointment blocks using
+ * minute from midnight offsets.
+ */
 @Component
 export default class Calendar extends Vue {
+    /**
+     * Current date being viewed
+     */
     get date() {
         return calendarStore.date;
     }
