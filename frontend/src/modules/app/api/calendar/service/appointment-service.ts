@@ -32,7 +32,7 @@ export class AppointmentService {
         const appointment = new Appointment(data.serviceId, data.clientId, data.price, [], data.notes);
 
         const blocks = data.blocks.map((t: any) => {
-            const block = new AppointmentBlock(t.date, t.time, t.duration);
+            const block = new AppointmentBlock(t.start, t.end);
             block.appointment = appointment;
             block.id = t.id;
 
