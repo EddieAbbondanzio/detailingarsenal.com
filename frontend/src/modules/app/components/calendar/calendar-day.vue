@@ -82,6 +82,8 @@ export default class CalendarDay extends Calendar {
     async mounted() {
         await settingsStore.init();
 
+        this.loadAppointments(this.date, 'day');
+
         this.unsub = store.subscribe((mut, s) => {
             if (mut.type == 'calendar/SET_DATE') {
                 this.scrollToOpenHour(mut.payload);

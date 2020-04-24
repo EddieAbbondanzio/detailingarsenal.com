@@ -4,11 +4,12 @@ import { UpdateAppointment } from '@/modules/app/api/calendar/data-transfer-obje
 import { http } from '@/core';
 import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
 import moment from 'moment';
+import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
 
 export class AppointmentService {
-    public async getAppointmentsForWeek(day: Date): Promise<Appointment[]> {
+    public async get(day: Date, range: CalendarRange): Promise<Appointment[]> {
         const res = await http.get<any[]>('/appointment', {
-            params: { range: 'week', date: moment(day).format('YYYY-MM-DD') }
+            params: { range: 'day', date: moment(day).format('YYYY-MM-DD') }
         });
         return res.data.map(d => this._map(d));
     }

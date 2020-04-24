@@ -7,6 +7,7 @@ import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointmen
 import store from '@/core/store/index';
 import { CalendarCreateStep } from '@/modules/app/store/calendar/calendar-create-step';
 import { CreateAppointment, api } from '@/modules/app/api';
+import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
 
 /**
  * Store for the Calendar view.
@@ -154,6 +155,12 @@ class CalendarStore extends InitableModule {
         }
 
         this.context.commit('SET_DATE', m.toDate());
+    }
+
+    @Action({ rawError: true })
+    async loadAppointments({ date, range }: { date: Date; range: CalendarRange }) {
+        const appointments = await api.appointment.get(date, range);
+        console.log(appointments);
     }
 
     @Action({ rawError: true })

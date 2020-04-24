@@ -19,7 +19,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
             }
 
             appointment.Blocks = (await Connection.QueryAsync<AppointmentBlock>(
-                @"select * from appointment_blocks where appointment_id = @Id",
+                @"select id, start_date as start, end_date as end, appointment_id from appointment_blocks where appointment_id = @Id",
                 appointment
             )).ToList();
 
@@ -28,7 +28,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
 
         public async Task<List<Appointment>> FindForDay(DateTime date, User user) {
             var ids = await Connection.QueryAsync<Guid>(
-                @"select distinct on (appointment_id) appointment_id from appointment_blocks where date = @Date",
+                @"select distinct on (appointment_id) appointment_id from appointment_blocks where start_date = @Date",
                 new { Date = date }
             );
 
@@ -39,7 +39,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
 
             foreach (Appointment appointment in appointments) {
                 appointment.Blocks = (await Connection.QueryAsync<AppointmentBlock>(
-                    @"select * from appointment_blocks where appointment_id = @Id",
+                    @"select id, start_date as start, end_date as end, appointment_id from appointment_blocks where appointment_id = @Id",
                     appointment
                 )).ToList();
             }
@@ -52,7 +52,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
             var saturday = date.AddDays(-(int)date.DayOfWeek + (int)DayOfWeek.Saturday);
 
             var ids = await Connection.QueryAsync<Guid>(
-                @"select distinct on (appointment_id) appointment_id from appointment_blocks where start >= @Sunday and start <= @Saturday",
+                @"select distinct on (appointment_id) appointment_id from appointment_blocks where start_date >= @Sunday and start_date <= @Saturday",
                 new { Sunday = sunday, Saturday = saturday }
             );
 
@@ -63,7 +63,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
 
             foreach (Appointment appointment in appointments) {
                 appointment.Blocks = (await Connection.QueryAsync<AppointmentBlock>(
-                    @"select * from appointment_blocks where appointment_id = @Id",
+                    @"select id, start_date as start, end_date as end, appointment_id from appointment_blocks where appointment_id = @Id",
                     appointment
                 )).ToList();
             }

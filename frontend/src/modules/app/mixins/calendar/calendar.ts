@@ -4,6 +4,7 @@ import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointmen
 import calendarStore from '@/modules/app/store/calendar/calendar-store';
 import moment from 'moment';
 import { CreateAppointmentBlock } from '@/modules/app/api';
+import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
 
 export const BLOCK_MODIFY_FLAG = 'modifying';
 export const BLOCK_MOUSE_OFFSET = 'mouseOffset';
@@ -168,6 +169,10 @@ export default class Calendar extends Vue {
             block,
             name: BLOCK_INITIAL_TIME
         });
+    }
+
+    async loadAppointments(date: Date, range: CalendarRange) {
+        return calendarStore.loadAppointments({ date, range });
     }
 
     async createAppointment(
