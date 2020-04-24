@@ -21,12 +21,14 @@ using DetailingArsenal.Domain;
 using AutoMapper;
 using DetailingArsenal.Infrastructure;
 using System.Text.Json.Serialization;
+using Npgsql.Logging;
 
 namespace DetailingArsenal.Api {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
             SqlMapper.AddTypeHandler(new DateTimeHandler());
+            // NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 

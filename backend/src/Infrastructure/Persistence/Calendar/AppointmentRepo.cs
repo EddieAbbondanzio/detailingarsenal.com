@@ -52,7 +52,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
             var saturday = date.AddDays(-(int)date.DayOfWeek + (int)DayOfWeek.Saturday);
 
             var ids = await Connection.QueryAsync<Guid>(
-                @"select distinct on (appointment_id) appointment_id from appointment_blocks where date >= @Sunday and date <= @Saturday",
+                @"select distinct on (appointment_id) appointment_id from appointment_blocks where start >= @Sunday and start <= @Saturday",
                 new { Sunday = sunday, Saturday = saturday }
             );
 
@@ -81,8 +81,8 @@ namespace DetailingArsenal.Infrastructure.Persistence {
 
             await Connection.ExecuteAsync(
                 @"insert into appointment_blocks
-                (id, appointment_id, date, time, duration)
-                values (@Id, @AppointmentId, @Date, @Time, @Duration)",
+                (id, appointment_id, start_date, end_date)
+                values (@Id, @AppointmentId, @Start, @End)",
                 entity.Blocks
             );
         }
@@ -99,8 +99,8 @@ namespace DetailingArsenal.Infrastructure.Persistence {
             await Connection.ExecuteAsync("delete from appointment_blocks where appointment_id = @Id", entity);
             await Connection.ExecuteAsync(
                 @"insert into appointment_blocks
-                (id, appointment_id, date, time, duration)
-                values (@Id, @AppointmentId, @Date, @Time, @Duration)",
+                (id, appointment_id, start_date, end_date)
+                values (@Id, @AppointmentId, @Start, @End)",
                 entity.Blocks
             );
         }

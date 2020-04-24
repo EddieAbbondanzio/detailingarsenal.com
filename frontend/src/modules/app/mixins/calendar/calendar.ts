@@ -3,6 +3,7 @@ import Vue from 'vue';
 import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
 import calendarStore from '@/modules/app/store/calendar/calendar-store';
 import moment from 'moment';
+import { CreateAppointmentBlock } from '@/modules/app/api';
 
 export const BLOCK_MODIFY_FLAG = 'modifying';
 export const BLOCK_MOUSE_OFFSET = 'mouseOffset';
@@ -166,6 +167,22 @@ export default class Calendar extends Vue {
         calendarStore.REMOVE_BLOCK_META({
             block,
             name: BLOCK_INITIAL_TIME
+        });
+    }
+
+    async createAppointment(
+        serviceId: string,
+        price: number,
+        clientId: string,
+        blocks: CreateAppointmentBlock[],
+        notes: string
+    ) {
+        return calendarStore.createAppointment({
+            serviceId,
+            price,
+            clientId,
+            blocks,
+            notes
         });
     }
 }

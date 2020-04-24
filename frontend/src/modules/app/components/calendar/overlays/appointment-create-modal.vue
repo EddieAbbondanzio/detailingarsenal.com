@@ -175,6 +175,7 @@
 
                     <input-text-field
                         label="Notes"
+                        v-model="notes"
                         rules="max:1024"
                         :maxLength="1024"
                         type="textarea"
@@ -246,6 +247,7 @@ export default class AppointmentCreateModal extends Calendar {
     vehicleCategory: VehicleCategory | null = null;
     price: number | null = null;
     estimatedTime: string | null = null;
+    notes: string | null = null;
 
     client: {
         id: string | null;
@@ -318,7 +320,7 @@ export default class AppointmentCreateModal extends Calendar {
 
     async submit() {
         try {
-            let clientId = this.client.id;
+            let clientId = this.client.id!;
 
             if (this.isNewClient) {
                 var c = await clientsStore.createClient({
@@ -330,6 +332,7 @@ export default class AppointmentCreateModal extends Calendar {
                 clientId = c.id;
             }
 
+            let a = await this.createAppointment(this.service!.id, this.price!, clientId, this.blocks, this.notes!);
             this.hide();
         } catch (err) {
             displayError(err);

@@ -6,6 +6,7 @@ import { TimeUtils } from '@/core';
 import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
 import store from '@/core/store/index';
 import { CalendarCreateStep } from '@/modules/app/store/calendar/calendar-create-step';
+import { CreateAppointment, api } from '@/modules/app/api';
 
 /**
  * Store for the Calendar view.
@@ -35,6 +36,11 @@ class CalendarStore extends InitableModule {
     @Mutation
     ADD_BLOCK(block: AppointmentBlock) {
         this.blocks.push(block);
+    }
+
+    @Mutation
+    ADD_BLOCKS(blocks: AppointmentBlock[]) {
+        this.blocks.push(...blocks);
     }
 
     @Mutation
@@ -148,6 +154,13 @@ class CalendarStore extends InitableModule {
         }
 
         this.context.commit('SET_DATE', m.toDate());
+    }
+
+    @Action({ rawError: true })
+    async createAppointment(create: CreateAppointment) {
+        let a = await api.appointment.createAppointment(create);
+        this.context.commit('ADD_BLOCKS', a.blocks);
+        return a;
     }
 }
 
