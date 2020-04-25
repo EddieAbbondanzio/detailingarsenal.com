@@ -1,5 +1,5 @@
 <template>
-    <div :class="classes" :style="styles" @mousedown.left.stop="$emit('moveStart', $event)">
+    <div :class="classes()" :style="styles()" @mousedown.left.stop="$emit('moveStart', $event)">
         <a
             class="delete"
             @click="$emit('delete', $event)"
@@ -63,17 +63,15 @@ export default class CalendarBlock extends Vue {
         return moment(this.value.end).format('hh:mm a');
     }
 
-    get styles() {
-        const activeBlock = calendarStore.pendingBlocks.find(b => b.meta.modifying);
-
+    styles() {
         return {
             height: `${(this.value.duration / 15) * 20}px`,
             cursor: 'grab',
-            'pointer-events': activeBlock == null ? 'auto' : 'none'
+            'pointer-events': calendarStore.modifyingBlock == null ? 'auto' : 'none' // Don't touch.
         };
     }
 
-    get classes() {
+    classes() {
         const isCompact = this.value.duration <= 15;
 
         return {

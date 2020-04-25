@@ -40,8 +40,7 @@ export default class TimeSelectionSnackbar extends Vue {
     }
 
     onCancel() {
-        calendarStore.CLEAR_BLOCKS();
-        calendarStore.CLEAR_CREATE_STEP();
+        calendarStore.cancelPendingChanges();
     }
 }
 </script>

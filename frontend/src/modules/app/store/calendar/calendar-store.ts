@@ -2,12 +2,19 @@ import { Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import { CalendarView } from '@/modules/app/store/calendar/calendar-view';
 import moment from 'moment';
-import { TimeUtils } from '@/core';
-import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
+import { TimeUtils, toast, twelveHourFormat } from '@/core';
+import {
+    AppointmentBlock,
+    BLOCK_MODIFY_FLAG,
+    BLOCK_PENDING_FLAG,
+    BLOCK_MOUSE_OFFSET,
+    BLOCK_INITIAL_TIME
+} from '@/modules/app/api/calendar/entities/appointment-block';
 import store from '@/core/store/index';
 import { CalendarCreateStep } from '@/modules/app/store/calendar/calendar-create-step';
 import { CreateAppointment, api } from '@/modules/app/api';
 import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
+import { displayError } from '@/modules/app/utils/display-error/display-error';
 
 /**
  * Store for the Calendar view.
@@ -20,8 +27,20 @@ class CalendarStore extends InitableModule {
 
     blocks: AppointmentBlock[] = [];
 
+    get modifyingBlock() {
+        return this.blocks.find(b => b.meta[BLOCK_MODIFY_FLAG]);
+    }
+
     get pendingBlocks(): AppointmentBlock[] {
         return this.blocks.filter(b => b.meta.pending).sort((a, b) => (a.start < b.start ? -1 : 1));
+    }
+
+    get hasBlockForDateTime() {
+        return (dateTime: Date) => this.blocks.some(b => moment(b.start).isSame(dateTime, 'minutes'));
+    }
+
+    get blockForDateTime() {
+        return (dateTime: Date) => this.blocks.find(b => moment(b.start).isSame(dateTime, 'minutes'));
     }
 
     @Mutation
@@ -52,6 +71,16 @@ class CalendarStore extends InitableModule {
     @Mutation
     CLEAR_BLOCKS() {
         this.blocks = [];
+    }
+
+    @Mutation
+    CLEAR_NONPENDING_BLOCKS() {
+        this.blocks = this.blocks.filter(b => b.meta[BLOCK_PENDING_FLAG]);
+    }
+
+    @Mutation
+    CLEAR_PENDING_BLOCKS() {
+        this.blocks = this.blocks.filter(b => !b.meta[BLOCK_PENDING_FLAG]);
     }
 
     @Mutation
@@ -160,7 +189,12 @@ class CalendarStore extends InitableModule {
     @Action({ rawError: true })
     async loadAppointments({ date, range }: { date: Date; range: CalendarRange }) {
         const appointments = await api.appointment.get(date, range);
-        console.log(appointments);
+        this.context.commit('CLEAR_NONPENDING_BLOCKS');
+
+        this.context.commit(
+            'ADD_BLOCKS',
+            appointments.flatMap(a => a.blocks)
+        );
     }
 
     @Action({ rawError: true })
@@ -168,6 +202,41 @@ class CalendarStore extends InitableModule {
         let a = await api.appointment.createAppointment(create);
         this.context.commit('ADD_BLOCKS', a.blocks);
         return a;
+    }
+
+    @Action({ rawError: true })
+    async saveBlockChanges(block: AppointmentBlock) {
+        this.context.commit('REMOVE_BLOCK_META', {
+            block,
+            name: BLOCK_MOUSE_OFFSET
+        });
+
+        this.context.commit('REMOVE_BLOCK_META', {
+            block,
+            name: BLOCK_MODIFY_FLAG
+        });
+
+        this.context.commit('REMOVE_BLOCK_META', {
+            block,
+            name: BLOCK_INITIAL_TIME
+        });
+
+        // Save off changes to backend, if the block isn't pending.
+        if (!block.meta[BLOCK_PENDING_FLAG]) {
+            try {
+                await api.appointment.updateAppointment(block.appointment);
+                toast(`Updated appointment`);
+            } catch (err) {
+                console.log(err);
+                displayError(err);
+            }
+        }
+    }
+
+    @Action({ rawError: true })
+    async cancelPendingChanges() {
+        this.context.commit('CLEAR_PENDING_BLOCKS');
+        this.context.commit('CLEAR_CREATE_STEP');
     }
 }
 

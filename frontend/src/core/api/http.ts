@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { api } from '@/modules/app/api/api';
-import moment from 'moment';
 import { traverse } from '@/core/utils/traverse';
 import { SpecificationError } from '@/core/api/errors/specification-error';
 import { ValidationError } from '@/core/api/errors/validation-error';
@@ -32,13 +31,27 @@ http.interceptors.request.use(async config => {
 // trim out empty strings going out
 http.interceptors.request.use(config => {
     config.transformRequest = (data, headers) => {
-        traverse(data, (obj, key, val) => {
+        var seen: any[] = [];
+
+        // We remove any circular references by JSONifying it first.
+        // https://stackoverflow.com/questions/9382167/serializing-object-that-contains-cyclic-object-value
+        var jsonData = JSON.stringify(data, function(key, val) {
+            if (val != null && typeof val == 'object') {
+                if (seen.indexOf(val) >= 0) {
+                    return;
+                }
+                seen.push(val);
+            }
+            return val;
+        });
+
+        traverse(jsonData, (obj, key, val) => {
             if (val == '') {
                 delete obj[key];
             }
         });
 
-        return JSON.stringify(data);
+        return jsonData;
     };
 
     return config;
@@ -49,7 +62,9 @@ http.interceptors.response.use(response => {
     traverse(response.data, (obj, key, val) => {
         if (
             typeof val == 'string' &&
-            /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/.test(val)
+            /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/.test(
+                val
+            )
         ) {
             obj[key] = new Date(val);
         }
@@ -60,7 +75,7 @@ http.interceptors.response.use(response => {
 
 // trim out incoming empty strings
 http.interceptors.response.use(response => {
-    traverse(response, (obj, key, val) => {
+    traverse(response.data, (obj, key, val) => {
         if (val == '') {
             delete obj[key];
         }

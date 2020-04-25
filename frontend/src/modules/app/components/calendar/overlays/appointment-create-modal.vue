@@ -287,8 +287,7 @@ export default class AppointmentCreateModal extends Calendar {
             this.price = null;
             this.estimatedTime = null;
 
-            calendarStore.CLEAR_CREATE_STEP();
-            calendarStore.CLEAR_BLOCKS();
+            calendarStore.cancelPendingChanges();
         }
     }
 

@@ -67,14 +67,6 @@ export default class CalendarDay extends Calendar {
         return hours;
     }
 
-    get pendingBlocks() {
-        return calendarStore.pendingBlocks;
-    }
-
-    get modifyingBlock() {
-        return this.pendingBlocks.find(b => b.meta.modifying)!;
-    }
-
     unsub: (() => void) | null = null;
     hoursOfOp: HoursOfOperationDay | null = null;
     currentAction: 'creating-block' | 'moving-block' | 'resizing-block' | null = null;
@@ -87,6 +79,7 @@ export default class CalendarDay extends Calendar {
         this.unsub = store.subscribe((mut, s) => {
             if (mut.type == 'calendar/SET_DATE') {
                 this.scrollToOpenHour(mut.payload);
+                this.loadAppointments(this.date, 'day');
             }
         });
 
@@ -120,7 +113,7 @@ export default class CalendarDay extends Calendar {
             return;
         }
 
-        this.removeModifyingFlag(this.modifyingBlock);
+        this.removeModifyingFlag(this.modifyingBlock!);
         this.currentAction = 'moving-block';
     }
 
@@ -149,16 +142,16 @@ export default class CalendarDay extends Calendar {
 
     onMouseOverInterval(time: number) {
         if (this.currentAction == 'creating-block' || this.currentAction == 'resizing-block') {
-            this.resizeBlock(this.modifyingBlock, time);
+            this.resizeBlock(this.modifyingBlock!, time);
         } else if (this.currentAction == 'moving-block') {
-            this.moveBlock(this.modifyingBlock, time);
+            this.moveBlock(this.modifyingBlock!, time);
         }
     }
 
     onMouseUp() {
         if (this.currentAction != null) {
             this.currentAction = null;
-            this.saveBlockChanges(this.modifyingBlock);
+            this.saveBlockChanges(this.modifyingBlock!);
         }
     }
 
@@ -167,7 +160,7 @@ export default class CalendarDay extends Calendar {
         if (this.currentAction == 'creating-block') {
             this.currentAction = null;
 
-            this.removeModifyingFlag(this.modifyingBlock);
+            this.removeModifyingFlag(this.modifyingBlock!);
         }
     }
 

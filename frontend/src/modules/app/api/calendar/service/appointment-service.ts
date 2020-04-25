@@ -11,6 +11,11 @@ export class AppointmentService {
         const res = await http.get<any[]>('/appointment', {
             params: { range: 'day', date: moment(day).format('YYYY-MM-DD') }
         });
+
+        if (res.data == null) {
+            return [];
+        }
+
         return res.data.map(d => this._map(d));
     }
 
@@ -20,7 +25,7 @@ export class AppointmentService {
     }
 
     public async updateAppointment(appointment: UpdateAppointment): Promise<Appointment> {
-        const res = await http.put<any>('/appointment', appointment);
+        const res = await http.put<any>(`/appointment/${appointment.id}`, appointment);
         return this._map(res.data);
     }
 

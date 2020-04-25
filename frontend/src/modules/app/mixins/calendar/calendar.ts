@@ -1,14 +1,14 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
-import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
+import {
+    AppointmentBlock,
+    BLOCK_MODIFY_FLAG,
+    BLOCK_MOUSE_OFFSET
+} from '@/modules/app/api/calendar/entities/appointment-block';
 import calendarStore from '@/modules/app/store/calendar/calendar-store';
 import moment from 'moment';
 import { CreateAppointmentBlock } from '@/modules/app/api';
 import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
-
-export const BLOCK_MODIFY_FLAG = 'modifying';
-export const BLOCK_MOUSE_OFFSET = 'mouseOffset';
-export const BLOCK_INITIAL_TIME = 'initialTime';
 
 /**
  * Mixin to create, resize, move, or update appointment blocks using
@@ -23,6 +23,14 @@ export default class Calendar extends Vue {
         return calendarStore.date;
     }
 
+    get pendingBlocks() {
+        return calendarStore.pendingBlocks;
+    }
+
+    get modifyingBlock() {
+        return calendarStore.modifyingBlock;
+    }
+
     getBlock(time: number) {
         const minutes = time % 60;
         const hours = (time - minutes) / 60;
@@ -31,7 +39,7 @@ export default class Calendar extends Vue {
             .hours(hours)
             .minutes(minutes);
 
-        return calendarStore.pendingBlocks.find(b => moment(b.start).isSame(start, 'minutes'));
+        return calendarStore.blockForDateTime(start.toDate());
     }
 
     addModifyingFlag(block: AppointmentBlock) {
@@ -155,24 +163,11 @@ export default class Calendar extends Vue {
      * @param block The block to apply modifications to.
      */
     saveBlockChanges(block: AppointmentBlock) {
-        calendarStore.REMOVE_BLOCK_META({
-            block,
-            name: BLOCK_MOUSE_OFFSET
-        });
-
-        calendarStore.REMOVE_BLOCK_META({
-            block,
-            name: BLOCK_MODIFY_FLAG
-        });
-
-        calendarStore.REMOVE_BLOCK_META({
-            block,
-            name: BLOCK_INITIAL_TIME
-        });
+        return calendarStore.saveBlockChanges(block);
     }
 
     async loadAppointments(date: Date, range: CalendarRange) {
-        return calendarStore.loadAppointments({ date, range });
+        await calendarStore.loadAppointments({ date, range });
     }
 
     async createAppointment(
