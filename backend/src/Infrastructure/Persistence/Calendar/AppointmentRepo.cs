@@ -28,7 +28,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
 
         public async Task<List<Appointment>> FindForDay(DateTime date, User user) {
             var ids = await Connection.QueryAsync<Guid>(
-                @"select distinct on (appointment_id) appointment_id from appointment_blocks where start_date = @Date",
+                @"select distinct on (appointment_id) appointment_id from appointment_blocks where cast(start_date as date) = @Date",
                 new { Date = date }
             );
 
@@ -52,7 +52,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
             var saturday = date.AddDays(-(int)date.DayOfWeek + (int)DayOfWeek.Saturday);
 
             var ids = await Connection.QueryAsync<Guid>(
-                @"select distinct on (appointment_id) appointment_id from appointment_blocks where start_date >= @Sunday and start_date <= @Saturday",
+                @"select distinct on (appointment_id) appointment_id from appointment_blocks where cast(start_date as date) >= @Sunday and cast(start_date as date) <= @Saturday",
                 new { Sunday = sunday, Saturday = saturday }
             );
 
