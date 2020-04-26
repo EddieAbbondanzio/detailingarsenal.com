@@ -1,7 +1,7 @@
 <template>
     <div :class="classes()" :style="styles()" @mousedown.left.stop="$emit('moveStart', $event)">
         <a
-            class="delete"
+            class="action"
             @click="$emit('delete', $event)"
             @mousedown.stop
             v-if="value.meta.pending"
@@ -19,7 +19,7 @@
 
 <style lang="sass" scoped>
 .block
-    .delete
+    .action
         position: absolute
         top: 4px
         right: 4px   

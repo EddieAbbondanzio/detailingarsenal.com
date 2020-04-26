@@ -116,7 +116,6 @@ export default class Calendar extends Vue {
         const end = start.clone().add(Math.max(duration, 15), 'minutes');
 
         const wasBlockModified = !start.isSame(block.start, 'minutes') || !end.isSame(block.end, 'minutes');
-
         if (wasBlockModified) {
             calendarStore.UPDATE_BLOCK_START({
                 block,
