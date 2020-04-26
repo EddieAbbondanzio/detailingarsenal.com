@@ -3,7 +3,8 @@ import Vue from 'vue';
 import {
     AppointmentBlock,
     BLOCK_MODIFY_FLAG,
-    BLOCK_MOUSE_OFFSET
+    BLOCK_MOUSE_OFFSET,
+    BLOCK_MODIFIED
 } from '@/modules/app/api/calendar/entities/appointment-block';
 import calendarStore from '@/modules/app/store/calendar/calendar-store';
 import moment from 'moment';
@@ -110,22 +111,25 @@ export default class Calendar extends Vue {
 
         const start = moment(block.start)
             .startOf('day')
-            .add(startTime, 'minutes')
-            .toDate();
-        const end = moment(block.start)
-            .startOf('day')
-            .add(startTime + Math.max(duration, 15), 'minutes')
-            .toDate();
+            .add(startTime, 'minutes');
 
-        calendarStore.UPDATE_BLOCK_START({
-            block,
-            start
-        });
+        const end = start.clone().add(Math.max(duration, 15), 'minutes');
 
-        calendarStore.UPDATE_BLOCK_END({
-            block,
-            end
-        });
+        const wasBlockModified = !start.isSame(block.start, 'minutes') || !end.isSame(block.end, 'minutes');
+
+        if (wasBlockModified) {
+            calendarStore.UPDATE_BLOCK_START({
+                block,
+                start: start.toDate()
+            });
+
+            calendarStore.UPDATE_BLOCK_END({
+                block,
+                end: end.toDate()
+            });
+
+            calendarStore.ADD_BLOCK_META({ block, meta: { name: BLOCK_MODIFIED, value: true } });
+        }
     }
 
     /**
@@ -142,23 +146,27 @@ export default class Calendar extends Vue {
             });
         }
 
-        const duration = block.duration;
-
         const start = moment(block.start)
             .startOf('day')
             .add(startTime - block.meta.mouseOffset, 'minutes');
 
-        calendarStore.UPDATE_BLOCK_START({
-            block,
-            start: start.toDate()
-        });
+        const end = start.clone().add(block.duration, 'minutes');
 
-        const end = start.add(duration, 'minutes');
+        const wasBlockModified = !start.isSame(block.start, 'minutes') || !end.isSame(block.end, 'minutes');
 
-        calendarStore.UPDATE_BLOCK_END({
-            block,
-            end: end.toDate()
-        });
+        if (wasBlockModified) {
+            calendarStore.UPDATE_BLOCK_START({
+                block,
+                start: start.toDate()
+            });
+
+            calendarStore.UPDATE_BLOCK_END({
+                block,
+                end: end.toDate()
+            });
+
+            calendarStore.ADD_BLOCK_META({ block, meta: { name: BLOCK_MODIFIED, value: true } });
+        }
     }
 
     /**

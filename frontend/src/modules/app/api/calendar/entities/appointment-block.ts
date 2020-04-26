@@ -6,6 +6,7 @@ export const BLOCK_MODIFY_FLAG = 'modifying';
 export const BLOCK_MOUSE_OFFSET = 'mouseOffset';
 export const BLOCK_INITIAL_TIME = 'initialTime';
 export const BLOCK_PENDING_FLAG = 'pending';
+export const BLOCK_MODIFIED = 'modified';
 
 export class AppointmentBlock extends Entity {
     appointment: Appointment = null!;

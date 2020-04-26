@@ -8,7 +8,8 @@ import {
     BLOCK_MODIFY_FLAG,
     BLOCK_PENDING_FLAG,
     BLOCK_MOUSE_OFFSET,
-    BLOCK_INITIAL_TIME
+    BLOCK_INITIAL_TIME,
+    BLOCK_MODIFIED
 } from '@/modules/app/api/calendar/entities/appointment-block';
 import store from '@/core/store/index';
 import { CalendarCreateStep } from '@/modules/app/store/calendar/calendar-create-step';
@@ -113,6 +114,7 @@ class CalendarStore extends InitableModule {
     @Mutation
     UPDATE_BLOCK_START({ block, start }: { block: AppointmentBlock; start: Date }) {
         block.start = start;
+
         this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
@@ -221,8 +223,8 @@ class CalendarStore extends InitableModule {
             name: BLOCK_INITIAL_TIME
         });
 
-        // Save off changes to backend, if the block isn't pending.
-        if (!block.meta[BLOCK_PENDING_FLAG]) {
+        // Save off changes to backend, if the block isn't pending, and actually has changes
+        if (!block.meta[BLOCK_PENDING_FLAG] && block.meta[BLOCK_MODIFIED]) {
             try {
                 await api.appointment.updateAppointment(block.appointment);
                 toast(`Updated appointment`);
