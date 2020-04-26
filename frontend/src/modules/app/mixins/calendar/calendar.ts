@@ -51,11 +51,15 @@ export default class Calendar extends Vue {
     }
 
     createBlock(date: Date, time: number, duration = 30) {
+        const start = moment(date)
+            .add(time, 'minutes')
+            .toDate();
+
         const end = moment(date)
             .add(time + duration, 'minutes')
             .toDate();
 
-        const block = new AppointmentBlock(date, end, { pending: true, modifying: true });
+        const block = new AppointmentBlock(start, end, { pending: true, modifying: true });
         block.meta.initialTime = time;
         calendarStore.ADD_BLOCK(block);
         return block;
