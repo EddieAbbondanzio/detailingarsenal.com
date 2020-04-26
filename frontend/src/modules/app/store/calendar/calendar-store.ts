@@ -228,6 +228,11 @@ class CalendarStore extends InitableModule {
             try {
                 await api.appointment.updateAppointment(block.appointment);
                 toast(`Updated appointment`);
+
+                this.context.commit('REMOVE_BLOCK_META', {
+                    block,
+                    name: BLOCK_MODIFIED
+                });
             } catch (err) {
                 console.log(err);
                 displayError(err);
