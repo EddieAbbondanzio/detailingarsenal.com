@@ -1,5 +1,12 @@
 <template>
-    <div :class="classes()" :style="styles()" @mousedown.left.stop="$emit('moveStart', $event)">
+    <!-- <div
+        :class="classes()"
+        :style="styles()"
+        @mousedown.left.stop="$emit('moveStart', $event)"
+        @click.left.stop="onClick()"
+        v-mouse:click.left="onClick"
+    >-->
+    <div :class="classes()" :style="styles()" v-mouse.left="{ click: onClick}">
         <a
             class="action"
             @click="$emit('delete', $event)"
@@ -66,7 +73,7 @@ export default class CalendarBlock extends Vue {
     styles() {
         return {
             height: `${(this.value.duration / 15) * 20}px`,
-            cursor: 'grab',
+            cursor: 'pointer',
             'pointer-events': calendarStore.modifyingBlock == null ? 'auto' : 'none' // Don't touch.
         };
     }
@@ -84,6 +91,10 @@ export default class CalendarBlock extends Vue {
             'is-modifying': this.value.meta.modifying,
             'is-pending': this.value.meta.pending && !this.value.meta.modifying
         };
+    }
+
+    onClick() {
+        console.log('feck');
     }
 }
 </script>

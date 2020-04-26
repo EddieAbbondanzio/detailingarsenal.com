@@ -32,6 +32,7 @@ import Email from './components/elements/email.vue';
 import EditDeleteDropdown from './components/dropdowns/edit-delete-dropdown.vue';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { disableAll } from '@/core/directives/disable-all';
+import { mouse } from '@/core/directives/mouse';
 
 export default {
     install(vue: typeof Vue) {
@@ -69,5 +70,6 @@ export default {
         Vue.filter('twelveHourFormat', twelveHourFormat);
 
         Vue.directive('disable-all', disableAll);
+        Vue.directive('mouse', mouse);
     }
 };
