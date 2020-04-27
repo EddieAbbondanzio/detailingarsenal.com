@@ -3,10 +3,13 @@
         :class="classes()"
         :style="styles()"
         @mousedown.left.stop="$emit('moveStart', $event)"
-        @click.left.stop="onClick()"
-        v-mouse:click.left="onClick"
     >-->
-    <div :class="classes()" :style="styles()" v-mouse.left="{ click: onClick}">
+    <div
+        :class="classes()"
+        :style="styles()"
+        v-mouse:hold.left="onHold"
+        v-mouse:click.left="onClick"
+    >
         <a
             class="action"
             @click="$emit('delete', $event)"
@@ -91,6 +94,10 @@ export default class CalendarBlock extends Vue {
             'is-modifying': this.value.meta.modifying,
             'is-pending': this.value.meta.pending && !this.value.meta.modifying
         };
+    }
+
+    onHold() {
+        this.$emit('moveStart');
     }
 
     onClick() {

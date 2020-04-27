@@ -61,7 +61,7 @@
                             native-value="day"
                             title="Switch to day view"
                         >Day</b-radio-button>
-                        <b-radio-button
+                        <b-radio-button12
                             v-model="calendarView"
                             size="is-small"
                             native-value="week"

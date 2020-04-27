@@ -17,3 +17,5 @@ export * from './filters/twelve-hour-format';
 export * from './utils/time-utils';
 export * from './utils/toast';
 export * from './utils/traverse';
+
+export * from './directives/mouse/mouse';
