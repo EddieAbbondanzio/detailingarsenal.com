@@ -1,42 +1,54 @@
 <template>
     <div
-        class="calendar has-border-right has-border-top has-border-left is-flex is-flex-column is-flex-grow-1 is-relative is-unselectable"
-        ref="dayView"
+        class="calendar has-border-right has-border-top has-border-left is-flex is-flex-row is-flex-grow-1 is-relative is-unselectable"
+        ref
         v-touch:swipe.right="onPreviousSwipe"
         v-touch:swipe.left="onNextSwipe"
         style="margin-bottom: 128px!important"
     >
-        <div
-            class="has-h-80px is-flex is-flex-row has-border-bottom"
-            v-for="hour in hours"
-            :key="`${hour.hour}-${hour.period}`"
-            :id="`hour-${hour.hour}-${hour.period}`"
-        >
-            <!-- Axis -->
+        <!-- Axis -->
+        <div class="is-flex is-flex-column has-w-40px has-border-right">
             <div
-                class="is-flex is-flex-row has-w-40px has-border-right is-justify-content-end has-padding-right-1"
+                class="has-h-80px has-border-bottom"
+                v-for="hour in hours"
+                :key="`${hour.hour}-${hour.period}-key`"
             >
-                <span class="is-size-6">{{ hour.hour }}</span>
-                <span class="is-size-7 has-text-grey">{{ hour.period }}</span>
+                <div class="is-flex is-flex-row is-justify-content-end has-padding-right-1">
+                    <span class="is-size-6">{{ hour.hour }}</span>
+                    <span class="is-size-7 has-text-grey">{{ hour.period }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hours -->
+        <div class="is-flex is-flex-column is-flex-grow-1 is-relative" ref="hours">
+            <div
+                class="has-h-80px has-border-bottom"
+                v-for="hour in hours"
+                :key="`${hour.hour}-${hour.period}`"
+                :id="`hour-${hour.hour}-${hour.period}`"
+            >
+                <div :class="determineHourBackground(hour.raw)">
+                    <div
+                        v-for="i in [0,1,2,3]"
+                        :key="i"
+                        class="interval has-h-20px"
+                        @mousedown.left.self.stop="onCreateDragStart(hour.raw + i * 15)"
+                        @mouseover="onMouseOverInterval(hour.raw + i * 15)"
+                    >&nbsp;</div>
+                </div>
             </div>
 
-            <!-- Hour -->
-            <div :class="determineHourBackground(hour.raw)">
-                <div
-                    v-for="i in [0,1,2,3]"
-                    :key="i"
-                    class="interval has-h-20px"
-                    @mousedown.left.self.stop="onCreateDragStart(hour.raw + i * 15)"
-                    @mouseover.left.self.stop="onMouseOverInterval(hour.raw + i * 15)"
-                >
-                    <calendar-block
-                        @moveStart="onBlockMoveStart(hour.raw + i * 15)"
-                        @resizeStart="onBlockResizeStart(hour.raw + i * 15)"
-                        @delete="onBlockDelete(hour.raw + i * 15)"
-                        v-if="getBlock(hour.raw + i * 15)"
-                        :value="getBlock(hour.raw + i * 15)"
-                    />
-                </div>
+            <!-- Appointment blocks -->
+            <div class="blocks">
+                <calendar-block
+                    v-for="block in blocks"
+                    :key="block.id"
+                    :value="block"
+                    @moveStart="onBlockMoveStart(block)"
+                    @resizeStart="onBlockResizeStart(block)"
+                    @delete="onBlockDelete(block)"
+                />
             </div>
         </div>
     </div>
@@ -65,6 +77,10 @@ import Calendar from '@/modules/app/mixins/calendar/calendar';
 export default class CalendarDay extends Calendar {
     get hours() {
         return hours;
+    }
+
+    get blocks() {
+        return calendarStore.blocksForDay(this.date);
     }
 
     unsub: (() => void) | null = null;
@@ -98,12 +114,11 @@ export default class CalendarDay extends Calendar {
         window.removeEventListener('click', this.onCreateDragClick);
     }
 
-    onBlockMoveStart(time: number) {
+    onBlockMoveStart(block: AppointmentBlock) {
         if (this.currentAction != null) {
             return;
         }
 
-        const block = this.getBlock(time)!;
         this.addModifyingFlag(block);
         this.currentAction = 'moving-block';
     }
@@ -117,18 +132,16 @@ export default class CalendarDay extends Calendar {
         this.currentAction = 'moving-block';
     }
 
-    onBlockResizeStart(time: number) {
+    onBlockResizeStart(block: AppointmentBlock) {
         if (this.currentAction != null) {
             return;
         }
 
-        const block = this.getBlock(time)!;
         this.addModifyingFlag(block);
         this.currentAction = 'resizing-block';
     }
 
-    onBlockDelete(time: number) {
-        const block = this.getBlock(time)!;
+    onBlockDelete(block: AppointmentBlock) {
         this.deleteBlock(block);
     }
 
@@ -141,6 +154,7 @@ export default class CalendarDay extends Calendar {
     }
 
     onMouseOverInterval(time: number) {
+        console.log('MOUSE OVER');
         if (this.currentAction == 'creating-block' || this.currentAction == 'resizing-block') {
             this.resizeBlock(this.modifyingBlock!, time);
         } else if (this.currentAction == 'moving-block') {
@@ -172,14 +186,13 @@ export default class CalendarDay extends Calendar {
             let openHour = Math.floor(this.hoursOfOp.open / 60) - 1;
             const openPeriod = this.hoursOfOp.open >= 720 ? 'pm' : 'am';
 
-            const ref = this.$refs.dayView as HTMLDivElement;
+            const ref = this.$refs.hours as HTMLDivElement;
 
             if (ref == null) {
                 return;
             }
 
             const hourElement = ref.querySelector(`#hour-${openHour}-${openPeriod}`);
-
             hourElement!.scrollIntoView();
         }
     }

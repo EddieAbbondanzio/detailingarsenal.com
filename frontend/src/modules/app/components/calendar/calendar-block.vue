@@ -8,6 +8,7 @@
         :class="classes()"
         :style="styles()"
         v-mouse:hold.left="onHold"
+        v-mouse:release.left="onRelease"
         v-mouse:click.left="onClick"
     >
         <a
@@ -75,6 +76,8 @@ export default class CalendarBlock extends Vue {
 
     styles() {
         return {
+            position: 'absolute',
+            top: `${(this.value.time / 15) * 20}px`,
             height: `${(this.value.duration / 15) * 20}px`,
             cursor: 'pointer',
             'pointer-events': calendarStore.modifyingBlock == null ? 'auto' : 'none' // Don't touch.
@@ -97,11 +100,16 @@ export default class CalendarBlock extends Vue {
     }
 
     onHold() {
+        console.log('hold');
         this.$emit('moveStart');
     }
 
     onClick() {
         console.log('feck');
+    }
+
+    onRelease() {
+        console.log('release');
     }
 }
 </script>

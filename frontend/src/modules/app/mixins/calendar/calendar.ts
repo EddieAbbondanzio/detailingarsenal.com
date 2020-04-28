@@ -32,17 +32,6 @@ export default class Calendar extends Vue {
         return calendarStore.modifyingBlock;
     }
 
-    getBlock(time: number) {
-        const minutes = time % 60;
-        const hours = (time - minutes) / 60;
-
-        const start = moment(this.date)
-            .hours(hours)
-            .minutes(minutes);
-
-        return calendarStore.blockForDateTime(start.toDate());
-    }
-
     addModifyingFlag(block: AppointmentBlock) {
         calendarStore.ADD_BLOCK_META({ block, meta: { name: BLOCK_MODIFY_FLAG, value: true } });
     }

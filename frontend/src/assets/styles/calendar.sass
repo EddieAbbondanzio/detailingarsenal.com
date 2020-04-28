@@ -4,6 +4,14 @@ $calendar-border:  $grey-lighter
     .hour
         position: relative
 
+    .blocks
+        pointer-events: none //Let them pass through
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+
     .block
         color: $white
         background-color: $primary
@@ -22,6 +30,9 @@ $calendar-border:  $grey-lighter
 
 
     .interval:nth-child(2)
+        border-bottom: 1px solid $calendar-border
+
+    .interval:nth-child(4)
         border-bottom: 1px solid $calendar-border
 
     .has-w-40px

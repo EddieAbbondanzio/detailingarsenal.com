@@ -44,6 +44,10 @@ class CalendarStore extends InitableModule {
         return (dateTime: Date) => this.blocks.find(b => moment(b.start).isSame(dateTime, 'minutes'));
     }
 
+    get blocksForDay() {
+        return (date: Date) => this.blocks.filter(b => moment(b.start).isSame(date, 'day'));
+    }
+
     @Mutation
     SET_VIEW(view: CalendarView) {
         this.view = view;
