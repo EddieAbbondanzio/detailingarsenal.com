@@ -34,21 +34,13 @@
                         :key="i"
                         class="interval has-h-20px"
                         @mousedown.left.self.stop="onCreateDragStart(hour.raw + i * 15)"
-                        @mouseover="onMouseOverInterval(hour.raw + i * 15)"
                     >&nbsp;</div>
                 </div>
             </div>
 
             <!-- Appointment blocks -->
             <div class="blocks">
-                <calendar-block
-                    v-for="block in blocks"
-                    :key="block.id"
-                    :value="block"
-                    @moveStart="onBlockMoveStart(block)"
-                    @resizeStart="onBlockResizeStart(block)"
-                    @delete="onBlockDelete(block)"
-                />
+                <calendar-block v-for="block in blocks" :key="block.id" :value="block" />
             </div>
         </div>
     </div>
@@ -100,49 +92,12 @@ export default class CalendarDay extends Calendar {
         });
 
         this.scrollToOpenHour(calendarStore.date);
-
-        window.addEventListener('mouseup', this.onMouseUp);
-        window.addEventListener('click', this.onCreateDragClick);
     }
 
     beforeDestroy() {
         if (this.unsub != null) {
             this.unsub();
         }
-
-        window.removeEventListener('mouseup', this.onMouseUp);
-        window.removeEventListener('click', this.onCreateDragClick);
-    }
-
-    onBlockMoveStart(block: AppointmentBlock) {
-        if (this.currentAction != null) {
-            return;
-        }
-
-        this.addModifyingFlag(block);
-        this.currentAction = 'moving-block';
-    }
-
-    onBlockDragEnd() {
-        if (this.currentAction != 'moving-block') {
-            return;
-        }
-
-        this.removeModifyingFlag(this.modifyingBlock!);
-        this.currentAction = 'moving-block';
-    }
-
-    onBlockResizeStart(block: AppointmentBlock) {
-        if (this.currentAction != null) {
-            return;
-        }
-
-        this.addModifyingFlag(block);
-        this.currentAction = 'resizing-block';
-    }
-
-    onBlockDelete(block: AppointmentBlock) {
-        this.deleteBlock(block);
     }
 
     onCreateDragStart(time: number) {
@@ -151,31 +106,6 @@ export default class CalendarDay extends Calendar {
         // assume user wants to do X:00 or X:30
         time -= time % 30;
         this.createBlock(this.date, time, 30);
-    }
-
-    onMouseOverInterval(time: number) {
-        console.log('MOUSE OVER');
-        if (this.currentAction == 'creating-block' || this.currentAction == 'resizing-block') {
-            this.resizeBlock(this.modifyingBlock!, time);
-        } else if (this.currentAction == 'moving-block') {
-            this.moveBlock(this.modifyingBlock!, time);
-        }
-    }
-
-    onMouseUp() {
-        if (this.currentAction != null) {
-            this.currentAction = null;
-            this.saveBlockChanges(this.modifyingBlock!);
-        }
-    }
-
-    onCreateDragClick() {
-        // if no mouse up event occured, force stop the dragging
-        if (this.currentAction == 'creating-block') {
-            this.currentAction = null;
-
-            this.removeModifyingFlag(this.modifyingBlock!);
-        }
     }
 
     scrollToOpenHour(date: Date) {

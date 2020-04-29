@@ -1,1 +1,1 @@
-export type MouseAction = 'click' | 'hold' | 'release';
+export type MouseAction = 'click' | 'hold' | 'drag' | 'release';

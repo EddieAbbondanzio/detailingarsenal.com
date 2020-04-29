@@ -7,7 +7,6 @@ import {
     AppointmentBlock,
     BLOCK_MODIFY_FLAG,
     BLOCK_PENDING_FLAG,
-    BLOCK_MOUSE_OFFSET,
     BLOCK_INITIAL_TIME,
     BLOCK_MODIFIED
 } from '@/modules/app/api/calendar/entities/appointment-block';
@@ -212,11 +211,6 @@ class CalendarStore extends InitableModule {
 
     @Action({ rawError: true })
     async saveBlockChanges(block: AppointmentBlock) {
-        this.context.commit('REMOVE_BLOCK_META', {
-            block,
-            name: BLOCK_MOUSE_OFFSET
-        });
-
         this.context.commit('REMOVE_BLOCK_META', {
             block,
             name: BLOCK_MODIFY_FLAG

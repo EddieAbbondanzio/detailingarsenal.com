@@ -191,7 +191,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import store from '../../../../../core/store';
 import calendarStore from '../../../store/calendar/calendar-store';
 import settingsStore from '../../../store/settings/settings-store';
-import { Service, VehicleCategory, ServiceConfiguration, Client } from '../../../api';
+import { Service, VehicleCategory, ServiceConfiguration, Client, CreateAppointmentBlock } from '../../../api';
 import { duration } from '@/core';
 import { AppointmentBlock } from '../../../api/calendar/entities/appointment-block';
 import Calendar from '../../../mixins/calendar/calendar';
@@ -201,7 +201,7 @@ import { displayError } from '../../../utils/display-error/display-error';
 @Component({
     name: 'appointment-create-modal'
 })
-export default class AppointmentCreateModal extends Calendar {
+export default class AppointmentCreateModal extends Vue {
     get services() {
         return settingsStore.services;
     }
@@ -361,6 +361,30 @@ export default class AppointmentCreateModal extends Calendar {
             this.client.phone = null;
             this.client.email = null;
         }
+    }
+
+    updateBlockStart(block: AppointmentBlock, date: Date) {
+        calendarStore.UPDATE_BLOCK_START({ block, start: date });
+    }
+
+    updateBlockEnd(block: AppointmentBlock, date: Date) {
+        calendarStore.UPDATE_BLOCK_END({ block, end: date });
+    }
+
+    async createAppointment(
+        serviceId: string,
+        price: number,
+        clientId: string,
+        blocks: CreateAppointmentBlock[],
+        notes: string
+    ) {
+        return calendarStore.createAppointment({
+            serviceId,
+            price,
+            clientId,
+            blocks,
+            notes
+        });
     }
 }
 </script>

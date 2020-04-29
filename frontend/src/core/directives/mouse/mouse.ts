@@ -51,7 +51,7 @@ export const mouse: DirectiveOptions = {
 };
 
 function getAction(arg?: string): MouseAction {
-    if (arg != 'click' && arg != 'hold' && arg != 'release') {
+    if (arg != 'click' && arg != 'hold' && arg != 'release' && arg != 'drag') {
         throw new Error('Action must be click, hold, or release.');
     }
 

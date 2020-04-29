@@ -25,12 +25,14 @@ export class MouseObject {
         element.addEventListener('mousedown', onMouseDown);
         element.addEventListener('click', onMouseUp);
         element.addEventListener('mouseout', onMouseUp);
+        element.addEventListener('mousemove', onMouseMove);
     }
 
     dispose() {
         this.element.removeEventListener('mousedown', onMouseDown);
         this.element.removeEventListener('click', onMouseUp);
         this.element.removeEventListener('mouseout', onMouseUp);
+        this.element.removeEventListener('mousemove', onMouseMove);
     }
 
     notify(action: MouseAction, button: MouseButton, event: MouseEvent) {
@@ -75,6 +77,21 @@ function onMouseDown(this: any, event: globalThis.MouseEvent) {
             const button = getButton(event.button);
             mouseObject.notify('hold', button, event);
         }, HOLD_MIN);
+    }
+}
+
+/**
+ * Mouse is dragging an element.
+ * @param this HTMLElement event is on.
+ * @param event MouseEvent details
+ */
+function onMouseMove(this: any, event: globalThis.MouseEvent) {
+    event.stopImmediatePropagation();
+
+    const mouseObject = this.mouseObject as MouseObject;
+    if (mouseObject.holding) {
+        const button = getButton(event.button);
+        mouseObject.notify('drag', button, event);
     }
 }
 
