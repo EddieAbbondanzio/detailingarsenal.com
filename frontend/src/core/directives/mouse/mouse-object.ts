@@ -14,6 +14,7 @@ export class MouseObject {
     }
 
     element: HTMLElement;
+    mouseDown: boolean = false;
     holding: boolean = false;
 
     private subscribers: MouseObjectSubscriber[];
@@ -70,8 +71,10 @@ function onMouseDown(this: any, event: globalThis.MouseEvent) {
     event.stopImmediatePropagation();
 
     if (this.timer == null) {
+        const mouseObject = this.mouseObject as MouseObject;
+        mouseObject.mouseDown = true;
+
         this.timer = setTimeout(() => {
-            const mouseObject = this.mouseObject as MouseObject;
             mouseObject.holding = true;
 
             const button = getButton(event.button);
@@ -89,10 +92,20 @@ function onMouseMove(this: any, event: globalThis.MouseEvent) {
     event.stopImmediatePropagation();
 
     const mouseObject = this.mouseObject as MouseObject;
-    if (mouseObject.holding) {
-        const button = getButton(event.button);
-        mouseObject.notify('drag', button, event);
+
+    if (!mouseObject.mouseDown) {
+        return;
     }
+
+    const button = getButton(event.button);
+
+    // Trigger the hold event, as soon as a drag starts
+    if (!mouseObject.holding) {
+        mouseObject.holding = true;
+        mouseObject.notify('hold', button, event);
+    }
+
+    mouseObject.notify('drag', button, event);
 }
 
 /**
@@ -116,6 +129,7 @@ function onMouseUp(this: any, event: globalThis.MouseEvent) {
         clearTimeout(this.timer);
         this.timer = null;
         mouseObject.holding = false;
+        mouseObject.mouseDown = false;
     }
 }
 

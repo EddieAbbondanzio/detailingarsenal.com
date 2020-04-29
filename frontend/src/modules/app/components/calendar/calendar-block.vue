@@ -197,6 +197,16 @@ export default class CalendarBlock extends Vue {
     }
 
     moveBlock(block: AppointmentBlock, changeInMinutes: number) {
+        // catch going before midnight (start of day)
+        if (block.time + changeInMinutes < 0) {
+            changeInMinutes = 0;
+        }
+
+        // catch going over midnight (end of day)
+        if (block.time + block.duration >= 24 * 4 * 15 && changeInMinutes > 0) {
+            changeInMinutes = 0;
+        }
+
         const start = moment(block.start).add(changeInMinutes, 'minutes');
         const end = start.clone().add(block.duration, 'minutes');
 
