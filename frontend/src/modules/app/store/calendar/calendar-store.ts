@@ -5,9 +5,7 @@ import moment from 'moment';
 import { TimeUtils, toast, twelveHourFormat } from '@/core';
 import {
     AppointmentBlock,
-    BLOCK_MODIFY_FLAG,
     BLOCK_PENDING_FLAG,
-    BLOCK_INITIAL_TIME,
     BLOCK_MODIFIED
 } from '@/modules/app/api/calendar/entities/appointment-block';
 import store from '@/core/store/index';
@@ -26,10 +24,6 @@ class CalendarStore extends InitableModule {
     createStep: CalendarCreateStep | null = null;
 
     blocks: AppointmentBlock[] = [];
-
-    get modifyingBlock() {
-        return this.blocks.find(b => b.meta[BLOCK_MODIFY_FLAG]);
-    }
 
     get pendingBlocks(): AppointmentBlock[] {
         return this.blocks.filter(b => b.meta.pending).sort((a, b) => (a.start < b.start ? -1 : 1));
@@ -211,16 +205,6 @@ class CalendarStore extends InitableModule {
 
     @Action({ rawError: true })
     async saveBlockChanges(block: AppointmentBlock) {
-        this.context.commit('REMOVE_BLOCK_META', {
-            block,
-            name: BLOCK_MODIFY_FLAG
-        });
-
-        this.context.commit('REMOVE_BLOCK_META', {
-            block,
-            name: BLOCK_INITIAL_TIME
-        });
-
         // Save off changes to backend, if the block isn't pending, and actually has changes
         if (!block.meta[BLOCK_PENDING_FLAG] && block.meta[BLOCK_MODIFIED]) {
             try {

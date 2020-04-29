@@ -1,6 +1,6 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
-import { AppointmentBlock, BLOCK_MODIFY_FLAG } from '@/modules/app/api/calendar/entities/appointment-block';
+import { AppointmentBlock } from '@/modules/app/api/calendar/entities/appointment-block';
 import calendarStore from '@/modules/app/store/calendar/calendar-store';
 import moment from 'moment';
 import { CreateAppointmentBlock } from '@/modules/app/api';
@@ -23,20 +23,6 @@ export default class Calendar extends Vue {
         return calendarStore.pendingBlocks;
     }
 
-    get modifyingBlock() {
-        return calendarStore.modifyingBlock;
-    }
-
-    // remove
-    addModifyingFlag(block: AppointmentBlock) {
-        calendarStore.ADD_BLOCK_META({ block, meta: { name: BLOCK_MODIFY_FLAG, value: true } });
-    }
-
-    // remove
-    removeModifyingFlag(block: AppointmentBlock) {
-        calendarStore.REMOVE_BLOCK_META({ block, name: BLOCK_MODIFY_FLAG });
-    }
-
     createBlock(date: Date, time: number, duration = 30) {
         const start = moment(date)
             .add(time, 'minutes')
@@ -50,21 +36,6 @@ export default class Calendar extends Vue {
         block.meta.initialTime = time;
         calendarStore.ADD_BLOCK(block);
         return block;
-    }
-
-    //remove?
-    deleteBlock(block: AppointmentBlock) {
-        calendarStore.DELETE_BLOCK(block);
-    }
-
-    //remove?
-    /**
-     * Save the pending changes on a block to it's new position,
-     * or size.
-     * @param block The block to apply modifications to.
-     */
-    saveBlockChanges(block: AppointmentBlock) {
-        return calendarStore.saveBlockChanges(block);
     }
 
     async loadAppointments(date: Date, range: CalendarRange) {

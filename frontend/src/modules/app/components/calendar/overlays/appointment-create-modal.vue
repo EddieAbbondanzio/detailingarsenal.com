@@ -371,6 +371,10 @@ export default class AppointmentCreateModal extends Vue {
         calendarStore.UPDATE_BLOCK_END({ block, end: date });
     }
 
+    deleteBlock(block: AppointmentBlock) {
+        calendarStore.DELETE_BLOCK(block);
+    }
+
     async createAppointment(
         serviceId: string,
         price: number,

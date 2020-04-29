@@ -9,7 +9,7 @@
         :style="styles()"
         v-mouse:hold.left="onMoveStart"
         v-mouse:drag.left="onMoveDrag"
-        v-mouse:release.left="onMoveEnd"
+        v-mouse:release.left="onMoveOrResizeEnd"
     >
         <a class="action" @click="onDelete" @mousedown.stop v-if="value.meta.pending"></a>
 
@@ -23,7 +23,7 @@
             class="block-resizer"
             v-mouse:hold.left="onResizeStart"
             v-mouse:drag.left="onResizeDrag"
-            v-mouse:release.left="onResizeEnd"
+            v-mouse:release.left="onMoveOrResizeEnd"
         >&nbsp;</div>
     </div>
 </template>
@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { AppointmentBlock, BLOCK_MODIFY_FLAG, BLOCK_MODIFIED } from '../../api/calendar/entities/appointment-block';
+import { AppointmentBlock, BLOCK_MODIFIED } from '../../api/calendar/entities/appointment-block';
 import settingsStore from '../../store/settings/settings-store';
 import calendarStore from '../../store/calendar/calendar-store';
 import moment from 'moment';
@@ -118,12 +118,6 @@ export default class CalendarBlock extends Vue {
         }
     }
 
-    onMoveEnd() {
-        this.state = 'idle';
-        console.log('done!');
-        calendarStore.saveBlockChanges(this.value);
-    }
-
     onResizeStart() {
         this.state = 'dragging';
         this.dragOffset = 0;
@@ -140,8 +134,7 @@ export default class CalendarBlock extends Vue {
         }
     }
 
-    onResizeEnd() {
-        console.log('end');
+    onMoveOrResizeEnd() {
         this.state = 'idle';
         calendarStore.saveBlockChanges(this.value);
     }

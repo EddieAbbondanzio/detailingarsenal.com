@@ -2,8 +2,6 @@ import { Entity } from '@/core';
 import { Appointment } from '@/modules/app/api/calendar/entities/appointment';
 import moment from 'moment';
 
-export const BLOCK_MODIFY_FLAG = 'modifying';
-export const BLOCK_INITIAL_TIME = 'initialTime';
 export const BLOCK_PENDING_FLAG = 'pending';
 export const BLOCK_MODIFIED = 'modified';
 
