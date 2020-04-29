@@ -1,7 +1,9 @@
 import { MouseObject } from '@/core/directives/mouse/mouse-object';
 
 class MouseObjectManager {
-    public objects: MouseObject[];
+    objects: MouseObject[];
+    active: MouseObject | null = null;
+    timer: NodeJS.Timeout | null = null;
 
     constructor() {
         this.objects = [];

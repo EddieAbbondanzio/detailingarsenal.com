@@ -120,6 +120,7 @@ export default class CalendarBlock extends Vue {
 
     onMoveEnd() {
         this.state = 'idle';
+        console.log('done!');
         calendarStore.saveBlockChanges(this.value);
     }
 
@@ -140,6 +141,7 @@ export default class CalendarBlock extends Vue {
     }
 
     onResizeEnd() {
+        console.log('end');
         this.state = 'idle';
         calendarStore.saveBlockChanges(this.value);
     }
