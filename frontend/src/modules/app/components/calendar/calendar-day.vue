@@ -33,14 +33,19 @@
                         v-for="i in [0,1,2,3]"
                         :key="i"
                         class="interval has-h-20px"
-                        @mousedown.left.self.stop="onCreateDragStart(hour.raw + i * 15)"
+                        @mousedown.left.self="onCreateDragStart(hour.raw + i * 15)"
                     >&nbsp;</div>
                 </div>
             </div>
 
             <!-- Appointment blocks -->
             <div class="blocks">
-                <calendar-block v-for="block in blocks" :key="block.id" :value="block" />
+                <calendar-block
+                    v-for="block in blocks"
+                    :key="block.id"
+                    :ref="`block-${block.time}`"
+                    :value="block"
+                />
             </div>
         </div>
     </div>
@@ -105,7 +110,13 @@ export default class CalendarDay extends Calendar {
 
         // assume user wants to do X:00 or X:30
         time -= time % 30;
-        this.createBlock(this.date, time, 30);
+        const b = this.createBlock(this.date, time, 30);
+
+        // Trigger the "hold" event on the component.
+        this.$nextTick(() => {
+            const comp = this.$refs[`block-${b.time}`];
+            (comp as any[])[0].focus();
+        });
     }
 
     scrollToOpenHour(date: Date) {

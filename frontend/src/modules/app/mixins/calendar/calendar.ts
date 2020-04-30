@@ -5,6 +5,7 @@ import calendarStore from '@/modules/app/store/calendar/calendar-store';
 import moment from 'moment';
 import { CreateAppointmentBlock } from '@/modules/app/api';
 import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
+import { uuid } from '@/core/utils/uuid';
 
 /**
  * Mixin to create, resize, move, or update appointment blocks using
@@ -34,6 +35,7 @@ export default class Calendar extends Vue {
 
         const block = new AppointmentBlock(start, end, { pending: true, modifying: true });
         block.meta.initialTime = time;
+        block.id = uuid();
         calendarStore.ADD_BLOCK(block);
         return block;
     }

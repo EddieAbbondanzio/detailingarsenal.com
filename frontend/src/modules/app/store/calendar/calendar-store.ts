@@ -13,6 +13,7 @@ import { CalendarCreateStep } from '@/modules/app/store/calendar/calendar-create
 import { CreateAppointment, api } from '@/modules/app/api';
 import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
 import { displayError } from '@/modules/app/utils/display-error/display-error';
+import Vue from 'vue';
 
 /**
  * Store for the Calendar view.
@@ -88,14 +89,16 @@ class CalendarStore extends InitableModule {
 
     @Mutation
     ADD_BLOCK_META({ block, meta }: { block: AppointmentBlock; meta: { name: string; value: any } }) {
-        block.meta[meta.name] = meta.value;
-        this.blocks = [...this.blocks.filter(b => b != block), block];
+        // block.meta[meta.name] = meta.value;
+        Vue.set(block.meta, meta.name, meta.value);
+        // this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
     REMOVE_BLOCK_META({ block, name }: { block: AppointmentBlock; name: string }) {
-        block.meta[name] = undefined;
-        this.blocks = [...this.blocks.filter(b => b != block), block];
+        // block.meta[name] = undefined;
+        Vue.set(block.meta, name, undefined);
+        // this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
@@ -110,15 +113,16 @@ class CalendarStore extends InitableModule {
 
     @Mutation
     UPDATE_BLOCK_START({ block, start }: { block: AppointmentBlock; start: Date }) {
-        block.start = start;
-
-        this.blocks = [...this.blocks.filter(b => b != block), block];
+        // block.start = start;
+        Vue.set(block, 'start', start);
+        // this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
     UPDATE_BLOCK_END({ block, end }: { block: AppointmentBlock; end: Date }) {
-        block.end = end;
-        this.blocks = [...this.blocks.filter(b => b != block), block];
+        // block.end = end;
+        Vue.set(block, 'end', end);
+        // this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Action({ rawError: true })

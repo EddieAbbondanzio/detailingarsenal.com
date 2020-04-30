@@ -85,17 +85,17 @@ export class MouseObject {
  * @param event MouseEvent details
  */
 function onMouseDown(this: any, event: globalThis.MouseEvent) {
-    if (mouseObjectManager.timer == null) {
-        mouseObjectManager.active = this.mouseObject as MouseObject;
-        mouseObjectManager.active.mouseDown = true;
+    event.stopImmediatePropagation();
+    console.log('down');
+    mouseObjectManager.active = this.mouseObject as MouseObject;
+    mouseObjectManager.active.mouseDown = true;
 
-        mouseObjectManager.timer = setTimeout(() => {
-            mouseObjectManager.active!.holding = true;
+    mouseObjectManager.timer = setTimeout(() => {
+        mouseObjectManager.active!.holding = true;
 
-            const button = getButton(event.button);
-            mouseObjectManager.active!.notify('hold', button, event);
-        }, HOLD_MIN);
-    }
+        const button = getButton(event.button);
+        mouseObjectManager.active!.notify('hold', button, event);
+    }, HOLD_MIN);
 }
 
 /**
@@ -104,6 +104,7 @@ function onMouseDown(this: any, event: globalThis.MouseEvent) {
  * @param event MouseEvent details
  */
 function onMouseMove(this: any, event: globalThis.MouseEvent) {
+    event.stopImmediatePropagation();
     const mouseObject = mouseObjectManager.active as MouseObject;
 
     if (mouseObject == null || !mouseObject.mouseDown) {
@@ -127,20 +128,21 @@ function onMouseMove(this: any, event: globalThis.MouseEvent) {
  * @param event MouseEvent details
  */
 function onMouseUp(this: any, event: globalThis.MouseEvent) {
+    event.stopImmediatePropagation();
     if (mouseObjectManager.timer != null) {
         const button = getButton(event.button);
         const mouseObject = mouseObjectManager.active as MouseObject;
+
+        clearTimeout(mouseObjectManager.timer);
+        mouseObjectManager.timer = null;
+        mouseObject.holding = false;
+        mouseObject.mouseDown = false;
 
         if (!mouseObject.holding) {
             mouseObject.notify('click', button, event);
         } else {
             mouseObject.notify('release', button, event);
         }
-
-        clearTimeout(this.timer);
-        mouseObjectManager.timer = null;
-        mouseObject.holding = false;
-        mouseObject.mouseDown = false;
     }
 }
 

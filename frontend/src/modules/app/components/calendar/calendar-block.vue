@@ -24,6 +24,8 @@
             v-mouse:hold.left="onResizeStart"
             v-mouse:drag.left="onResizeDrag"
             v-mouse:release.left="onMoveOrResizeEnd"
+            v-mouse:click.left="onMoveOrResizeEnd"
+            ref="resize"
         >&nbsp;</div>
     </div>
 </template>
@@ -46,10 +48,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { AppointmentBlock, BLOCK_MODIFIED } from '../../api/calendar/entities/appointment-block';
+import { AppointmentBlock, BLOCK_MODIFIED, BLOCK_INITIAL_TIME } from '../../api/calendar/entities/appointment-block';
 import settingsStore from '../../store/settings/settings-store';
 import calendarStore from '../../store/calendar/calendar-store';
 import moment from 'moment';
+import { triggerMouseEvent } from '@/core/utils/trigger-mouse-event';
 
 @Component({
     name: 'calendar-block'
@@ -59,7 +62,7 @@ export default class CalendarBlock extends Vue {
     value!: AppointmentBlock;
 
     dragOffset = 0;
-    state: 'idle' | 'moving' | 'dragging' = 'idle';
+    state: 'idle' | 'moving' | 'resizing' = 'idle';
 
     get name() {
         if (this.value.appointment != null) {
@@ -119,7 +122,7 @@ export default class CalendarBlock extends Vue {
     }
 
     onResizeStart() {
-        this.state = 'dragging';
+        this.state = 'resizing';
         this.dragOffset = 0;
     }
 
@@ -143,36 +146,45 @@ export default class CalendarBlock extends Vue {
         calendarStore.DELETE_BLOCK(this.value);
     }
 
+    focus() {
+        triggerMouseEvent(this.$refs.resize as HTMLElement, 'mousedown');
+        calendarStore.ADD_BLOCK_META({ block: this.value, meta: { name: BLOCK_INITIAL_TIME, value: this.value.time } });
+    }
+
     resizeBlock(block: AppointmentBlock, endTime: number) {
         let startTime = 0,
             duration = 0;
 
+        // startTime = block.time;
+        // duration = endTime - block.time;
+
         // Easy peazy. We're resizing an existing block.
-        if (block.meta.initialTime == null) {
-            startTime = block.time;
-            duration = endTime - block.time;
-        }
-        // Down
-        else if (block.time < endTime) {
-            // Going down, but we went up first
-            if (block.meta.initialTime > block.time) {
-                startTime = endTime;
-                duration = block.meta.initialTime - endTime + 15;
-            } else {
-                startTime = block.meta.initialTime;
-                duration = endTime - block.meta.initialTime + 15;
-            }
-        }
-        // Up
-        else {
-            startTime = endTime;
-            duration = block.meta.initialTime - endTime + 15;
-        }
+        // if (block.meta.initialTime == null) {
+        //     startTime = block.time;
+        //     duration = endTime - block.time;
+        // }
+        // // Down
+        // else if (block.time < endTime) {
+        //     // Going down, but we went up first
+        //     if (block.meta.initialTime > block.time) {
+        //         startTime = endTime;
+        //         duration = block.meta.initialTime - endTime + 15;
+        //     } else {
+        //         startTime = block.meta.initialTime;
+        //         duration = endTime - block.meta.initialTime + 15;
+        //     }
+        // }
+        // // Up
+        // else {
+        //     startTime = endTime;
+        //     duration = block.meta.initialTime - endTime + 15;
+        // }
 
         const start = moment(block.start)
             .startOf('day')
             .add(startTime, 'minutes');
 
+        // Ensure block is at least 15 minutes long.
         const end = start.clone().add(Math.max(duration, 15), 'minutes');
 
         const wasBlockModified = !start.isSame(block.start, 'minutes') || !end.isSame(block.end, 'minutes');
