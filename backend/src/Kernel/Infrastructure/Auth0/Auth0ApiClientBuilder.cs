@@ -20,24 +20,12 @@ public class Auth0ApiClientBuilder : IAuth0ApiClientBuilder {
     public async Task<ManagementApiClient> GetManagementApiClient() {
         var authenticationApiClient = new AuthenticationApiClient(new Uri(config.Domain));
 
-        if (token == null) {
+        if (token == null || token.IsExpired()) {
             // How to generate token: https://github.com/auth0/auth0.net/issues/171
             var response = await authenticationApiClient.GetTokenAsync(new ClientCredentialsTokenRequest() {
                 ClientId = config.ClientId,
                 ClientSecret = config.ClientSecret,
                 Audience = $"{config.Domain}api/v2/"
-            });
-
-            token = new Auth0ApiToken(response);
-        }
-
-        // Refresh access token if needed
-        if (token.IsExpired()) {
-            var response = await authenticationApiClient.GetTokenAsync(new RefreshTokenRequest() {
-                ClientId = config.ClientId,
-                ClientSecret = config.ClientSecret,
-                Audience = $"{config.Domain}api/v2/",
-                RefreshToken = token.RefreshToken
             });
 
             token = new Auth0ApiToken(response);
