@@ -138,7 +138,12 @@ export default class CalendarBlock extends Vue {
     }
 
     onMoveOrResizeEnd() {
+        if (this.state == 'moving') {
+            console.log('done moving');
+        }
+
         this.state = 'idle';
+        console.log('release');
         calendarStore.saveBlockChanges(this.value);
     }
 
