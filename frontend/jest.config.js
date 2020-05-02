@@ -13,5 +13,8 @@ module.exports = {
         '^.+\\.tsx?$': 'ts-jest'
     },
     testURL: 'http://localhost/',
-    testRegex: '(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$'
+    testRegex: '(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
+    moduleNameMapper: {
+        '@/(.*)': '<rootDir>/src/$1'
+    }
 };

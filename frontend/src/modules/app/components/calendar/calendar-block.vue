@@ -10,6 +10,7 @@
         v-mouse:hold.left="onMoveStart"
         v-mouse:drag.left="onMoveDrag"
         v-mouse:release.left="onMoveOrResizeEnd"
+        v-mouse:click.left="onBlockClick"
     >
         <a class="action" @click="onDelete" @mousedown.stop v-if="value.meta.pending"></a>
 
@@ -105,6 +106,10 @@ export default class CalendarBlock extends Vue {
         };
     }
 
+    onBlockClick() {
+        console.log('click!');
+    }
+
     onMoveStart() {
         this.state = 'moving';
         this.dragOffset = 0;
@@ -138,12 +143,7 @@ export default class CalendarBlock extends Vue {
     }
 
     onMoveOrResizeEnd() {
-        if (this.state == 'moving') {
-            console.log('done moving');
-        }
-
         this.state = 'idle';
-        console.log('release');
         calendarStore.saveBlockChanges(this.value);
     }
 
