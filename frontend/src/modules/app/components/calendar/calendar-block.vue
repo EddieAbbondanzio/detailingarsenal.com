@@ -132,7 +132,7 @@ export default class CalendarBlock extends Vue {
         const intervalsJumped = Math.floor(this.dragOffset / 20);
 
         if (intervalsJumped) {
-            this.resizeBlock(this.value, this.value.time + this.value.duration + intervalsJumped * 15);
+            this.resizeBlock(this.value, intervalsJumped * 15);
             this.dragOffset -= intervalsJumped * 20;
         }
     }
@@ -151,34 +151,21 @@ export default class CalendarBlock extends Vue {
         calendarStore.ADD_BLOCK_META({ block: this.value, meta: { name: BLOCK_INITIAL_TIME, value: this.value.time } });
     }
 
-    resizeBlock(block: AppointmentBlock, endTime: number) {
-        let startTime = 0,
-            duration = 0;
+    resizeBlock(block: AppointmentBlock, adjustment: number) {
+        let startTime = block.time,
+            duration = block.duration,
+            initialTime = block.meta[BLOCK_INITIAL_TIME];
 
-        // startTime = block.time;
-        // duration = endTime - block.time;
-
-        // Easy peazy. We're resizing an existing block.
-        // if (block.meta.initialTime == null) {
-        //     startTime = block.time;
-        //     duration = endTime - block.time;
-        // }
-        // // Down
-        // else if (block.time < endTime) {
-        //     // Going down, but we went up first
-        //     if (block.meta.initialTime > block.time) {
-        //         startTime = endTime;
-        //         duration = block.meta.initialTime - endTime + 15;
-        //     } else {
-        //         startTime = block.meta.initialTime;
-        //         duration = endTime - block.meta.initialTime + 15;
-        //     }
-        // }
-        // // Up
-        // else {
-        //     startTime = endTime;
-        //     duration = block.meta.initialTime - endTime + 15;
-        // }
+        // Below
+        if (duration + adjustment > 0 && startTime >= initialTime) {
+            startTime = initialTime;
+            duration += adjustment;
+        }
+        // Above
+        else {
+            startTime += adjustment;
+            duration = initialTime - startTime;
+        }
 
         const start = moment(block.start)
             .startOf('day')

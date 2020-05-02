@@ -6,7 +6,8 @@ import { TimeUtils, toast, twelveHourFormat } from '@/core';
 import {
     AppointmentBlock,
     BLOCK_PENDING_FLAG,
-    BLOCK_MODIFIED
+    BLOCK_MODIFIED,
+    BLOCK_INITIAL_TIME
 } from '@/modules/app/api/calendar/entities/appointment-block';
 import store from '@/core/store/index';
 import { CalendarCreateStep } from '@/modules/app/store/calendar/calendar-create-step';
@@ -89,16 +90,12 @@ class CalendarStore extends InitableModule {
 
     @Mutation
     ADD_BLOCK_META({ block, meta }: { block: AppointmentBlock; meta: { name: string; value: any } }) {
-        // block.meta[meta.name] = meta.value;
         Vue.set(block.meta, meta.name, meta.value);
-        // this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
     REMOVE_BLOCK_META({ block, name }: { block: AppointmentBlock; name: string }) {
-        // block.meta[name] = undefined;
         Vue.set(block.meta, name, undefined);
-        // this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
@@ -113,16 +110,12 @@ class CalendarStore extends InitableModule {
 
     @Mutation
     UPDATE_BLOCK_START({ block, start }: { block: AppointmentBlock; start: Date }) {
-        // block.start = start;
         Vue.set(block, 'start', start);
-        // this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Mutation
     UPDATE_BLOCK_END({ block, end }: { block: AppointmentBlock; end: Date }) {
-        // block.end = end;
         Vue.set(block, 'end', end);
-        // this.blocks = [...this.blocks.filter(b => b != block), block];
     }
 
     @Action({ rawError: true })
@@ -218,6 +211,11 @@ class CalendarStore extends InitableModule {
                 this.context.commit('REMOVE_BLOCK_META', {
                     block,
                     name: BLOCK_MODIFIED
+                });
+
+                this.context.commit('REMOVE_BLOCK_META', {
+                    block,
+                    name: BLOCK_INITIAL_TIME
                 });
             } catch (err) {
                 console.log(err);
