@@ -17,40 +17,26 @@ export class MouseObject {
     element: HTMLElement;
     mouseDown: boolean = false;
     holding: boolean = false;
-    self: boolean = false;
 
     private subscribers: MouseObjectSubscriber[];
 
-    constructor(element: HTMLElement, self: boolean = false) {
+    constructor(element: HTMLElement) {
         this.element = element;
         this.subscribers = [];
-        this.self = self;
 
         (this.element as any).mouseObject = this;
 
         element.addEventListener('mousedown', onMouseDown);
 
-        if (self) {
-            element.addEventListener('mouseout', onMouseUp);
-            element.addEventListener('click', onMouseUp);
-            element.addEventListener('mousemove', onMouseMove);
-        } else {
-            window.addEventListener('click', onMouseUp);
-            window.addEventListener('mousemove', onMouseMove);
-        }
+        window.addEventListener('click', onMouseUp);
+        window.addEventListener('mousemove', onMouseMove);
     }
 
     dispose() {
         this.element.removeEventListener('mousedown', onMouseDown);
 
-        if (this.self) {
-            this.element.removeEventListener('mouseout', onMouseUp);
-            this.element.removeEventListener('click', onMouseUp);
-            this.element.removeEventListener('mousemove', onMouseMove);
-        } else {
-            window.removeEventListener('click', onMouseUp);
-            window.removeEventListener('mousemove', onMouseMove);
-        }
+        window.removeEventListener('click', onMouseUp);
+        window.removeEventListener('mousemove', onMouseMove);
     }
 
     notify(action: MouseAction, button: MouseButton, event: MouseEvent) {

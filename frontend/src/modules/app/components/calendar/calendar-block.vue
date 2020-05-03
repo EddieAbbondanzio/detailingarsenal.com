@@ -127,6 +127,7 @@ export default class CalendarBlock extends Vue {
     }
 
     onResizeStart() {
+        calendarStore.ADD_BLOCK_META({ block: this.value, meta: { name: BLOCK_INITIAL_TIME, value: this.value.time } });
         this.state = 'resizing';
         this.dragOffset = 0;
     }
