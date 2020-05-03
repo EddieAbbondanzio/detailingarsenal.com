@@ -15,6 +15,7 @@ import { CreateAppointment, api } from '@/modules/app/api';
 import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
 import { displayError } from '@/modules/app/utils/display-error/display-error';
 import Vue from 'vue';
+import { Appointment } from '@/modules/app/api/calendar/entities/appointment';
 
 /**
  * Store for the Calendar view.
@@ -26,6 +27,8 @@ class CalendarStore extends InitableModule {
     createStep: CalendarCreateStep | null = null;
 
     blocks: AppointmentBlock[] = [];
+
+    active: Appointment | null = null;
 
     get pendingBlocks(): AppointmentBlock[] {
         return this.blocks.filter(b => b.meta.pending).sort((a, b) => (a.start < b.start ? -1 : 1));
@@ -116,6 +119,16 @@ class CalendarStore extends InitableModule {
     @Mutation
     UPDATE_BLOCK_END({ block, end }: { block: AppointmentBlock; end: Date }) {
         Vue.set(block, 'end', end);
+    }
+
+    @Mutation
+    SET_ACTIVE_APPOINTMENT(appointment: Appointment) {
+        this.active = appointment;
+    }
+
+    @Mutation
+    CLEAR_ACTIVE_APPOINTMENT() {
+        this.active = null;
     }
 
     @Action({ rawError: true })

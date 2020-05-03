@@ -107,7 +107,7 @@ export default class CalendarBlock extends Vue {
     }
 
     onBlockClick() {
-        console.log('click!');
+        calendarStore.SET_ACTIVE_APPOINTMENT(this.value.appointment);
     }
 
     onMoveStart() {

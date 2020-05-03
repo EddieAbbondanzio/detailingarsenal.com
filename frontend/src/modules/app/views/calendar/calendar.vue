@@ -16,6 +16,7 @@
         <template v-slot:overlays>
             <time-selection-snackbar v-if="hasPendingBlocks" />
             <appointment-create-modal />
+            <appointment-details-modal />
         </template>
     </page>
 </template>
@@ -33,6 +34,7 @@ import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.
 import calendarStore from '../../store/calendar/calendar-store';
 import TimeSelectionSnackbar from '@/modules/app/components/calendar/overlays/time-selection-snackbar.vue';
 import AppointmentCreateModal from '@/modules/app/components/calendar/overlays/appointment-create-modal.vue';
+import AppointmentDetailsModal from '@/modules/app/components/calendar/overlays/appointment-details-modal.vue';
 
 @Component({
     name: 'calendar',
@@ -42,7 +44,8 @@ import AppointmentCreateModal from '@/modules/app/components/calendar/overlays/a
         CalendarWeek,
         CalendarSidebar,
         TimeSelectionSnackbar,
-        AppointmentCreateModal
+        AppointmentCreateModal,
+        AppointmentDetailsModal
     }
 })
 export default class Calendar extends Vue {

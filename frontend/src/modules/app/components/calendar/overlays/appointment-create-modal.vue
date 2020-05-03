@@ -267,8 +267,6 @@ export default class AppointmentCreateModal extends Vue {
         });
     }
 
-    mounted() {}
-
     beforeDestroy() {
         if (this.unsub != null) {
             this.unsub();
