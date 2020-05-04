@@ -77,6 +77,11 @@ class CalendarStore extends InitableModule {
     }
 
     @Mutation
+    DELETE_BLOCKS_FOR(appointment: Appointment) {
+        this.blocks = this.blocks.filter(b => b.appointment.id != appointment.id);
+    }
+
+    @Mutation
     CLEAR_NONPENDING_BLOCKS() {
         this.blocks = this.blocks.filter(b => b.meta[BLOCK_PENDING_FLAG]);
     }
@@ -211,6 +216,12 @@ class CalendarStore extends InitableModule {
         let a = await api.appointment.createAppointment(create);
         this.context.commit('ADD_BLOCKS', a.blocks);
         return a;
+    }
+
+    @Action({ rawError: true })
+    async deleteAppointment(appointment: Appointment) {
+        await api.appointment.deleteAppointment(appointment.id);
+        this.context.commit('DELETE_BLOCKS_FOR', appointment);
     }
 
     @Action({ rawError: true })
