@@ -6,7 +6,7 @@
                     class="is-flex is-flex-row is-align-items-center"
                     exact
                     tag="a"
-                    @click="$router.push({ name: 'calendar' })"
+                    @click="onBrandClick"
                 >
                     <h1
                         class="is-size-5-mobile is-size-4-tablet has-font-family-pacifico"
@@ -88,6 +88,12 @@ export default class AppNavbar extends Vue {
 
     public async onLoginClick() {
         await userStore.login();
+    }
+
+    public async onBrandClick() {
+        if (this.$route.name != 'calendar') {
+            await this.$router.push({ name: 'calendar' });
+        }
     }
 }
 </script>
