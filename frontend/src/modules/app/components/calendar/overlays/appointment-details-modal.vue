@@ -2,9 +2,7 @@
     <b-modal :active.sync="isActive" :has-modal-card="true" @close="hide(true)">
         <div class="card" v-if="value != null">
             <div class="modal-card-body">
-                <div
-                    class="is-flex is-flex-row is-justify-content-space-between has-margin-bottom-3"
-                >
+                <div class="is-flex is-flex-row is-justify-content-space-between has-margin-bottom-3">
                     <div class="is-size-5">{{ service.name }}</div>
 
                     <div>
@@ -21,14 +19,14 @@
                 <div class="is-flex is-flex-column">
                     <div class="is-flex is-flex-row has-margin-y-1">
                         <b-icon icon="calendar" class="has-margin-right-1" />
-                        <div
-                            v-for="block in value.blocks"
-                            :key="block.id"
-                        >{{ block.start | date }} {{ block.start | twelveHourFormat }} - {{ block.end | twelveHourFormat }}</div>
+                        <div v-for="block in value.blocks" :key="block.id">
+                            {{ block.start | date }} {{ block.start | twelveHourFormat }} -
+                            {{ block.end | twelveHourFormat }}
+                        </div>
                     </div>
                     <router-link
                         class="is-flex is-flex-row has-margin-y-1 has-text-dark"
-                        :to="{name: 'client', params: { id: client.id}}"
+                        :to="{ name: 'client', params: { id: client.id } }"
                     >
                         <b-icon icon="account" class="has-margin-right-1" />
                         {{ client.name }}

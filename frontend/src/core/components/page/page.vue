@@ -7,8 +7,8 @@
         >
             <b-progress
                 class="is-absolute page-loading-bar has-margin-bottom-0"
-                size="is-small"
-                type="is-info"
+                size="is-medium"
+                type="is-warning"
                 v-if="loading"
             />
 
@@ -36,8 +36,8 @@
             <div class="is-flex is-flex-column is-flex-grow-1">
                 <b-progress
                     class="page-loading-bar has-margin-bottom-0"
-                    size="is-small"
-                    type="is-info"
+                    size="is-medium"
+                    type="is-warning"
                     v-if="loading"
                 />
 
@@ -65,7 +65,7 @@
     right: 0px
     
     progress
-        height: 6px!important
+        height: 12px!important
 </style>
 
 <script lang="ts">

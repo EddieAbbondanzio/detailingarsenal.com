@@ -1,4 +1,3 @@
-import 'jest';
 import { TimeUtils } from '@/core/utils/time-utils';
 
 describe('TimeUtils', () => {

@@ -20,9 +20,9 @@
 
                 <!-- Desktop date header -->
                 <div class="is-flex is-flex-row is-hidden-touch has-margin-x-3">
-                    <p
-                        class="is-size-4 is-size-5-tablet has-text-weight-bold"
-                    >{{ dateTitle }}&nbsp;{{ dateDescription }}</p>
+                    <p class="is-size-4 is-size-5-tablet has-text-weight-bold">
+                        {{ dateTitle }}&nbsp;{{ dateDescription }}
+                    </p>
                 </div>
 
                 <div class="is-flex is-flex-row is-align-items-center is-justify-content-end">
@@ -43,7 +43,8 @@
                             size="is-small"
                             title="Go to today"
                             @click="onTodayClick"
-                        >Today</b-button>
+                            >Today</b-button
+                        >
                         <b-button
                             class="has-margin-bottom-0"
                             outlined
