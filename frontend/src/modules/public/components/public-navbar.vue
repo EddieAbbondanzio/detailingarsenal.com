@@ -9,9 +9,9 @@
         </template>
 
         <template slot="start">
-            <b-navbar-item exact tag="router-link" :to="{ name: 'pricing' }">Pricing</b-navbar-item>
-            <b-navbar-item exact tag="router-link" :to="{ name: 'aboutUs' }">About Us</b-navbar-item>
-            <b-navbar-item exact tag="router-link" :to="{ name: 'contact' }">Contact</b-navbar-item>
+            <b-navbar-item>Pricing</b-navbar-item>
+            <b-navbar-item>About Us</b-navbar-item>
+            <b-navbar-item>Contact</b-navbar-item>
         </template>
 
         <template slot="end">

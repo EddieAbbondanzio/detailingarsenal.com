@@ -5,6 +5,11 @@
     </div>
 </template>
 
+<style lang="sass">
+body
+    overflow-y: scroll!important
+</style>
+
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import PublicNavbar from '@/modules/public/components/public-navbar.vue';
