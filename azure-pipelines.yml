@@ -21,7 +21,7 @@ steps:
   displayName: 'npm install and build'
   workingDirectory: ./frontend
 
-- task: ArchiveFiles@1
+- task: PublishBuildArtifacts@1
   inputs:
-    rootFolder: '$(System.DefaultWorkingDirectory)'
-    includeRootFolder: false
+    artifactName: dist
+    pathtoPublish: 'dist'
