@@ -242,7 +242,6 @@ class CalendarStore extends InitableModule {
                     name: BLOCK_INITIAL_TIME
                 });
             } catch (err) {
-                console.log(err);
                 displayError(err);
             }
         }
