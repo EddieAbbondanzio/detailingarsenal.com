@@ -20,3 +20,8 @@ steps:
     npm run build
   displayName: 'npm install and build'
   workingDirectory: ./frontend
+
+- task: ArchiveFiles@1
+  inputs:
+    rootFolder: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
