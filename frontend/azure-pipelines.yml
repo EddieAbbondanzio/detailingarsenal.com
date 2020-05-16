@@ -20,3 +20,8 @@ steps:
     npm run build
   displayName: 'npm install and build'
   workingDirectory: ./frontend
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    artifactName: dist
+    pathtoPublish: './frontend/dist'
