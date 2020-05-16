@@ -21,15 +21,7 @@ steps:
   displayName: 'npm install and build'
   workingDirectory: ./frontend
 
-## Archive the files into a zip file for publishing
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: $(Build.ArtifactStagingDirectory)
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    includeRootFolder: false
-
-## Publish the zip file
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    artifactName: dist
+    pathtoPublish: './frontend/dist'
