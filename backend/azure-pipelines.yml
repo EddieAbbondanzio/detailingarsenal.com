@@ -13,7 +13,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet publish ./src/Api/Api.csproj --configuration $(buildConfiguration)
+- script: dotnet publish ./src/Api/Api.csproj --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
   displayName: 'dotnet build $(buildConfiguration)'
   workingDirectory: 'backend'
 
