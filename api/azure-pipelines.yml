@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  - master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -13,23 +13,23 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-    arguments: '--configuration $(BuildConfiguration) --output $(System.DefaultWorkingDirectory)'
-    workingDirectory: 'backend'
-    zipAfterPublish: true 
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'publish'
+      publishWebProjects: true
+      arguments: '--configuration $(BuildConfiguration) --output $(System.DefaultWorkingDirectory)'
+      workingDirectory: 'api'
+      zipAfterPublish: true
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'Api.zip'
-    
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1 (09691d1b-2c1f-455d-8cbd-f208efd0b0dc)'
-    appType: 'webAppLinux'
-    WebAppName: 'detailingarsenal-api'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'Api.zip'
+
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Azure subscription 1 (09691d1b-2c1f-455d-8cbd-f208efd0b0dc)'
+      appType: 'webAppLinux'
+      WebAppName: 'detailingarsenal-api'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
