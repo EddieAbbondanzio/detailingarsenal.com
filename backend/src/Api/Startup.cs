@@ -84,7 +84,7 @@ namespace DetailingArsenal.Api {
             var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
             services.AddScoped<DatabaseMigrationRunner, FluentMigratorMigrationRunner>();
             services.AddSingleton<IDatabase, PostgresDatabase>();
-            services.AddDatabaseMigrations(dbConfig.GetConnectionString());
+            // services.AddDatabaseMigrations(dbConfig.GetConnectionString());
 
             // User
             services.AddTransient<IUserRepo, UserRepo>();
