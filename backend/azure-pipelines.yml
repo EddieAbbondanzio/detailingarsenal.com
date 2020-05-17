@@ -9,20 +9,17 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  buildConfiguration: 'Release'
 
-steps:
-- task: UseDotNet@2
-  displayName: 'Use dotnet sdk 3.x'
+- task: DotNetCoreCLI@2
   inputs:
-    version: 3.x
+    command: 'publish'
+    publishWebProjects: true
+    workingDirectory: 'backend'
 
-- script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
-  displayName: 'dotnet publish $(buildConfiguration)'
-  workingDirectory: ./backend
-
-- task: PublishBuildArtifacts@1
+- task: ArchiveFiles@2
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'api'
+    rootFolderOrFile: 'Archive $(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
