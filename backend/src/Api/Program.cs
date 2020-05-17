@@ -13,10 +13,10 @@ namespace DetailingArsenal.Api {
         public static async Task Main(string[] args) {
             var host = CreateHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope()) {
-                // Perform any database migrations
-                scope.ServiceProvider.GetRequiredService<DatabaseMigrationRunner>().MigrateUp();
-            }
+            // using (var scope = host.Services.CreateScope()) {
+            //     // Perform any database migrations
+            //     scope.ServiceProvider.GetRequiredService<DatabaseMigrationRunner>().MigrateUp();
+            // }
 
             await host.RunAsync();
         }
