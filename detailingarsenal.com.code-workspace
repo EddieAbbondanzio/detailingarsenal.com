@@ -1,14 +1,17 @@
 {
   "folders": [
-	{
-		"path": "frontend"
-	},
-	{
-		"path": "backend"
-	},
-	{
-		"path": "database"
-	}
-],
+    {
+      "path": "app"
+    },
+    {
+      "path": "api"
+    },
+    {
+      "path": "database"
+    },
+    {
+      "path": "landing-page"
+    }
+  ],
   "settings": {}
 }
