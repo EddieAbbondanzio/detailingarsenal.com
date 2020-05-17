@@ -14,6 +14,6 @@ variables:
 
 steps:
 - script: dotnet publish ./src/Api/Api.csproj --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: 'dotnet publish $(buildConfiguration)'
   workingDirectory: 'backend'
 
