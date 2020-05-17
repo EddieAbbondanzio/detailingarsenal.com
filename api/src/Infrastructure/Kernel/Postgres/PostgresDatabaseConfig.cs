@@ -6,6 +6,8 @@ public sealed class PostgresDatabaseConfig : DatabaseConfig {
         Port = Port,
         Username = User,
         Password = Password,
-        Database = Database
+        Database = Database,
+        SslMode = SslMode.Require,
+        TrustServerCertificate = true
     }.ToString();
 }
