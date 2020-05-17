@@ -29,7 +29,7 @@ namespace DetailingArsenal.Api {
             Configuration = configuration;
             SqlMapper.AddTypeHandler(new DateTimeHandler());
             // Add db logging
-            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
+            // NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
