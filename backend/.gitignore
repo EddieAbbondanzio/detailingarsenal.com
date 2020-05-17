@@ -269,7 +269,7 @@ __pycache__/
 # tools/
 
 appsettings.Development.json
-appsettings.Production.json
+#appsettings.Production.json
 appsettings.json
 
 omnisharp.json
