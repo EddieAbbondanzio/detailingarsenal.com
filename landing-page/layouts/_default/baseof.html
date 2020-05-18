@@ -20,7 +20,7 @@
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s">` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
     {{- end }}
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.materialdesignicons.com/5.2.45/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous">
 
     {{/*  Compile SCSS  */}}
     {{ $styles := resources.Get "styles/main.sass" | toCSS | minify | fingerprint }}
