@@ -1,0 +1,14 @@
+// Don't friggen delete this...
+@import "theme.sass"
+
+.field.is-required
+    .label
+        &:after
+            content: " *"
+            color: $danger
+
+.control.is-invalid
+    input, textarea, select
+        color: $danger
+        border:1px solid $danger !important
+        background-color: lighten($danger, 35%)
