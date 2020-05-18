@@ -1,0 +1,55 @@
+<header>
+	<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+		<div class="navbar-brand">
+			<a class="navbar-item is-size-5-mobile is-size-4-tablet has-font-family-pacifico" href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+
+		  <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="landingNavbar">
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+		  </a>
+		</div>
+	  
+		<div id="landingNavbar" class="navbar-menu">
+		  <div class="navbar-start">
+			<a class="navbar-item">
+			  Pricing
+			</a>
+			<a class="navbar-item">
+			  About Us
+			</a>
+			<a class="navbar-item">
+				Contact
+			</a>
+		  </div>
+	  
+		  <div class="navbar-end">
+			<div class="navbar-item">
+			  <div class="buttons">
+				<a class="button is-success">
+				  <strong>Sign up</strong>
+				</a>
+				<a class="has-text-weight-bold button is-info">
+				  Log in
+				</a>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </nav>
+
+
+
+
+
+	<a class="has-text-white" href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+	{{ with .Site.Menus.main }}
+	<nav>
+		<ul>
+			{{ range . }}
+			<li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+			{{ end }}
+		</ul>
+	</nav>
+	{{ end }}
+</header>

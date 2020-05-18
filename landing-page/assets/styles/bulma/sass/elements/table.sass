@@ -23,10 +23,6 @@ $table-row-active-color: $primary-invert !default
 $table-striped-row-even-background-color: $scheme-main-bis !default
 $table-striped-row-even-hover-background-color: $scheme-main-ter !default
 
-.table.is-borderless
-  th, td
-    border: none
-
 .table
   @extend %block
   background-color: $table-background-color
@@ -117,10 +113,6 @@ $table-striped-row-even-hover-background-color: $scheme-main-ter !default
     td,
     th
       padding: 0.25em 0.5em
-  &.is-narrower
-    td,
-    th
-      padding: 0.125em 0.25em
   &.is-striped
     tbody
       tr:not(.is-selected)

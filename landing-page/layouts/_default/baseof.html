@@ -28,13 +28,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
     
     <script src="{{"js/interactivity.js" | relURL}}"></script>
     {{ template "_internal/google_analytics_async.html" . }}
 </head>
 
 <body>
-    <div id="app" class="container">
+    <div id="app">
         {{ partial "header" . }}
         {{ block "main" . }}{{ end }}
         {{ partial "footer" . }}
