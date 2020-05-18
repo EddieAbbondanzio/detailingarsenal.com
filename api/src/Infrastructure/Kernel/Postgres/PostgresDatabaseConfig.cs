@@ -7,7 +7,7 @@ public sealed class PostgresDatabaseConfig : DatabaseConfig {
         Username = User,
         Password = Password,
         Database = Database,
-        SslMode = SslMode.Require,
+        SslMode = Host == "localhost" ? SslMode.Disable : SslMode.Require,
         TrustServerCertificate = true
     }.ToString();
 }
