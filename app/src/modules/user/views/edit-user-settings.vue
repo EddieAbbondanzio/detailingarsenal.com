@@ -36,7 +36,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { toast } from '@/core';
-import userStore from '../../store/user/user-store';
+import userStore from '../store/user-store';
 
 @Component({
     name: 'edit-user-settings'

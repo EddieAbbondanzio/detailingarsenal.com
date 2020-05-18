@@ -4,7 +4,7 @@ import { InitableModule } from '@/core/store/initable-module';
 import { CreateClient } from '@/modules/clients/api/data-transfer-objects/create-client';
 import { UpdateClient } from '@/modules/clients/api/data-transfer-objects/update-client';
 import store from '@/core/store/index';
-import { api } from '@/modules/app/api';
+import { api } from '@/core/api/api';
 
 /**
  * Store for the schedule view.

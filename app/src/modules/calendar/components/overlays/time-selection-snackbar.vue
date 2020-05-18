@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import calendarStore from '../../../store/calendar/calendar-store';
+import calendarStore from '../../store/calendar-store';
 
 @Component({
     name: 'time-selection-snackbar'

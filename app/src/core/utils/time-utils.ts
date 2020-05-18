@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { DayOfTheWeek } from '@/modules/app/store/day-of-the-week';
+import { DayOfTheWeek } from '@/core/store/day-of-the-week';
 
 export class TimeUtils {
     public static timeToHoursMinutes(time: number) {

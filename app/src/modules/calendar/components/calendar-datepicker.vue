@@ -76,7 +76,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import moment, { Moment } from 'moment';
-import calendarStore from '../../store/calendar/calendar-store';
+import calendarStore from '../store/calendar-store';
 
 @Component({
     name: 'calendar-datepicker'

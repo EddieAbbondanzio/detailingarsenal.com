@@ -53,17 +53,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import SettingsStore from '../../store/settings/settings-store';
-import CalendarStore from '../../store/calendar/calendar-store';
-import store from '../../../../core/store';
-import { HoursOfOperationDay } from '../../api';
 import { hours } from './hours';
-import { AppointmentBlock } from '../../api/calendar/entities/appointment-block';
-import CalendarBlock from '@/modules/app/components/calendar/calendar-block.vue';
+import CalendarBlock from '@/modules/calendar/components/calendar-block.vue';
 import moment, { duration } from 'moment';
-import calendarStore from '../../store/calendar/calendar-store';
-import settingsStore from '../../store/settings/settings-store';
-import Calendar from '@/modules/app/mixins/calendar/calendar';
+import Calendar from '../mixins/calendar';
+import calendarStore from '../store/calendar-store';
+import { HoursOfOperationDay } from '@/modules/settings/api/entities/hours-of-operation-day';
+import settingsStore from '@/modules/settings/store/settings-store';
+import store from '@/core/store';
 
 @Component({
     name: 'calendar-day',

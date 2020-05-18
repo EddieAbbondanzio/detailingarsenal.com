@@ -2,7 +2,9 @@
     <b-modal :active.sync="isActive" :has-modal-card="true" @close="hide(true)">
         <div class="card" v-if="value != null">
             <div class="modal-card-body">
-                <div class="is-flex is-flex-row is-justify-content-space-between has-margin-bottom-3">
+                <div
+                    class="is-flex is-flex-row is-justify-content-space-between has-margin-bottom-3"
+                >
                     <div class="is-size-5">{{ service.name }}</div>
 
                     <div>
@@ -49,13 +51,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import calendarStore from '../../../store/calendar/calendar-store';
-import store from '../../../../../core/store';
-import { AppointmentBlock } from '../../../api/calendar/entities/appointment-block';
-import settingsStore from '../../../store/settings/settings-store';
-import clientsStore from '../../../store/clients/clients-store';
-import { confirmDelete } from '../../../utils/confirm-delete/confirm-delete';
-import { displayError } from '../../../utils/display-error/display-error';
+import calendarStore from '../../store/calendar-store';
+import { confirmDelete, displayError } from '@/core';
+import store from '@/core/store';
+import clientsStore from '@/modules/clients/store/clients-store';
+import settingsStore from '@/modules/settings/store/settings-store';
 
 @Component({
     name: 'appointment-details-modal'

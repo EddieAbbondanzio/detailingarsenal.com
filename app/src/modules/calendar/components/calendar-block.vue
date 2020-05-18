@@ -49,11 +49,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { AppointmentBlock, BLOCK_MODIFIED, BLOCK_INITIAL_TIME } from '../../api/calendar/entities/appointment-block';
-import settingsStore from '../../store/settings/settings-store';
-import calendarStore from '../../store/calendar/calendar-store';
 import moment from 'moment';
 import { triggerMouseEvent } from '@/core/utils/trigger-mouse-event';
+import { AppointmentBlock, BLOCK_INITIAL_TIME, BLOCK_MODIFIED } from '../api/entities/appointment-block';
+import settingsStore from '@/modules/settings/store/settings-store';
+import calendarStore from '../store/calendar-store';
 
 @Component({
     name: 'calendar-block'

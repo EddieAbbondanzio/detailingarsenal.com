@@ -42,9 +42,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { UpdateBusiness } from '../../../api';
-import { toast } from '../../../../../core';
-import settingsStore from '@/modules/app/store/settings/settings-store';
+import settingsStore from '../../store/settings-store';
+import { UpdateBusiness } from '../../api/data-transfer-objects/update-business';
+import { toast } from '@/core';
 
 @Component({
     name: 'edit-business'

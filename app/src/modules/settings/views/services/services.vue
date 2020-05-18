@@ -39,11 +39,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Service } from '@/modules/app/api';
-import { confirmDelete } from '@/modules/app/utils/confirm-delete/confirm-delete';
-import { toast } from '@/core';
-import { displayError } from '../../../utils/display-error/display-error';
-import settingsStore from '../../../store/settings/settings-store';
+import settingsStore from '../../store/settings-store';
+import { Service } from '../../api/entities/service';
+import { confirmDelete, displayError, toast } from '@/core';
 
 @Component({
     name: 'services'

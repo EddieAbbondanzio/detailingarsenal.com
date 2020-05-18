@@ -1,4 +1,3 @@
-import { DayOfTheWeek } from '@/modules/app/store/day-of-the-week';
 import { HoursOfOperationDay } from '@/modules/settings/api/entities/hours-of-operation-day';
 import { Entity } from '@/core';
 

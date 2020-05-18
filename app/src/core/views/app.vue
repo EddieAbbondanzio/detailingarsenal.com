@@ -18,10 +18,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import AppNavbar from '@/modules/app/components/app-navbar.vue';
-import AppFooter from '@/modules/app/components/app-footer.vue';
+import AppNavbar from '@/core/components/app-navbar.vue';
+import AppFooter from '@/core/components/app-footer.vue';
 import { getModule } from 'vuex-module-decorators';
-import UserStore from '../store/user/user-store';
 
 /**
  * Parent page for all private views

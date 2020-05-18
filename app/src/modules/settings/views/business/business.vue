@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import settingsStore from '../../../store/settings/settings-store';
+import settingsStore from '../../store/settings-store';
 
 @Component({
     name: 'business'

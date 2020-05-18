@@ -36,7 +36,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import { http } from '@/core/api/http';
-import userStore from '@/modules/app/store/user/user-store';
+import userStore from '../store/user-store';
 
 @Component({
     name: 'user-settings'

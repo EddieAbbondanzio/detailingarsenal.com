@@ -20,9 +20,9 @@
 
                 <!-- Desktop date header -->
                 <div class="is-flex is-flex-row is-hidden-touch has-margin-x-3">
-                    <p class="is-size-4 is-size-5-tablet has-text-weight-bold">
-                        {{ dateTitle }}&nbsp;{{ dateDescription }}
-                    </p>
+                    <p
+                        class="is-size-4 is-size-5-tablet has-text-weight-bold"
+                    >{{ dateTitle }}&nbsp;{{ dateDescription }}</p>
                 </div>
 
                 <div class="is-flex is-flex-row is-align-items-center is-justify-content-end">
@@ -43,8 +43,7 @@
                             size="is-small"
                             title="Go to today"
                             @click="onTodayClick"
-                            >Today</b-button
-                        >
+                        >Today</b-button>
                         <b-button
                             class="has-margin-bottom-0"
                             outlined
@@ -94,10 +93,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { CalendarView } from '../../store/calendar/calendar-view';
 import CalendarDatepickerModal from './calendar-datepicker-modal.vue';
 import moment from 'moment';
-import calendarStore from '../../store/calendar/calendar-store';
+import { CalendarView } from '../store/calendar-view';
+import calendarStore from '../store/calendar-store';
 
 @Component({
     name: 'calendar-navbar',

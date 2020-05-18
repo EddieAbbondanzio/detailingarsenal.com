@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Client } from '../../api';
+import { Client } from '../api/entities/client';
 
 @Component({
     name: 'client-widget'

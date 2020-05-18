@@ -4,6 +4,6 @@ export const calendar = [
     {
         path: 'calendar',
         name: 'calendar',
-        component: () => import('@/modules/app/views/calendar/calendar.vue')
+        component: () => import('@/modules/calendar/views/calendar.vue')
     }
 ];

@@ -1,6 +1,6 @@
 import { Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
-import { CalendarView } from '@/modules/app/store/calendar/calendar-view';
+import { CalendarView } from '@/modules/calendar/store/calendar-view';
 import moment from 'moment';
 import { TimeUtils, toast, twelveHourFormat } from '@/core';
 import {
@@ -10,12 +10,13 @@ import {
     BLOCK_INITIAL_TIME
 } from '@/modules/calendar/api/entities/appointment-block';
 import store from '@/core/store/index';
-import { CalendarCreateStep } from '@/modules/app/store/calendar/calendar-create-step';
-import { CreateAppointment, api } from '@/modules/app/api';
-import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
-import { displayError } from '@/modules/app/utils/display-error/display-error';
+import { CalendarCreateStep } from '@/modules/calendar/store/calendar-create-step';
+import { CalendarRange } from '@/modules/calendar/store/calendar-range';
+import { displayError } from '@/core/utils/display-error/display-error';
 import Vue from 'vue';
 import { Appointment } from '@/modules/calendar/api/entities/appointment';
+import { api } from '@/core/api/api';
+import { CreateAppointment } from '@/modules/calendar/api/data-transfer-objects/create-appointment';
 
 /**
  * Store for the Calendar view.

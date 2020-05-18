@@ -1,10 +1,9 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
 import { AppointmentBlock } from '@/modules/calendar/api/entities/appointment-block';
-import calendarStore from '@/modules/app/store/calendar/calendar-store';
+import calendarStore from '@/modules/calendar/store/calendar-store';
 import moment from 'moment';
-import { CreateAppointmentBlock } from '@/modules/app/api';
-import { CalendarRange } from '@/modules/app/store/calendar/calendar-range';
+import { CalendarRange } from '@/modules/calendar/store/calendar-range';
 import { uuid } from '@/core/utils/uuid';
 
 /**

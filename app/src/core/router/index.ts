@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 const routes: RouteConfig[] = [
     {
         path: '/app',
-        component: () => import('@/modules/app/views/app.vue'),
+        component: () => import('@/core/views/app.vue'),
         children: [...calendar, ...settings, ...user, ...clients],
         beforeEnter: authGuard
     }

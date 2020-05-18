@@ -53,10 +53,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { hours } from './hours';
 import { days } from './days';
 import moment from 'moment';
-import settingsStore from '../../store/settings/settings-store';
-import calendarStore from '../../store/calendar/calendar-store';
-import store from '../../../../core/store';
-import Calendar from '../../mixins/calendar/calendar';
+import settingsStore from '@/modules/settings/store/settings-store';
+import Calendar from '../mixins/calendar';
+import store from '@/core/store';
+import calendarStore from '../store/calendar-store';
 
 @Component({
     name: 'calendar-week-view'

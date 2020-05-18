@@ -106,8 +106,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Service } from '../../../api';
-import settingsStore from '../../../store/settings/settings-store';
+import { Service } from '../../api/entities/service';
+import settingsStore from '../../store/settings-store';
 
 @Component({
     name: 'service'

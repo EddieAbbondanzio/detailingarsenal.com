@@ -21,8 +21,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import CalendarDatepicker from '@/modules/app/components/calendar/calendar-datepicker.vue';
-import calendarStore from '../../store/calendar/calendar-store';
+import CalendarDatepicker from '@/modules/calendar/components/calendar-datepicker.vue';
+import calendarStore from '../store/calendar-store';
 
 @Component({
     name: 'calendar-sidebar',

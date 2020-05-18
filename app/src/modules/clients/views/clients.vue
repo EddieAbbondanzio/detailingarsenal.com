@@ -47,8 +47,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Client } from '../../api';
-import clientsStore from '../../store/clients/clients-store';
+import clientsStore from '../store/clients-store';
+import { Client } from '../api/entities/client';
 
 @Component({
     name: 'clients'

@@ -145,11 +145,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
 import { ValidationObserver } from 'vee-validate';
 import { getModule } from 'vuex-module-decorators';
-import { SpecificationError, toast } from '@/core';
-import { displayError } from '@/modules/app/utils/display-error/display-error';
-import { VehicleCategory } from '../../../api';
-import settingsStore from '@/modules/app/store/settings/settings-store';
-import { ServicePricingMethod } from '../../../api/settings/value-objects/service-pricing-method';
+import { SpecificationError, toast, displayError } from '@/core';
+import { VehicleCategory } from '../../api/entities/vehicle-category';
+import { ServicePricingMethod } from '../../api/value-objects/service-pricing-method';
+import settingsStore from '../../store/settings-store';
 
 @Component({
     name: 'create-service',

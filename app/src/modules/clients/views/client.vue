@@ -71,11 +71,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { confirmDelete } from '../../utils/confirm-delete/confirm-delete';
-import { toast } from '../../../../core';
-import { displayError } from '../../utils/display-error/display-error';
-import ClientWidget from '@/modules/app/components/clients/client-widget.vue';
-import clientsStore from '../../store/clients/clients-store';
+import ClientWidget from '@/modules/clients/components/client-widget.vue';
+import clientsStore from '../store/clients-store';
+import { confirmDelete, displayError, toast } from '../../../core';
 
 @Component({
     name: 'client',

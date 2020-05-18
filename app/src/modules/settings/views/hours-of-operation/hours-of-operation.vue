@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import settingsStore from '@/modules/app/store/settings/settings-store';
+import settingsStore from '../../store/settings-store';
 
 @Component({
     name: 'hours-of-operation'

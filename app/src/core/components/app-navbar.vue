@@ -68,8 +68,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import UserWidget from '@/modules/app/components/user/user-widget.vue';
-import userStore from '../store/user/user-store';
+import UserWidget from '@/modules/user/components/user-widget.vue';
+import userStore from '@/modules/user/store/user-store';
 
 @Component({
     name: 'app-navbar',

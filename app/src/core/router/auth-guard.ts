@@ -1,6 +1,6 @@
 import { NavigationGuard } from 'vue-router';
 import Vue from 'vue';
-import userStore from '@/modules/app/store/user/user-store';
+import userStore from '@/modules/user/store/user-store';
 
 export const authGuard: NavigationGuard = async (to, from, next) => {
     // Ensure auth service has been initialized

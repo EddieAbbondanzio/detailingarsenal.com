@@ -27,14 +27,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
-import CalendarNavbar from '@/modules/app/components/calendar/calendar-navbar.vue';
-import CalendarDay from '@/modules/app/components/calendar/calendar-day.vue';
-import CalendarWeek from '@/modules/app/components/calendar/calendar-week.vue';
-import CalendarSidebar from '@/modules/app/components/calendar/calendar-sidebar.vue';
-import calendarStore from '../../store/calendar/calendar-store';
-import TimeSelectionSnackbar from '@/modules/app/components/calendar/overlays/time-selection-snackbar.vue';
-import AppointmentCreateModal from '@/modules/app/components/calendar/overlays/appointment-create-modal.vue';
-import AppointmentDetailsModal from '@/modules/app/components/calendar/overlays/appointment-details-modal.vue';
+import CalendarNavbar from '@/modules/calendar/components/calendar-navbar.vue';
+import CalendarDay from '@/modules/calendar/components/calendar-day.vue';
+import CalendarWeek from '@/modules/calendar/components/calendar-week.vue';
+import CalendarSidebar from '@/modules/calendar/components/calendar-sidebar.vue';
+import TimeSelectionSnackbar from '@/modules/calendar/components/overlays/time-selection-snackbar.vue';
+import AppointmentCreateModal from '@/modules/calendar/components/overlays/appointment-create-modal.vue';
+import AppointmentDetailsModal from '@/modules/calendar/components/overlays/appointment-details-modal.vue';
+import calendarStore from '../store/calendar-store';
 
 @Component({
     name: 'calendar',

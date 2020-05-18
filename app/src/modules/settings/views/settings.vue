@@ -35,7 +35,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RawLocation } from 'vue-router';
-import settingsStore from '../../store/settings/settings-store';
+import settingsStore from '../store/settings-store';
 
 @Component({
     name: 'settings'

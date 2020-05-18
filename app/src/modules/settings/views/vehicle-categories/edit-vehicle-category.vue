@@ -40,9 +40,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import { ValidationError, SpecificationError, toast } from '@/core';
-import { displayError } from '@/modules/app/utils/display-error/display-error';
 import InputTextField from '@/core/components/input/input-text-field.vue';
-import settingsStore from '@/modules/app/store/settings/settings-store';
+import settingsStore from '../../store/settings-store';
+import { displayError } from '@/core/utils/display-error/display-error';
 
 /**
  * View to edit a vehicle category.

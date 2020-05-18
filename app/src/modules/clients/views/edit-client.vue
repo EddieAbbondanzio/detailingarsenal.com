@@ -45,9 +45,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
-import { toast } from '../../../../core';
-import { displayError } from '../../utils/display-error/display-error';
-import clientsStore from '../../store/clients/clients-store';
+import clientsStore from '../store/clients-store';
+import { toast, displayError } from '../../../core';
 
 @Component({
     name: 'create-client',

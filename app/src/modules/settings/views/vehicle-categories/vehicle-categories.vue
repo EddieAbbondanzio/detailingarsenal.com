@@ -45,11 +45,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
-import { VehicleCategory } from '@/modules/app/api';
-import { confirmDelete } from '@/modules/app/utils/confirm-delete/confirm-delete';
 import { toast } from '@/core';
-import { displayError } from '../../../utils/display-error/display-error';
-import settingsStore from '@/modules/app/store/settings/settings-store';
+import { VehicleCategory } from '../../api/entities/vehicle-category';
+import settingsStore from '../../store/settings-store';
+import { confirmDelete } from '@/core/utils/confirm-delete/confirm-delete';
+import { displayError } from '@/core/utils/display-error/display-error';
 
 /**
  * Settings page for managing vehicle categories.

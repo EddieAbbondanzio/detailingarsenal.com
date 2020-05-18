@@ -99,12 +99,10 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
 import { ValidationObserver } from 'vee-validate';
-import { DayOfTheWeek } from '@/modules/app/store/day-of-the-week';
-import { TimeUtils, toast } from '../../../../../core';
-import { HoursOfOperationDay } from '@/modules/app/api';
-import { displayError } from '../../../utils/display-error/display-error';
-import { UpdateHoursOfOperation } from '../../../api/settings/data-transfer-objects/update-hours-of-operation';
-import settingsStore from '@/modules/app/store/settings/settings-store';
+import { DayOfTheWeek } from '@/core/store/day-of-the-week';
+import settingsStore from '../../store/settings-store';
+import { TimeUtils, displayError, toast } from '@/core';
+import { UpdateHoursOfOperation } from '../../api/data-transfer-objects/update-hours-of-operation';
 
 /**
  * View to edit hours of operation.

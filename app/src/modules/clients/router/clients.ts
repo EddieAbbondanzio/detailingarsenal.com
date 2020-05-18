@@ -4,21 +4,21 @@ export const clients = [
     {
         path: 'clients',
         name: 'clients',
-        component: () => import('@/modules/app/views/clients/clients.vue')
+        component: () => import('@/modules/clients/views/clients.vue')
     },
     {
         path: 'client/create',
         name: 'createClient',
-        component: () => import('@/modules/app/views/clients/create-client.vue')
+        component: () => import('@/modules/clients/views/create-client.vue')
     },
     {
         path: 'clients/:id',
         name: 'client',
-        component: () => import('@/modules/app/views/clients/client.vue')
+        component: () => import('@/modules/clients/views/client.vue')
     },
     {
         path: 'clients/:id/edit',
         name: 'editClient',
-        component: () => import('@/modules/app/views/clients/edit-client.vue')
+        component: () => import('@/modules/clients/views/edit-client.vue')
     }
 ];
