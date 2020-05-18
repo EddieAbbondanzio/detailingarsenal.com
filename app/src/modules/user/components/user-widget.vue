@@ -1,0 +1,56 @@
+<template>
+    <div>
+        <b-dropdown aria-role="list" position="is-bottom-left">
+            <button class="button is-primary" slot="trigger">
+                <b-icon icon="account" size="is-medium" type="is-light" class="has-padding-all-3"></b-icon>
+            </button>
+
+            <b-dropdown-item aria-role="listitem" custom>
+                <div
+                    class="is-flex is-flex-column is-align-items-center has-text-dark has-padding-y-3"
+                >
+                    <b-icon
+                        icon="account"
+                        size="is-large"
+                        type="is-dark"
+                        class="has-padding-bottom-3"
+                    ></b-icon>
+                    {{ email }}
+                </div>
+            </b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" has-link>
+                <router-link :to="{name: 'userSettings'}" class="is-flex is-flex-row">
+                    <b-icon icon="settings" type="is-dark" class="has-padding-right-3" />Settings
+                </router-link>
+            </b-dropdown-item>
+            <b-dropdown-item
+                aria-role="listitem"
+                @click="onLogoutClick"
+                class="is-flex is-flex-row"
+            >
+                <b-icon icon="logout" type="is-danger" class="has-padding-right-3" />Log out
+            </b-dropdown-item>
+        </b-dropdown>
+    </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+
+@Component({
+    name: 'user-widget'
+})
+export default class UserWidget extends Vue {
+    get email() {
+        if (userStore.user == null) {
+            return '';
+        }
+
+        return userStore.user.email;
+    }
+
+    public async onLogoutClick() {
+        await userStore.logout();
+    }
+}
+</script>

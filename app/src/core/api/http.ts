@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { api } from '@/modules/app/api/api';
+import { api } from '@/core/api/api';
 import { traverse } from '@/core/utils/traverse';
 import { SpecificationError } from '@/core/api/errors/specification-error';
 import { ValidationError } from '@/core/api/errors/validation-error';
