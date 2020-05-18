@@ -12,15 +12,11 @@
 	  
 		<div id="landingNavbar" class="navbar-menu">
 		  <div class="navbar-start">
-			<a class="navbar-item">
-			  Pricing
-			</a>
-			<a class="navbar-item">
-			  About Us
-			</a>
-			<a class="navbar-item">
-				Contact
-			</a>
+			{{ with .Site.Menus.main }}
+				{{ range . }}
+				<a class="navbar-item" href="{{ .URL | relURL }}">{{ .Name }}</a>
+				{{ end }}
+			{{ end }}
 		  </div>
 	  
 		  <div class="navbar-end">
@@ -37,19 +33,4 @@
 		  </div>
 		</div>
 	  </nav>
-
-
-
-
-
-	<a class="has-text-white" href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
-	{{ with .Site.Menus.main }}
-	<nav>
-		<ul>
-			{{ range . }}
-			<li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
-			{{ end }}
-		</ul>
-	</nav>
-	{{ end }}
 </header>
