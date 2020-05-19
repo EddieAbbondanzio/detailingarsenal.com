@@ -171,26 +171,33 @@
                     </p>
                 </div>
 
-                <ul class="is-inline-block">
-                    <li>
-                        <div class="is-flex is-flex-row is-align-items-center">
-                            <span class="icon has-margin-right-1">
-                                <i class="mdi mdi-email mdi-24px"></i>  
-                            </span>
-
-                            <span>contact@detailingarsenal.com</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="is-flex is-flex-row is-align-items-center">
-                            <span class="icon has-margin-right-1">
-                                <i class="mdi mdi-phone mdi-24px"></i>  
-                            </span>
-
-                            <span>(207)-213-7547</span>
-                        </div>
-                    </li>
-                </ul>
+                <div class="columns">
+                    <div class="column">
+                        {{ partial "contact-us-form.html" . }}
+                    </div>
+                    <div class="column">
+                        <ul class="is-inline-block">
+                            <li>
+                                <div class="is-flex is-flex-row is-align-items-center">
+                                    <span class="icon has-margin-right-1">
+                                        <i class="mdi mdi-email mdi-24px"></i>  
+                                    </span>
+        
+                                    <span>contact@detailingarsenal.com</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="is-flex is-flex-row is-align-items-center">
+                                    <span class="icon has-margin-right-1">
+                                        <i class="mdi mdi-phone mdi-24px"></i>  
+                                    </span>
+        
+                                    <span>(207)-213-7547</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
