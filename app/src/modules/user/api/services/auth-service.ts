@@ -28,7 +28,7 @@ export class AuthService {
     }
 
     public async login() {
-        await this.auth0!.loginWithRedirect({ redirect_uri: 'http://localhost:8080/app' });
+        await this.auth0!.loginWithRedirect({ redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI });
     }
 
     public async logout() {

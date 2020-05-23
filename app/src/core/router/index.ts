@@ -18,6 +18,10 @@ const routes: RouteConfig[] = [
     {
         path: '/login',
         component: () => import('@/core/views/login.vue')
+    },
+    {
+        path: '/goodbye',
+        component: () => import('@/core/views/goodbye.vue')
     }
 ];
 
