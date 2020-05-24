@@ -21,7 +21,15 @@ steps:
       displayName: 'npm install and build'
       workingDirectory: ./app
 
-    - task: PublishBuildArtifacts@1
+    #- task: PublishBuildArtifacts@1
+    ##  inputs:
+     #     artifactName: dist
+     #     pathtoPublish: './app/dist'
+
+    - task: AzureRmWebAppDeployment@4
       inputs:
-          artifactName: dist
-          pathtoPublish: './app/dist'
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'Azure subscription 1 (09691d1b-2c1f-455d-8cbd-f208efd0b0dc)'
+        appType: 'webAppLinux'
+        WebAppName: 'detailingarsenal-app'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/dist'
