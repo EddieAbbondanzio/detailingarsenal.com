@@ -27,3 +27,6 @@ theme = "blank"
     name = "Blog"
     url = "/blog"
     weight = 4
+
+[params]
+    auth0="https://app.detailingarsenal.com#login"
