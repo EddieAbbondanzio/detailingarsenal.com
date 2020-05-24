@@ -32,4 +32,5 @@ steps:
         azureSubscription: 'Azure subscription 1 (09691d1b-2c1f-455d-8cbd-f208efd0b0dc)'
         appType: 'webAppLinux'
         WebAppName: 'detailingarsenal'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/dist'
+         
+        packageForLinux: '$(System.DefaultWorkingDirectory)/app/dist'
