@@ -1,5 +1,5 @@
 <template>
-    <div>REEE</div>
+    <div>Redirecting to login page. Please wait...</div>
 </template>
 
 <script lang="ts">
