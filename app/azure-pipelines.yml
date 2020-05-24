@@ -21,10 +21,10 @@ steps:
       displayName: 'npm install and build'
       workingDirectory: ./app
 
-    #- task: PublishBuildArtifacts@1
-    ##  inputs:
-     #     artifactName: dist
-     #     pathtoPublish: './app/dist'
+    - task: PublishBuildArtifacts@1
+      inputs:
+          artifactName: dist
+          pathtoPublish: './app/dist'
 
     - task: AzureRmWebAppDeployment@4
       inputs:
