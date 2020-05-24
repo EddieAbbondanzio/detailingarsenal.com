@@ -4,6 +4,7 @@ using DetailingArsenal.Application;
 using DetailingArsenal.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace DetailingArsenal.Api {
     [Authorize]

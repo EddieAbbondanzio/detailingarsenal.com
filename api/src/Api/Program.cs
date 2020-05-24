@@ -11,7 +11,12 @@ using Microsoft.Extensions.Logging;
 namespace DetailingArsenal.Api {
     public class Program {
         public static async Task Main(string[] args) {
-            var host = CreateHostBuilder(args).Build();
+            var host = CreateHostBuilder(args).ConfigureLogging((context, logging) => {
+                logging.ClearProviders();
+
+                logging.AddConfiguration(context.Configuration.GetSection("Logging"));
+                logging.AddConsole();
+            }).Build();
 
             using (var scope = host.Services.CreateScope()) {
                 // Perform any database migrations
