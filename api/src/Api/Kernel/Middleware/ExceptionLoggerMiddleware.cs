@@ -1,3 +1,4 @@
+using Auth0.Core.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -19,6 +20,8 @@ public class ExceptionHandlingMiddleware {
     public async Task Invoke(HttpContext context) {
         try {
             await next(context);
+        } catch (ErrorApiException ex) {
+            Log.Fatal(ex.ApiError.Message);
         } catch (Exception ex) {
             Log.Fatal(ex, "Something went really wrong!");
             context.Response.ContentType = "text/plain";
