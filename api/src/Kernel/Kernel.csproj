@@ -14,5 +14,10 @@
     <PackageReference Include="FluentValidation" Version="8.6.0" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="Dapper" Version="1.60.9" />
+    <PackageReference Include="FluentMigrator" Version="3.2.1" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.2.1" />
+    <PackageReference Include="FluentMigrator.Runner.Postgres" Version="3.2.1" />
+    <PackageReference Include="npgsql" Version="4.0.9" />
   </ItemGroup>
 </Project>
