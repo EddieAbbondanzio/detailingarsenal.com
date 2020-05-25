@@ -21,7 +21,7 @@ public class ExceptionHandlingMiddleware {
         try {
             await next(context);
         } catch (ErrorApiException ex) {
-            Log.Fatal($"Auth0 failed with code: {ex.ApiError.ErrorCode}, message: {ex.ApiError.Message}", ex);
+            Log.Fatal($"Auth0 failed with code: {ex.StatusCode}, message: {ex.ApiError.Message}", ex);
             throw;
         } catch (Exception ex) {
             Log.Fatal(ex, "Something went really wrong!");
