@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -10,19 +11,16 @@ using System.Threading.Tasks;
 
 public class ExceptionHandlingMiddleware {
     private readonly RequestDelegate next;
-    private ILogger logger;
 
-    public ExceptionHandlingMiddleware(ILogger logger, RequestDelegate next) {
+    public ExceptionHandlingMiddleware(RequestDelegate next) {
         this.next = next;
-        this.logger = logger;
     }
 
     public async Task Invoke(HttpContext context) {
         try {
-            throw new Exception("test lol");
-            // await next(context);
+            await next(context);
         } catch (Exception ex) {
-            logger.LogError(new EventId(1), ex, "Something went really wrong");
+            Log.Fatal(ex, "Something went really wrong!");
             context.Response.ContentType = "text/plain";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
