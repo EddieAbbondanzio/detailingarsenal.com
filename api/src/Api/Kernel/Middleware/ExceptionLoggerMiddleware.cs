@@ -21,13 +21,15 @@ public class ExceptionHandlingMiddleware {
         try {
             await next(context);
         } catch (ErrorApiException ex) {
-            Log.Fatal(ex.ApiError.Message);
+            Log.Fatal($"Auth0 failed with code: {ex.ApiError.ErrorCode}, message: {ex.ApiError.Message}", ex);
+            throw;
         } catch (Exception ex) {
             Log.Fatal(ex, "Something went really wrong!");
             context.Response.ContentType = "text/plain";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             await context.Response.WriteAsync("System borked. Please stand by.");
+            throw;
         }
     }
 }
