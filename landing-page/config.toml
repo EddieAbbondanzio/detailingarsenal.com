@@ -2,6 +2,7 @@ baseURL = "https://detailingarsenal.com/"
 languageCode = "en-us"
 title = "Detailing Arsenal"
 theme = "blank"
+googleAnalytics="UA-167602847-1"
 
 [menu]
     [[menu.main]]
