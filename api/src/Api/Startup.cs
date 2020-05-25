@@ -146,6 +146,8 @@ namespace DetailingArsenal.Api {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             app.UseRouting();
 
+            app.UseExceptionLogger();
+
             app.UseCors(b => {
                 b.AllowAnyOrigin();
                 b.AllowAnyMethod();

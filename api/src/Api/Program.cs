@@ -7,16 +7,21 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 
 namespace DetailingArsenal.Api {
     public class Program {
         public static async Task Main(string[] args) {
-            var host = CreateHostBuilder(args).ConfigureLogging((context, logging) => {
-                logging.ClearProviders();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
 
-                logging.AddConfiguration(context.Configuration.GetSection("Logging"));
-                logging.AddConsole();
-            }).Build();
+            Log.Information("Starting web host");
+            var host = CreateHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope()) {
                 // Perform any database migrations
@@ -30,6 +35,6 @@ namespace DetailingArsenal.Api {
         Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
-                });
+                }).UseSerilog();
     }
 }
