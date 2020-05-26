@@ -73,6 +73,10 @@ namespace DetailingArsenal.Api {
             });
             services.AddSingleton<IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
+            // Email
+            services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
+            services.AddTransient<IEmailClient, SmtpEmailClient>();
+
             // Auth0
             services.AddTransient<IAuth0ApiClientBuilder, Auth0ApiClientBuilder>();
             services.AddTransient<IUserService, UserService>();
@@ -85,12 +89,13 @@ namespace DetailingArsenal.Api {
             var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
             services.AddScoped<DatabaseMigrationRunner, FluentMigratorMigrationRunner>();
             services.AddSingleton<IDatabase, PostgresDatabase>();
-            services.AddDatabaseMigrations(dbConfig.GetConnectionString());
+            services.AddDatabaseMigrations(dbConfig.GetConnectionString(), typeof(MigrationsFlag).Assembly);
 
             // User
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<ActionHandler<UpdateUserCommand, UserDto>, UpdateUserHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserDto>, GetUserByAuth0IdHandler>();
+            services.AddTransient<IBusEventHandler<NewUserEvent>, NotifyEdOfNewUser>();
 
             // Vehicle Categories
             services.AddTransient<VehicleCategoryNameUniqueSpecification>();
