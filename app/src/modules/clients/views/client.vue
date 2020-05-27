@@ -1,7 +1,7 @@
 <template>
     <page :loading="loading">
         <template v-slot:header v-if="client != null">
-            <page-header>
+            <page-header :title="client.name">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Clients" :to="{name: 'clients'}" />
