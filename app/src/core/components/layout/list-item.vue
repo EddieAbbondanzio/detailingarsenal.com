@@ -30,7 +30,9 @@
 
             <!-- Action buttons -->
             <slot name="actions">
-                <b-icon v-if="to != null" icon="chevron-right" type="is-dark" />
+                <div class="is-flex is-flex-column is-align-items-center is-justify-content-center">
+                    <b-icon v-if="to != null" icon="chevron-right" type="is-dark" />
+                </div>
             </slot>
         </component>
     </li>
