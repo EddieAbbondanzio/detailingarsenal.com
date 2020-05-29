@@ -3,7 +3,7 @@
         tag="form"
         @submit.prevent
         v-slot="{ valid, pristine, errors, validated, handleSubmit }"
-        v-disable-all="loading"
+        v-disable-all="isLoading"
         class="box is-shadowless has-padding-all-2 has-padding-all-3-tablet"
     >
         <slot></slot>
@@ -14,7 +14,7 @@
                     class="has-margin-right-1"
                     :type="submitType"
                     native-type="submit"
-                    :loading="loading"
+                    :loading="isLoading"
                     @click="handleSubmit(onSubmit)"
                 >{{ submitText }}</b-button>
 
@@ -22,7 +22,7 @@
                     class="has-margin-left-1"
                     type="is-light"
                     @click="onCancel()"
-                    :disabled="loading"
+                    :disabled="isLoading"
                 >Cancel</b-button>
             </slot>
 
@@ -51,11 +51,16 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import appStore from '../../store/app-store';
 
 @Component({
     name: 'input-form'
 })
 export default class InputForm extends Vue {
+    get isLoading() {
+        return appStore.loading;
+    }
+
     @Prop({ default: false })
     debug!: boolean;
 

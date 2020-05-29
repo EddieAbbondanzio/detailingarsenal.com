@@ -36,6 +36,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { toast, displayError, SpecificationError } from '../../../../core';
 import adminStore from '../../store/admin-store';
+import appStore from '@/core/store/app-store';
 
 @Component({
     name: 'create-permission'
@@ -47,6 +48,7 @@ export default class CreatePermission extends Vue {
 
     async onSubmit() {
         this.loading = true;
+        appStore.LOADING();
         const create = { action: this.action, scope: this.scope };
 
         try {
@@ -62,6 +64,7 @@ export default class CreatePermission extends Vue {
             }
         } finally {
             this.loading = false;
+            appStore.LOADED();
         }
     }
 }
