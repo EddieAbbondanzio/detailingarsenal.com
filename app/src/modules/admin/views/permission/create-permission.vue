@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header title="Create permission" :description="`Create new permission`">
                 <template v-slot:breadcrumb-trail>
@@ -12,7 +12,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" :loading="loading" submitText="Create">
+        <input-form @submit="onSubmit" submitText="Create">
             <input-text-field
                 label="Action"
                 rules="required|max:32"
@@ -37,18 +37,18 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { toast, displayError, SpecificationError } from '../../../../core';
 import adminStore from '../../store/admin-store';
 import appStore from '@/core/store/app-store';
+import { displayLoading } from '@/core/utils/display-loading';
 
 @Component({
     name: 'create-permission'
 })
 export default class CreatePermission extends Vue {
-    loading = false;
     action: string = '';
     scope: string = '';
 
+    @displayLoading
     async onSubmit() {
-        this.loading = true;
-        appStore.LOADING();
+        // appStore.LOADING();
         const create = { action: this.action, scope: this.scope };
 
         try {
@@ -63,8 +63,7 @@ export default class CreatePermission extends Vue {
                 throw err;
             }
         } finally {
-            this.loading = false;
-            appStore.LOADED();
+            // appStore.LOADED();
         }
     }
 }
