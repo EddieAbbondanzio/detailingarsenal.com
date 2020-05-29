@@ -1,10 +1,7 @@
 <template>
     <page :loading="loading">
         <template v-slot:header>
-            <page-header
-                title="Edit vehicle category"
-                :description="`Edit vehicle category ${name}`"
-            >
+            <page-header title="Create vehicle category" :description="`Create vehicle category`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Settings" :to="{name: 'settings'}" />

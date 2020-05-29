@@ -1,0 +1,68 @@
+<template>
+    <page :loading="loading">
+        <template v-slot:header>
+            <page-header title="Create permission" :description="`Create new permission`">
+                <template v-slot:breadcrumb-trail>
+                    <breadcrumb-trail>
+                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Permissions" :to="{name: 'permissions'}" />
+                        <breadcrumb name="Create" :to="{name: 'createPermission'}" active="true" />
+                    </breadcrumb-trail>
+                </template>
+            </page-header>
+        </template>
+
+        <input-form @submit="onSubmit" :loading="loading" submitText="Create">
+            <input-text-field
+                label="Action"
+                rules="required|max:32"
+                :required="true"
+                v-model="action"
+                placeholder="read"
+            />
+
+            <input-text-field
+                label="Scope"
+                rules="required|max:32"
+                v-model="scope"
+                placeholder="users"
+                :required="true"
+            />
+        </input-form>
+    </page>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { toast, displayError, SpecificationError } from '../../../../core';
+import adminStore from '../../store/admin-store';
+
+@Component({
+    name: 'create-permission'
+})
+export default class CreatePermission extends Vue {
+    loading = false;
+    action: string = '';
+    scope: string = '';
+
+    async onSubmit() {
+        this.loading = true;
+        const create = { action: this.action, scope: this.scope };
+
+        try {
+            await adminStore.createPermission(create);
+
+            toast(`Created new permission`);
+            this.$router.push({ name: 'permissions' });
+        } catch (err) {
+            if (err instanceof SpecificationError) {
+                displayError(err);
+            } else {
+                throw err;
+            }
+        } finally {
+            this.loading = false;
+        }
+    }
+}
+</script>

@@ -4,12 +4,12 @@ using DetailingArsenal.Domain;
 namespace DetailingArsenal.Application {
     [Validate(typeof(UpdateVehicleCategoryValidator))]
     public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryDto> {
-        private VehicleCategoryNameUniqueSpecification specifcation;
+        private VehicleCategoryNameUniqueSpecification specification;
         private IVehicleCategoryRepo repo;
         private IMapper mapper;
 
-        public UpdateVehicleCategoryHandler(VehicleCategoryNameUniqueSpecification specifcation, IVehicleCategoryRepo repo, IMapper mapper) {
-            this.specifcation = specifcation;
+        public UpdateVehicleCategoryHandler(VehicleCategoryNameUniqueSpecification specification, IVehicleCategoryRepo repo, IMapper mapper) {
+            this.specification = specification;
             this.repo = repo;
             this.mapper = mapper;
         }
@@ -29,7 +29,7 @@ namespace DetailingArsenal.Application {
             cat.Description = command.Description;
 
             // Ensure new name isn't in use by another category.
-            await specifcation.CheckAndThrow(cat);
+            await specification.CheckAndThrow(cat);
 
             await repo.Update(cat);
             return mapper.Map<VehicleCategory, VehicleCategoryDto>(cat);

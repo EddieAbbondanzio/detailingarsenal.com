@@ -34,6 +34,12 @@
                     tag="router-link"
                     :to="{ name: 'settings' }"
                 >Settings</b-navbar-item>
+                <b-navbar-item
+                    class="is-flex-tablet is-hidden-mobile"
+                    exact
+                    tag="router-link"
+                    :to="{ name: 'adminPanel' }"
+                >Admin</b-navbar-item>
             </template>
 
             <template slot="end">

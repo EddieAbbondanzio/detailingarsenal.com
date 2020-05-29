@@ -123,7 +123,7 @@ class SettingsStore extends InitableModule {
      */
     @Action({ rawError: true })
     public async deleteVehicleCategory(vehicleCategory: VehicleCategory) {
-        var vc = await api.settings.vehicleCategory.deleteVehicleCategory(vehicleCategory);
+        await api.settings.vehicleCategory.deleteVehicleCategory(vehicleCategory);
         this.context.commit('DELETE_VEHICLE_CATEGORY', vehicleCategory);
     }
 
@@ -158,7 +158,7 @@ class SettingsStore extends InitableModule {
 
     @Action({ rawError: true })
     public async deleteService(service: Service) {
-        api.settings.service.deleteService(service.id);
+        await api.settings.service.deleteService(service.id);
         this.context.commit('DELETE_SERVICE', service);
     }
 }

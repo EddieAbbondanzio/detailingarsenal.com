@@ -70,6 +70,7 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<HoursOfOperationDay, HoursOfOperationDayDto>();
                 config.CreateMap<Appointment, AppointmentDto>();
                 config.CreateMap<AppointmentBlock, AppointmentBlockDto>();
+                config.CreateMap<Permission, PermissionDto>();
             });
             services.AddSingleton<IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
@@ -80,6 +81,14 @@ namespace DetailingArsenal.Api {
             // Auth0
             services.AddTransient<IAuth0ApiClientBuilder, Auth0ApiClientBuilder>();
             services.AddTransient<IUserService, UserService>();
+
+            // Authorization
+            services.AddTransient<IPermissionRepo, PermissionRepo>();
+            services.AddTransient<PermissionUniqueSpecification>();
+            services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionDto>>, GetPermissionsHandler>();
+            services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionDto>, CreatePermissionHandler>();
+            services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionDto>, UpdatePermissionHandler>();
+            services.AddTransient<ActionHandler<DeletePermissionCommand>, DeletePermissionHandler>();
 
             // Infrastructure
             services.AddScoped<IMediator, Mediator>();

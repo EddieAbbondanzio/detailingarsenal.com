@@ -6,6 +6,7 @@ import { VehicleCategoryService } from '@/modules/settings/api/services/vehicle-
 import { UserService } from '@/modules/user/api/services/user-service';
 import { ClientService } from '@/modules/clients/api/services/client-service';
 import { AppointmentService } from '@/modules/calendar/api/service/appointment-service';
+import { PermissionService } from '@/modules/admin/api/services/permission-service';
 
 export const api = {
     auth: new AuthService(),
@@ -17,5 +18,8 @@ export const api = {
         hoursOfOperation: new HoursOfOperationService(),
         service: new ServiceService(),
         vehicleCategory: new VehicleCategoryService()
+    },
+    authorization: {
+        permission: new PermissionService()
     }
 };
