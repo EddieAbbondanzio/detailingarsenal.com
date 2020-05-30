@@ -71,6 +71,7 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<Appointment, AppointmentDto>();
                 config.CreateMap<AppointmentBlock, AppointmentBlockDto>();
                 config.CreateMap<Permission, PermissionDto>();
+                config.CreateMap<Role, RoleDto>();
             });
             services.AddSingleton<IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
@@ -84,11 +85,16 @@ namespace DetailingArsenal.Api {
 
             // Authorization
             services.AddTransient<IPermissionRepo, PermissionRepo>();
+            services.AddTransient<IRoleRepo, RoleRepo>();
             services.AddTransient<PermissionUniqueSpecification>();
             services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionDto>>, GetPermissionsHandler>();
             services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionDto>, CreatePermissionHandler>();
             services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionDto>, UpdatePermissionHandler>();
             services.AddTransient<ActionHandler<DeletePermissionCommand>, DeletePermissionHandler>();
+            services.AddTransient<ActionHandler<GetRolesQuery, List<RoleDto>>, GetRolesHandler>();
+            services.AddTransient<ActionHandler<CreateRoleCommand, RoleDto>, CreateRoleHandler>();
+            services.AddTransient<ActionHandler<UpdateRoleCommand, RoleDto>, UpdateRoleHandler>();
+            services.AddTransient<ActionHandler<DeleteRoleCommand>, DeleteRoleHandler>();
 
             // Infrastructure
             services.AddScoped<IMediator, Mediator>();
