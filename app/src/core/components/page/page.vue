@@ -70,13 +70,15 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import appStore from '../../store/app-store';
 
 @Component({
     name: 'page'
 })
 export default class Page extends Vue {
-    @Prop({ default: false })
-    loading!: boolean;
+    get loading(): boolean {
+        return appStore.loading;
+    }
 
     @Prop({ default: 'is-light' })
     background!: string;

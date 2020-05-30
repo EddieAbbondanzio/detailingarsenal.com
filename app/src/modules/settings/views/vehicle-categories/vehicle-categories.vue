@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 title="Vehicle categories"
@@ -50,6 +50,7 @@ import { VehicleCategory } from '../../api/entities/vehicle-category';
 import settingsStore from '../../store/settings-store';
 import { confirmDelete } from '@/core/utils/confirm-delete/confirm-delete';
 import { displayError } from '@/core/utils/display-error/display-error';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 /**
  * Settings page for managing vehicle categories.
@@ -58,8 +59,6 @@ import { displayError } from '@/core/utils/display-error/display-error';
     name: 'vehicle-categories'
 })
 export default class VehicleCategories extends Vue {
-    loading: boolean = true;
-
     get count() {
         return settingsStore.vehicleCategories.length;
     }
@@ -68,28 +67,26 @@ export default class VehicleCategories extends Vue {
         return settingsStore.vehicleCategories;
     }
 
+    @displayLoading
     async created() {
         await settingsStore.init();
-        this.loading = false;
     }
 
     async onEdit(vc: VehicleCategory) {
         this.$router.push({ name: 'editVehicleCategory', params: { id: vc.id } });
     }
 
+    @displayLoading
     async onDelete(vc: VehicleCategory) {
         const del = await confirmDelete('vehicle category', vc.name);
 
         if (del) {
             try {
-                this.loading = true;
                 await settingsStore.deleteVehicleCategory(vc);
 
                 toast(`Delete vehicle category ${vc.name}`);
             } catch (err) {
                 displayError(err);
-            } finally {
-                this.loading = false;
             }
         }
     }

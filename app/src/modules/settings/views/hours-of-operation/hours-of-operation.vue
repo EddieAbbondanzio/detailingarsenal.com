@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 title="Hours of operation"
@@ -61,20 +61,19 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import settingsStore from '../../store/settings-store';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 @Component({
     name: 'hours-of-operation'
 })
 export default class HoursOfOperation extends Vue {
-    public loading: boolean = true;
-
     get days() {
         return settingsStore.hoursOfOperation != null ? settingsStore.hoursOfOperation.days : [];
     }
 
+    @displayLoading
     public async created() {
         await settingsStore.init();
-        this.loading = false;
     }
 
     public dayName(index: number) {

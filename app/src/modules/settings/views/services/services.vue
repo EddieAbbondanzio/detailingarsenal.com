@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 title="Services"
@@ -42,13 +42,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import settingsStore from '../../store/settings-store';
 import { Service } from '../../api/entities/service';
 import { confirmDelete, displayError, toast } from '@/core';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 @Component({
     name: 'services'
 })
 export default class Services extends Vue {
-    public loading: boolean = true;
-
     get count() {
         return settingsStore.services.length;
     }
@@ -57,29 +56,26 @@ export default class Services extends Vue {
         return settingsStore.services;
     }
 
+    @displayLoading
     public async created() {
         await settingsStore.init();
-
-        this.loading = false;
     }
 
     async onEdit(s: Service) {
         this.$router.push({ name: 'editService', params: { id: s.id } });
     }
 
+    @displayLoading
     async onDelete(s: Service) {
         const del = await confirmDelete('vehicle category', s.name);
 
         if (del) {
             try {
-                this.loading = true;
                 await settingsStore.deleteService(s);
 
                 toast(`Delete vehicle category ${s.name}`);
             } catch (err) {
                 displayError(err);
-            } finally {
-                this.loading = false;
             }
         }
     }

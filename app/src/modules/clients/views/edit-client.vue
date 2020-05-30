@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading" v-if="client != null">
+    <page v-if="client != null">
         <template v-slot:header>
             <page-header :title="`Edit ${name}`" description="Edit an existing client">
                 <template v-slot:breadcrumb-trail>
@@ -16,7 +16,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" submitText="Save changes" :loading="loading">
+        <input-form @submit="onSubmit" submitText="Save changes">
             <input-text-field
                 label="Name"
                 required="true"
@@ -47,6 +47,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
 import clientsStore from '../store/clients-store';
 import { toast, displayError } from '../../../core';
+import { displayLoading } from '../../../core/utils/display-loading';
 
 @Component({
     name: 'create-client',
@@ -62,8 +63,8 @@ export default class CreateClient extends Vue {
     name: string = '';
     phone: string = '';
     email: string = '';
-    loading: boolean = false;
 
+    @displayLoading
     async created() {
         await clientsStore.init();
 
@@ -78,9 +79,8 @@ export default class CreateClient extends Vue {
         this.email = c.email || '';
     }
 
+    @displayLoading
     async onSubmit() {
-        this.loading = true;
-
         try {
             await clientsStore.updateClient({
                 id: this.$route.params.id,
@@ -93,8 +93,6 @@ export default class CreateClient extends Vue {
             this.$router.push({ name: 'clients' });
         } catch (err) {
             displayError(err);
-        } finally {
-            this.loading = false;
         }
     }
 }

@@ -37,6 +37,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import { http } from '@/core/api/http';
 import userStore from '../store/user-store';
+import { displayLoading } from '../../../core/utils/display-loading';
 
 @Component({
     name: 'user-settings'
@@ -46,11 +47,9 @@ export default class UserSettings extends Vue {
         return userStore.user;
     }
 
-    public loading: boolean = true;
-
+    @displayLoading
     async created() {
         await userStore.init();
-        this.loading = false;
     }
 }
 </script>

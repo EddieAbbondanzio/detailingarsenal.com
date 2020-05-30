@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header title="Create new client" description="Create a new client for services">
                 <template v-slot:breadcrumb-trail>
@@ -11,7 +11,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" submitText="Create" :loading="loading">
+        <input-form @submit="onSubmit" submitText="Create">
             <input-text-field
                 label="Name"
                 required="true"
@@ -42,6 +42,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ValidationProvider } from 'vee-validate';
 import { toast, displayError } from '@/core';
 import clientsStore from '../store/clients-store';
+import { displayLoading } from '../../../core/utils/display-loading';
 
 @Component({
     name: 'create-client',
@@ -53,11 +54,9 @@ export default class CreateClient extends Vue {
     name: string = '';
     phone: string = '';
     email: string = '';
-    loading: boolean = false;
 
+    @displayLoading
     async onSubmit() {
-        this.loading = true;
-
         try {
             await clientsStore.createClient({
                 name: this.name,
@@ -69,8 +68,6 @@ export default class CreateClient extends Vue {
             this.$router.push({ name: 'clients' });
         } catch (err) {
             displayError(err);
-        } finally {
-            this.loading = false;
         }
     }
 }

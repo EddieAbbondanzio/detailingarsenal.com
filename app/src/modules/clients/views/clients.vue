@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 title="Clients"
@@ -49,21 +49,21 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import clientsStore from '../store/clients-store';
 import { Client } from '../api/entities/client';
+import { displayLoading } from '../../../core/utils/display-loading';
 
 @Component({
     name: 'clients'
 })
 export default class Clients extends Vue {
     public clients: Client[] = [];
-    public loading: boolean = true;
 
     get count() {
         return clientsStore.clients.length;
     }
 
+    @displayLoading
     public async created() {
         await clientsStore.init();
-        this.loading = false;
         this.clients = clientsStore.clients;
     }
 

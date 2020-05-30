@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 :title="`Edit ${name}`"
@@ -24,7 +24,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" :loading="loading">
+        <input-form @submit="onSubmit">
             <input-text-field
                 ref="nameField"
                 rules="required|max:32"
@@ -161,6 +161,7 @@ import { SpecificationError, toast, displayError } from '@/core';
 import { VehicleCategory } from '../../api/entities/vehicle-category';
 import { ServicePricingMethod } from '../../api/value-objects/service-pricing-method';
 import settingsStore from '../../store/settings-store';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 @Component({
     name: 'edit-service',
@@ -171,7 +172,6 @@ import settingsStore from '../../store/settings-store';
     }
 })
 export default class EditService extends Vue {
-    loading: boolean = false;
     name: string = '';
     description: string = '';
     configs: { vehicleCategory: VehicleCategory | null; price: number | null; duration: number | null }[] = [
@@ -229,9 +229,9 @@ export default class EditService extends Vue {
         this.configs.push({ vehicleCategory: null, price: null, duration: null });
     }
 
+    @displayLoading
     async onSubmit() {
         try {
-            this.loading = true;
             await settingsStore.updateService({
                 id: this.$route.params.id,
                 name: this.name,
@@ -248,8 +248,6 @@ export default class EditService extends Vue {
             toast(`Edited service ${this.name}`);
         } catch (err) {
             displayError(err);
-        } finally {
-            this.loading = false;
         }
     }
 }

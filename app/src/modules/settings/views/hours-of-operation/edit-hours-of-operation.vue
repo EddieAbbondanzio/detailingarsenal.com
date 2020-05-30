@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 title="Edit hours of operation"
@@ -19,12 +19,7 @@
             </page-header>
         </template>
 
-        <input-form
-            submitText="Save changes"
-            @submit="onSubmit"
-            :errorSummary="true"
-            :loading="loading"
-        >
+        <input-form submitText="Save changes" @submit="onSubmit" :errorSummary="true">
             <div
                 class="is-flex is-flex-row is-align-items-center"
                 v-for="day in days"
@@ -103,6 +98,7 @@ import { DayOfTheWeek } from '@/core/store/day-of-the-week';
 import settingsStore from '../../store/settings-store';
 import { TimeUtils, displayError, toast } from '@/core';
 import { UpdateHoursOfOperation } from '../../api/data-transfer-objects/update-hours-of-operation';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 /**
  * View to edit hours of operation.
@@ -126,8 +122,8 @@ export default class EditHoursOfOperation extends Vue {
         { enabled: false, name: 'Friday', abbreviation: 'Fri' },
         { enabled: false, name: 'Saturday', abbreviation: 'Sat' }
     ];
-    public loading: boolean = true;
 
+    @displayLoading
     public async created() {
         this.times = [];
 
@@ -151,8 +147,6 @@ export default class EditHoursOfOperation extends Vue {
             this.days[i].open = day.open;
             this.days[i].close = day.close;
         }
-
-        this.loading = false;
     }
 
     /**
@@ -179,8 +173,8 @@ export default class EditHoursOfOperation extends Vue {
         }
     }
 
+    @displayLoading
     public async onSubmit() {
-        this.loading = true;
         const hoursOfOp: UpdateHoursOfOperation = { id: settingsStore.hoursOfOperation.id, days: [] };
 
         for (let i = 0; i < this.days.length; i++) {
@@ -199,8 +193,6 @@ export default class EditHoursOfOperation extends Vue {
             this.$router.push({ name: 'hoursOfOperation' });
         } catch (err) {
             displayError(err);
-        } finally {
-            this.loading = false;
         }
     }
 }

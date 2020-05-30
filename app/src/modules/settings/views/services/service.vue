@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header :title="service != null ? service.name : ``">
                 <template v-slot:breadcrumb-trail>
@@ -82,23 +82,6 @@
                         >{{ props.row.duration | duration }}</b-table-column>
                     </template>
                 </b-table>
-                <!-- <div class="columns is-mobile is-multiline">
-                    <div class="column is-one-third">Vehicle Category</div>
-                    <div class="column is-one-third">Price</div>
-                    <div class="column is-one-third">Duration</div>
-
-                    <div
-                        class="is-flex is-flex-row has-margin-y-1 is-size-6"
-                        v-for="(config, i) in service.configurations"
-                        :key="i"
-                    >
-                        <div
-                            class="has-margin-x-1"
-                        ></div>
-                        <div class="has-margin-x-1">{{ config.price | currency}}</div>
-                        <div class="has-margin-x-1">{{ config.duration | duration }}</div>
-                    </div>
-                </div>-->
             </div>
         </div>
     </page>
@@ -108,20 +91,18 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Service } from '../../api/entities/service';
 import settingsStore from '../../store/settings-store';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 @Component({
     name: 'service'
 })
 export default class ServiceView extends Vue {
-    loading: boolean = false;
     service: Service = null!;
 
+    @displayLoading
     async created() {
-        this.loading = true;
         await settingsStore.init();
         this.service = settingsStore.services.find(s => s.id == this.$route.params.id)!;
-
-        this.loading = false;
     }
 
     getVehicleCategoryName(vcId: string) {

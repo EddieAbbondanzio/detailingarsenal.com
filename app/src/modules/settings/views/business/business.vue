@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 title="Business"
@@ -42,20 +42,19 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import settingsStore from '../../store/settings-store';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 @Component({
     name: 'business'
 })
 export default class BusinessView extends Vue {
-    public loading: boolean = true;
-
     get business() {
         return settingsStore.business;
     }
 
+    @displayLoading
     public async created() {
         await settingsStore.init();
-        this.loading = false;
     }
 }
 </script>

@@ -7,7 +7,6 @@
                 { name: 'Edit', to: { name: 'editUserSettings' } },
             ]"
         actionText="Save changes"
-        :loading="loading"
         @input="onSubmit"
     >
         <template v-slot:header>
@@ -21,7 +20,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" :loading="loading">
+        <input-form @submit="onSubmit">
             <input-text-field label="Name" rules="max:64" v-model="name" placeholder="John Smith" />
             <input-text-field
                 label="Email"
@@ -37,6 +36,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { toast } from '@/core';
 import userStore from '../store/user-store';
+import { displayLoading } from '../../../core/utils/display-loading';
 
 @Component({
     name: 'edit-user-settings'
@@ -49,8 +49,7 @@ export default class EditUserSettings extends Vue {
     public name: string = '';
     public email: string = '';
 
-    public loading: boolean = true;
-
+    @displayLoading
     public async created() {
         await userStore.init();
         this.email = JSON.parse(JSON.stringify(userStore.user.email));
@@ -58,18 +57,14 @@ export default class EditUserSettings extends Vue {
         if (userStore.user.name != null) {
             this.name = JSON.parse(JSON.stringify(userStore.user.name));
         }
-
-        this.loading = false;
     }
 
+    @displayLoading
     public async onSubmit() {
-        this.loading = true;
-
         await userStore.updateUser({ name: this.name });
 
         toast(`Edited user settings`);
         this.$router.push({ name: 'userSettings' });
-        this.loading = false;
     }
 }
 </script>

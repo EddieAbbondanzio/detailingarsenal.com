@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header title="Create vehicle category" :description="`Create vehicle category`">
                 <template v-slot:breadcrumb-trail>
@@ -16,7 +16,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" :loading="loading" submitText="Create">
+        <input-form @submit="onSubmit" submitText="Create">
             <input-text-field
                 ref="nameField"
                 label="Name"
@@ -46,6 +46,7 @@ import InputTextField from '@/core/components/input/input-text-field.vue';
 import { ValidationError, SpecificationError, toast } from '@/core';
 import settingsStore from '../../store/settings-store';
 import { displayError } from '@/core/utils/display-error/display-error';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 /**
  * View to create a new vehicle category.
@@ -59,10 +60,9 @@ export default class CreateVehicleCategory extends Vue {
 
     public name: string = '';
     public description: string = '';
-    public loading: boolean = false;
 
+    @displayLoading
     public async onSubmit() {
-        this.loading = true;
         const create = { name: this.name, description: this.description };
 
         try {
@@ -87,8 +87,6 @@ export default class CreateVehicleCategory extends Vue {
             } else {
                 throw err;
             }
-        } finally {
-            this.loading = false;
         }
     }
 }

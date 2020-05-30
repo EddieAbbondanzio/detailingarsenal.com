@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header v-if="client != null">
             <page-header :title="client.name">
                 <template v-slot:breadcrumb-trail>
@@ -74,6 +74,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import ClientWidget from '@/modules/clients/components/client-widget.vue';
 import clientsStore from '../store/clients-store';
 import { confirmDelete, displayError, toast } from '../../../core';
+import { displayLoading } from '../../../core/utils/display-loading';
 
 @Component({
     name: 'client',
@@ -82,36 +83,31 @@ import { confirmDelete, displayError, toast } from '../../../core';
     }
 })
 export default class Client extends Vue {
-    loading = false;
-
     get client() {
         return clientsStore.clients.find(c => c.id == this.$route.params.id)!;
     }
 
+    @displayLoading
     async created() {
-        this.loading = true;
         await clientsStore.init();
-        this.loading = false;
     }
 
     onEdit() {
         this.$router.push({ name: 'editClient', params: { id: this.client.id } });
     }
 
+    @displayLoading
     async onDelete() {
         const deleteConfirmed = await confirmDelete('client', this.client.name);
 
         if (deleteConfirmed) {
             try {
-                this.loading = true;
                 await clientsStore.deleteClient(this.client);
 
                 toast(`Deleted client ${this.client.name}`);
                 this.$router.push({ name: 'clients' });
             } catch (err) {
                 displayError(err);
-            } finally {
-                this.loading = false;
             }
         }
     }

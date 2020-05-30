@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 title="Edit business"
@@ -15,7 +15,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" submitText="Save changes" :loading="loading">
+        <input-form @submit="onSubmit" submitText="Save changes">
             <input-text-field
                 label="Name"
                 placeholder="Jimbo's Buff Shop"
@@ -45,6 +45,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import settingsStore from '../../store/settings-store';
 import { UpdateBusiness } from '../../api/data-transfer-objects/update-business';
 import { toast } from '@/core';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 @Component({
     name: 'edit-business'
@@ -53,20 +54,18 @@ export default class EditBusiness extends Vue {
     public name: string = '';
     public address: string = '';
     public phone: string = '';
-    public loading: boolean = true;
 
+    @displayLoading
     public async created() {
         await settingsStore.init();
 
         this.name = settingsStore.business.name || '';
         this.address = settingsStore.business.address || '';
         this.phone = settingsStore.business.phone || '';
-        this.loading = false;
     }
 
+    @displayLoading
     public async onSubmit() {
-        this.loading = true;
-
         const update: UpdateBusiness = {
             id: settingsStore.business.id
         };
@@ -87,7 +86,6 @@ export default class EditBusiness extends Vue {
 
         toast(`Edited business`);
         this.$router.push({ name: 'business' });
-        this.loading = false;
     }
 }
 </script>

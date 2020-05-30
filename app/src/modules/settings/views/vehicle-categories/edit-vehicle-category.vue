@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header :title="`Edit ${name}`" description="Edit an existing vehicle category">
                 <template v-slot:breadcrumb-trail>
@@ -16,7 +16,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" :loading="loading" submitText="Save changes">
+        <input-form @submit="onSubmit" submitText="Save changes">
             <input-text-field
                 ref="nameField"
                 label="Name"
@@ -43,6 +43,7 @@ import { ValidationError, SpecificationError, toast } from '@/core';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import settingsStore from '../../store/settings-store';
 import { displayError } from '@/core/utils/display-error/display-error';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 /**
  * View to edit a vehicle category.
@@ -53,8 +54,8 @@ import { displayError } from '@/core/utils/display-error/display-error';
 export default class EditVehicleCategory extends Vue {
     name: string = '';
     description: string = '';
-    loading: boolean = true;
 
+    @displayLoading
     async created() {
         const id = this.$route.params.id;
         await settingsStore.init();
@@ -67,14 +68,12 @@ export default class EditVehicleCategory extends Vue {
 
         this.name = vc.name;
         this.description = vc.description;
-        this.loading = false;
     }
 
     async mounted() {}
 
+    @displayLoading
     async onSubmit() {
-        this.loading = true;
-
         const update = {
             id: this.$route.params.id,
             name: this.name,
@@ -103,8 +102,6 @@ export default class EditVehicleCategory extends Vue {
             } else {
                 throw err;
             }
-        } finally {
-            this.loading = false;
         }
     }
 }

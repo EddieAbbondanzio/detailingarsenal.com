@@ -64,9 +64,6 @@ export default class InputForm extends Vue {
     @Prop({ default: false })
     debug!: boolean;
 
-    @Prop({ default: false })
-    loading!: boolean;
-
     @Prop({ default: 'Submit' })
     submitText!: string;
 
