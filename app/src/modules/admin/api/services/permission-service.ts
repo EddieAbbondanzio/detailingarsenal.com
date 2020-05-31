@@ -15,12 +15,12 @@ export class PermissionService {
     }
 
     async updatePermission(update: UpdatePermission) {
-        const res = await http.post(`/authorization/permission/${update.id}`, update);
+        const res = await http.put(`/authorization/permission/${update.id}`, update);
         return this._map(res.data);
     }
 
-    async deletePermission(id: string) {
-        await http.delete(`/authorization/permission/${id}`);
+    async deletePermission(permission: Permission) {
+        await http.delete(`/authorization/permission/${permission.id}`);
     }
 
     _map(data: any) {

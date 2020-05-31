@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header
                 title="Permissions"
@@ -35,39 +35,35 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Permission } from '@/modules/admin/api/entities/permission';
 import { confirmDelete, toast, displayError } from '@/core';
 import adminStore from '../../store/admin-store';
+import { displayLoading } from '../../../../core/utils/display-loading';
 
 @Component({
     name: 'permissions'
 })
 export default class Permissions extends Vue {
-    loading: boolean = true;
-
     get permissions() {
         return adminStore.permissions;
     }
 
+    @displayLoading
     async created() {
-        this.loading = true;
         await adminStore.init();
-        this.loading = false;
     }
 
     async onEdit(p: Permission) {
         this.$router.push({ name: 'editPermission', params: { id: p.id } });
     }
 
+    @displayLoading
     async onDelete(p: Permission) {
         const del = await confirmDelete('permission', p.toString());
 
         if (del) {
             try {
-                this.loading = true;
                 await adminStore.deletePermission(p);
-                toast(`Delete permission ${p.toString()}`);
+                toast(`Deleted permission ${p.toString()}`);
             } catch (err) {
                 displayError(err);
-            } finally {
-                this.loading = false;
             }
         }
     }

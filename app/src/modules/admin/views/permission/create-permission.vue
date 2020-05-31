@@ -48,7 +48,6 @@ export default class CreatePermission extends Vue {
 
     @displayLoading
     async onSubmit() {
-        // appStore.LOADING();
         const create = { action: this.action, scope: this.scope };
 
         try {
@@ -62,8 +61,6 @@ export default class CreatePermission extends Vue {
             } else {
                 throw err;
             }
-        } finally {
-            // appStore.LOADED();
         }
     }
 }

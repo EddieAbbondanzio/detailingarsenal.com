@@ -87,6 +87,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IPermissionRepo, PermissionRepo>();
             services.AddTransient<IRoleRepo, RoleRepo>();
             services.AddTransient<PermissionUniqueSpecification>();
+            services.AddTransient<RoleNameUniqueSpecification>();
             services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionDto>>, GetPermissionsHandler>();
             services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionDto>, CreatePermissionHandler>();
             services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionDto>, UpdatePermissionHandler>();

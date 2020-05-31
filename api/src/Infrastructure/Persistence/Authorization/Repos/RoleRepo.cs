@@ -7,6 +7,28 @@ using Dapper;
 public class RoleRepo : DatabaseInteractor, IRoleRepo {
     public RoleRepo(IDatabase database) : base(database) { }
 
+
+    public async Task<Role?> Find(string name) {
+        var r = await Connection.QueryFirstOrDefaultAsync<Role>(
+            @"select * from roles where name = @Name;",
+            new {
+                Name = name
+            }
+        );
+
+        if (r == null) {
+            return null;
+        }
+
+        var perms = await Connection.QueryAsync<RolePermission>(
+            @"select * from role_permissions where role_id = @Id",
+            r
+        );
+
+        r.PermissionIds = perms.Select(p => p.PermissionId).ToList();
+        return r;
+    }
+
     public async Task<List<Role>> FindAll() {
         var roles = await Connection.QueryAsync<Role>(
             @"select * from roles"
