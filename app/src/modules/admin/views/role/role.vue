@@ -44,6 +44,7 @@ import { Role } from '../../api/entities/role';
 import adminStore from '../../store/admin-store';
 import { displayLoading } from '../../../../core/utils/display-loading';
 import { Permission } from '../../api/entities/permission';
+import appStore from '../../../../core/store/app-store';
 
 @Component({
     name: 'role'
@@ -52,9 +53,11 @@ export default class RoleView extends Vue {
     role: Role = null!;
     permissions: { enabled: boolean; permission: Permission }[] = [];
 
-    @displayLoading
+    // @displayLoading
     async created() {
+        appStore.LOADING();
         await adminStore.init();
+
         this.role = adminStore.roles.find(r => r.id == this.$route.params.id)!;
 
         this.permissions = adminStore.permissions.map(p => ({

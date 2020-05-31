@@ -63,9 +63,12 @@
 .page-loading-bar
     left: 0px
     right: 0px
+    height: 8px!important
     
     progress
-        height: 12px!important
+        position: absolute
+        z-index: 39
+        height: 8px!important
 </style>
 
 <script lang="ts">
@@ -77,6 +80,7 @@ import appStore from '../../store/app-store';
 })
 export default class Page extends Vue {
     get loading(): boolean {
+        console.log(appStore.loading);
         return appStore.loading;
     }
 
