@@ -1,11 +1,16 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
 
 public interface IUserService : IService {
     Task<User?> GetUserByAuth0Id(string auth0Id);
     Task<User> GetOrCreateUserByAuth0Id(string auth0Id);
     Task<User?> GetUserById(string id);
+    Task<User?> GetUserByEmail(string email);
+    Task<User> CreateUser(string email, string password);
+    Task UpdatePassword(User user, string newPassword);
 }
 
 public class UserService : IUserService {
@@ -18,6 +23,7 @@ public class UserService : IUserService {
         this.userRepo = userRepo;
         this.eventBus = eventBus;
     }
+
 
     public async Task<User?> GetUserByAuth0Id(string auth0Id) {
         var managementApiClient = await tokenGenerator.GetManagementApiClient();
@@ -79,5 +85,54 @@ public class UserService : IUserService {
 
         user.Email = auth0User.Email;
         return user;
+    }
+
+    public async Task<User?> GetUserByEmail(string email) {
+        var user = await userRepo.FindByEmail(email);
+
+        if (user == null) {
+            return null;
+        }
+
+        var managementApiClient = await tokenGenerator.GetManagementApiClient();
+
+        var auth0User = (await managementApiClient.Users.GetUsersByEmailAsync(email)).FirstOrDefault();
+
+        if (auth0User == null) {
+            return null;
+        }
+
+        user.Email = auth0User.Email;
+        return user;
+    }
+
+    public async Task<User> CreateUser(string email, string password) {
+        var managementApiClient = await tokenGenerator.GetManagementApiClient();
+
+        var auth0User = await managementApiClient.Users.CreateAsync(new UserCreateRequest() {
+            Email = email,
+            Password = password,
+            Connection = "email-pass-auth"
+        });
+
+        var user = new User() {
+            Id = Guid.NewGuid(),
+            Auth0Id = auth0User.UserId,
+            Email = auth0User.Email
+        };
+
+        await userRepo.Add(user);
+        await eventBus.Dispatch(new NewUserEvent(user));
+
+        return user;
+    }
+
+    public async Task UpdatePassword(User user, string newPassword) {
+        var managementApiClient = await tokenGenerator.GetManagementApiClient();
+
+        await managementApiClient.Users.UpdateAsync(user.Auth0Id, new UserUpdateRequest() {
+            Password = newPassword,
+            Connection = "email-pass-auth"
+        });
     }
 }

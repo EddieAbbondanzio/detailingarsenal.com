@@ -114,9 +114,11 @@ namespace DetailingArsenal.Api {
             services.AddDatabaseMigrations(dbConfig.GetConnectionString(), typeof(MigrationsFlag).Assembly);
 
             // User
+            services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<ActionHandler<UpdateUserCommand, UserDto>, UpdateUserHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserDto>, GetUserByAuth0IdHandler>();
+            services.AddTransient<IBusEventHandler<StartupEvent>, CreateOrUpdateAdminOnStartup>();
             services.AddTransient<IBusEventHandler<NewUserEvent>, NotifyEdOfNewUser>();
 
             // Vehicle Categories

@@ -18,6 +18,12 @@ namespace DetailingArsenal.Infrastructure.Persistence {
             );
         }
 
+        public async Task<User?> FindByEmail(string email) {
+            return await Connection.QueryFirstOrDefaultAsync<User>(
+                @"select * from users where email = @Email", new { Email = email }
+            );
+        }
+
         public async Task Add(User entity) {
             await Connection.ExecuteAsync(
                 @"insert into users (id, auth_0_id, name, email) VALUES (@Id, @Auth0Id, @Name, @Email);",

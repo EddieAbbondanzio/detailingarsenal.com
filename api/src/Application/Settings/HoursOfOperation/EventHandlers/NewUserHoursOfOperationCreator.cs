@@ -23,6 +23,7 @@ namespace DetailingArsenal.Application {
             for (int d = 1; d <= 6; d++) {
                 hours.Days.Add(new HoursOfOperationDay() {
                     Id = Guid.NewGuid(),
+                    HoursOfOperationId = hours.Id,
                     Day = d,
                     Open = 8 * 60,
                     Close = 17 * 60,
