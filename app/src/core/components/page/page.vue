@@ -80,7 +80,6 @@ import appStore from '../../store/app-store';
 })
 export default class Page extends Vue {
     get loading(): boolean {
-        console.log(appStore.loading);
         return appStore.loading;
     }
 

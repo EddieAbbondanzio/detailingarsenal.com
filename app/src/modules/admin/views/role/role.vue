@@ -53,9 +53,8 @@ export default class RoleView extends Vue {
     role: Role = null!;
     permissions: { enabled: boolean; permission: Permission }[] = [];
 
-    // @displayLoading
+    @displayLoading
     async created() {
-        appStore.LOADING();
         await adminStore.init();
 
         this.role = adminStore.roles.find(r => r.id == this.$route.params.id)!;
