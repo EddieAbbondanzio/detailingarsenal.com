@@ -48,5 +48,10 @@ namespace DetailingArsenal.Infrastructure.Persistence {
                 @"delete from permissions where id = @Id", entity
             );
         }
+
+        public async Task<bool> IsInUse(Permission permission) {
+            int rolePermCount = await Connection.ExecuteScalarAsync<int>(@"select count(*) from role_permissions where permission_id = @Id", permission);
+            return rolePermCount > 0;
+        }
     }
 }
