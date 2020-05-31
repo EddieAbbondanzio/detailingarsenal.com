@@ -87,7 +87,12 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IPermissionRepo, PermissionRepo>();
             services.AddTransient<IRoleRepo, RoleRepo>();
             services.AddTransient<PermissionUniqueSpecification>();
+            services.AddTransient<PermissionNotInUseSpecification>();
             services.AddTransient<RoleNameUniqueSpecification>();
+            services.AddTransient<CreatePermissionValidator>();
+            services.AddTransient<UpdatePermissionValidator>();
+            services.AddTransient<CreateRoleValidator>();
+            services.AddTransient<UpdateRoleValidator>();
             services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionDto>>, GetPermissionsHandler>();
             services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionDto>, CreatePermissionHandler>();
             services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionDto>, UpdatePermissionHandler>();
@@ -100,6 +105,7 @@ namespace DetailingArsenal.Api {
             // Infrastructure
             services.AddScoped<IMediator, Mediator>();
             services.AddScoped<IEventBus, EventBus>();
+            services.AddTransient<IBusEventHandler<StartupEvent>, RunMigrationsOnStartup>();
 
             // Database
             var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
