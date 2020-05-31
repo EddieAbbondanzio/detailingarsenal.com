@@ -51,9 +51,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
 
         public async Task<bool> IsInUse(VehicleCategory entity) {
             int configCount = await Connection.ExecuteScalarAsync<int>(@"select count(*) from service_configurations where vehicle_category_id = @Id", entity);
-            int appCount = await Connection.ExecuteScalarAsync<int>(@"select count(*) from appointments where vehicle_category_id = @Id", entity);
-
-            return configCount > 0 || appCount > 0;
+            return configCount > 0;
         }
     }
 }

@@ -28,7 +28,7 @@ public class PermissionController : ControllerBase {
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePermission(Guid id, [FromBody] UpdatePermissionCommand command) {
-        PermissionDto perm = await mediator.Dispatch<UpdatePermissionCommand, PermissionDto>(command);
+        PermissionDto perm = await mediator.Dispatch<UpdatePermissionCommand, PermissionDto>(command, User.GetUserId());
         return Ok(perm);
     }
 

@@ -32,6 +32,11 @@ export const admin = [
         component: () => import('@/modules/admin/views/role/create-role.vue')
     },
     {
+        path: 'admin/roles/:id',
+        name: 'role',
+        component: () => import('@/modules/admin/views/role/role.vue')
+    },
+    {
         path: 'admin/roles/:id/edit',
         name: 'editRole',
         component: () => import('@/modules/admin/views/role/edit-role.vue')

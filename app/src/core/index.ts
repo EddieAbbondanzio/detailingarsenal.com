@@ -19,5 +19,6 @@ export * from './utils/toast';
 export * from './utils/traverse';
 export * from './utils/confirm-delete/confirm-delete';
 export * from './utils/display-error/display-error';
+export * from './utils/display-loading';
 
 export * from './directives/mouse/mouse';

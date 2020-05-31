@@ -21,10 +21,7 @@
                 placeholder="user"
             />
 
-            <div>
-                <p class="is-size-6 has-text-weight-bold">Permissions</p>
-                <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
-            </div>
+            <input-group-header text="Permissions" />
 
             <input-checkbox
                 v-for="p in permissions"

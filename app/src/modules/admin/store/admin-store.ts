@@ -53,7 +53,7 @@ class AdminStore extends InitableModule {
 
     @Mutation
     UPDATE_ROLE(role: Role) {
-        this.roles = [...this.roles.filter(r => r.id != r.id), role];
+        this.roles = [...this.roles.filter(r => r.id != role.id), role];
     }
 
     @Mutation

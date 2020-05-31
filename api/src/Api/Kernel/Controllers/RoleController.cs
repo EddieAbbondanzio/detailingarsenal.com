@@ -28,7 +28,7 @@ public class RoleController : ControllerBase {
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRoleCommand command) {
-        RoleDto perm = await mediator.Dispatch<UpdateRoleCommand, RoleDto>(command);
+        RoleDto perm = await mediator.Dispatch<UpdateRoleCommand, RoleDto>(command, User.GetUserId());
         return Ok(perm);
     }
 

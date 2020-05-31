@@ -1,7 +1,7 @@
 import { Entity } from '@/core';
 
 export class Role extends Entity {
-    constructor(public name: string, public permissionIds: number[]) {
+    constructor(public name: string, public permissionIds: string[]) {
         super();
     }
 }

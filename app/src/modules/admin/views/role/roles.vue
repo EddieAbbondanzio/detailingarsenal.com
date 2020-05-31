@@ -21,7 +21,12 @@
         </template>
 
         <list>
-            <list-item v-for="r in roles" :key="r.id" :title="r.name">
+            <list-item
+                v-for="r in roles"
+                :key="r.id"
+                :title="r.name"
+                :to="{name: 'role', params: { id: r.id}}"
+            >
                 <template v-slot:actions>
                     <edit-delete-dropdown @edit="onEdit(r)" @delete="onDelete(r)" />
                 </template>

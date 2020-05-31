@@ -14,6 +14,7 @@ import InputAutocomplete from './components/input/input-autocomplete.vue';
 import InputSelect from './components/input/input-select.vue';
 import InputCheckbox from './components/input/input-checkbox.vue';
 import InputGroup from './components/input/input-group.vue';
+import InputGroupHeader from './components/input/input-group-header.vue';
 import InputErrorMessage from './components/input/input-error-message.vue';
 import InputDatepicker from '@/core/components/input/input-datepicker.vue';
 import InputTimepicker from '@/core/components/input/input-timepicker.vue';
@@ -30,6 +31,7 @@ import ListItem from './components/layout/list-item.vue';
 import Phone from './components/elements/phone.vue';
 import Email from './components/elements/email.vue';
 import EditDeleteDropdown from './components/dropdowns/edit-delete-dropdown.vue';
+
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { disableAll } from '@/core/directives/disable-all';
 import { mouse } from '@/core/directives/mouse/mouse';
@@ -55,6 +57,7 @@ export default {
         Vue.component('input-select', InputSelect);
         Vue.component('input-checkbox', InputCheckbox);
         Vue.component('input-group', InputGroup);
+        Vue.component('input-group-header', InputGroupHeader);
         Vue.component('input-error-message', InputErrorMessage);
         Vue.component(InputDatepicker.name, InputDatepicker);
         Vue.component(InputTimepicker.name, InputTimepicker);
