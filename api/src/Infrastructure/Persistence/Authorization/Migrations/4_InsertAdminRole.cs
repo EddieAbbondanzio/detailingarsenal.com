@@ -4,7 +4,7 @@ using FluentMigrator;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
     [Migration(2020_05_31_1, "Create admin role")]
-    public class CreateAdminRole : Migration {
+    public class InsertAdminRole : Migration {
         public override void Up() {
             Execute.WithConnection((c, t) => {
                 var roleId = Guid.NewGuid();
