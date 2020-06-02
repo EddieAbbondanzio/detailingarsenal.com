@@ -1,4 +1,4 @@
 public class AuthorizationAttribute : System.Attribute {
-    public string Action { get; set; } = null!;
-    public string Scope { get; set; } = null!;
+    public string? Action { get; set; }
+    public string? Scope { get; set; }
 }

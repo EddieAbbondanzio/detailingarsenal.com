@@ -7,6 +7,8 @@ namespace DetailingArsenal.Infrastructure.Persistence.Migrations {
             Create.Table("role_permissions")
                 .WithColumn("role_id").AsGuid().ForeignKey("roles", "id")
                 .WithColumn("permission_id").AsGuid().ForeignKey("permissions", "id");
+
+            Create.UniqueConstraint().OnTable("role_permissions").Columns("role_id", "permission_id");
         }
 
         public override void Down() {
