@@ -10,10 +10,12 @@ using Serilog;
 public class CreateOrUpdateAdminOnStartup : IBusEventHandler<StartupEvent> {
     private AdminConfig config;
     private IUserService userService;
+    private IRoleRepo roleRepo;
 
-    public CreateOrUpdateAdminOnStartup(AdminConfig config, IUserService userService) {
+    public CreateOrUpdateAdminOnStartup(AdminConfig config, IUserService userService, IRoleRepo roleRepo) {
         this.config = config;
         this.userService = userService;
+        this.roleRepo = roleRepo;
     }
 
     public async Task Handle(StartupEvent busEvent) {
@@ -24,6 +26,10 @@ public class CreateOrUpdateAdminOnStartup : IBusEventHandler<StartupEvent> {
             Log.Information("Updated admin password");
         } else {
             user = await userService.CreateUser(config.Email, config.Password);
+
+            var adminRole = await roleRepo.Find("Admin");
+            await roleRepo.AddToUser(user, adminRole!);
+
             Log.Information("Created new admin user");
         }
     }

@@ -101,6 +101,8 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<CreateRoleCommand, RoleDto>, CreateRoleHandler>();
             services.AddTransient<ActionHandler<UpdateRoleCommand, RoleDto>, UpdateRoleHandler>();
             services.AddTransient<ActionHandler<DeleteRoleCommand>, DeleteRoleHandler>();
+            services.AddTransient<ActionHandler<AddRoleToUserCommand>, AddRoleToUserHandler>();
+            services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
 
             // Infrastructure
             services.AddScoped<IMediator, Mediator>();
