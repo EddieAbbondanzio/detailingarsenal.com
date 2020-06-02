@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+[Authorization(Action = "read", Scope = "permissions")]
 public class GetPermissionsHandler : ActionHandler<GetPermissionsQuery, List<PermissionDto>> {
     private IPermissionRepo repo;
     private IMapper mapper;

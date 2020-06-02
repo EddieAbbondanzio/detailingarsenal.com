@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 
+[Authorization(Action = "delete", Scope = "permissions")]
 public class DeletePermissionHandler : ActionHandler<DeletePermissionCommand> {
     private PermissionNotInUseSpecification specification;
     private IPermissionRepo repo;

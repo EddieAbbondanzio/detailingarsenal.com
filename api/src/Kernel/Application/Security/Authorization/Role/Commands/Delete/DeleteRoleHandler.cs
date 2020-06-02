@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 
+[Authorization(Action = "delete", Scope = "roles")]
 public class DeleteRoleHandler : ActionHandler<DeleteRoleCommand> {
     private IRoleRepo repo;
 

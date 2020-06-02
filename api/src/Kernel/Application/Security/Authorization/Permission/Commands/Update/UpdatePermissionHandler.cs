@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 
 [Validation(typeof(UpdatePermissionValidator))]
+[Authorization(Action = "update", Scope = "permissions")]
 public class UpdatePermissionHandler : ActionHandler<UpdatePermissionCommand, PermissionDto> {
     private PermissionUniqueSpecification specification;
     private IPermissionRepo repo;

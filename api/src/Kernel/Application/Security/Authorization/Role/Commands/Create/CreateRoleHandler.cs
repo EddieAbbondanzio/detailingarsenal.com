@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 
 [Validation(typeof(CreateRoleValidator))]
+[Authorization(Action = "create", Scope = "roles")]
 public class CreateRoleHandler : ActionHandler<CreateRoleCommand, RoleDto> {
     private RoleNameUniqueSpecification specification;
     private IRoleRepo repo;

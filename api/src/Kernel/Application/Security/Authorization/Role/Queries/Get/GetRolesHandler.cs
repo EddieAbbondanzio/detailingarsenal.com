@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+[Authorization(Action = "read", Scope = "roles")]
 public class GetRolesHandler : ActionHandler<GetRolesQuery, List<RoleDto>> {
     private IRoleRepo repo;
     private IMapper mapper;

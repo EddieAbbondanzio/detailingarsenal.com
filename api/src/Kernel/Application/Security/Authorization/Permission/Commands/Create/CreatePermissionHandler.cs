@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 
 [Validation(typeof(CreatePermissionValidator))]
+[Authorization(Action = "create", Scope = "permissions")]
 public class CreatePermissionHandler : ActionHandler<CreatePermissionCommand, PermissionDto> {
     private PermissionUniqueSpecification specification;
     private IPermissionRepo repo;
