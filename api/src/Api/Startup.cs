@@ -25,7 +25,10 @@ using Npgsql.Logging;
 
 namespace DetailingArsenal.Api {
     public class Startup {
-        public Startup(IConfiguration configuration) {
+        IWebHostEnvironment environment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env) {
+            environment = env;
             Configuration = configuration;
             SqlMapper.AddTypeHandler(new DateTimeHandler());
             // Add db logging
@@ -123,7 +126,10 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<UpdateUserCommand, UserDto>, UpdateUserHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserDto>, GetUserByAuth0IdHandler>();
             services.AddTransient<IBusEventHandler<StartupEvent>, CreateOrUpdateAdminOnStartup>();
-            services.AddTransient<IBusEventHandler<NewUserEvent>, NotifyEdOfNewUser>();
+
+            if (environment.IsProduction()) {
+                services.AddTransient<IBusEventHandler<NewUserEvent>, NotifyEdOfNewUser>();
+            }
 
             // Vehicle Categories
             services.AddTransient<VehicleCategoryNameUniqueSpecification>();
