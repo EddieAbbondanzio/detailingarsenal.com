@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<List<ClientDto>> Execute(GetClientsQuery input, User? user) {
+        public async override Task<List<ClientDto>> Execute(GetClientsQuery input, User? user) {
             List<Client> clients = await repo.FindByUser(user!);
             return mapper.Map<List<Client>, List<ClientDto>>(clients);
         }

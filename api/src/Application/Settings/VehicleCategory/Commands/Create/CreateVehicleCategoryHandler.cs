@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
-    [Validate(typeof(CreateVehicleCategoryValidator))]
+    [Validation(typeof(CreateVehicleCategoryValidator))]
     public class CreateVehicleCategoryHandler : ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryDto> {
         private VehicleCategoryNameUniqueSpecification specifcation;
         private IVehicleCategoryRepo repo;
@@ -15,7 +15,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<VehicleCategoryDto> Execute(CreateVehicleCategoryCommand command, User? user) {
+        public async override Task<VehicleCategoryDto> Execute(CreateVehicleCategoryCommand command, User? user) {
             var cat = new VehicleCategory() {
                 Id = Guid.NewGuid(),
                 UserId = user!.Id,

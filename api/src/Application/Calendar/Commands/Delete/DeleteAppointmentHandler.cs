@@ -9,7 +9,7 @@ namespace DetailingArsenal.Application {
             this.repo = repo;
         }
 
-        protected async override Task Execute(DeleteAppointmentCommand input, User? user) {
+        public async override Task Execute(DeleteAppointmentCommand input, User? user) {
             var app = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
 
             if (app.UserId != user!.Id) {

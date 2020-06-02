@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<ClientDto> Execute(CreateClientCommand input, User? user) {
+        public async override Task<ClientDto> Execute(CreateClientCommand input, User? user) {
             var c = new Client() {
                 Id = Guid.NewGuid(),
                 UserId = user!.Id,

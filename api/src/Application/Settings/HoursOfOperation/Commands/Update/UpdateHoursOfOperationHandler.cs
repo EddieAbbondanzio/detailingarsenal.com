@@ -13,7 +13,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<HoursOfOperationDto> Execute(UpdateHoursOfOperationCommand input, User? user) {
+        public async override Task<HoursOfOperationDto> Execute(UpdateHoursOfOperationCommand input, User? user) {
             var hours = await repo.FindById(input.Id) ?? throw new InvalidOperationException();
 
             if (hours.UserId != user!.Id) {

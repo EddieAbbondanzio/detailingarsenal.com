@@ -15,7 +15,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<AppointmentDto> Execute(CreateAppointmentCommand command, User? user) {
+        public async override Task<AppointmentDto> Execute(CreateAppointmentCommand command, User? user) {
             var client = await clientRepo.FindById(command.ClientId) ?? throw new EntityNotFoundException();
 
             var appointment = new Appointment() {

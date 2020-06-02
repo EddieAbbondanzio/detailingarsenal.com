@@ -11,7 +11,7 @@ namespace DetailingArsenal.Application {
             this.repo = repo;
         }
 
-        protected async override Task Execute(DeleteServiceCommand input, User? user) {
+        public async override Task Execute(DeleteServiceCommand input, User? user) {
             var s = await repo.FindById(input.Id) ?? throw new EntityNotFoundException();
 
             if (s.UserId != user!.Id) {

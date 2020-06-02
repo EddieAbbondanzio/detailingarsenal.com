@@ -9,7 +9,7 @@ public class DeletePermissionHandler : ActionHandler<DeletePermissionCommand> {
         this.repo = repo;
     }
 
-    protected async override Task Execute(DeletePermissionCommand input, User? user) {
+    public async override Task Execute(DeletePermissionCommand input, User? user) {
         var p = await repo.FindById(input.Id);
 
         if (p == null) {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,27 +12,38 @@ public interface IMediator {
 /// Mediator to handle issuing commands, and queries.
 /// </summary>
 public sealed class Mediator : IMediator {
-    #region Fields
-    private IServiceProvider serviceProvider;
-    #endregion
+    IServiceProvider serviceProvider;
+    IEnumerable<ActionMiddleware> middlewares;
+    IUserService userService;
 
-    #region Constructor(s)
-    public Mediator(IServiceProvider serviceProvider) {
+    public Mediator(IServiceProvider serviceProvider, IEnumerable<ActionMiddleware> middlewares) {
         this.serviceProvider = serviceProvider;
+        this.middlewares = middlewares;
+
+        userService = serviceProvider.GetRequiredService<IUserService>();
     }
-    #endregion
 
     public async Task Dispatch<TInput>(TInput input, string userId = "") where TInput : class, IAction {
         ActionHandler<TInput> handler = serviceProvider.GetRequiredService<ActionHandler<TInput>>();
-        handler.Init(serviceProvider);
 
-        await handler.Execute(input, userId);
+        var user = userId != null ? await userService.GetOrCreateUserByAuth0Id(userId) : null;
+
+        foreach (ActionMiddleware mw in middlewares) {
+            await mw.Execute(serviceProvider, handler, input, user);
+        }
+
+        await handler.Execute(input, user);
     }
 
     public async Task<TOutput> Dispatch<TInput, TOutput>(TInput input, string userId = "") where TInput : class, IAction {
         ActionHandler<TInput, TOutput> handler = serviceProvider.GetRequiredService<ActionHandler<TInput, TOutput>>();
-        handler.Init(serviceProvider);
 
-        return await handler.Execute(input, userId);
+        var user = userId != null ? await userService.GetOrCreateUserByAuth0Id(userId) : null;
+
+        foreach (ActionMiddleware mw in middlewares) {
+            await mw.Execute(serviceProvider, handler, input, user);
+        }
+
+        return await handler.Execute(input, user);
     }
 }

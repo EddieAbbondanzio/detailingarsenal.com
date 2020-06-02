@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<List<AppointmentDto>> Execute(GetAppointmentsQuery input, User? user) {
+        public async override Task<List<AppointmentDto>> Execute(GetAppointmentsQuery input, User? user) {
             List<Appointment> appointments;
 
             if (input.Range == AppointmentRange.Day) {

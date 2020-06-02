@@ -11,7 +11,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<HoursOfOperationDto> Execute(GetHoursOfOperationQuery query, User? user) {
+        public async override Task<HoursOfOperationDto> Execute(GetHoursOfOperationQuery query, User? user) {
             var hours = await repo.FindForUser(user!);
             return mapper.Map<HoursOfOperation, HoursOfOperationDto>(hours);
         }

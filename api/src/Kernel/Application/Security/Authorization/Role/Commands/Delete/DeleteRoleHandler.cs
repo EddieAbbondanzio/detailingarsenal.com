@@ -7,7 +7,7 @@ public class DeleteRoleHandler : ActionHandler<DeleteRoleCommand> {
         this.repo = repo;
     }
 
-    protected async override Task Execute(DeleteRoleCommand input, User? user) {
+    public async override Task Execute(DeleteRoleCommand input, User? user) {
         var r = await repo.FindById(input.Id);
 
         if (r == null) {

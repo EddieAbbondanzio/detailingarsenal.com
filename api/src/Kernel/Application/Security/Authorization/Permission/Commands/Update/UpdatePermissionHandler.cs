@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-[Validate(typeof(UpdatePermissionValidator))]
+[Validation(typeof(UpdatePermissionValidator))]
 public class UpdatePermissionHandler : ActionHandler<UpdatePermissionCommand, PermissionDto> {
     private PermissionUniqueSpecification specification;
     private IPermissionRepo repo;
@@ -12,7 +12,7 @@ public class UpdatePermissionHandler : ActionHandler<UpdatePermissionCommand, Pe
         this.mapper = mapper;
     }
 
-    protected async override Task<PermissionDto> Execute(UpdatePermissionCommand input, User? user) {
+    public async override Task<PermissionDto> Execute(UpdatePermissionCommand input, User? user) {
         var p = await repo.FindById(input.Id);
 
         if (p == null) {

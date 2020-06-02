@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
-    [Validate(typeof(UpdateBusinessValidator))]
+    [Validation(typeof(UpdateBusinessValidator))]
     public class UpdateBusinessHandler : ActionHandler<UpdateBusinessCommand, BusinessDto> {
         private IBusinessRepo repo;
         private IMapper mapper;
@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<BusinessDto> Execute(UpdateBusinessCommand command, User? user) {
+        public async override Task<BusinessDto> Execute(UpdateBusinessCommand command, User? user) {
             Business b = (await repo.FindById(command.Id)) ?? throw new EntityNotFoundException();
 
             if (b.UserId != user!.Id) {

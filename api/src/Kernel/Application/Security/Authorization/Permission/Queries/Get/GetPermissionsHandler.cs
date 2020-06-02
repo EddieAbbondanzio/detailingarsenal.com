@@ -11,7 +11,7 @@ public class GetPermissionsHandler : ActionHandler<GetPermissionsQuery, List<Per
         this.mapper = mapper;
     }
 
-    protected async override Task<List<PermissionDto>> Execute(GetPermissionsQuery input, User? user) {
+    public async override Task<List<PermissionDto>> Execute(GetPermissionsQuery input, User? user) {
         List<Permission> perms = await repo.FindAll();
         return mapper.Map<List<Permission>, List<PermissionDto>>(perms);
     }

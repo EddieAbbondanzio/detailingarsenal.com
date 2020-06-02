@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
-    [Validate(typeof(UpdateVehicleCategoryValidator))]
+    [Validation(typeof(UpdateVehicleCategoryValidator))]
     public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryDto> {
         private VehicleCategoryNameUniqueSpecification specification;
         private IVehicleCategoryRepo repo;
@@ -14,7 +14,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<VehicleCategoryDto> Execute(UpdateVehicleCategoryCommand command, User? user) {
+        public async override Task<VehicleCategoryDto> Execute(UpdateVehicleCategoryCommand command, User? user) {
             var cat = await repo.FindById(command.Id);
 
             if (cat == null) {

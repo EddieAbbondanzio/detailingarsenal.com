@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<BusinessDto> Execute(GetBusinessQuery query, User? user) {
+        public async override Task<BusinessDto> Execute(GetBusinessQuery query, User? user) {
             var b = await repo.FindByUser(user!);
             return mapper.Map<Business, BusinessDto>(b);
         }

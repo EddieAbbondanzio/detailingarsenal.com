@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
-    [Validate(typeof(DeleteVehicleCategoryValidator))]
+    [Validation(typeof(DeleteVehicleCategoryValidator))]
     public class DeleteVehicleCategoryHandler : ActionHandler<DeleteVehicleCategoryCommand> {
         private VehicleCategoryNotInuseSpecification specification;
         private IVehicleCategoryRepo repo;
@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application {
             this.repo = repo;
         }
 
-        protected async override Task Execute(DeleteVehicleCategoryCommand command, User? user) {
+        public async override Task Execute(DeleteVehicleCategoryCommand command, User? user) {
             var cat = await repo.FindById(command.Id);
 
             if (cat == null) {

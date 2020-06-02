@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<ClientDto> Execute(UpdateClientCommand input, User? user) {
+        public async override Task<ClientDto> Execute(UpdateClientCommand input, User? user) {
             var c = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
 
             if (c.UserId != user!.Id) {

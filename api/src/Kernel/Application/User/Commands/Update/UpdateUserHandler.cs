@@ -9,7 +9,7 @@ public class UpdateUserHandler : ActionHandler<UpdateUserCommand, UserDto> {
         this.mapper = mapper;
     }
 
-    protected async override Task<UserDto> Execute(UpdateUserCommand input, User? user) {
+    public async override Task<UserDto> Execute(UpdateUserCommand input, User? user) {
         user!.Name = input.Name;
         await repo.Update(user);
 

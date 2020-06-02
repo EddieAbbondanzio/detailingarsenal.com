@@ -7,7 +7,7 @@ public class GetUserByAuth0IdHandler : ActionHandler<GetUserByAuth0IdQuery, User
         this.mapper = mapper;
     }
 
-    protected override Task<UserDto> Execute(GetUserByAuth0IdQuery input, User? user) {
+    public override Task<UserDto> Execute(GetUserByAuth0IdQuery input, User? user) {
         // Change this later.
         return Task.FromResult(mapper.Map<User, UserDto>(user!));
     }

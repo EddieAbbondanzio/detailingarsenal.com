@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-[Validate(typeof(UpdateRoleValidator))]
+[Validation(typeof(UpdateRoleValidator))]
 public class UpdateRoleHandler : ActionHandler<UpdateRoleCommand, RoleDto> {
     private RoleNameUniqueSpecification specification;
     private IRoleRepo repo;
@@ -13,7 +13,7 @@ public class UpdateRoleHandler : ActionHandler<UpdateRoleCommand, RoleDto> {
         this.mapper = mapper;
     }
 
-    protected async override Task<RoleDto> Execute(UpdateRoleCommand input, User? user) {
+    public async override Task<RoleDto> Execute(UpdateRoleCommand input, User? user) {
         var r = await repo.FindById(input.Id);
 
         if (r == null) {

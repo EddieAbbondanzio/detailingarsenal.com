@@ -15,7 +15,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<ServiceDto> Execute(CreateServiceCommand input, User? user) {
+        public async override Task<ServiceDto> Execute(CreateServiceCommand input, User? user) {
             var service = new Service() {
                 Id = Guid.NewGuid(),
                 UserId = user!.Id,

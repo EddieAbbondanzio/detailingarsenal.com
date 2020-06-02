@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-[Validate(typeof(CreateRoleValidator))]
+[Validation(typeof(CreateRoleValidator))]
 public class CreateRoleHandler : ActionHandler<CreateRoleCommand, RoleDto> {
     private RoleNameUniqueSpecification specification;
     private IRoleRepo repo;
@@ -13,7 +13,7 @@ public class CreateRoleHandler : ActionHandler<CreateRoleCommand, RoleDto> {
         this.mapper = mapper;
     }
 
-    protected async override Task<RoleDto> Execute(CreateRoleCommand input, User? user) {
+    public async override Task<RoleDto> Execute(CreateRoleCommand input, User? user) {
         var r = new Role() {
             Id = Guid.NewGuid(),
             Name = input.Name,

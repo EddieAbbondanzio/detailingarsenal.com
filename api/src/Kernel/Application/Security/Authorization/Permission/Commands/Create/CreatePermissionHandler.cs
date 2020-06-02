@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-[Validate(typeof(CreatePermissionValidator))]
+[Validation(typeof(CreatePermissionValidator))]
 public class CreatePermissionHandler : ActionHandler<CreatePermissionCommand, PermissionDto> {
     private PermissionUniqueSpecification specification;
     private IPermissionRepo repo;
@@ -13,7 +13,7 @@ public class CreatePermissionHandler : ActionHandler<CreatePermissionCommand, Pe
         this.mapper = mapper;
     }
 
-    protected async override Task<PermissionDto> Execute(CreatePermissionCommand input, User? user) {
+    public async override Task<PermissionDto> Execute(CreatePermissionCommand input, User? user) {
         var p = new Permission() {
             Id = Guid.NewGuid(),
             Action = input.Action,

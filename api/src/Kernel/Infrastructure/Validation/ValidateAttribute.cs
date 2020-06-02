@@ -4,7 +4,7 @@ using System;
 /// Attribute to auto validate an interactor via a validator.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = true)]
-public sealed class ValidateAttribute : System.Attribute {
+public sealed class ValidationAttribute : System.Attribute {
     #region Properties
     /// <summary>
     /// The type of validator that should be used.
@@ -14,7 +14,7 @@ public sealed class ValidateAttribute : System.Attribute {
     #endregion
 
     #region Constructor(s)
-    public ValidateAttribute(Type validatorType) {
+    public ValidationAttribute(Type validatorType) {
         Validator = validatorType;
 
         if (!typeof(IValidator).IsAssignableFrom(validatorType)) {

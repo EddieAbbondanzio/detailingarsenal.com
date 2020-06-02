@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application {
             this.mapper = mapper;
         }
 
-        protected async override Task<List<VehicleCategoryDto>> Execute(GetVehicleCategoriesQuery query, User? user) {
+        public async override Task<List<VehicleCategoryDto>> Execute(GetVehicleCategoriesQuery query, User? user) {
             var vcs = await repo.FindByUser(user!);
             return mapper.Map<List<VehicleCategory>, List<VehicleCategoryDto>>(vcs);
         }

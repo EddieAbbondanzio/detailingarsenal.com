@@ -104,6 +104,8 @@ namespace DetailingArsenal.Api {
 
             // Infrastructure
             services.AddScoped<IMediator, Mediator>();
+            services.AddTransient<ActionMiddleware, AuthorizationMiddleware>();
+            services.AddTransient<ActionMiddleware, ValidationMiddleware>();
             services.AddScoped<IEventBus, EventBus>();
             services.AddTransient<IBusEventHandler<StartupEvent>, RunMigrationsOnStartup>();
 
