@@ -4,6 +4,7 @@ using AutoMapper;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "delete", Scope = "clients")]
     public class DeleteClientHandler : ActionHandler<DeleteClientCommand, ClientDto> {
         private ClientHasNoAppointmentsSpecification specification;
         private IClientRepo repo;

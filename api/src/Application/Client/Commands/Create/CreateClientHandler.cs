@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "create", Scope = "clients")]
     public class CreateClientHandler : ActionHandler<CreateClientCommand, ClientDto> {
         private IClientRepo repo;
         private IMapper mapper;

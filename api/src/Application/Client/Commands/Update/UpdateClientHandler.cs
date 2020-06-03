@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "update", Scope = "clients")]
     public class UpdateClientHandler : ActionHandler<UpdateClientCommand, ClientDto> {
         private IClientRepo repo;
         private IMapper mapper;
