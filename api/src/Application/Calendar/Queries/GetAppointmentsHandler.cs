@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "read", Scope = "appointments")]
     public class GetAppointmentsHandler : ActionHandler<GetAppointmentsQuery, List<AppointmentDto>> {
         private IAppointmentRepo repo;
         private IMapper mapper;

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "create", Scope = "appointments")]
     public class CreateAppointmentHandler : ActionHandler<CreateAppointmentCommand, AppointmentDto> {
         private IAppointmentRepo appointmentRepo;
         private IClientRepo clientRepo;

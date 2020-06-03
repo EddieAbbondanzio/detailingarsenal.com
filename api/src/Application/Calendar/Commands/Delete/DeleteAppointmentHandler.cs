@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "delete", Scope = "appointments")]
     public class DeleteAppointmentHandler : ActionHandler<DeleteAppointmentCommand> {
         private IAppointmentRepo repo;
 
