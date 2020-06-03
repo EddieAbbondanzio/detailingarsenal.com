@@ -3,6 +3,7 @@ using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
     [Validation(typeof(UpdateBusinessValidator))]
+    [Authorization(Action = "update", Scope = "businesses")]
     public class UpdateBusinessHandler : ActionHandler<UpdateBusinessCommand, BusinessDto> {
         private IBusinessRepo repo;
         private IMapper mapper;

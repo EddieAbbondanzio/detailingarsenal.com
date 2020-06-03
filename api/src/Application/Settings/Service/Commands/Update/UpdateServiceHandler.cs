@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "update", Scope = "services")]
     public class UpdateServiceHandler : ActionHandler<UpdateServiceCommand, ServiceDto> {
         private ServiceNameUniqueSpecification specification;
         private IServiceRepo repo;

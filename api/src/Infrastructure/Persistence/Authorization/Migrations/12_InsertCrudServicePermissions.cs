@@ -4,9 +4,9 @@ using Dapper;
 using FluentMigrator;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
-    [Migration(2020_06_02_5, "Insert crud client permissions")]
-    public class InsertCrudClientPermissions : Migration {
-        const string Scope = "clients";
+    [Migration(2020_06_02_6, "Insert crud service permissions")]
+    public class InsertCrudServicePermissions : Migration {
+        const string Scope = "services";
 
         public override void Up() {
             Execute.WithConnection((c, t) => {

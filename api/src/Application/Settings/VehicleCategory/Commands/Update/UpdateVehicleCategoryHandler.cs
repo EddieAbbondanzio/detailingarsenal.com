@@ -3,6 +3,7 @@ using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
     [Validation(typeof(UpdateVehicleCategoryValidator))]
+    [Authorization(Action = "update", Scope = "vehicle-categories")]
     public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryDto> {
         private VehicleCategoryNameUniqueSpecification specification;
         private IVehicleCategoryRepo repo;

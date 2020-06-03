@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "read", Scope = "hours-of-operations")]
     public class GetHoursOfOperationHandler : ActionHandler<GetHoursOfOperationQuery, HoursOfOperationDto> {
         private IHoursOfOperationRepo repo;
         private IMapper mapper;

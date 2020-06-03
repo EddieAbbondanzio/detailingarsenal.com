@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "delete", Scope = "services")]
     public class DeleteServiceHandler : ActionHandler<DeleteServiceCommand> {
         private ServiceNotInUseSpecification specification;
         private IServiceRepo repo;

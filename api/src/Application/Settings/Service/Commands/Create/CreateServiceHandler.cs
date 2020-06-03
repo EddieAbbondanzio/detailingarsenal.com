@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "create", Scope = "services")]
     public class CreateServiceHandler : ActionHandler<CreateServiceCommand, ServiceDto> {
         private ServiceNameUniqueSpecification specification;
         private IServiceRepo repo;

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "read", Scope = "vehicle-categories")]
     public class GetVehicleCategoriesHandler : ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryDto>> {
         private IVehicleCategoryRepo repo;
         private IMapper mapper;

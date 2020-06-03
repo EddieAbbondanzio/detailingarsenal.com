@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "read", Scope = "businesses")]
     public class GetBusinessHandler : ActionHandler<GetBusinessQuery, BusinessDto> {
         private IBusinessRepo repo;
         private IMapper mapper;

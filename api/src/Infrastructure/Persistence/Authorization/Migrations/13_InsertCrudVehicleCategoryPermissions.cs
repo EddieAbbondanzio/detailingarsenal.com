@@ -4,9 +4,9 @@ using Dapper;
 using FluentMigrator;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
-    [Migration(2020_06_02_5, "Insert crud client permissions")]
-    public class InsertCrudClientPermissions : Migration {
-        const string Scope = "clients";
+    [Migration(2020_06_02_7, "Insert crud vehicle category permissions")]
+    public class InsertCrudVehicleCategoryPermissions : Migration {
+        const string Scope = "vehicle-categories";
 
         public override void Up() {
             Execute.WithConnection((c, t) => {

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "update", Scope = "hours-of-operations")]
     public class UpdateHoursOfOperationHandler : ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationDto> {
         private IHoursOfOperationRepo repo;
         private IMapper mapper;

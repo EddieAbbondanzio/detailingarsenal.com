@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
-    [Authorization()]
+    [Authorization(Action = "create", Scope = "vehicle-categories")]
     [Validation(typeof(CreateVehicleCategoryValidator))]
     public class CreateVehicleCategoryHandler : ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryDto> {
         private VehicleCategoryNameUniqueSpecification specifcation;

@@ -3,6 +3,7 @@ using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
     [Validation(typeof(DeleteVehicleCategoryValidator))]
+    [Authorization(Action = "delete", Scope = "vehicle-categories")]
     public class DeleteVehicleCategoryHandler : ActionHandler<DeleteVehicleCategoryCommand> {
         private VehicleCategoryNotInuseSpecification specification;
         private IVehicleCategoryRepo repo;

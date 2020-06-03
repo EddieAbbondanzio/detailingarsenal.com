@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
+    [Authorization(Action = "read", Scope = "services")]
     public class GetServicesHandler : ActionHandler<GetServicesQuery, List<ServiceDto>> {
         private IServiceRepo repo;
         private IMapper mapper;
