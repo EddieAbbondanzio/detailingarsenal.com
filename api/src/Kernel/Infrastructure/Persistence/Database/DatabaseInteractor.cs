@@ -5,7 +5,7 @@ public abstract class DatabaseInteractor : IDisposable {
     #region Properties
     protected DbConnection Connection => context.Connection;
 
-    protected DatabaseContext Context => context;
+    private DatabaseContext Context => context;
     #endregion
 
     #region Fields

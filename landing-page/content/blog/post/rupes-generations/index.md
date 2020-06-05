@@ -5,4 +5,4 @@ type: "blog"
 # FeaturedImage: "/blog/write-ups/reconditioning-a-work-trucks-carpet-and-mats/images/featured.jpg"
 ---
 
-Lorem ipsum dollar reeee
+Lorem ipsum 
