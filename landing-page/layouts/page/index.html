@@ -91,63 +91,40 @@
         <div class="is-flex is-flex-column is-align-items-center">
             <div class="has-w-60 has-text-centered has-margin-bottom-6">
                 <a id="pricing" class="title has-cursor-default">Pricing</a>
-                <p class="has-margin-top-3">
+                <p class="has-margin-y-3">
                     Whether your a part time weekend warrior, or a full time professional our plans are designed to serve the needs of everyone.
                     We also offer a 60 day free trial with no credit card requirement to sign up.
-
                 </p>
             </div>
         </div>
 
-        <div class="columns">
-            <div class="column">
-                <div class="card">
-                    <div class="card-content is-flex is-flex-column is-align-items-center">
-                        <div
-                            class="has-margin-bottom-3 is-flex is-flex-column is-align-items-center"
-                        >
-                            <p class="title has-margin-bottom-0 has-text-centered">Weekend Warrior</p>
-
-                            <div class="is-size-2">
-                                <span class="is-super">$</span>5
-                            </div>
-                        </div>
-
-                        <ul class="has-margin-bottom-4" style="height: 120px;">
-                            <li>Unlimited contacts</li>
-                            <li>Schedule on weekends</li>
-                            <li>24/7 support</li>
-                        </ul>
-
-                        <a class="button is-expanded is-success" href="{{ .Site.Params.auth0 }}">Sign Up</a>
-                    </div>
-                </div>
+        <div class="pricing-table">
+            <div class="pricing-plan is-warning">
+              <div class="plan-header">Weekend Warrior</div>
+              <div class="plan-price"><span class="plan-price-amount"><span class="plan-price-currency">$</span>5</span>/month</div>
+              <div class="plan-items">
+                <div class="plan-item">Schedule on Friday, Saturday, Sunday</div>
+                <div class="plan-item">Up to 1000 contacts</div>
+              </div>
+              <div class="plan-footer">
+                <a class="button is-fullwidth" href="https://app.detailingarsenal.com/#/signup?plan=weekend-warrior&pricing=monthly">Sign Up</a>
             </div>
-
-            <div class="column">
-                <div class="card">
-                    <div class="card-content is-flex is-flex-column is-align-items-center">
-                        <div
-                            class="has-margin-bottom-3 is-flex is-flex-column is-align-items-center"
-                        >
-                            <p class="title has-margin-bottom-0 has-text-centered">Professional</p>
-
-                            <div class="is-size-2">
-                                <span class="is-super">$</span>20
-                            </div>
-                        </div>
-
-                        <ul class="has-margin-bottom-4" style="height: 120px;">
-                            <li>Unlimited contacts</li>
-                            <li>Schedule anytime</li>
-                            <li>24/7 support</li>
-                        </ul>
-
-                        <a class="button is-expanded is-success" href="{{ .Site.Params.auth0 }}">Sign Up</a>
-                    </div>
-                </div>
             </div>
-        </div>
+          
+            <div class="pricing-plan is-success is-active">
+              <div class="plan-header">Professional</div>
+              <div class="plan-price"><span class="plan-price-amount"><span class="plan-price-currency">$</span>20</span>/month</div>
+              <div class="plan-items">
+                <div class="plan-item">Schedule anytime</div>
+                <div class="plan-item">Unlimited contacts</div>
+            </div>
+              <div class="plan-footer">
+                <a class="button is-fullwidth" href="https://app.detailingarsenal.com/#/signup?plan=professional&pricing=monthly">Sign Up</a>
+              </div>
+            </div>
+          
+          </div>
+
     </section>
 
     <!-- Contact Us -->
