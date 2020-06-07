@@ -29,11 +29,6 @@ export default class App extends Vue {
 
     async created() {
         await userStore.init();
-
-        // Redirect logged in users to the calendar
-        if (userStore.isAuthenticated) {
-            this.$router.push({ name: 'calendar' });
-        }
     }
 }
 </script>

@@ -20,7 +20,11 @@ export class AuthenticationService {
         });
 
         if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
-            await this.auth0.handleRedirectCallback();
+            const { appState } = await this.auth0.handleRedirectCallback();
+
+            if (appState.route != null) {
+                router.push(appState.route);
+            }
 
             // Firefox bug
             window.location.hash = window.location.hash; // eslint-disable-line no-self-assign
@@ -31,9 +35,12 @@ export class AuthenticationService {
         this.isAuthed = user != null;
     }
 
-    public async login() {
+    public async login(route: Route) {
         await this.auth0!.loginWithRedirect({
-            redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI
+            redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI,
+            appState: {
+                route
+            }
         });
     }
 

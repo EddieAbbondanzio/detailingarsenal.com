@@ -41,8 +41,8 @@ class UserStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    public async login() {
-        await api.authentication.login();
+    public async login(route: Route) {
+        await api.authentication.login(route);
     }
 
     @Action({ rawError: true })
