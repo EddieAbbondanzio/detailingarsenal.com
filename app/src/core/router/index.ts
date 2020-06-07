@@ -14,6 +14,7 @@ const routes: RouteConfig[] = [
         path: '/',
         component: () => import('@/core/views/app.vue'),
         children: [...calendar, ...settings, ...user, ...clients, ...admin],
+        redirect: 'calendar',
         beforeEnter: authGuard
     },
     {

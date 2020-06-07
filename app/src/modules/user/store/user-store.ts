@@ -41,7 +41,11 @@ class UserStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    public async login(route: Route) {
+    public async login(route: Route | null = null) {
+        if (route == null) {
+            route = router.resolve('/calendar').route;
+        }
+
         await api.authentication.login(route);
     }
 
