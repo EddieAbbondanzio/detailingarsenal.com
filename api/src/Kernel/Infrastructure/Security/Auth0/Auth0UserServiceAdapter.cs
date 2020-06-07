@@ -1,24 +1,15 @@
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
 
-public interface IUserService : IService {
-    Task<User?> GetUserByAuth0Id(string auth0Id);
-    Task<User> GetOrCreateUserByAuth0Id(string auth0Id);
-    Task<User?> GetUserById(string id);
-    Task<User?> GetUserByEmail(string email);
-    Task<User> CreateUser(string email, string password);
-    Task UpdatePassword(User user, string newPassword);
-}
-
-public class UserService : IUserService {
+public class Auth0UserServiceAdapter : IUserService {
     private IAuth0ApiClientBuilder tokenGenerator;
     private IUserRepo userRepo;
     private IEventBus eventBus;
 
-    public UserService(IAuth0ApiClientBuilder tokenGenerator, IUserRepo userRepo, IEventBus eventBus) {
+    public Auth0UserServiceAdapter(IAuth0ApiClientBuilder tokenGenerator, IUserRepo userRepo, IEventBus eventBus) {
         this.tokenGenerator = tokenGenerator;
         this.userRepo = userRepo;
         this.eventBus = eventBus;

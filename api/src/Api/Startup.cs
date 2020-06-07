@@ -22,6 +22,7 @@ using AutoMapper;
 using DetailingArsenal.Infrastructure;
 using System.Text.Json.Serialization;
 using Npgsql.Logging;
+using Stripe;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -42,7 +43,10 @@ namespace DetailingArsenal.Api {
         public void ConfigureServices(IServiceCollection services) {
             services.AddCors();
 
+            // Auth0
             var authConfig = services.AddConfig<Auth0Config>(Configuration.GetSection("Auth0"));
+            services.AddTransient<IAuth0ApiClientBuilder, Auth0ApiClientBuilder>();
+            services.AddTransient<IUserService, Auth0UserServiceAdapter>();
 
             services.AddAuthentication(opts => {
                 opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -82,9 +86,11 @@ namespace DetailingArsenal.Api {
             services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
             services.AddTransient<IEmailClient, SmtpEmailClient>();
 
-            // Auth0
-            services.AddTransient<IAuth0ApiClientBuilder, Auth0ApiClientBuilder>();
-            services.AddTransient<IUserService, UserService>();
+            // Stripe
+            var stripeConfig = services.AddConfig<ISubscriptionConfig, StripeConfig>(Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = stripeConfig.SecretKey;
+            services.AddTransient<ICustomerInfoService, StripeCustomerInfoServiceAdapter>();
+            services.AddTransient<IBusEventHandler<NewUserEvent>, CreateCustomerAndStartTrialOnNewUser>();
 
             // Authorization
             services.AddTransient<IPermissionRepo, PermissionRepo>();

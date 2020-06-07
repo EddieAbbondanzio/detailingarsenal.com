@@ -4,7 +4,7 @@ using Dapper;
 using FluentMigrator;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
-    [Migration(2020_06_02_8, "Insert crud businesses permissions")]
+    [Migration(2020_06_02_9, "Insert crud businesses permissions")]
     public class InsertCrudHoursOfOperationPermissions : Migration {
         const string Scope = "hours-of-operations";
 
