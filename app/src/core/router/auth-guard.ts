@@ -3,17 +3,14 @@ import Vue from 'vue';
 import userStore from '@/modules/user/store/user-store';
 
 export const authGuard: NavigationGuard = async (to, from, next) => {
-    // Ensure auth service has been initialized
-    await userStore.init();
-
     const v = new Vue();
 
     const fn = () => {
         if (userStore.isAuthenticated) {
             return next();
+        } else {
+            userStore.login();
         }
-
-        userStore.login();
     };
 
     if (!userStore.isLoading) {

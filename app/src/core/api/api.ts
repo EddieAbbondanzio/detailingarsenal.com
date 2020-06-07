@@ -1,4 +1,4 @@
-import { AuthService } from '@/modules/user/api/services/auth-service';
+import { AuthenticationService } from '@/modules/user/api/services/authentication-service';
 import { BusinessService } from '@/modules/settings/api/services/business-service';
 import { HoursOfOperationService } from '@/modules/settings/api/services/hours-of-operation-service';
 import { ServiceService } from '@/modules/settings/api/services/service-service';
@@ -10,7 +10,7 @@ import { PermissionService } from '@/modules/admin/api/services/permission-servi
 import { RoleService } from '@/modules/admin/api/services/role-service';
 
 export const api = {
-    auth: new AuthService(),
+    authentication: new AuthenticationService(),
     user: new UserService(),
     appointment: new AppointmentService(),
     client: new ClientService(),

@@ -17,10 +17,6 @@ const routes: RouteConfig[] = [
         beforeEnter: authGuard
     },
     {
-        path: '/login',
-        component: () => import('@/core/views/login.vue')
-    },
-    {
         path: '/goodbye',
         component: () => import('@/core/views/goodbye.vue')
     }

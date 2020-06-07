@@ -20,8 +20,8 @@ http.interceptors.request.use(async config => {
      */
 
     // When authenticated, and sending a request to the backend add the token.
-    if (config.baseURL == process.env.VUE_APP_API_DOMAIN && api.auth.isAuthenticated) {
-        const token = await api.auth.getToken();
+    if (config.baseURL == process.env.VUE_APP_API_DOMAIN && api.authentication.isAuthenticated) {
+        const token = await api.authentication.getToken();
         config.headers.Authorization = `Bearer ${token}`;
     }
 

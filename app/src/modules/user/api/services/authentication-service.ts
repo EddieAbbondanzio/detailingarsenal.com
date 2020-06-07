@@ -1,16 +1,19 @@
-import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
+import { Auth0Client } from '@auth0/auth0-spa-js';
 import createAuth0Client from '@auth0/auth0-spa-js';
+import router from '@/core/router';
+import { Route } from 'vue-router';
 
-export class AuthService {
+export class AuthenticationService {
     get isAuthenticated() {
         return this.isAuthed;
     }
 
-    private isAuthed: boolean = false;
+    private isAuthed: boolean = true;
     private auth0!: Auth0Client;
 
     public async init() {
-        this.auth0 = await createAuth0Client({
+        // this.auth0 = await createAuth0Client({
+        this.auth0 = new Auth0Client({
             domain: process.env.VUE_APP_AUTH0_DOMAIN!,
             client_id: process.env.VUE_APP_AUTH0_CLIENT_ID!,
             audience: process.env.VUE_APP_AUTH0_AUDIENCE!
@@ -18,6 +21,7 @@ export class AuthService {
 
         if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
             await this.auth0.handleRedirectCallback();
+
             // Firefox bug
             window.location.hash = window.location.hash; // eslint-disable-line no-self-assign
             window.history.replaceState({}, document.title, window.location.pathname);
@@ -28,7 +32,9 @@ export class AuthService {
     }
 
     public async login() {
-        await this.auth0!.loginWithRedirect({ redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI });
+        await this.auth0!.loginWithRedirect({
+            redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI
+        });
     }
 
     public async logout() {

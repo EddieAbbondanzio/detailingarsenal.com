@@ -3,11 +3,13 @@ import { User } from '@/modules/user/api/entities/user';
 import { api } from '@/core/api/api';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
+import { Route } from 'vue-router';
+import router from '@/core/router';
 
 @Module({ namespaced: true, name: 'user', dynamic: true, store })
 class UserStore extends InitableModule {
     public isAuthenticated: boolean = false;
-    public isLoading: boolean = true;
+    public isLoading: boolean = true; // Used to show loading screen
     public user: User = null!;
 
     @Mutation
@@ -27,30 +29,30 @@ class UserStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        await api.auth.init();
+        await api.authentication.init();
 
-        if (api.auth.isAuthenticated) {
+        if (api.authentication.isAuthenticated) {
             const user = await api.user.getUser();
             this.context.commit('SET_USER', user);
         }
 
-        this.context.commit('SET_IS_AUTHENTICATED', api.auth.isAuthenticated);
+        this.context.commit('SET_IS_AUTHENTICATED', api.authentication.isAuthenticated);
         this.context.commit('SET_IS_LOADING', false);
     }
 
     @Action({ rawError: true })
     public async login() {
-        await api.auth.login();
+        await api.authentication.login();
     }
 
     @Action({ rawError: true })
     public async logout() {
-        await api.auth.logout();
+        await api.authentication.logout();
     }
 
     @Action({ rawError: true })
     public async updateUser(update: { name: string }) {
-        var u = await api.user.updateUser(update);
+        const u = await api.user.updateUser(update);
         this.context.commit('SET_USER', u);
     }
 }

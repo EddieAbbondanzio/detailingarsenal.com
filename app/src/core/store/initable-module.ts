@@ -34,7 +34,9 @@ export abstract class InitableModule extends VuexModule {
         const p = this.context.dispatch('_init');
 
         this.context.commit('SET_INIT_PROMISE', p);
-        await p;
+        const res = await p;
         this.context.commit('IS_INITIALIZED');
+
+        return res;
     }
 }

@@ -19,6 +19,7 @@
                 >{{ submitText }}</b-button>
 
                 <b-button
+                    v-if="!hideCancel"
                     class="has-margin-left-1"
                     type="is-light"
                     @click="onCancel()"
@@ -75,6 +76,9 @@ export default class InputForm extends Vue {
 
     @Prop({ default: false })
     preventCancelDefault!: boolean;
+
+    @Prop({ default: false })
+    hideCancel!: boolean;
 
     onSubmit() {
         this.$emit('submit');
