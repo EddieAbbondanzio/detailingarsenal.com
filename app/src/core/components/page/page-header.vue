@@ -36,7 +36,7 @@
             </div>
 
             <!-- Tablet and up -->
-            <div class="is-hidden-mobile section">
+            <div class="is-hidden-mobile section has-padding-y-4">
                 <div class="container">
                     <slot name="breadcrumb-trail"></slot>
 

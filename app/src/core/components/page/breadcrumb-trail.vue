@@ -1,5 +1,5 @@
 <template>
-    <nav class="breadcrumb" aria-label="breadcrumbs">
+    <nav class="breadcrumb has-margin-bottom-2" aria-label="breadcrumbs">
         <ul>
             <slot></slot>
         </ul>
