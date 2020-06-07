@@ -7,6 +7,7 @@ import '@/assets/styles/main.sass';
 import '@/plugins/vee-validate';
 import '@/plugins/vue2-touch-events';
 import core from '@/core/plugin';
+import { stripe } from '@/core/globals/stripe';
 
 Vue.use(core);
 Vue.use(Buefy);
