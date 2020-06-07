@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Stripe;
 
-public class StripeCustomerInfoServiceAdapter : ICustomerInfoService {
+public class StripeCustomerInfoService : ICustomerInfoService {
     Stripe.CustomerService customerService;
 
-    public StripeCustomerInfoServiceAdapter(Stripe.CustomerService customerService) {
-        this.customerService = customerService;
+    public StripeCustomerInfoService() {
+        this.customerService = new CustomerService();
     }
 
     public async Task<CustomerInfo> Create(string email) {

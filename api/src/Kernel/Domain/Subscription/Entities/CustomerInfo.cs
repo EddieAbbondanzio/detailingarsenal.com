@@ -1,4 +1,4 @@
-public class CustomerInfo : ValueObject<CustomerInfo> {
+public class CustomerInfo : Entity<CustomerInfo> {
     public string ExternalId { get; }
     public string Email { get; }
 

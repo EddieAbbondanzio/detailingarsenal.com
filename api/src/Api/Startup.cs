@@ -89,7 +89,9 @@ namespace DetailingArsenal.Api {
             // Stripe
             var stripeConfig = services.AddConfig<ISubscriptionConfig, StripeConfig>(Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
-            services.AddTransient<ICustomerInfoService, StripeCustomerInfoServiceAdapter>();
+            services.AddTransient<ICustomerRepo, CustomerRepo>();
+            services.AddTransient<ICustomerInfoService, StripeCustomerInfoService>();
+            services.AddTransient<ISubscriptionService, StripeSubscriptionService>();
             services.AddTransient<IBusEventHandler<NewUserEvent>, CreateCustomerAndStartTrialOnNewUser>();
 
             // Authorization
