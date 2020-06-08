@@ -20,13 +20,28 @@
             </page-header>
         </template>
 
-        <list>
-            <list-item v-for="p in permissions" :key="p.id" :title="p.toString()">
-                <template v-slot:actions>
-                    <edit-delete-dropdown @edit="onEdit(p)" @delete="onDelete(p)" />
-                </template>
-            </list-item>
-        </list>
+        <b-table :data="permissions">
+            <template slot-scope="props">
+                <b-table-column
+                    label="Permission"
+                    field="permission"
+                    sortable
+                >{{ props.row.permission }}</b-table-column>
+                <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
+                <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
+                <b-table-column>
+                    <edit-delete-dropdown
+                        @edit="onEdit(props.row)"
+                        @delete="onDelete(props.row)"
+                        size="is-small"
+                    />
+                </b-table-column>
+            </template>
+
+            <template slot="empty">
+                <div class="is-flex is-justify-content-center">There's nothing here!</div>
+            </template>
+        </b-table>
     </page>
 </template>
 
@@ -41,8 +56,15 @@ import { displayLoading } from '../../../../core/utils/display-loading';
     name: 'permissions'
 })
 export default class Permissions extends Vue {
-    get permissions() {
-        return adminStore.permissions;
+    get permissions(): PermissionView[] {
+        return adminStore.permissions
+            .map(p => ({
+                id: p.id,
+                permission: p.toString(),
+                action: p.action,
+                scope: p.scope
+            }))
+            .sort((a, b) => (a.scope > b.scope ? 1 : -1));
     }
 
     @displayLoading
@@ -50,17 +72,17 @@ export default class Permissions extends Vue {
         await adminStore.init();
     }
 
-    async onEdit(p: Permission) {
+    async onEdit(p: PermissionView) {
         this.$router.push({ name: 'editPermission', params: { id: p.id } });
     }
 
     @displayLoading
-    async onDelete(p: Permission) {
-        const del = await confirmDelete('permission', p.toString());
+    async onDelete(p: PermissionView) {
+        const del = await confirmDelete('permission', p.permission);
 
         if (del) {
             try {
-                await adminStore.deletePermission(p);
+                await adminStore.deletePermission(adminStore.permissions.find(perm => perm.id == p.id)!);
                 toast(`Deleted permission ${p.toString()}`);
             } catch (err) {
                 displayError(err);
@@ -68,4 +90,11 @@ export default class Permissions extends Vue {
         }
     }
 }
+
+export type PermissionView = {
+    id: string;
+    permission: string;
+    action: string;
+    scope: string;
+};
 </script>

@@ -4,7 +4,7 @@
             <b-button
                 type="is-text"
                 icon-left="dots-vertical"
-                size="is-medium"
+                :size="size"
                 @click.native="show($event)"
             />
         </template>
@@ -35,6 +35,9 @@ import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 export default class EditDeleteDropdown extends Vue {
     @Ref('dropdown')
     public dropdown: any;
+
+    @Prop({ default: 'is-medium' })
+    size!: string;
 
     /*
      * We need to prevent events from bubbling to parent so we do things weird.
