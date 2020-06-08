@@ -101,7 +101,7 @@ class AdminStore extends InitableModule {
     @Action({ rawError: true })
     async createRole(createRole: CreateRole) {
         const r = await api.authorization.role.createRole(createRole);
-        this.context.commit('CREATE_PERMISSION', r);
+        this.context.commit('CREATE_ROLE', r);
 
         return r;
     }
