@@ -24,11 +24,7 @@
             <input-group-header text="Permissions" />
             <b-table :data="permissions" checkable :checked-rows.sync="enabledPermissions">
                 <template slot-scope="props">
-                    <b-table-column
-                        label="Permission"
-                        field="permission"
-                        sortable
-                    >{{ props.row.permission }}</b-table-column>
+                    <b-table-column label="Permission" field="label" sortable>{{ props.row.label }}</b-table-column>
                     <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
                     <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
                 </template>
@@ -52,22 +48,16 @@ import { SpecificationError, displayError, toast } from '@/core';
     name: 'create-role'
 })
 export default class CreateRole extends Vue {
+    get permissions() {
+        return adminStore.permissions;
+    }
+
     name = '';
-    permissions: { id: string; permission: string; action: string; scope: string }[] = [];
-    enabledPermissions: { id: string; permission: string; action: string; scope: string }[] = [];
+    enabledPermissions: Permission[] = [];
 
     @displayLoading
     async created() {
         await adminStore.init();
-        this.permissions = adminStore.permissions
-            .map(p => ({
-                enabled: false,
-                id: p.id,
-                permission: p.toString(),
-                action: p.action,
-                scope: p.scope
-            }))
-            .sort((a, b) => (a.scope > b.scope ? 1 : -1));
     }
 
     @displayLoading

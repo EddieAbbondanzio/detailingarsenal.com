@@ -22,11 +22,7 @@
 
         <b-table :data="permissions">
             <template slot-scope="props">
-                <b-table-column
-                    label="Permission"
-                    field="permission"
-                    sortable
-                >{{ props.row.permission }}</b-table-column>
+                <b-table-column label="Permission" field="permission" sortable>{{ props.row.label }}</b-table-column>
                 <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
                 <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
                 <b-table-column>
@@ -56,15 +52,8 @@ import { displayLoading } from '../../../../core/utils/display-loading';
     name: 'permissions'
 })
 export default class Permissions extends Vue {
-    get permissions(): PermissionView[] {
-        return adminStore.permissions
-            .map(p => ({
-                id: p.id,
-                permission: p.toString(),
-                action: p.action,
-                scope: p.scope
-            }))
-            .sort((a, b) => (a.scope > b.scope ? 1 : -1));
+    get permissions(): Permission[] {
+        return adminStore.permissions;
     }
 
     @displayLoading
@@ -72,17 +61,17 @@ export default class Permissions extends Vue {
         await adminStore.init();
     }
 
-    async onEdit(p: PermissionView) {
+    async onEdit(p: Permission) {
         this.$router.push({ name: 'editPermission', params: { id: p.id } });
     }
 
     @displayLoading
-    async onDelete(p: PermissionView) {
-        const del = await confirmDelete('permission', p.permission);
+    async onDelete(p: Permission) {
+        const del = await confirmDelete('permission', p.label);
 
         if (del) {
             try {
-                await adminStore.deletePermission(adminStore.permissions.find(perm => perm.id == p.id)!);
+                await adminStore.deletePermission(p);
                 toast(`Deleted permission ${p.toString()}`);
             } catch (err) {
                 displayError(err);
@@ -90,11 +79,4 @@ export default class Permissions extends Vue {
         }
     }
 }
-
-export type PermissionView = {
-    id: string;
-    permission: string;
-    action: string;
-    scope: string;
-};
 </script>

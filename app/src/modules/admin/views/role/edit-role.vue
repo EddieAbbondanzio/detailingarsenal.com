@@ -29,11 +29,7 @@
                 :custom-is-checked="(a, b) => { return a.id === b.id }"
             >
                 <template slot-scope="props">
-                    <b-table-column
-                        label="Permission"
-                        field="permission"
-                        sortable
-                    >{{ props.row.permission }}</b-table-column>
+                    <b-table-column label="Permission" field="label" sortable>{{ props.row.label }}</b-table-column>
                     <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
                     <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
                 </template>
@@ -57,9 +53,12 @@ import { SpecificationError, displayError, toast } from '@/core';
     name: 'edit-role'
 })
 export default class EditRole extends Vue {
+    get permissions() {
+        return adminStore.permissions;
+    }
+
     name = '';
-    permissions: { id: string; permission: string; action: string; scope: string }[] = [];
-    enabledPermissions: { id: string; permission: string; action: string; scope: string }[] = [];
+    enabledPermissions: Permission[] = [];
 
     @displayLoading
     async created() {
@@ -68,35 +67,19 @@ export default class EditRole extends Vue {
         const role = adminStore.roles.find(r => r.id == this.$route.params.id);
 
         this.name = role!.name;
-        this.permissions = adminStore.permissions
-            .map(p => ({
-                enabled: role!.permissionIds.some(id => id == p.id),
-                id: p.id,
-                permission: p.toString(),
-                action: p.action,
-                scope: p.scope
-            }))
-            .sort((a, b) => (a.scope > b.scope ? 1 : -1));
-        this.enabledPermissions = role!.permissionIds
-            .map(id => adminStore.permissions.find(p => p.id == id)!)
-            .map(p => ({
-                id: p.id,
-                permission: p.toString(),
-                action: p.action,
-                scope: p.scope
-            }));
+        this.enabledPermissions = role!.permissionIds.map(id => adminStore.permissions.find(p => p.id == id)!);
     }
 
     @displayLoading
     async onSubmit() {
-        const Edit = {
+        const edit = {
             id: this.$route.params.id,
             name: this.name,
             permissionIds: this.enabledPermissions.map(p => p.id)
         };
 
         try {
-            const role = await adminStore.updateRole(Edit);
+            const role = await adminStore.updateRole(edit);
 
             toast(`Updated role ${role.name}`);
             this.$router.push({ name: 'roles' });

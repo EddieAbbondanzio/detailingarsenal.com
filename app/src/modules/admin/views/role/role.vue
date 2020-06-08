@@ -27,13 +27,23 @@
 
             <input-group-header text="Permissions" />
 
-            <input-checkbox
-                v-for="p in permissions"
-                :key="p.id"
-                :label="p.permission.toString()"
-                v-model="p.enabled"
-                :disabled="true"
-            />
+            <b-table
+                :data="permissions"
+                checkable
+                :checked-rows.sync="enabledPermissions"
+                :custom-is-checked="(a, b) => { return a.id === b.id }"
+                :is-row-checkable="(r) => false"
+            >
+                <template slot-scope="props">
+                    <b-table-column label="Permission" field="label" sortable>{{ props.row.label }}</b-table-column>
+                    <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
+                    <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
+                </template>
+
+                <template slot="empty">
+                    <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                </template>
+            </b-table>
         </div>
     </page>
 </template>
@@ -50,19 +60,19 @@ import appStore from '../../../../core/store/app-store';
     name: 'role'
 })
 export default class RoleView extends Vue {
+    get permissions() {
+        return adminStore.permissions;
+    }
+
     role: Role = null!;
-    permissions: { enabled: boolean; permission: Permission }[] = [];
+    enabledPermissions: Permission[] = [];
 
     @displayLoading
     async created() {
         await adminStore.init();
 
         this.role = adminStore.roles.find(r => r.id == this.$route.params.id)!;
-
-        this.permissions = adminStore.permissions.map(p => ({
-            enabled: this.role!.permissionIds.some(id => id == p.id),
-            permission: p
-        }));
+        this.enabledPermissions = this.role.permissionIds.map(id => adminStore.permissions.find(p => p.id == id)!);
     }
 }
 </script>

@@ -19,17 +19,19 @@ class AdminStore extends InitableModule {
 
     @Mutation
     SET_PERMISSIONS(permissions: Permission[]) {
-        this.permissions = permissions;
+        this.permissions = permissions.sort((a, b) => (a.scope > b.scope ? 1 : -1));
     }
 
     @Mutation
     CREATE_PERMISSION(permission: Permission) {
         this.permissions.push(permission);
+        this.permissions.sort((a, b) => (a.scope > b.scope ? 1 : -1));
     }
 
     @Mutation
     UPDATE_PERMISSION(permission: Permission) {
         this.permissions = [...this.permissions.filter(p => p.id != permission.id), permission];
+        this.permissions.sort((a, b) => (a.scope > b.scope ? 1 : -1));
     }
 
     @Mutation
@@ -38,6 +40,7 @@ class AdminStore extends InitableModule {
 
         if (index != -1) {
             this.permissions.splice(index, 1);
+            this.permissions.sort((a, b) => (a.scope > b.scope ? 1 : -1));
         }
     }
 

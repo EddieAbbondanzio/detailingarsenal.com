@@ -1,11 +1,11 @@
 import { Entity } from '@/core';
 
 export class Permission extends Entity {
-    constructor(public action: string, public scope: string) {
-        super();
+    get label() {
+        return `${this.action}:${this.scope}`;
     }
 
-    toString() {
-        return `${this.action}:${this.scope}`;
+    constructor(public action: string, public scope: string) {
+        super();
     }
 }
