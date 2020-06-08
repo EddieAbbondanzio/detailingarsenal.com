@@ -12,7 +12,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
     name: 'input-group-header'
 })
 export default class InputGroupHeader extends Vue {
-    @Prop()
-    text: string = '';
+    @Prop({ default: '' })
+    text!: string;
 }
 </script>
