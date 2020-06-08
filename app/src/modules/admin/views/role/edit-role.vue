@@ -22,13 +22,26 @@
             />
 
             <input-group-header text="Permissions" />
+            <b-table
+                :data="permissions"
+                checkable
+                :checked-rows.sync="enabledPermissions"
+                :custom-is-checked="(a, b) => { return a.id === b.id }"
+            >
+                <template slot-scope="props">
+                    <b-table-column
+                        label="Permission"
+                        field="permission"
+                        sortable
+                    >{{ props.row.permission }}</b-table-column>
+                    <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
+                    <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
+                </template>
 
-            <input-checkbox
-                v-for="p in permissions"
-                :key="p.id"
-                :label="p.permission.toString()"
-                v-model="p.enabled"
-            />
+                <template slot="empty">
+                    <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                </template>
+            </b-table>
         </input-form>
     </page>
 </template>
@@ -45,7 +58,8 @@ import { SpecificationError, displayError, toast } from '@/core';
 })
 export default class EditRole extends Vue {
     name = '';
-    permissions: { enabled: boolean; permission: Permission }[] = [];
+    permissions: { id: string; permission: string; action: string; scope: string }[] = [];
+    enabledPermissions: { id: string; permission: string; action: string; scope: string }[] = [];
 
     @displayLoading
     async created() {
@@ -54,10 +68,23 @@ export default class EditRole extends Vue {
         const role = adminStore.roles.find(r => r.id == this.$route.params.id);
 
         this.name = role!.name;
-        this.permissions = adminStore.permissions.map(p => ({
-            enabled: role!.permissionIds.some(id => id == p.id),
-            permission: p
-        }));
+        this.permissions = adminStore.permissions
+            .map(p => ({
+                enabled: role!.permissionIds.some(id => id == p.id),
+                id: p.id,
+                permission: p.toString(),
+                action: p.action,
+                scope: p.scope
+            }))
+            .sort((a, b) => (a.scope > b.scope ? 1 : -1));
+        this.enabledPermissions = role!.permissionIds
+            .map(id => adminStore.permissions.find(p => p.id == id)!)
+            .map(p => ({
+                id: p.id,
+                permission: p.toString(),
+                action: p.action,
+                scope: p.scope
+            }));
     }
 
     @displayLoading
@@ -65,7 +92,7 @@ export default class EditRole extends Vue {
         const Edit = {
             id: this.$route.params.id,
             name: this.name,
-            permissionIds: this.permissions.filter(p => p.enabled).map(p => p.permission.id)
+            permissionIds: this.enabledPermissions.map(p => p.id)
         };
 
         try {
