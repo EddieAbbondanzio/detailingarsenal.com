@@ -5,22 +5,22 @@ import { UpdateRole } from '@/modules/admin/api/data-transfer-objects/update-rol
 
 export class RoleService {
     async getRoles() {
-        const res = await http.get<any[]>('/authorization/role');
+        const res = await http.get<any[]>('/security/role');
         return res.data.map(d => this._map(d));
     }
 
     async createRole(create: CreateRole) {
-        const res = await http.post('/authorization/role', create);
+        const res = await http.post('/security/role', create);
         return this._map(res.data);
     }
 
     async updateRole(update: UpdateRole) {
-        const res = await http.put(`/authorization/role/${update.id}`, update);
+        const res = await http.put(`/security/role/${update.id}`, update);
         return this._map(res.data);
     }
 
     async deleteRole(role: Role) {
-        await http.delete(`/authorization/role/${role.id}`);
+        await http.delete(`/security/role/${role.id}`);
     }
 
     _map(data: any) {

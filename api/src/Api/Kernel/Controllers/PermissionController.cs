@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Authorize]
-[Route("/authorization/permission")]
+[Route("/security/permission")]
 [ApiController]
 public class PermissionController : ControllerBase {
     private IMediator mediator;

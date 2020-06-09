@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Authorize]
-[Route("/authorization/role")]
+[Route("/security/role")]
 [ApiController]
 public class RoleController : ControllerBase {
     private IMediator mediator;

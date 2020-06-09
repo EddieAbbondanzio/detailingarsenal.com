@@ -79,6 +79,8 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<AppointmentBlock, AppointmentBlockDto>();
                 config.CreateMap<Permission, PermissionDto>();
                 config.CreateMap<Role, RoleDto>();
+                config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceDto>();
+                config.CreateMap<SubscriptionPlan, SubscriptionPlanDto>();
             });
             services.AddSingleton<IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
@@ -86,13 +88,17 @@ namespace DetailingArsenal.Api {
             services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
             services.AddTransient<IEmailClient, SmtpEmailClient>();
 
-            // Stripe
+            // Subscriptions
             var stripeConfig = services.AddConfig<ISubscriptionConfig, StripeConfig>(Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
             services.AddTransient<ICustomerRepo, CustomerRepo>();
+            services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ICustomerInfoService, StripeCustomerInfoService>();
             services.AddTransient<ISubscriptionService, StripeSubscriptionService>();
+            services.AddTransient<ISubscriptionPlanInfoService, StripeSubscriptionPlanInfoService>();
             services.AddTransient<IBusEventHandler<NewUserEvent>, CreateCustomerAndStartTrialOnNewUser>();
+            services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
 
             // Authorization
             services.AddTransient<IPermissionRepo, PermissionRepo>();
