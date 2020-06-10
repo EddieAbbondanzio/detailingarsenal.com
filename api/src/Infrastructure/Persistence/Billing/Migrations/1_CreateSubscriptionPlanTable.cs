@@ -6,8 +6,8 @@ namespace DetailingArsenal.Infrastructure.Persistence.Migrations {
         public override void Up() {
             Create.Table("subscription_plans")
                 .WithColumn("id").AsGuid().PrimaryKey()
-                .WithColumn("name").AsString(128)
-                .WithColumn("external_id").AsString(255);
+                .WithColumn("name").AsString(128).Unique()
+                .WithColumn("external_id").AsString(255).Unique();
         }
 
         public override void Down() {

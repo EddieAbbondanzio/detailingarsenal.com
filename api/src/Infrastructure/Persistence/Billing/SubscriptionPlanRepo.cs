@@ -62,19 +62,20 @@ public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
 
     public async Task Add(SubscriptionPlan entity) {
         await Connection.ExecuteAsync(
-            @"insert into subscription_plans (id, name) values (@Id, @Name);",
+            @"insert into subscription_plans (id, name, external_id) values (@Id, @Name, @ExternalId);",
             entity
         );
 
         var prices = entity.Prices.Select(p => new SubscriptionPlanPriceModel() {
             Id = p.Id,
+            ExternalId = p.ExternalId,
             Interval = p.Interval,
             PlanId = entity.Id,
             Price = p.Price
         }).ToList();
 
         await Connection.ExecuteAsync(
-            @"insert into subscription_plans (id, plan_id, interval, price) values (@Id, @PlanId, @Interval, @Price);",
+            @"insert into subscription_plan_prices (id, plan_id, external_id, interval, price) values (@Id, @PlanId, @ExternalId, @Interval, @Price);",
             prices
         );
     }
@@ -92,13 +93,14 @@ public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
 
         var prices = entity.Prices.Select(p => new SubscriptionPlanPriceModel() {
             Id = p.Id,
+            ExternalId = p.ExternalId,
             Interval = p.Interval,
             PlanId = entity.Id,
             Price = p.Price
         }).ToList();
 
         await Connection.ExecuteAsync(
-            @"insert into subscription_plans (id, plan_id, interval, price) values (@Id, @PlanId, @Interval, @Price);",
+            @"insert into subscription_plan_prices (id, plan_id, external_id, interval, price) values (@Id, @PlanId, @ExternalId, @Interval, @Price);",
             prices
         );
     }

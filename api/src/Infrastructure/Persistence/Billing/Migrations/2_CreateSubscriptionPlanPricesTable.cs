@@ -9,7 +9,7 @@ namespace DetailingArsenal.Infrastructure.Persistence.Migrations {
                 .WithColumn("plan_id").AsGuid().ForeignKey("subscription_plans", "id")
                 .WithColumn("price").AsDecimal()
                 .WithColumn("interval").AsString(32)
-                .WithColumn("external_id").AsString(255);
+                .WithColumn("external_id").AsString(255).Unique();
         }
 
         public override void Down() {
