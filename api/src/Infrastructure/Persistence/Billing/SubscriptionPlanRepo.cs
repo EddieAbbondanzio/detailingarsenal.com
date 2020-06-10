@@ -26,10 +26,10 @@ public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
         return plan;
     }
 
-    public async Task<SubscriptionPlan?> FindByName(string name) {
+    public async Task<SubscriptionPlan?> FindByExternalId(string externalId) {
         var plan = await Connection.QueryFirstOrDefaultAsync<SubscriptionPlan>(
-            @"select * from subscription_plans where name = @Name;", new {
-                Name = name
+            @"select * from subscription_plans where external_id = @ExternalId;", new {
+                ExternalId = externalId
             }
         );
 
@@ -82,7 +82,7 @@ public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
 
     public async Task Update(SubscriptionPlan entity) {
         await Connection.ExecuteAsync(
-            @"update subscription_plans set name = @Name;",
+            @"update subscription_plans set name = @Name where id = @Id;",
             entity
         );
 

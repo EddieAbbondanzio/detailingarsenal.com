@@ -20,7 +20,7 @@ public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscription
         var plans = new List<SubscriptionPlan>();
 
         foreach (SubscriptionPlanInfo info in planInfos) {
-            var plan = await repo.FindByName(info.Name);
+            var plan = await repo.FindByExternalId(info.ExternalId);
 
             if (plan == null) {
                 plan = new SubscriptionPlan() {

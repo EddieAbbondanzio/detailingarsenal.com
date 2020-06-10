@@ -3,5 +3,5 @@ using System.Threading.Tasks;
 
 public interface ISubscriptionPlanRepo : IRepo<SubscriptionPlan> {
     Task<List<SubscriptionPlan>> FindAll();
-    Task<SubscriptionPlan?> FindByName(string name);
+    Task<SubscriptionPlan?> FindByExternalId(string externalId);
 }
