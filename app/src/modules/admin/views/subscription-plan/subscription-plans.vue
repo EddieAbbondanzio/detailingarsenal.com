@@ -19,11 +19,12 @@
                 </template>
 
                 <template v-slot:action>
-                    <create-button
+                    <b-button
                         @click="onRefreshClick"
-                        text="Refresh"
+                        type="is-success"
+                        icon-left="refresh"
                         title="Pull in the subscription plans from Stripe"
-                    />
+                    >Refresh</b-button>
                 </template>
             </page-header>
         </template>
@@ -46,6 +47,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import adminStore from '../../store/admin-store';
+import { displayLoading } from '../../../../core';
 
 @Component({
     name: 'subscription-plans'
@@ -55,6 +57,12 @@ export default class SubscriptionPlans extends Vue {
         return adminStore.subscriptionPlans;
     }
 
+    @displayLoading
+    async created() {
+        await adminStore.init();
+    }
+
+    @displayLoading
     async onRefreshClick() {
         await adminStore.refreshSubscriptionPlans();
     }

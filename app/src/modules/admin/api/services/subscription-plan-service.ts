@@ -13,13 +13,11 @@ export class SubscriptionPlanService {
         return this._map(res.data);
     }
 
-    _map(data: any) {
-        if (data == null) {
-            return null;
-        }
-
-        const prices =
-            data.prices == null ? [] : (data.prices as any[]).map(p => new SubscriptionPlanPrice(p.price, p.interval));
-        return new SubscriptionPlan(data.name, prices);
+    _map(data: any[]) {
+        return data.map(d => {
+            const prices =
+                d.prices == null ? [] : d.prices.map((p: any) => new SubscriptionPlanPrice(p.price, p.interval));
+            return new SubscriptionPlan(d.name, prices);
+        });
     }
 }
