@@ -19,7 +19,7 @@ public class SubscriptionPlanController : ControllerBase {
     /// </summary>
     [HttpGet]
     public async Task<IActionResult> Get() {
-        var plans = await mediator.Dispatch<GetSubscriptionPlansQuery, List<SubscriptionPlan>>(
+        var plans = await mediator.Dispatch<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>(
             new GetSubscriptionPlansQuery(),
             User.GetUserId()
         );
@@ -32,7 +32,7 @@ public class SubscriptionPlanController : ControllerBase {
     /// </summary>
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh() {
-        var plans = await mediator.Dispatch<RefreshSubscriptionPlansCommand, List<SubscriptionPlan>>(
+        var plans = await mediator.Dispatch<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>(
             new RefreshSubscriptionPlansCommand(),
             User.GetUserId()
         );

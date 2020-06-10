@@ -51,6 +51,12 @@ export default class AdminPanel extends Vue {
             description: 'Collection of roles',
             icon: 'account',
             to: { name: 'roles' }
+        },
+        {
+            title: 'Subscription Plans',
+            description: 'Plans for customers',
+            icon: 'ferry',
+            to: { name: 'subscriptionPlans' }
         }
     ];
 }

@@ -14,6 +14,10 @@ public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
             }
         );
 
+        if (plan == null) {
+            return null;
+        }
+
         plan.Prices = (await Connection.QueryAsync<SubscriptionPlanPrice>(
             @"select * from subscription_plan_prices where plan_id = @Id;",
             plan
@@ -28,6 +32,10 @@ public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
                 Name = name
             }
         );
+
+        if (plan == null) {
+            return null;
+        }
 
         plan.Prices = (await Connection.QueryAsync<SubscriptionPlanPrice>(
             @"select * from subscription_plan_prices where plan_id = @Id;",

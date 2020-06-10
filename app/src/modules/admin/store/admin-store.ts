@@ -8,6 +8,7 @@ import store from '@/core/store/index';
 import { Role } from '@/modules/admin/api/entities/role';
 import { CreateRole } from '@/modules/admin/api/data-transfer-objects/create-role';
 import { UpdateRole } from '@/modules/admin/api/data-transfer-objects/update-role';
+import { SubscriptionPlan } from '@/modules/admin/api/entities/subscription-plan';
 
 /**
  * Store for the schedule view.
@@ -16,6 +17,7 @@ import { UpdateRole } from '@/modules/admin/api/data-transfer-objects/update-rol
 class AdminStore extends InitableModule {
     permissions: Permission[] = [];
     roles: Role[] = [];
+    subscriptionPlans: SubscriptionPlan[] = [];
 
     @Mutation
     SET_PERMISSIONS(permissions: Permission[]) {
@@ -68,20 +70,27 @@ class AdminStore extends InitableModule {
         }
     }
 
+    @Mutation
+    SET_SUBSCRIPTION_PLANS(plans: SubscriptionPlan[]) {
+        this.subscriptionPlans = plans;
+    }
+
     @Action({ rawError: true })
     async _init() {
-        const [perms, roles] = await Promise.all([
-            api.authorization.permission.getPermissions(),
-            api.authorization.role.getRoles()
+        const [perms, roles, plans] = await Promise.all([
+            api.security.permission.getPermissions(),
+            api.security.role.getRoles(),
+            api.billing.subscriptionPlan.getPlans()
         ]);
 
         this.context.commit('SET_PERMISSIONS', perms);
         this.context.commit('SET_ROLES', roles);
+        this.context.commit('SET_SUBSCRIPTION_PLANS', plans);
     }
 
     @Action({ rawError: true })
     async createPermission(createPermission: CreatePermission) {
-        const p = await api.authorization.permission.createPermission(createPermission);
+        const p = await api.security.permission.createPermission(createPermission);
         this.context.commit('CREATE_PERMISSION', p);
 
         return p;
@@ -89,7 +98,7 @@ class AdminStore extends InitableModule {
 
     @Action({ rawError: true })
     async updatePermission(updatePermission: UpdatePermission) {
-        const p = await api.authorization.permission.updatePermission(updatePermission);
+        const p = await api.security.permission.updatePermission(updatePermission);
         this.context.commit('UPDATE_PERMISSION', p);
 
         return p;
@@ -97,13 +106,13 @@ class AdminStore extends InitableModule {
 
     @Action({ rawError: true })
     async deletePermission(permission: Permission) {
-        await api.authorization.permission.deletePermission(permission);
+        await api.security.permission.deletePermission(permission);
         this.context.commit('DELETE_PERMISSION', permission);
     }
 
     @Action({ rawError: true })
     async createRole(createRole: CreateRole) {
-        const r = await api.authorization.role.createRole(createRole);
+        const r = await api.security.role.createRole(createRole);
         this.context.commit('CREATE_ROLE', r);
 
         return r;
@@ -111,7 +120,7 @@ class AdminStore extends InitableModule {
 
     @Action({ rawError: true })
     async updateRole(updateRole: UpdateRole) {
-        const r = await api.authorization.role.updateRole(updateRole);
+        const r = await api.security.role.updateRole(updateRole);
         this.context.commit('UPDATE_ROLE', r);
 
         return r;
@@ -119,8 +128,15 @@ class AdminStore extends InitableModule {
 
     @Action({ rawError: true })
     async deleteRole(role: Role) {
-        await api.authorization.role.deleteRole(role);
+        await api.security.role.deleteRole(role);
         this.context.commit('DELETE_ROLE', role);
+    }
+
+    @Action({ rawError: true })
+    async refreshSubscriptionPlans() {
+        const plans = await api.billing.subscriptionPlan.refreshPlans();
+        this.context.commit('SET_SUBSCRIPTION_PLANS', plans);
+        return plans;
     }
 }
 

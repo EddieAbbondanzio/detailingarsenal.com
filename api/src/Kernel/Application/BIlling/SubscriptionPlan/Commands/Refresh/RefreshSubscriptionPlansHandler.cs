@@ -26,6 +26,7 @@ public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscription
                 plan = new SubscriptionPlan() {
                     Id = Guid.NewGuid(),
                     Name = info.Name,
+                    ExternalId = info.ExternalId,
                     Prices = info.Prices.Select(p => new SubscriptionPlanPrice() {
                         Id = Guid.NewGuid(),
                         Price = p.Price,
@@ -38,6 +39,7 @@ public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscription
                 plan.Prices = info.Prices.Select(p => new SubscriptionPlanPrice() {
                     Id = Guid.NewGuid(),
                     Price = p.Price,
+                    ExternalId = info.ExternalId,
                     Interval = p.Interval
                 }).ToList();
 

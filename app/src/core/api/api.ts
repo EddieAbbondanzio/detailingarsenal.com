@@ -8,6 +8,7 @@ import { ClientService } from '@/modules/clients/api/services/client-service';
 import { AppointmentService } from '@/modules/calendar/api/service/appointment-service';
 import { PermissionService } from '@/modules/admin/api/services/permission-service';
 import { RoleService } from '@/modules/admin/api/services/role-service';
+import { SubscriptionPlanService } from '@/modules/admin/api/services/subscription-plan-service';
 
 export const api = {
     authentication: new AuthenticationService(),
@@ -20,8 +21,11 @@ export const api = {
         service: new ServiceService(),
         vehicleCategory: new VehicleCategoryService()
     },
-    authorization: {
+    security: {
         permission: new PermissionService(),
         role: new RoleService()
+    },
+    billing: {
+        subscriptionPlan: new SubscriptionPlanService()
     }
 };

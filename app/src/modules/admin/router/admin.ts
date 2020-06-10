@@ -40,5 +40,15 @@ export const admin = [
         path: 'admin/roles/:id/edit',
         name: 'editRole',
         component: () => import('@/modules/admin/views/role/edit-role.vue')
+    },
+    {
+        path: 'admin/subscription-plans',
+        name: 'subscriptionPlans',
+        component: () => import('@/modules/admin/views/subscription-plan/subscription-plans.vue')
+    },
+    {
+        path: 'admin/subscription-plans/:id',
+        name: 'subscriptionPlan',
+        component: () => import('@/modules/admin/views/subscription-plan/subscription-plan.vue')
     }
 ];
