@@ -35,11 +35,7 @@
                 :key="p.id"
                 :title="p.name"
                 :to="{name: 'subscriptionPlan', params: { id: p.id}}"
-            >
-                <template v-slot:actions>
-                    <edit-delete-dropdown @edit="onEdit(r)" @delete="onDelete(r)" />
-                </template>
-            </list-item>
+            ></list-item>
         </list>
     </page>
 </template>

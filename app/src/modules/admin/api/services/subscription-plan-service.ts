@@ -16,8 +16,19 @@ export class SubscriptionPlanService {
     _map(data: any[]) {
         return data.map(d => {
             const prices =
-                d.prices == null ? [] : d.prices.map((p: any) => new SubscriptionPlanPrice(p.price, p.interval));
-            return new SubscriptionPlan(d.name, prices);
+                d.prices == null
+                    ? []
+                    : d.prices.map((p: any) => {
+                          const price = new SubscriptionPlanPrice(p.price, p.interval);
+                          price.id = p.id;
+
+                          return price;
+                      });
+
+            const plan = new SubscriptionPlan(d.name, prices);
+            plan.id = d.id;
+
+            return plan;
         });
     }
 }
