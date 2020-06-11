@@ -5,11 +5,13 @@ using Serilog;
 
 namespace DetailingArsenal.Application {
     public class CreateCustomerAndStartTrialOnNewUser : IBusEventHandler<NewUserEvent> {
-        private ICustomerRepo repo;
+        private ICustomerRepo customerRepo;
+        private ISubscriptionRepo subscriptionRepo;
         private ISubscriptionService subscriptionService;
 
-        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo repo, ISubscriptionService subscriptionService) {
-            this.repo = repo;
+        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, ISubscriptionService subscriptionService) {
+            this.customerRepo = customerRepo;
+            this.subscriptionRepo = subscriptionRepo;
             this.subscriptionService = subscriptionService;
         }
 
@@ -21,10 +23,11 @@ namespace DetailingArsenal.Application {
                 Info = new CustomerInfo(null!, busEvent.User.Email)
             };
 
-            await repo.Add(customer);
+            await customerRepo.Add(customer);
 
             // Now create and start the trial subscription
             var sub = await subscriptionService.CreateTrialSubscription(customer);
+            await subscriptionRepo.Add(sub);
         }
     }
 }

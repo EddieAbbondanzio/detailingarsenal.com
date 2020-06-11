@@ -88,11 +88,12 @@ namespace DetailingArsenal.Api {
             services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
             services.AddTransient<IEmailClient, SmtpEmailClient>();
 
-            // Subscriptions
+            // Billing
             var stripeConfig = services.AddConfig<ISubscriptionConfig, StripeConfig>(Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
+            services.AddTransient<ISubscriptionRepo, SubscriptionRepo>();
             services.AddTransient<ICustomerInfoService, StripeCustomerInfoService>();
             services.AddTransient<ISubscriptionService, StripeSubscriptionService>();
             services.AddTransient<ISubscriptionPlanInfoService, StripeSubscriptionPlanInfoService>();
