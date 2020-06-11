@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using DetailingArsenal.Domain;
 
 public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
     public SubscriptionPlanRepo(IDatabase database) : base(database) { }

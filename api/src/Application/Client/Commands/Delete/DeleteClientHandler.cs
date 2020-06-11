@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {

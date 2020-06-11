@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DetailingArsenal.Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,9 +27,6 @@ namespace DetailingArsenal.Api {
             using (var scope = host.Services.CreateScope()) {
                 var bus = scope.ServiceProvider.GetRequiredService<IEventBus>();
                 await bus.Dispatch(new StartupEvent());
-
-                // Perform any database migrations
-                // scope.ServiceProvider.GetRequiredService<DatabaseMigrationRunner>().MigrateUp();
             }
 
             await host.RunAsync();

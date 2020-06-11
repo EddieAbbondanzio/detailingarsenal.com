@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Dapper;
+using DetailingArsenal.Domain;
 
 public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
     private ICustomerInfoService infoService;

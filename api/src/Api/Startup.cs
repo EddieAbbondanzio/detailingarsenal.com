@@ -82,7 +82,7 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceDto>();
                 config.CreateMap<SubscriptionPlan, SubscriptionPlanDto>();
             });
-            services.AddSingleton<IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
+            services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
             // Email
             services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
@@ -130,7 +130,7 @@ namespace DetailingArsenal.Api {
 
             // Database
             var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
-            services.AddScoped<DatabaseMigrationRunner, FluentMigratorMigrationRunner>();
+            services.AddScoped<IDatabaseMigrationRunner, FluentMigratorMigrationRunner>();
             services.AddSingleton<IDatabase, PostgresDatabase>();
             services.AddDatabaseMigrations(dbConfig.GetConnectionString(), typeof(MigrationsFlag).Assembly);
 

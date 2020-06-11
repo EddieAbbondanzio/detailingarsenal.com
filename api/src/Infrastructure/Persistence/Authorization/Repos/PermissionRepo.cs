@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using DetailingArsenal.Domain;
 using DetailingArsenal.Infrastructure.Persistence.Models;
 
 namespace DetailingArsenal.Infrastructure.Persistence {

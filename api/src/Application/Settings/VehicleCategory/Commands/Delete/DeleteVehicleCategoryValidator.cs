@@ -1,4 +1,5 @@
 
+using DetailingArsenal.Domain;
 using FluentValidation;
 
 namespace DetailingArsenal.Application {

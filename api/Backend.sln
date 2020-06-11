@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{78EB8782-0FF7-429C-BED8-D7AA364D729E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kernel", "tests\Kernel\Tests.Kernel.csproj", "{77406749-4253-44A7-ADFC-F8BDDEECF692}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "tests\Shared\Tests.Shared.csproj", "{77406749-4253-44A7-ADFC-F8BDDEECF692}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "tests\Infrastructure\Tests.Infrastructure.csproj", "{205898F6-B291-452F-8BA9-1CC611F8635E}"
 EndProject

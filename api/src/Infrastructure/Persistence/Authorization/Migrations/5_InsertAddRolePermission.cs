@@ -1,5 +1,6 @@
 using System;
 using Dapper;
+using DetailingArsenal.Domain;
 using FluentMigrator;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
