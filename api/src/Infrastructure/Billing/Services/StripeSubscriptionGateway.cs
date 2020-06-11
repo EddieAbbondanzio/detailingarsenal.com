@@ -35,7 +35,8 @@ namespace DetailingArsenal.Infrastructure {
                 Id = Guid.NewGuid(),
                 UserId = customer.UserId,
                 ExternalId = s.Id,
-                PlanId = plan.Id
+                PlanId = plan.Id,
+                Status = s.Status
             };
 
             return sub;

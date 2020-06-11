@@ -65,6 +65,14 @@ namespace DetailingArsenal.Api {
                 opts.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
+            // Infrastructure
+            services.AddScoped<IMediator, Mediator>();
+            services.AddTransient<ActionMiddleware, AuthorizationMiddleware>();
+            services.AddTransient<ActionMiddleware, ValidationMiddleware>();
+            services.AddScoped<IEventBus, EventBus>();
+            services.AddTransient<IBusEventHandler<StartupEvent>, RunMigrationsOnStartup>();
+
+
             // Mapping
             var mapperConfiguration = new MapperConfiguration(config => {
                 config.CreateMap<Client, ClientDto>();
@@ -98,8 +106,10 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ISubscriptionGateway, StripeSubscriptionGateway>();
             services.AddTransient<ISubscriptionPlanInfoGateway, StripeSubscriptionPlanInfoGateway>();
             services.AddTransient<IBusEventHandler<NewUserEvent>, CreateCustomerAndStartTrialOnNewUser>();
+            services.AddTransient<IBusEventHandler<StartupEvent>, RefreshSubscriptionPlansOnStartup>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
+            services.AddTransient<Application.SubscriptionService>();
 
             // Authorization
             services.AddTransient<IPermissionRepo, PermissionRepo>();
@@ -121,13 +131,6 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<DeleteRoleCommand>, DeleteRoleHandler>();
             services.AddTransient<ActionHandler<AddRoleToUserCommand>, AddRoleToUserHandler>();
             services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
-
-            // Infrastructure
-            services.AddScoped<IMediator, Mediator>();
-            services.AddTransient<ActionMiddleware, AuthorizationMiddleware>();
-            services.AddTransient<ActionMiddleware, ValidationMiddleware>();
-            services.AddScoped<IEventBus, EventBus>();
-            services.AddTransient<IBusEventHandler<StartupEvent>, RunMigrationsOnStartup>();
 
             // Database
             var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
