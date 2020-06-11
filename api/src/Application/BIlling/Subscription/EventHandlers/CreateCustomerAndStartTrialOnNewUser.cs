@@ -17,15 +17,11 @@ namespace DetailingArsenal.Application {
             // Create the customer
             var customer = new Customer() {
                 Id = Guid.NewGuid(),
+                UserId = busEvent.User.Id,
                 Info = new CustomerInfo(null!, busEvent.User.Email)
             };
 
-            try {
-                await repo.Add(customer);
-
-            } catch (Exception e) {
-                Log.Fatal(e, "REEE");
-            }
+            await repo.Add(customer);
 
             // Now create and start the trial subscription
             var sub = await subscriptionService.CreateTrialSubscription(customer);

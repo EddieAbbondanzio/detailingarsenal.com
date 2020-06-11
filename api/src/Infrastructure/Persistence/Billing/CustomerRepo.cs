@@ -27,8 +27,8 @@ public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
         entity.Info = await infoService.Create(entity.Info.Email);
 
         await Connection.ExecuteAsync(
-            @"insert into customers (id, external_id) values (@Id, @ExternalId);",
-            new CustomerModel() { Id = entity.Id, ExternalId = entity.Info.ExternalId }
+            @"insert into customers (id, user_id, external_id) values (@Id, @UserId, @ExternalId);",
+            new CustomerModel() { Id = entity.Id, UserId = entity.UserId, ExternalId = entity.Info.ExternalId }
         );
     }
 
@@ -43,6 +43,7 @@ public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
     private Customer Map(CustomerModel model, CustomerInfo info) {
         return new Customer() {
             Id = model.Id,
+            UserId = model.UserId,
             Info = info
         };
     }
