@@ -9,9 +9,9 @@ namespace DetailingArsenal.Api {
     [ApiController]
     [Route("meta")]
     public class MetaController : ControllerBase {
-        private IUserService userService;
+        private IUserGateway userService;
 
-        public MetaController(IUserService userService) {
+        public MetaController(IUserGateway userService) {
             this.userService = userService;
         }
 

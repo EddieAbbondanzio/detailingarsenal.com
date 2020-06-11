@@ -4,8 +4,8 @@ using Dapper;
 using DetailingArsenal.Domain;
 
 public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
-    private ICustomerInfoService infoService;
-    public CustomerRepo(IDatabase database, ICustomerInfoService infoService) : base(database) {
+    private ICustomerInfoGateway infoService;
+    public CustomerRepo(IDatabase database, ICustomerInfoGateway infoService) : base(database) {
         this.infoService = infoService;
     }
 

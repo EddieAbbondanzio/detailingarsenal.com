@@ -11,10 +11,10 @@ namespace DetailingArsenal.Application {
     /// </summary>
     public class CreateOrUpdateAdminOnStartup : IBusEventHandler<StartupEvent> {
         private AdminConfig config;
-        private IUserService userService;
+        private IUserGateway userService;
         private IRoleRepo roleRepo;
 
-        public CreateOrUpdateAdminOnStartup(AdminConfig config, IUserService userService, IRoleRepo roleRepo) {
+        public CreateOrUpdateAdminOnStartup(AdminConfig config, IUserGateway userService, IRoleRepo roleRepo) {
             this.config = config;
             this.userService = userService;
             this.roleRepo = roleRepo;

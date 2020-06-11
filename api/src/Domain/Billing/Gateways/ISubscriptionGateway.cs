@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain {
-    public interface ISubscriptionService : IService {
+    public interface ISubscriptionGateway : IService {
         Task<Subscription> CreateTrialSubscription(Customer customer);
     }
 }

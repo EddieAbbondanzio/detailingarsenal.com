@@ -4,10 +4,10 @@ using DetailingArsenal.Domain;
 using Stripe;
 
 namespace DetailingArsenal.Infrastructure {
-    public class StripeCustomerInfoService : ICustomerInfoService {
+    public class StripeCustomerInfoGateway : ICustomerInfoGateway {
         Stripe.CustomerService customerService;
 
-        public StripeCustomerInfoService() {
+        public StripeCustomerInfoGateway() {
             this.customerService = new CustomerService();
         }
 

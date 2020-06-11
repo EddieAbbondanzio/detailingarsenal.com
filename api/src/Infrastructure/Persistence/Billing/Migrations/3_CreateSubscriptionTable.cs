@@ -9,7 +9,7 @@ namespace DetailingArsenal.Infrastructure.Persistence.Migrations {
             .WithColumn("user_id").AsGuid().ForeignKey("users", "id")
             .WithColumn("plan_id").AsGuid().ForeignKey("subscription_plans", "id")
             .WithColumn("external_id").AsString(255)
-            .WithColumn("status").AsString("32");
+            .WithColumn("status").AsString(32);
         }
 
         public override void Down() {

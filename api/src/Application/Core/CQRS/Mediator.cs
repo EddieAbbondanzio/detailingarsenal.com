@@ -16,13 +16,13 @@ namespace DetailingArsenal.Application {
     public sealed class Mediator : IMediator {
         IServiceProvider serviceProvider;
         IEnumerable<ActionMiddleware> middlewares;
-        IUserService userService;
+        IUserGateway userService;
 
         public Mediator(IServiceProvider serviceProvider, IEnumerable<ActionMiddleware> middlewares) {
             this.serviceProvider = serviceProvider;
             this.middlewares = middlewares;
 
-            userService = serviceProvider.GetRequiredService<IUserService>();
+            userService = serviceProvider.GetRequiredService<IUserGateway>();
         }
 
         public async Task Dispatch<TInput>(TInput input, string userId = "") where TInput : class, IAction {

@@ -6,11 +6,11 @@ using DetailingArsenal.Domain;
 using Stripe;
 
 namespace DetailingArsenal.Infrastructure {
-    public class StripeSubscriptionPlanInfoService : ISubscriptionPlanInfoService {
+    public class StripeSubscriptionPlanInfoGateway : ISubscriptionPlanInfoGateway {
         private Stripe.ProductService productService;
         private Stripe.PriceService priceService;
 
-        public StripeSubscriptionPlanInfoService() {
+        public StripeSubscriptionPlanInfoGateway() {
             this.productService = new ProductService();
             this.priceService = new PriceService();
         }

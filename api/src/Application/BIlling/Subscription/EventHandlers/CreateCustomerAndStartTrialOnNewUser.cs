@@ -7,9 +7,9 @@ namespace DetailingArsenal.Application {
     public class CreateCustomerAndStartTrialOnNewUser : IBusEventHandler<NewUserEvent> {
         private ICustomerRepo customerRepo;
         private ISubscriptionRepo subscriptionRepo;
-        private ISubscriptionService subscriptionService;
+        private ISubscriptionGateway subscriptionService;
 
-        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, ISubscriptionService subscriptionService) {
+        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, ISubscriptionGateway subscriptionService) {
             this.customerRepo = customerRepo;
             this.subscriptionRepo = subscriptionRepo;
             this.subscriptionService = subscriptionService;

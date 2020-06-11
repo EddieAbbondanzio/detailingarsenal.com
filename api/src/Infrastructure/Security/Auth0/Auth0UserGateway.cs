@@ -6,12 +6,12 @@ using Auth0.ManagementApi.Models;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Infrastructure {
-    public class Auth0UserServiceAdapter : IUserService {
+    public class Auth0UserGateway : IUserGateway {
         private IAuth0ApiClientBuilder tokenGenerator;
         private IUserRepo userRepo;
         private IEventBus eventBus;
 
-        public Auth0UserServiceAdapter(IAuth0ApiClientBuilder tokenGenerator, IUserRepo userRepo, IEventBus eventBus) {
+        public Auth0UserGateway(IAuth0ApiClientBuilder tokenGenerator, IUserRepo userRepo, IEventBus eventBus) {
             this.tokenGenerator = tokenGenerator;
             this.userRepo = userRepo;
             this.eventBus = eventBus;

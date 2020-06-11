@@ -46,7 +46,7 @@ namespace DetailingArsenal.Api {
             // Auth0
             var authConfig = services.AddConfig<Auth0Config>(Configuration.GetSection("Auth0"));
             services.AddTransient<IAuth0ApiClientBuilder, Auth0ApiClientBuilder>();
-            services.AddTransient<IUserService, Auth0UserServiceAdapter>();
+            services.AddTransient<IUserGateway, Auth0UserGateway>();
 
             services.AddAuthentication(opts => {
                 opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -94,9 +94,9 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ISubscriptionRepo, SubscriptionRepo>();
-            services.AddTransient<ICustomerInfoService, StripeCustomerInfoService>();
-            services.AddTransient<ISubscriptionService, StripeSubscriptionService>();
-            services.AddTransient<ISubscriptionPlanInfoService, StripeSubscriptionPlanInfoService>();
+            services.AddTransient<ICustomerInfoGateway, StripeCustomerInfoGateway>();
+            services.AddTransient<ISubscriptionGateway, StripeSubscriptionGateway>();
+            services.AddTransient<ISubscriptionPlanInfoGateway, StripeSubscriptionPlanInfoGateway>();
             services.AddTransient<IBusEventHandler<NewUserEvent>, CreateCustomerAndStartTrialOnNewUser>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
