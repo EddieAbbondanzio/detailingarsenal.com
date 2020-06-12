@@ -4,7 +4,7 @@
             <page-header :title="role != null ? role.name : ``">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
                         <breadcrumb name="Roles" :to="{name: 'roles'}" />
                         <breadcrumb
                             :name="role != null ? role.name : ''"

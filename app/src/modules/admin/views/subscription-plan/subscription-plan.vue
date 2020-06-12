@@ -4,7 +4,7 @@
             <page-header :title="plan != null ? plan.name : ``">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
                         <breadcrumb name="Subscription Plans" :to="{name: 'subscriptionPlans'}" />
                         <breadcrumb
                             :name="plan != null ? plan.name : ''"
