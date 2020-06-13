@@ -22,6 +22,11 @@ namespace DetailingArsenal.Infrastructure.Persistence {
                         Action = "refresh",
                         Scope = Scope
                     },
+                                        new {
+                        Id = Guid.NewGuid(),
+                        Action = "update",
+                        Scope = Scope
+                    },
                 };
 
                 c.Execute(
@@ -45,7 +50,7 @@ namespace DetailingArsenal.Infrastructure.Persistence {
             Execute.WithConnection((c, t) => {
                 var permission = c.QueryFirst<Permission>(
                     $@"select * from permissions where scope = '{Scope}' 
-                    and (action = 'create' or action = 'read' or action = 'update' or action = 'delete');"
+                    and (action = 'read' or action = 'refresh' or action = 'update');"
                 );
 
                 c.Execute("delete from role_permissions where permission_id = @Id", permission);

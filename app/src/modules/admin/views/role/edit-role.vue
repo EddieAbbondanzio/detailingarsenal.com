@@ -6,6 +6,10 @@
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
                         <breadcrumb name="Roles" :to="{name: 'roles'}" />
+                        <breadcrumb
+                            :name="name"
+                            :to="{name: 'role', params: {id: $route.params }}"
+                        />
                         <breadcrumb name="Edit" :to="{name: 'editRole'}" active="true" />
                     </breadcrumb-trail>
                 </template>

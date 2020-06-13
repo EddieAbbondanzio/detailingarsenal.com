@@ -9,6 +9,7 @@ import { Role } from '@/modules/admin/api/entities/role';
 import { CreateRole } from '@/modules/admin/api/data-transfer-objects/create-role';
 import { UpdateRole } from '@/modules/admin/api/data-transfer-objects/update-role';
 import { SubscriptionPlan } from '@/modules/admin/api/entities/subscription-plan';
+import { UpdateSubscriptionPlan } from '@/modules/admin/api/data-transfer-objects/update-subscription-plan';
 
 /**
  * Store for the schedule view.
@@ -75,6 +76,11 @@ class AdminStore extends InitableModule {
         this.subscriptionPlans = plans;
     }
 
+    @Mutation
+    UPDATE_SUBSCRIPTION_PLAN(plan: SubscriptionPlan) {
+        this.subscriptionPlans = [...this.subscriptionPlans.filter(p => p.id != plan.id), plan];
+    }
+
     @Action({ rawError: true })
     async _init() {
         const [perms, roles, plans] = await Promise.all([
@@ -137,6 +143,13 @@ class AdminStore extends InitableModule {
         const plans = await api.billing.subscriptionPlan.refreshPlans();
         this.context.commit('SET_SUBSCRIPTION_PLANS', plans);
         return plans;
+    }
+
+    @Action({ rawError: true })
+    async updateSubscriptionPlan(updateSubscriptionPlan: UpdateSubscriptionPlan) {
+        const plan = await api.billing.subscriptionPlan.updatePlan(updateSubscriptionPlan);
+        this.context.commit('UPDATE_SUBSCRIPTION_PLAN', plan);
+        return plan;
     }
 }
 

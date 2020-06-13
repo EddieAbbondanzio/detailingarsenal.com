@@ -50,5 +50,10 @@ export const admin = [
         path: 'admin/subscription-plans/:id',
         name: 'subscriptionPlan',
         component: () => import('@/modules/admin/views/subscription-plan/subscription-plan.vue')
+    },
+    {
+        path: 'admin/subscription-plans/:id/edit',
+        name: 'editSubscriptionPlan',
+        component: () => import('@/modules/admin/views/subscription-plan/edit-subscription-plan.vue')
     }
 ];

@@ -39,7 +39,7 @@ namespace DetailingArsenal.Application {
                     plan.Prices = info.Prices.Select(p => new SubscriptionPlanPrice() {
                         Id = Guid.NewGuid(),
                         Price = p.Price,
-                        ExternalId = info.ExternalId,
+                        ExternalId = p.ExternalId,
                         Interval = p.Interval
                     }).ToList();
 

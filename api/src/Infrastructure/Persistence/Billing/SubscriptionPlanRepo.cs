@@ -63,8 +63,13 @@ public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
 
     public async Task Add(SubscriptionPlan entity) {
         await Connection.ExecuteAsync(
-            @"insert into subscription_plans (id, name, external_id) values (@Id, @Name, @ExternalId);",
-            entity
+            @"insert into subscription_plans (id, name, external_id, role_id) values (@Id, @Name, @ExternalId, @RoleId);",
+            new {
+                Id = entity.Id,
+                Name = entity.Name,
+                ExternalId = entity.ExternalId,
+                RoleId = entity.RoleId == Guid.Empty ? (Nullable<Guid>)null : entity.RoleId
+            }
         );
 
         var prices = entity.Prices.Select(p => new SubscriptionPlanPriceModel() {
@@ -83,8 +88,13 @@ public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
 
     public async Task Update(SubscriptionPlan entity) {
         await Connection.ExecuteAsync(
-            @"update subscription_plans set name = @Name where id = @Id;",
-            entity
+            @"update subscription_plans set name = @Name, role_id = @RoleId where id = @Id;",
+            new {
+                Id = entity.Id,
+                Name = entity.Name,
+                ExternalId = entity.ExternalId,
+                RoleId = entity.RoleId == Guid.Empty ? (Nullable<Guid>)null : entity.RoleId
+            }
         );
 
         await Connection.ExecuteAsync(

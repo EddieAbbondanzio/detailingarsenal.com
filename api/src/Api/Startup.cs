@@ -32,6 +32,7 @@ namespace DetailingArsenal.Api {
             environment = env;
             Configuration = configuration;
             SqlMapper.AddTypeHandler(new DateTimeHandler());
+            SqlMapper.AddTypeHandler(new GuidHandler());
             // Add db logging
             // NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
@@ -109,6 +110,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IBusEventHandler<StartupEvent>, RefreshSubscriptionPlansOnStartup>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>, UpdateSubscriptionPlanHandler>();
             services.AddTransient<Application.SubscriptionService>();
 
             // Authorization
