@@ -20,13 +20,15 @@
         </template>
 
         <input-form @submit="onSubmit" submitText="Save changes">
-            <input-text-field
-                label="Name"
-                rules="required|max:32"
+            <input-select
+                label="Role"
                 :required="true"
-                v-model="name"
-                placeholder="user"
-            />
+                v-model="roleId"
+                placeholder="Role to be associated with the plan"
+            >
+                <option value="00000000-0000-0000-0000-000000000000">None</option>
+                <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+            </input-select>
         </input-form>
     </page>
 </template>
@@ -35,9 +37,14 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import adminStore from '../../store/admin-store';
 import { displayLoading, toast } from '../../../../core';
+import { Role } from '../../api/entities/role';
 
 @Component({})
 export default class EditSubscriptionPlan extends Vue {
+    get roles() {
+        return adminStore.roles;
+    }
+
     name: string = '';
     roleId: string | null = null;
 
@@ -48,6 +55,7 @@ export default class EditSubscriptionPlan extends Vue {
         const plan = adminStore.subscriptionPlans.find(p => p.id == this.$route.params.id)!;
 
         this.name = plan.name;
+
         this.roleId = plan.roleId;
     }
 
