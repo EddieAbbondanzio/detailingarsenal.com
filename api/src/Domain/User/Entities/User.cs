@@ -1,7 +1,7 @@
 using System;
 
 namespace DetailingArsenal.Domain {
-    public class User : Entity<User> {
+    public class User : Aggregate<User> {
         public const int NameMaxLength = 64;
 
         public string Auth0Id { get; set; } = null!;

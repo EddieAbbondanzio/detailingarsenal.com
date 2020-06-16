@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace DetailingArsenal.Domain {
-    public class Appointment : Entity<Appointment>, IUserEntity {
+    public class Appointment : Aggregate<Appointment>, IUserEntity {
         public const int NotesMaxLength = 1024;
 
         public Guid UserId { get; set; }

@@ -1,7 +1,7 @@
 using System;
 
 namespace DetailingArsenal.Domain {
-    public sealed class Client : Entity<Client>, IUserEntity {
+    public sealed class Client : Aggregate<Client>, IUserEntity {
         public const int NameMaxLength = 64;
         public const int PhoneMaxLength = 32;
         public const int EmailMaxLength = 256 + 64;

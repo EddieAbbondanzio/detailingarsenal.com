@@ -7,23 +7,26 @@ namespace DetailingArsenal.Domain {
     /// Interface for domain entities to implement.
     /// </summary>
     public interface IEntity {
-        #region Properties
         /// <summary>
         /// Unique integer id of the entity.
         /// </summary>
         Guid Id { get; set; }
-        #endregion
     }
 
     public abstract class Entity<TEntity> : IEntity where TEntity : class, IEntity {
-        #region Properties  
         /// <summary>
         /// The unique Id of the entity.
         /// </summary>
         public Guid Id { get; set; }
 
         public List<IDomainEvent> DomainEvents { get; set; } = new List<IDomainEvent>();
-        #endregion
+
+        /// <summary>
+        /// Generate a new unique ID for an entity.
+        /// </summary>
+        public Guid GenerateId() {
+            return Guid.NewGuid();
+        }
 
         /// <summary>
         /// Check to see if the entity is equal to another object.

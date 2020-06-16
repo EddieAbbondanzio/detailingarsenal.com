@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace DetailingArsenal.Domain {
-    public class Service : Entity<Service>, IUserEntity {
+    public class Service : Aggregate<Service>, IUserEntity {
         public const int NameMaxLength = 32;
         public const int DescriptionMaxLength = 512;
 

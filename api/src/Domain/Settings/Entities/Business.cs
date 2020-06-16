@@ -1,7 +1,7 @@
 using System;
 
 namespace DetailingArsenal.Domain {
-    public class Business : Entity<Business>, IUserEntity {
+    public class Business : Aggregate<Business>, IUserEntity {
         public const int NameMaxLength = 64;
         public const int AddressMaxLength = 128;
         public const int PhoneMaxLength = 32;

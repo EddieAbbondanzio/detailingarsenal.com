@@ -1,5 +1,5 @@
 namespace DetailingArsenal.Domain {
-    public class Permission : Entity<Permission> {
+    public class Permission : Aggregate<Permission> {
         public const int ActionMaxLength = 32;
         public const int ScopeMaxLength = 32;
 

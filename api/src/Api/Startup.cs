@@ -47,7 +47,7 @@ namespace DetailingArsenal.Api {
             services.AddCors();
 
             // Core
-            services.AddSingleton<DomainEvents>();
+            services.AddSingleton<DomainEventPublisher>();
             services.AddSingleton<IDomainEventSubscriberCollection, DomainEventSubscriberCollection>();
 
             // Auth0

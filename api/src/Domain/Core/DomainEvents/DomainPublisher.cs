@@ -11,7 +11,7 @@ namespace DetailingArsenal.Domain.Core {
     /// <summary>
     /// Publisher to notify subscribers when a domain event they
     /// care about has occured. Best used to initiate parallel tasks.
-    /// </summary>
+    /// </summary>transaction
     public sealed class DomainEventPublisher : IDomainEventPublisher {
         private IDomainEventSubscriberCollection subscriberCollection;
 
