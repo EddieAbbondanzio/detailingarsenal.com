@@ -3,9 +3,9 @@ using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
     public class RefreshSubscriptionPlansOnStartup : IBusEventHandler<StartupEvent> {
-        private SubscriptionService service;
+        private SubscriptionPlanService service;
 
-        public RefreshSubscriptionPlansOnStartup(SubscriptionService service) {
+        public RefreshSubscriptionPlansOnStartup(SubscriptionPlanService service) {
             this.service = service;
         }
 

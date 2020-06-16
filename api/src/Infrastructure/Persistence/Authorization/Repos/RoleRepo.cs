@@ -71,10 +71,10 @@ namespace DetailingArsenal.Infrastructure.Persistence {
 
 
         public async Task<List<Role>> FindForUser(User user) {
-            var userRoles = await Connection.QueryAsync<Guid>(
+            var userRoles = (await Connection.QueryAsync<Guid>(
                 "select role_id from user_roles where user_id = @Id;",
                 user
-            );
+            )).ToList();
 
             var roles = await Connection.QueryAsync<Role>(
                 "select * from roles where id = any(@Ids);",

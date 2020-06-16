@@ -111,7 +111,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>, UpdateSubscriptionPlanHandler>();
-            services.AddTransient<Application.SubscriptionService>();
+            services.AddTransient<Application.SubscriptionPlanService>();
 
             // Authorization
             services.AddTransient<IPermissionRepo, PermissionRepo>();
@@ -124,6 +124,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<CreateRoleValidator>();
             services.AddTransient<UpdateRoleValidator>();
             services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionDto>>, GetPermissionsHandler>();
+            services.AddTransient<ActionHandler<GetUserPermissionsQuery, List<PermissionDto>>, GetUserPermissionsHandler>();
             services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionDto>, CreatePermissionHandler>();
             services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionDto>, UpdatePermissionHandler>();
             services.AddTransient<ActionHandler<DeletePermissionCommand>, DeletePermissionHandler>();

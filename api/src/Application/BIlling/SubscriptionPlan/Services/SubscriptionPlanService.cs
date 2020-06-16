@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
-    public class SubscriptionService : IService {
+    public class SubscriptionPlanService : IService {
         private ISubscriptionPlanInfoGateway infoGateway;
         private ISubscriptionPlanRepo repo;
 
-        public SubscriptionService(ISubscriptionPlanInfoGateway infoGateway, ISubscriptionPlanRepo repo) {
+        public SubscriptionPlanService(ISubscriptionPlanInfoGateway infoGateway, ISubscriptionPlanRepo repo) {
             this.infoGateway = infoGateway;
             this.repo = repo;
         }

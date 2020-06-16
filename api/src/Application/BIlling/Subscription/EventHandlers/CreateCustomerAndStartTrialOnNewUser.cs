@@ -7,12 +7,14 @@ namespace DetailingArsenal.Application {
     public class CreateCustomerAndStartTrialOnNewUser : IBusEventHandler<NewUserEvent> {
         private ICustomerRepo customerRepo;
         private ISubscriptionRepo subscriptionRepo;
-        private ISubscriptionGateway subscriptionService;
+        private IRoleRepo roleRepo;
+        private ISubscriptionGateway subscriptionGateway;
 
-        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, ISubscriptionGateway subscriptionService) {
+        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, IRoleRepo roleRepo, ISubscriptionGateway subscriptionService) {
             this.customerRepo = customerRepo;
             this.subscriptionRepo = subscriptionRepo;
-            this.subscriptionService = subscriptionService;
+            this.roleRepo = roleRepo;
+            this.subscriptionGateway = subscriptionService;
         }
 
         public async Task Handle(NewUserEvent busEvent) {
@@ -26,8 +28,14 @@ namespace DetailingArsenal.Application {
             await customerRepo.Add(customer);
 
             // Now create and start the trial subscription
-            var sub = await subscriptionService.CreateTrialSubscription(customer);
-            await subscriptionRepo.Add(sub);
+            // var sub = await subscriptionGateway.CreateTrialSubscription(customer);
+            // await subscriptionRepo.Add(sub);
+
+            throw new Exception();
+
+            // get the plan
+
+            // create their role
         }
     }
 }

@@ -15,9 +15,7 @@ namespace DetailingArsenal.Infrastructure {
 
         }
 
-        public async Task<Subscription> CreateTrialSubscription(Customer customer) {
-            var plan = (await planRepo.FindByExternalId(config.DefaultPlan))!;
-
+        public async Task<Subscription> CreateTrialSubscription(SubscriptionPlan plan, Customer customer) {
             var options = new Stripe.SubscriptionCreateOptions() {
                 Customer = customer.Info.ExternalId,
                 Items = new System.Collections.Generic.List<Stripe.SubscriptionItemOptions>() {
