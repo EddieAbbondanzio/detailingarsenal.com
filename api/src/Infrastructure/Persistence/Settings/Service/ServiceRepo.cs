@@ -47,21 +47,57 @@ namespace DetailingArsenal.Infrastructure.Persistence {
         }
 
         public async Task Add(Service entity) {
-            await Connection.ExecuteAsync(@"insert into services (id, user_id, name, description, pricing_method) values (@Id, @UserId, @Name, @Description, @PricingMethod);", entity);
-            await Connection.ExecuteAsync(@"insert into service_configurations (id, service_id, vehicle_category_id, price, duration) values (@Id, @ServiceId, @VehicleCategoryId, @Price, @Duration);", entity.Configurations);
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"insert into services (id, user_id, name, description, pricing_method) values (@Id, @UserId, @Name, @Description, @PricingMethod);",
+                    entity
+                );
+
+                await Connection.ExecuteAsync(
+                    @"insert into service_configurations (id, service_id, vehicle_category_id, price, duration) values (@Id, @ServiceId, @VehicleCategoryId, @Price, @Duration);",
+                     entity.Configurations
+                );
+
+                t.Commit();
+            }
         }
 
         public async Task Update(Service entity) {
-            await Connection.ExecuteAsync(@"update services set user_id = @UserId, name = @Name, description = @Description, pricing_method = @PricingMethod where id = @Id", entity);
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"update services set user_id = @UserId, name = @Name, description = @Description, pricing_method = @PricingMethod where id = @Id",
+                    entity
+                );
 
-            // update the configs
-            await Connection.ExecuteAsync(@"delete from service_configurations where service_id = @Id", entity);
-            await Connection.ExecuteAsync(@"insert into service_configurations (id, service_id, vehicle_category_id, price, duration) values (@Id, @ServiceId, @VehicleCategoryId, @Price, @Duration);", entity.Configurations);
+                // update the configs
+                await Connection.ExecuteAsync(
+                    @"delete from service_configurations where service_id = @Id",
+                    entity
+                );
+
+                await Connection.ExecuteAsync(
+                    @"insert into service_configurations (id, service_id, vehicle_category_id, price, duration) values (@Id, @ServiceId, @VehicleCategoryId, @Price, @Duration);",
+                    entity.Configurations
+                );
+
+                t.Commit();
+            }
         }
 
         public async Task Delete(Service entity) {
-            await Connection.ExecuteAsync(@"delete from service_configurations where service_id = @Id", entity);
-            await Connection.ExecuteAsync(@"delete from services where id = @Id", entity);
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"delete from service_configurations where service_id = @Id",
+                    entity
+                );
+
+                await Connection.ExecuteAsync(
+                    @"delete from services where id = @Id",
+                    entity
+                );
+
+                t.Commit();
+            }
         }
     }
 }

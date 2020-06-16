@@ -23,6 +23,8 @@ using DetailingArsenal.Infrastructure;
 using System.Text.Json.Serialization;
 using Npgsql.Logging;
 using Stripe;
+using DetailingArsenal.Domain.Core;
+using DetailingArsenal.Infrastructure.Core;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -43,6 +45,10 @@ namespace DetailingArsenal.Api {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddCors();
+
+            // Core
+            services.AddSingleton<DomainEvents>();
+            services.AddSingleton<IDomainEventSubscriberCollection, DomainEventSubscriberCollection>();
 
             // Auth0
             var authConfig = services.AddConfig<Auth0Config>(Configuration.GetSection("Auth0"));

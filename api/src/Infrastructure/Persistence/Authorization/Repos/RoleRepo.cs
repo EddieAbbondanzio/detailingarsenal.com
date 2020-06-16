@@ -94,41 +94,53 @@ namespace DetailingArsenal.Infrastructure.Persistence {
         }
 
         public async Task Add(Role entity) {
-            await Connection.ExecuteAsync(
-                @"insert into roles (id, name) values (@Id, @Name);", entity
-            );
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"insert into roles (id, name) values (@Id, @Name);", entity
+                );
 
-            var rolePerms = entity.PermissionIds.Select(p => new RolePermission() { PermissionId = p, RoleId = entity.Id });
+                var rolePerms = entity.PermissionIds.Select(p => new RolePermission() { PermissionId = p, RoleId = entity.Id });
 
-            await Connection.ExecuteAsync(
-                @"insert into role_permissions (role_id, permission_id) values (@RoleId, @PermissionId);", rolePerms
-            );
+                await Connection.ExecuteAsync(
+                    @"insert into role_permissions (role_id, permission_id) values (@RoleId, @PermissionId);", rolePerms
+                );
+
+                t.Commit();
+            }
         }
 
         public async Task Update(Role entity) {
-            await Connection.ExecuteAsync(
-                @"update roles set name = @Name where id = @Id;", entity
-            );
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"update roles set name = @Name where id = @Id;", entity
+                );
 
-            await Connection.ExecuteAsync(@"delete from role_permissions where role_id = @Id;", entity);
+                await Connection.ExecuteAsync(@"delete from role_permissions where role_id = @Id;", entity);
 
-            var rolePerms = entity.PermissionIds.Select(p => new RolePermission() { PermissionId = p, RoleId = entity.Id });
+                var rolePerms = entity.PermissionIds.Select(p => new RolePermission() { PermissionId = p, RoleId = entity.Id });
 
-            await Connection.ExecuteAsync(
-                @"insert into role_permissions (role_id, permission_id) values (@RoleId, @PermissionId);", rolePerms
-            );
+                await Connection.ExecuteAsync(
+                    @"insert into role_permissions (role_id, permission_id) values (@RoleId, @PermissionId);", rolePerms
+                );
+
+                t.Commit();
+            }
         }
 
         public async Task Delete(Role entity) {
-            await Connection.ExecuteAsync(
-                @"delete from role_permissions where role_id = @Id",
-                entity
-            );
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"delete from role_permissions where role_id = @Id",
+                    entity
+                );
 
-            await Connection.ExecuteAsync(
-                @"delete from roles where id = @Id",
-                entity
-            );
+                await Connection.ExecuteAsync(
+                    @"delete from roles where id = @Id",
+                    entity
+                );
+
+                t.Commit();
+            }
         }
 
         public async Task AddToUser(User user, Role role) {

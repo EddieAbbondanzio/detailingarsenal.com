@@ -2,24 +2,19 @@ using System;
 using System.Data.Common;
 
 public abstract class DatabaseInteractor : IDisposable {
-    #region Properties
     protected DbConnection Connection => context.Connection;
 
-    private DatabaseContext Context => context;
-    #endregion
-
-    #region Fields
     private DatabaseContext context;
     private bool disposedValue = false; // To detect redundant calls
-    #endregion
 
-    #region Constructor(s)
     public DatabaseInteractor(IDatabase database) {
         this.context = database.GetContext();
     }
-    #endregion
 
-    #region IDisposable Support
+    protected DbTransaction BeginTransaction() {
+        return this.Connection.BeginTransaction();
+    }
+
     protected virtual void Dispose(bool disposing) {
         if (!disposedValue) {
             if (disposing) {
@@ -48,5 +43,4 @@ public abstract class DatabaseInteractor : IDisposable {
         // TODO: uncomment the following line if the finalizer is overridden above.
         // GC.SuppressFinalize(this);
     }
-    #endregion
 }

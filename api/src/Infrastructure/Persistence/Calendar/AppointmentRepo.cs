@@ -72,42 +72,51 @@ namespace DetailingArsenal.Infrastructure.Persistence {
         }
 
         public async Task Add(Appointment entity) {
-            await Connection.ExecuteAsync(
-                @"insert into appointments 
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"insert into appointments 
                 (id, user_id, service_id, client_id, price, notes)
                 values (@Id, @UserId, @ServiceId, @ClientId, @Price, @Notes);",
-                entity
-            );
+                    entity
+                );
 
-            await Connection.ExecuteAsync(
-                @"insert into appointment_blocks
+                await Connection.ExecuteAsync(
+                    @"insert into appointment_blocks
                 (id, appointment_id, start_date, end_date)
                 values (@Id, @AppointmentId, @Start, @End)",
-                entity.Blocks
-            );
+                    entity.Blocks
+                );
+                t.Commit();
+            }
         }
 
         public async Task Update(Appointment entity) {
-            await Connection.ExecuteAsync(
-                @"update appointments set
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"update appointments set
                 user_id = @UserId, service_id = @ServiceId, client_id = @ClientId, price = @Price, notes = @Notes
                  where id = @Id",
-                entity
-            );
+                    entity
+                );
 
-            // It's not worth trying to save appointment block ids.
-            await Connection.ExecuteAsync("delete from appointment_blocks where appointment_id = @Id", entity);
-            await Connection.ExecuteAsync(
-                @"insert into appointment_blocks
+                // It's not worth trying to save appointment block ids.
+                await Connection.ExecuteAsync("delete from appointment_blocks where appointment_id = @Id", entity);
+                await Connection.ExecuteAsync(
+                    @"insert into appointment_blocks
                 (id, appointment_id, start_date, end_date)
                 values (@Id, @AppointmentId, @Start, @End)",
-                entity.Blocks
-            );
+                    entity.Blocks
+                );
+                t.Commit();
+            }
         }
 
         public async Task Delete(Appointment entity) {
-            await Connection.ExecuteAsync("delete from appointment_blocks where appointment_id = @Id", entity);
-            await Connection.ExecuteAsync("delete from appointments where id = @Id", entity);
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync("delete from appointment_blocks where appointment_id = @Id", entity);
+                await Connection.ExecuteAsync("delete from appointments where id = @Id", entity);
+                t.Commit();
+            }
         }
 
         public async Task<int> CountForService(Service service) {

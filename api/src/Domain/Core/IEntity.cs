@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using DetailingArsenal.Domain.Core;
 
 namespace DetailingArsenal.Domain {
     /// <summary>
@@ -19,6 +21,8 @@ namespace DetailingArsenal.Domain {
         /// The unique Id of the entity.
         /// </summary>
         public Guid Id { get; set; }
+
+        public List<IDomainEvent> DomainEvents { get; set; } = new List<IDomainEvent>();
         #endregion
 
         /// <summary>

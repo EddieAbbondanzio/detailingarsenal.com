@@ -4,14 +4,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Core {
+    public interface IDomainEventPublisher {
+        Task Dispatch<TEvent>(TEvent domainEvent) where TEvent : class, IDomainEvent;
+    }
+
     /// <summary>
     /// Publisher to notify subscribers when a domain event they
     /// care about has occured. Best used to initiate parallel tasks.
     /// </summary>
-    public sealed class DomainEvents {
+    public sealed class DomainEventPublisher : IDomainEventPublisher {
         private IDomainEventSubscriberCollection subscriberCollection;
 
-        public DomainEvents(IDomainEventSubscriberCollection subscriberCollection) {
+        public DomainEventPublisher(IDomainEventSubscriberCollection subscriberCollection) {
             this.subscriberCollection = subscriberCollection;
         }
 

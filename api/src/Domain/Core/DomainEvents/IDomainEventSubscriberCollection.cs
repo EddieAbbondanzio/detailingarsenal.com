@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 namespace DetailingArsenal.Domain.Core {
-    public interface ISubscriberCollection {
-        IEnumerable<IDomainEventHandler<TEvent>> GetSubscibers<TEvent>() where TEvent : IDomainEvent;
+    public interface IDomainEventSubscriberCollection {
+        IEnumerable<IDomainEventSubscriber<TEvent>> GetSubscibers<TEvent>() where TEvent : IDomainEvent;
     }
 }

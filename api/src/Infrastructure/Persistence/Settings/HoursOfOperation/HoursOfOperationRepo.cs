@@ -42,30 +42,56 @@ namespace DetailingArsenal.Infrastructure.Persistence {
         }
 
         public async Task Add(HoursOfOperation entity) {
-            await Connection.ExecuteAsync(
-                @"insert into hours_of_operations (id, user_id) values (@Id, @UserId);",
-                entity
-            );
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"insert into hours_of_operations (id, user_id) values (@Id, @UserId);",
+                    entity
+                );
 
-            await Connection.ExecuteAsync(
-                @"insert into hours_of_operation_days (id, hours_of_operation_id, day, open, close, enabled) values (@Id, @HoursOfOperationId, @Day, @Open, @Close, @Enabled);",
-                entity.Days
-            );
+                await Connection.ExecuteAsync(
+                    @"insert into hours_of_operation_days (id, hours_of_operation_id, day, open, close, enabled) values (@Id, @HoursOfOperationId, @Day, @Open, @Close, @Enabled);",
+                    entity.Days
+                );
+
+                t.Commit();
+            }
         }
 
         public async Task Update(HoursOfOperation entity) {
-            await Connection.ExecuteAsync(@"update hours_of_operations set user_id = @UserId where id = @Id", entity);
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"update hours_of_operations set user_id = @UserId where id = @Id",
+                    entity
+                );
 
-            await Connection.ExecuteAsync("delete from hours_of_operation_days where hours_of_operation_id = @Id", entity);
-            await Connection.ExecuteAsync(
-                @"insert into hours_of_operation_days (id, hours_of_operation_id, day, open, close, enabled) values (@Id, @HoursOfOperationId, @Day, @Open, @Close, @Enabled);",
-                entity.Days
-            );
+                await Connection.ExecuteAsync(
+                    @"delete from hours_of_operation_days where hours_of_operation_id = @Id",
+                    entity
+                );
+
+                await Connection.ExecuteAsync(
+                    @"insert into hours_of_operation_days (id, hours_of_operation_id, day, open, close, enabled) values (@Id, @HoursOfOperationId, @Day, @Open, @Close, @Enabled);",
+                    entity.Days
+                );
+
+                t.Commit();
+            }
         }
 
         public async Task Delete(HoursOfOperation entity) {
-            await Connection.ExecuteAsync("delete from hours_of_operation_days where hours_of_operation_id = @Id", entity);
-            await Connection.ExecuteAsync("delete from hours_of_operations where id = @Id", entity);
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"delete from hours_of_operation_days where hours_of_operation_id = @Id",
+                    entity
+                );
+
+                await Connection.ExecuteAsync(
+                    @"delete from hours_of_operations where id = @Id",
+                    entity
+                );
+
+                t.Commit();
+            }
         }
     }
 }
