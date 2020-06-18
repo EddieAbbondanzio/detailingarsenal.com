@@ -7,10 +7,10 @@ using DetailingArsenal.Domain;
 namespace DetailingArsenal.Application {
     [Authorization(Action = "refresh", Scope = "subscription-plans")]
     public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>> {
-        SubscriptionPlanService service;
+        ISubscriptionPlanService service;
         private IMapper mapper;
 
-        public RefreshSubscriptionPlansHandler(SubscriptionPlanService service, IMapper mapper) {
+        public RefreshSubscriptionPlansHandler(ISubscriptionPlanService service, IMapper mapper) {
             this.service = service;
             this.mapper = mapper;
         }

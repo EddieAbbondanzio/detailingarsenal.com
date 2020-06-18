@@ -4,8 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application {
-    public class SubscriptionPlanService : IService {
+namespace DetailingArsenal.Domain {
+    public interface ISubscriptionPlanService : IService {
+        Task<List<SubscriptionPlan>> RefreshPlans();
+    }
+
+    public class SubscriptionPlanService : ISubscriptionPlanService {
         private IExternalSubscriptionPlanGateway infoGateway;
         private ISubscriptionPlanRepo repo;
 

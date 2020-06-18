@@ -117,7 +117,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>, UpdateSubscriptionPlanHandler>();
-            services.AddTransient<Application.SubscriptionPlanService>();
+            services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
 
             // Authorization
             services.AddTransient<IPermissionRepo, PermissionRepo>();
