@@ -1,7 +1,11 @@
+using System;
 using System.Threading.Tasks;
-using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Domain {
+    public interface ISubscriptionService : IService {
+        Task<SubscriptionUpdate> StartTrialSubscription(Customer customer);
+    }
+
     public class SubscriptionService : ISubscriptionService {
         // private ISubscriptionConfig config;
         // private ISubscriptionPlanRepo planRepo;
