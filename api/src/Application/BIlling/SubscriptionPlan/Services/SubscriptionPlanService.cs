@@ -6,10 +6,10 @@ using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application {
     public class SubscriptionPlanService : IService {
-        private ISubscriptionPlanInfoGateway infoGateway;
+        private IExternalSubscriptionPlanGateway infoGateway;
         private ISubscriptionPlanRepo repo;
 
-        public SubscriptionPlanService(ISubscriptionPlanInfoGateway infoGateway, ISubscriptionPlanRepo repo) {
+        public SubscriptionPlanService(IExternalSubscriptionPlanGateway infoGateway, ISubscriptionPlanRepo repo) {
             this.infoGateway = infoGateway;
             this.repo = repo;
         }
@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application {
             var planInfos = await infoGateway.GetAll();
             var plans = new List<SubscriptionPlan>();
 
-            foreach (SubscriptionPlanInfo info in planInfos) {
+            foreach (ExternalSubscriptionPlan info in planInfos) {
                 var plan = await repo.FindByExternalId(info.ExternalId);
 
                 if (plan == null) {

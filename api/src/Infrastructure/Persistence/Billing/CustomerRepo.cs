@@ -4,8 +4,8 @@ using Dapper;
 using DetailingArsenal.Domain;
 
 public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
-    private ICustomerInfoGateway infoService;
-    public CustomerRepo(IDatabase database, ICustomerInfoGateway infoService) : base(database) {
+    private IExternalCustomerGateway infoService;
+    public CustomerRepo(IDatabase database, IExternalCustomerGateway infoService) : base(database) {
         this.infoService = infoService;
     }
 
@@ -24,11 +24,11 @@ public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
     }
 
     public async Task Add(Customer entity) {
-        entity.Info = await infoService.Create(entity.Info.Email);
+        entity.External = await infoService.Create(entity.External.Email);
 
         await Connection.ExecuteAsync(
             @"insert into customers (id, user_id, external_id) values (@Id, @UserId, @ExternalId);",
-            new CustomerModel() { Id = entity.Id, UserId = entity.UserId, ExternalId = entity.Info.ExternalId }
+            new CustomerModel() { Id = entity.Id, UserId = entity.UserId, ExternalId = entity.External.Id }
         );
     }
 
@@ -40,11 +40,11 @@ public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
         throw new NotImplementedException();
     }
 
-    private Customer Map(CustomerModel model, CustomerInfo info) {
+    private Customer Map(CustomerModel model, ExternalCustomer info) {
         return new Customer() {
             Id = model.Id,
             UserId = model.UserId,
-            Info = info
+            External = info
         };
     }
 }

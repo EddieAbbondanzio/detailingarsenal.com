@@ -8,9 +8,9 @@ namespace DetailingArsenal.Application {
         private ICustomerRepo customerRepo;
         private ISubscriptionRepo subscriptionRepo;
         private IRoleRepo roleRepo;
-        private ISubscriptionGateway subscriptionGateway;
+        private IExternalSubscriptionGateway subscriptionGateway;
 
-        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, IRoleRepo roleRepo, ISubscriptionGateway subscriptionService) {
+        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, IRoleRepo roleRepo, IExternalSubscriptionGateway subscriptionService) {
             this.customerRepo = customerRepo;
             this.subscriptionRepo = subscriptionRepo;
             this.roleRepo = roleRepo;
@@ -21,7 +21,7 @@ namespace DetailingArsenal.Application {
             // Create the customer
             var customer = Customer.Create(
                 busEvent.User.Id,
-                new CustomerInfo(null!, busEvent.User.Email)
+                new ExternalCustomer(null!, busEvent.User.Email)
             );
 
             await customerRepo.Add(customer);

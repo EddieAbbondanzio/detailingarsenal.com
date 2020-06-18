@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Infrastructure {
-    public class StripeSubscriptionGateway : ISubscriptionGateway {
+    public class StripeSubscriptionGateway : IExternalSubscriptionGateway {
         private ISubscriptionConfig config;
         private Stripe.SubscriptionService service;
         private ISubscriptionPlanRepo planRepo;
@@ -17,7 +17,7 @@ namespace DetailingArsenal.Infrastructure {
 
         public async Task<Subscription> CreateTrialSubscription(SubscriptionPlan plan, Customer customer) {
             var options = new Stripe.SubscriptionCreateOptions() {
-                Customer = customer.Info.ExternalId,
+                Customer = customer.External.Id,
                 Items = new System.Collections.Generic.List<Stripe.SubscriptionItemOptions>() {
                 new Stripe.SubscriptionItemOptions() {
                     // Price is all Stripe needs to find product

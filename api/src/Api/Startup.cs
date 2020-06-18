@@ -109,9 +109,9 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ISubscriptionRepo, SubscriptionRepo>();
-            services.AddTransient<ICustomerInfoGateway, StripeCustomerInfoGateway>();
-            services.AddTransient<ISubscriptionGateway, StripeSubscriptionGateway>();
-            services.AddTransient<ISubscriptionPlanInfoGateway, StripeSubscriptionPlanInfoGateway>();
+            services.AddTransient<IExternalCustomerGateway, StripeCustomerGateway>();
+            services.AddTransient<IExternalSubscriptionGateway, StripeSubscriptionGateway>();
+            services.AddTransient<IExternalSubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<IBusEventHandler<NewUserEvent>, CreateCustomerAndStartTrialOnNewUser>();
             services.AddTransient<IBusEventHandler<StartupEvent>, RefreshSubscriptionPlansOnStartup>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();

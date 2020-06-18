@@ -4,14 +4,14 @@ using DetailingArsenal.Domain;
 using Stripe;
 
 namespace DetailingArsenal.Infrastructure {
-    public class StripeCustomerInfoGateway : ICustomerInfoGateway {
+    public class StripeCustomerGateway : IExternalCustomerGateway {
         Stripe.CustomerService customerService;
 
-        public StripeCustomerInfoGateway() {
+        public StripeCustomerGateway() {
             this.customerService = new CustomerService();
         }
 
-        public async Task<CustomerInfo> Create(string email) {
+        public async Task<ExternalCustomer> Create(string email) {
             var c = await customerService.CreateAsync(new CustomerCreateOptions {
                 Email = email
             });
@@ -19,13 +19,13 @@ namespace DetailingArsenal.Infrastructure {
             return Map(c);
         }
 
-        public async Task<CustomerInfo> FindByExternalId(string externalId) {
+        public async Task<ExternalCustomer> FindByExternalId(string externalId) {
             var c = await customerService.GetAsync(externalId);
             return Map(c);
         }
 
-        CustomerInfo Map(Stripe.Customer customer) {
-            return new CustomerInfo(customer.Id, customer.Email);
+        ExternalCustomer Map(Stripe.Customer customer) {
+            return new ExternalCustomer(customer.Id, customer.Email);
         }
     }
 }
