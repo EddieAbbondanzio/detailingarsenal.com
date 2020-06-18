@@ -19,11 +19,10 @@ namespace DetailingArsenal.Application {
 
         public async Task Handle(NewUserEvent busEvent) {
             // Create the customer
-            var customer = new Customer() {
-                Id = Guid.NewGuid(),
-                UserId = busEvent.User.Id,
-                Info = new CustomerInfo(null!, busEvent.User.Email)
-            };
+            var customer = Customer.Create(
+                busEvent.User.Id,
+                new CustomerInfo(null!, busEvent.User.Email)
+            );
 
             await customerRepo.Add(customer);
 

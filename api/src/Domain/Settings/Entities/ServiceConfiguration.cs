@@ -25,5 +25,15 @@ namespace DetailingArsenal.Domain {
         }
 
         private int duration;
+
+        public static ServiceConfiguration Create(Guid serviceId, Guid? vehicleCategoryId, decimal price, int duration) {
+            return new ServiceConfiguration() {
+                Id = Guid.NewGuid(),
+                ServiceId = serviceId,
+                VehicleCategoryId = vehicleCategoryId,
+                Price = price,
+                Duration = duration
+            };
+        }
     }
 }

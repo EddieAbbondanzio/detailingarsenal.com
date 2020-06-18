@@ -22,26 +22,27 @@ namespace DetailingArsenal.Application {
                 var plan = await repo.FindByExternalId(info.ExternalId);
 
                 if (plan == null) {
-                    plan = new SubscriptionPlan() {
-                        Id = Guid.NewGuid(),
-                        Name = info.Name,
-                        ExternalId = info.ExternalId,
-                        Prices = info.Prices.Select(p => new SubscriptionPlanPrice() {
-                            Id = Guid.NewGuid(),
-                            ExternalId = p.ExternalId,
-                            Price = p.Price,
-                            Interval = p.Interval
-                        }).ToList()
-                    };
+                    plan = SubscriptionPlan.Create(
+                        info.Name,
+                        info.ExternalId,
+                        info.Prices.Select(
+                            p => SubscriptionPlanPrice.Create(
+                                p.ExternalId,
+                                p.Price,
+                                p.Interval
+                            )
+                        ).ToList()
+                    );
 
                     await repo.Add(plan);
                 } else {
-                    plan.Prices = info.Prices.Select(p => new SubscriptionPlanPrice() {
-                        Id = Guid.NewGuid(),
-                        Price = p.Price,
-                        ExternalId = p.ExternalId,
-                        Interval = p.Interval
-                    }).ToList();
+                    plan.Prices = info.Prices.Select(
+                        p => SubscriptionPlanPrice.Create(
+                            p.ExternalId,
+                            p.Price,
+                            p.Interval
+                        )
+                    ).ToList();
 
                     await repo.Update(plan);
                 }

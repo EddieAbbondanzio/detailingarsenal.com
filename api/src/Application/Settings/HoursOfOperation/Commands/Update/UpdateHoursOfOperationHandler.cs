@@ -21,14 +21,13 @@ namespace DetailingArsenal.Application {
                 throw new AuthorizationException("Unauthorized");
             }
 
-            hours.Days = input.Days.Select(d => new HoursOfOperationDay() {
-                Id = Guid.NewGuid(),
-                HoursOfOperationId = hours.Id,
-                Day = d.Day,
-                Open = d.Open,
-                Close = d.Close,
-                Enabled = d.Enabled
-            }).ToList();
+            hours.Days = input.Days.Select(d => HoursOfOperationDay.Create(
+                hours.Id,
+                d.Day,
+                d.Open,
+                d.Close,
+                d.Enabled
+            )).ToList();
 
             await repo.Update(hours);
             return mapper.Map<HoursOfOperation, HoursOfOperationDto>(hours);

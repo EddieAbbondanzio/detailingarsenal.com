@@ -46,11 +46,10 @@ namespace DetailingArsenal.Infrastructure {
             var user = await userRepo.FindByAuth0Id(auth0Id);
 
             if (user == null) {
-                user = new Domain.User() {
-                    Id = Guid.NewGuid(),
-                    Auth0Id = auth0Id,
-                    Email = auth0User.Email
-                };
+                user = Domain.User.Create(
+                    auth0Id,
+                    auth0User.Email
+                );
 
                 try {
                     await userRepo.Add(user);

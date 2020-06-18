@@ -28,5 +28,16 @@ namespace DetailingArsenal.Domain {
 
         private int open;
         private int close;
+
+        public static HoursOfOperationDay Create(Guid hoursOfOperationId, int day, int open, int close, bool enabled = true) {
+            return new HoursOfOperationDay() {
+                Id = Guid.NewGuid(),
+                HoursOfOperationId = hoursOfOperationId,
+                Day = day,
+                Open = open,
+                Close = close,
+                Enabled = enabled
+            };
+        }
     }
 }

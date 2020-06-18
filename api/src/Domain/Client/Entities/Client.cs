@@ -53,5 +53,14 @@ namespace DetailingArsenal.Domain {
         private string name = null!;
         private string? phone;
         private string? email;
+
+        public static Client Create(Guid userId, string name, string? phone, string? email) {
+            return new Client() {
+                Id = Guid.NewGuid(),
+                Name = name,
+                Phone = phone,
+                Email = email
+            };
+        }
     }
 }

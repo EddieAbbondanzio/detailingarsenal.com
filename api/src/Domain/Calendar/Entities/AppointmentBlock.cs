@@ -9,5 +9,14 @@ namespace DetailingArsenal.Domain {
         public int Duration {
             get => Convert.ToInt32((End - Start).TotalMinutes);
         }
+
+        public static AppointmentBlock Create(Guid appointmentId, DateTime start, DateTime end) {
+            return new AppointmentBlock() {
+                Id = Guid.NewGuid(),
+                AppointmentId = appointmentId,
+                Start = start,
+                End = end
+            };
+        }
     }
 }

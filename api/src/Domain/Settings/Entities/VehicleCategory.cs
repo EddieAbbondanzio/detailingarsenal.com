@@ -5,7 +5,7 @@ namespace DetailingArsenal.Domain {
         public const int NameMaxLength = 32;
         public const int DescriptionMaxLength = 128;
 
-        public Guid UserId { get; set; } = Guid.Empty;
+        public Guid UserId { get; set; }
 
         /// <summary>
         /// Display name.
@@ -37,5 +37,14 @@ namespace DetailingArsenal.Domain {
 
         private string name = null!;
         private string? description = null;
+
+        public static VehicleCategory Create(Guid userId, string name, string? description) {
+            return new VehicleCategory() {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                Name = name,
+                Description = description
+            };
+        }
     }
 }

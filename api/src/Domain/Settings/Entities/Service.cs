@@ -45,5 +45,15 @@ namespace DetailingArsenal.Domain {
 
         private string name = null!;
         private string? description = null;
+
+        public static Service Create(Guid userId, string name, string? description, ServicePricingMethod pricingMethod) {
+            return new Service() {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                Name = name,
+                Description = description,
+                PricingMethod = pricingMethod
+            };
+        }
     }
 }

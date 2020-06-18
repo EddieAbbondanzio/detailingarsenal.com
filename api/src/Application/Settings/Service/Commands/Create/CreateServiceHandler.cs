@@ -17,21 +17,19 @@ namespace DetailingArsenal.Application {
         }
 
         public async override Task<ServiceDto> Execute(CreateServiceCommand input, User? user) {
-            var service = new Service() {
-                Id = Guid.NewGuid(),
-                UserId = user!.Id,
-                Name = input.Name,
-                Description = input.Description,
-                PricingMethod = input.PricingMethod,
-            };
+            var service = Service.Create(
+                user!.Id,
+                input.Name,
+                input.Description,
+                input.PricingMethod
+            );
 
-            service.Configurations = input.Configurations.Select(c => new ServiceConfiguration() {
-                Id = Guid.NewGuid(),
-                ServiceId = service.Id,
-                VehicleCategoryId = c.VehicleCategoryId,
-                Price = c.Price,
-                Duration = c.Duration
-            }).ToList();
+            service.Configurations = input.Configurations.Select(c => ServiceConfiguration.Create(
+                service.Id,
+                c.VehicleCategoryId,
+                c.Price,
+                c.Duration
+            )).ToList();
 
             await specification.CheckAndThrow(service);
 

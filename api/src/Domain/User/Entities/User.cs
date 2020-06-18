@@ -19,5 +19,13 @@ namespace DetailingArsenal.Domain {
         }
 
         private string? name;
+
+        public static User Create(string auth0Id, string email) {
+            return new User() {
+                Id = Guid.NewGuid(),
+                Auth0Id = auth0Id,
+                Email = email
+            };
+        }
     }
 }

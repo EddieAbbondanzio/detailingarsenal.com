@@ -14,10 +14,9 @@ namespace DetailingArsenal.Application {
         }
 
         public async Task Handle(NewUserEvent busEvent) {
-            var b = new Business() {
-                Id = Guid.NewGuid(),
-                UserId = busEvent.User.Id
-            };
+            var b = Business.Create(
+                busEvent.User.Id
+            );
 
             await repo.Add(b);
         }

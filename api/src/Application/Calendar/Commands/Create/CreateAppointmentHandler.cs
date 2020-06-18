@@ -19,21 +19,19 @@ namespace DetailingArsenal.Application {
         public async override Task<AppointmentDto> Execute(CreateAppointmentCommand command, User? user) {
             var client = await clientRepo.FindById(command.ClientId) ?? throw new EntityNotFoundException();
 
-            var appointment = new Appointment() {
-                Id = Guid.NewGuid(),
-                UserId = user!.Id,
-                ServiceId = command.ServiceId,
-                ClientId = client.Id,
-                Price = command.Price,
-                Notes = command.Notes
-            };
+            var appointment = Appointment.Create(
+                user!.Id,
+                command.ServiceId,
+                client.Id,
+                command.Price,
+                command.Notes
+            );
 
-            appointment.Blocks = command.Blocks.Select(t => new AppointmentBlock() {
-                Id = Guid.NewGuid(),
-                AppointmentId = appointment.Id,
-                Start = t.Start,
-                End = t.End
-            }).ToList();
+            appointment.Blocks = command.Blocks.Select(t => AppointmentBlock.Create(
+                appointment.Id,
+                t.Start,
+                t.End
+            )).ToList();
 
             await appointmentRepo.Add(appointment);
 

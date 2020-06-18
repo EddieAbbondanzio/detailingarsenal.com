@@ -26,13 +26,12 @@ namespace DetailingArsenal.Application {
             service.Name = input.Name;
             service.Description = input.Description;
             service.PricingMethod = input.PricingMethod;
-            service.Configurations = input.Configurations.Select(c => new ServiceConfiguration() {
-                Id = Guid.NewGuid(),
-                ServiceId = service.Id,
-                VehicleCategoryId = c.VehicleCategoryId,
-                Price = c.Price,
-                Duration = c.Duration
-            }).ToList();
+            service.Configurations = input.Configurations.Select(c => ServiceConfiguration.Create(
+                service.Id,
+                c.VehicleCategoryId,
+                c.Price,
+                c.Duration
+            )).ToList();
 
             await specification.CheckAndThrow(service);
 

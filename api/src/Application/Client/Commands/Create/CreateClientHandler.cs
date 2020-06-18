@@ -14,13 +14,12 @@ namespace DetailingArsenal.Application {
         }
 
         public async override Task<ClientDto> Execute(CreateClientCommand input, User? user) {
-            var c = new Client() {
-                Id = Guid.NewGuid(),
-                UserId = user!.Id,
-                Name = input.Name,
-                Phone = input.Phone,
-                Email = input.Email
-            };
+            var c = Client.Create(
+                user!.Id,
+                input.Name,
+                input.Phone,
+                input.Email
+            );
 
             await repo.Add(c);
             return mapper.Map<Client, ClientDto>(c);

@@ -53,5 +53,12 @@ namespace DetailingArsenal.Domain {
         private string? name = null!;
         private string? address = null;
         private string? phone = null;
+
+        public static Business Create(Guid userId) {
+            return new Business() {
+                Id = Guid.NewGuid(),
+                UserId = userId
+            };
+        }
     }
 }

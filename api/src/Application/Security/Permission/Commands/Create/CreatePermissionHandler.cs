@@ -17,11 +17,10 @@ namespace DetailingArsenal.Application {
         }
 
         public async override Task<PermissionDto> Execute(CreatePermissionCommand input, User? user) {
-            var p = new Permission() {
-                Id = Guid.NewGuid(),
-                Action = input.Action,
-                Scope = input.Scope
-            };
+            var p = Permission.Create(
+                input.Action,
+                input.Scope
+            );
 
             await specification.CheckAndThrow(p);
 

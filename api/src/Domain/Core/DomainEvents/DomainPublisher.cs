@@ -15,8 +15,8 @@ namespace DetailingArsenal.Domain.Core {
     public sealed class DomainEventPublisher : IDomainEventPublisher {
         private IDomainEventSubscriberCollection subscriberCollection;
 
-        public DomainEventPublisher(IDomainEventSubscriberCollection subscriberCollection) {
-            this.subscriberCollection = subscriberCollection;
+        public DomainEventPublisher(IDomainEventSubscriberCollection collection) {
+            this.subscriberCollection = collection;
         }
 
 #pragma warning disable 1998, 4014

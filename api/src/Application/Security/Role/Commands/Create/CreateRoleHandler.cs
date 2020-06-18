@@ -17,11 +17,10 @@ namespace DetailingArsenal.Application {
         }
 
         public async override Task<RoleDto> Execute(CreateRoleCommand input, User? user) {
-            var r = new Role() {
-                Id = Guid.NewGuid(),
-                Name = input.Name,
-                PermissionIds = input.PermissionIds
-            };
+            var r = Role.Create(
+                input.Name,
+                input.PermissionIds
+            );
 
             await specification.CheckAndThrow(r);
 

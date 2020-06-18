@@ -42,5 +42,15 @@ namespace DetailingArsenal.Domain {
         public List<AppointmentBlock> Blocks { get; set; } = new List<AppointmentBlock>();
 
         private string? notes;
+
+        public static Appointment Create(Guid userId, Guid serviceId, Guid clientId, decimal price, string? notes) {
+            return new Appointment() {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                ServiceId = serviceId,
+                ClientId = clientId,
+                Price = price
+            };
+        }
     }
 }
