@@ -22,13 +22,6 @@ namespace DetailingArsenal.Domain {
         public List<IDomainEvent> DomainEvents { get; set; } = new List<IDomainEvent>();
 
         /// <summary>
-        /// Generate a new unique ID for an entity.
-        /// </summary>
-        public Guid GenerateId() {
-            return Guid.NewGuid();
-        }
-
-        /// <summary>
         /// Check to see if the entity is equal to another object.
         /// </summary>
         /// <param name="obj">The other object to check.</param>
