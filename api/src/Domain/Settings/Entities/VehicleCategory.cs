@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Settings {
     public class VehicleCategory : Aggregate<VehicleCategory>, IUserEntity {
         public const int NameMaxLength = 32;
         public const int DescriptionMaxLength = 128;

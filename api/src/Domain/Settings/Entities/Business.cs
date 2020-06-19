@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Settings {
     public class Business : Aggregate<Business>, IUserEntity {
         public const int NameMaxLength = 64;
         public const int AddressMaxLength = 128;

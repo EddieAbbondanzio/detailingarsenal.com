@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Settings {
     public class HoursOfOperation : Aggregate<HoursOfOperation>, IUserEntity {
         public Guid UserId { get; set; } = Guid.Empty;
 

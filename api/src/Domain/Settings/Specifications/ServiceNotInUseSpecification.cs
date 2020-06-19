@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Settings {
     public class ServiceNotInUseSpecification : Specification<Service> {
         private IAppointmentRepo repo;
 

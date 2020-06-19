@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Settings {
     public class ServiceConfiguration : Entity<Service> {
         public Guid ServiceId { get; set; }
         public Guid? VehicleCategoryId { get; set; }

@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Settings {
     public class HoursOfOperationDay : Entity<HoursOfOperationDay> {
         public Guid HoursOfOperationId { get; set; } = Guid.Empty;
         public int Day { get; set; }
