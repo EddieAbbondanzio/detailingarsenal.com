@@ -1,31 +1,29 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Application {
     [Authorization(Action = "create", Scope = "vehicle-categories")]
     [Validation(typeof(CreateVehicleCategoryValidator))]
     public class CreateVehicleCategoryHandler : ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryDto> {
-        private VehicleCategoryNameUniqueSpecification specifcation;
-        private IVehicleCategoryRepo repo;
+        private IVehicleCategoryService service;
         private IMapper mapper;
 
-        public CreateVehicleCategoryHandler(VehicleCategoryNameUniqueSpecification specifcation, IVehicleCategoryRepo repo, IMapper mapper) {
-            this.specifcation = specifcation;
-            this.repo = repo;
+        public CreateVehicleCategoryHandler(IVehicleCategoryService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<VehicleCategoryDto> Execute(CreateVehicleCategoryCommand command, User? user) {
-            var cat = VehicleCategory.Create(
-                user!.Id,
-                command.Name,
-                command.Description
+            var cat = await service.Create(
+                new CreateVehicleCategory() {
+                    Name = command.Name,
+                    Description = command.Description
+                },
+                user!
             );
 
-            await specifcation.CheckAndThrow(cat);
-
-            await repo.Add(cat);
             return mapper.Map<VehicleCategory, VehicleCategoryDto>(cat);
         }
     }

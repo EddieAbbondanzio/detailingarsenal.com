@@ -1,16 +1,15 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Application {
     [Validation(typeof(DeleteVehicleCategoryValidator))]
     [Authorization(Action = "delete", Scope = "vehicle-categories")]
     public class DeleteVehicleCategoryHandler : ActionHandler<DeleteVehicleCategoryCommand> {
-        private VehicleCategoryNotInuseSpecification specification;
-        private IVehicleCategoryRepo repo;
+        IVehicleCategoryService service;
 
-        public DeleteVehicleCategoryHandler(VehicleCategoryNotInuseSpecification specification, IVehicleCategoryRepo repo) {
-            this.specification = specification;
-            this.repo = repo;
+        public DeleteVehicleCategoryHandler(IVehicleCategoryService service) {
+            this.service = service;
         }
 
         public async override Task Execute(DeleteVehicleCategoryCommand command, User? user) {
@@ -24,9 +23,7 @@ namespace DetailingArsenal.Application {
                 throw new AuthorizationException("Unauthorized");
             }
 
-            await specification.CheckAndThrow(cat);
-
-            await repo.Delete(cat);
+            await service.Delete(cat, user!);
         }
     }
 }

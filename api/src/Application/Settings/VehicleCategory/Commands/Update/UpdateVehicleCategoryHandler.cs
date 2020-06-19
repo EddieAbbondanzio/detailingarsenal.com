@@ -1,22 +1,21 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Application {
     [Validation(typeof(UpdateVehicleCategoryValidator))]
     [Authorization(Action = "update", Scope = "vehicle-categories")]
     public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryDto> {
-        private VehicleCategoryNameUniqueSpecification specification;
-        private IVehicleCategoryRepo repo;
+        private IVehicleCategoryService service;
         private IMapper mapper;
 
-        public UpdateVehicleCategoryHandler(VehicleCategoryNameUniqueSpecification specification, IVehicleCategoryRepo repo, IMapper mapper) {
-            this.specification = specification;
-            this.repo = repo;
+        public UpdateVehicleCategoryHandler(IVehicleCategoryService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<VehicleCategoryDto> Execute(UpdateVehicleCategoryCommand command, User? user) {
-            var cat = await repo.FindById(command.Id);
+            var cat = await service.FindById(command.Id);
 
             if (cat == null) {
                 throw new EntityNotFoundException();
@@ -26,13 +25,15 @@ namespace DetailingArsenal.Application {
                 throw new AuthorizationException("Unauthorized");
             }
 
-            cat.Name = command.Name;
-            cat.Description = command.Description;
+            await service.Update(
+                cat,
+                new UpdateVehicleCategory() {
+                    Name = command.Name,
+                    Description = command.Description
+                },
+                user!
+            );
 
-            // Ensure new name isn't in use by another category.
-            await specification.CheckAndThrow(cat);
-
-            await repo.Update(cat);
             return mapper.Map<VehicleCategory, VehicleCategoryDto>(cat);
         }
     }
