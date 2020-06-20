@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Settings;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateVehicleCategoryValidator))]
     [Authorization(Action = "update", Scope = "vehicle-categories")]
     public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryDto> {

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
     public class BusinessRepo : DatabaseInteractor, IBusinessRepo {

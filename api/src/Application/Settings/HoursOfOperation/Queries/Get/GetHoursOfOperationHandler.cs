@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "hours-of-operations")]
     public class GetHoursOfOperationHandler : ActionHandler<GetHoursOfOperationQuery, HoursOfOperationDto> {
         private IHoursOfOperationRepo repo;

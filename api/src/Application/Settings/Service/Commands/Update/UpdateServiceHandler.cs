@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "update", Scope = "services")]
     public class UpdateServiceHandler : ActionHandler<UpdateServiceCommand, ServiceDto> {
         private ServiceNameUniqueSpecification specification;

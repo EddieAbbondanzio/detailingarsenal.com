@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Settings;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(DeleteVehicleCategoryValidator))]
     [Authorization(Action = "delete", Scope = "vehicle-categories")]
     public class DeleteVehicleCategoryHandler : ActionHandler<DeleteVehicleCategoryCommand> {
@@ -13,7 +13,7 @@ namespace DetailingArsenal.Application {
         }
 
         public async override Task Execute(DeleteVehicleCategoryCommand command, User? user) {
-            var cat = await repo.FindById(command.Id);
+            var cat = await service.FindById(command.Id);
 
             if (cat == null) {
                 throw new EntityNotFoundException();

@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Settings {
-    public class VehicleCategoryNotInuseSpecification : Specification<VehicleCategory> {
+    public class VehicleCategoryNotInUseSpecification : Specification<VehicleCategory> {
         public IVehicleCategoryRepo repo;
 
-        public VehicleCategoryNotInuseSpecification(IVehicleCategoryRepo repo) {
+        public VehicleCategoryNotInUseSpecification(IVehicleCategoryRepo repo) {
             this.repo = repo;
         }
 

@@ -4,6 +4,7 @@ using Dapper;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
     public class VehicleCategoryRepo : DatabaseInteractor, IVehicleCategoryRepo {

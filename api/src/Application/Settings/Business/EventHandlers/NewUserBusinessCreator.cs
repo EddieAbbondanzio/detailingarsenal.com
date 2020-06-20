@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     /// <summary>
     /// When a new user is generated, go ahead and create an empty business for the user.
     /// </summary>

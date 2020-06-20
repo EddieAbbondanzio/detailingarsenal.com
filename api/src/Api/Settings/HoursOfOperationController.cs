@@ -5,8 +5,9 @@ using DetailingArsenal.Application;
 using DetailingArsenal.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using DetailingArsenal.Application.Settings;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Settings {
     [Authorize]
     [ApiController]
     [Route("settings/hours-of-operation")]
@@ -25,7 +26,7 @@ namespace DetailingArsenal.Api {
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHoursOfOperation(string id, [FromBody]UpdateHoursOfOperationCommand update) {
+        public async Task<IActionResult> UpdateHoursOfOperation(string id, [FromBody] UpdateHoursOfOperationCommand update) {
             HoursOfOperationDto hours = await mediator.Dispatch<UpdateHoursOfOperationCommand, HoursOfOperationDto>(update, User.GetUserId());
             return Ok(hours);
         }

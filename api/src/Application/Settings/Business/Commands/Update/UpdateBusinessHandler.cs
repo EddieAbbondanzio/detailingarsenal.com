@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateBusinessValidator))]
     [Authorization(Action = "update", Scope = "businesses")]
     public class UpdateBusinessHandler : ActionHandler<UpdateBusinessCommand, BusinessDto> {

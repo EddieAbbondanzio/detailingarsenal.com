@@ -1,7 +1,7 @@
 using System;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     public class ServiceConfigurationDto : IDataTransferObject {
         public Guid Id { get; set; }
         public Guid? VehicleCategoryId { get; set; }

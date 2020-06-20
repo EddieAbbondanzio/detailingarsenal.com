@@ -1,7 +1,7 @@
 using System;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     public class HoursOfOperationDayDto : IDataTransferObject {
         public Guid Id { get; set; }
         public int Day { get; set; }

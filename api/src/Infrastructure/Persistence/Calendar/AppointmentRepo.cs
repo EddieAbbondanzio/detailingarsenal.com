@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
     public class AppointmentRepo : DatabaseInteractor, IAppointmentRepo {

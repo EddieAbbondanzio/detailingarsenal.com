@@ -6,8 +6,9 @@ using DetailingArsenal.Application;
 using DetailingArsenal.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using DetailingArsenal.Application.Settings;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Settings {
     [Authorize]
     [ApiController]
     [Route("settings/service")]
@@ -39,7 +40,7 @@ namespace DetailingArsenal.Api {
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateService(Guid id, [FromBody]UpdateServiceCommand command) {
+        public async Task<IActionResult> UpdateService(Guid id, [FromBody] UpdateServiceCommand command) {
             ServiceDto s = await mediator.Dispatch<UpdateServiceCommand, ServiceDto>(
                 command,
                 User.GetUserId()

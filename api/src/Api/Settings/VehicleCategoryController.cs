@@ -6,8 +6,9 @@ using DetailingArsenal.Application;
 using DetailingArsenal.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using DetailingArsenal.Application.Settings;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Settings {
     [Authorize]
     [ApiController]
     [Route("settings/vehicle-category")]
@@ -39,7 +40,7 @@ namespace DetailingArsenal.Api {
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVehicleCategory(Guid id, [FromBody]UpdateVehicleCategoryCommand update) {
+        public async Task<IActionResult> UpdateVehicleCategory(Guid id, [FromBody] UpdateVehicleCategoryCommand update) {
             VehicleCategoryDto cat = await mediator.Dispatch<UpdateVehicleCategoryCommand, VehicleCategoryDto>(
                 update,
                 User!.GetUserId()

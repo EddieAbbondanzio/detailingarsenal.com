@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "create", Scope = "services")]
     public class CreateServiceHandler : ActionHandler<CreateServiceCommand, ServiceDto> {
         private ServiceNameUniqueSpecification specification;

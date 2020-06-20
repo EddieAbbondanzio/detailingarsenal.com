@@ -1,8 +1,9 @@
 
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 using FluentValidation;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     public class UpdateVehicleCategoryValidator : FluentValidatorAdapter<UpdateVehicleCategoryCommand> {
         public UpdateVehicleCategoryValidator() {
             RuleFor(cmd => cmd.Id).NotNull().WithMessage("Id is required.");

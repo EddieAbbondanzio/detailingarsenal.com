@@ -2,7 +2,7 @@
 using DetailingArsenal.Domain;
 using FluentValidation;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     public class DeleteVehicleCategoryValidator : FluentValidatorAdapter<DeleteVehicleCategoryCommand> {
         public DeleteVehicleCategoryValidator() {
             RuleFor(cmd => cmd.Id).NotNull().WithMessage("Id is required.");

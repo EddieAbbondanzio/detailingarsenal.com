@@ -25,6 +25,8 @@ using Npgsql.Logging;
 using Stripe;
 using DetailingArsenal.Domain.Core;
 using DetailingArsenal.Infrastructure.Core;
+using DetailingArsenal.Application.Settings;
+using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -160,7 +162,7 @@ namespace DetailingArsenal.Api {
 
             // Vehicle Categories
             services.AddTransient<VehicleCategoryNameUniqueSpecification>();
-            services.AddTransient<VehicleCategoryNotInuseSpecification>();
+            services.AddTransient<VehicleCategoryNotInUseSpecification>();
             services.AddTransient<IVehicleCategoryRepo, VehicleCategoryRepo>();
             services.AddTransient<ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryDto>>, GetVehicleCategoriesHandler>();
             services.AddTransient<CreateVehicleCategoryValidator>();

@@ -1,11 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
+using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Settings {
     [Authorize]
     [ApiController]
     [Route("settings/business")]

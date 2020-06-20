@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Settings;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "businesses")]
     public class GetBusinessHandler : ActionHandler<GetBusinessQuery, BusinessDto> {
         private IBusinessRepo repo;
