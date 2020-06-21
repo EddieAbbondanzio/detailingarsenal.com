@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "update", Scope = "services")]
+    [Validation(typeof(UpdateServiceValidator))]
     public class UpdateServiceHandler : ActionHandler<UpdateServiceCommand, ServiceDto> {
         IServiceService service;
         private IMapper mapper;
