@@ -49,7 +49,7 @@ namespace DetailingArsenal.Tests.Domain.Settings {
                 Id = Guid.NewGuid()
             };
 
-            await Assert.ThrowsExceptionAsync<VehicleCategoryNameInUseException>(
+            await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => await service.Create(
                     new CreateVehicleCategory() {
                         Name = "cat"
@@ -113,7 +113,7 @@ namespace DetailingArsenal.Tests.Domain.Settings {
                 Name = "old"
             };
 
-            await Assert.ThrowsExceptionAsync<VehicleCategoryNameInUseException>(
+            await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => await service.Update(
                     updatingCat,
                     new UpdateVehicleCategory() {

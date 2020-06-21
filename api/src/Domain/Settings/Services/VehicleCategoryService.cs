@@ -27,12 +27,7 @@ namespace DetailingArsenal.Domain.Settings {
         public async Task<VehicleCategory> Create(CreateVehicleCategory create, User user) {
             var cat = VehicleCategory.Create(create, user);
 
-            var valid = await uniqueNameSpec.Check(cat);
-
-            if (!valid.IsSatisfied) {
-                throw new VehicleCategoryNameInUseException(valid.Messages[0]);
-            }
-
+            await uniqueNameSpec.CheckAndThrow(cat);
             await repo.Add(cat);
 
             return cat;
@@ -42,22 +37,12 @@ namespace DetailingArsenal.Domain.Settings {
             category.Name = update.Name;
             category.Description = update.Description;
 
-            var valid = await uniqueNameSpec.Check(category);
-
-            if (!valid.IsSatisfied) {
-                throw new VehicleCategoryNameInUseException(valid.Messages[0]);
-            }
-
+            await uniqueNameSpec.CheckAndThrow(category);
             await repo.Update(category);
         }
 
         public async Task Delete(VehicleCategory category, User user) {
-            var valid = await notInUseSpec.Check(category);
-
-            if (!valid.IsSatisfied) {
-                throw new InvalidOperationException(valid.Messages[0]);
-            }
-
+            await notInUseSpec.CheckAndThrow(category);
             await repo.Delete(category);
         }
     }
