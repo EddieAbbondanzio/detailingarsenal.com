@@ -19,11 +19,11 @@ namespace DetailingArsenal.Application.Settings {
                 throw new EntityNotFoundException();
             }
 
-            if (cat.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!cat.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
-            await service.Delete(cat, user!);
+            await service.Delete(cat);
         }
     }
 }

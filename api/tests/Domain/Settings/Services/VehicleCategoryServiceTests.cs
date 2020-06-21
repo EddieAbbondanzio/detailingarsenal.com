@@ -22,10 +22,10 @@ namespace DetailingArsenal.Tests.Domain.Settings {
             };
 
             var cat = await service.Create(
-                new CreateVehicleCategory() {
-                    Name = "name",
-                    Description = "desc"
-                },
+                new CreateVehicleCategory(
+                    "name",
+                    "desc"
+                ),
                 user
             );
 
@@ -51,9 +51,9 @@ namespace DetailingArsenal.Tests.Domain.Settings {
 
             await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => await service.Create(
-                    new CreateVehicleCategory() {
-                        Name = "cat"
-                    },
+                    new CreateVehicleCategory(
+                        "cat"
+                    ),
                     user
                 )
             );
@@ -81,11 +81,10 @@ namespace DetailingArsenal.Tests.Domain.Settings {
 
             await service.Update(
                 cat,
-                new UpdateVehicleCategory() {
-                    Name = "new",
-                    Description = "newDesc"
-                },
-                user
+                new UpdateVehicleCategory(
+                    "new",
+                    "newDesc"
+                )
             );
 
             Assert.AreEqual(cat.Name, "new");
@@ -116,10 +115,9 @@ namespace DetailingArsenal.Tests.Domain.Settings {
             await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => await service.Update(
                     updatingCat,
-                    new UpdateVehicleCategory() {
-                        Name = "cat"
-                    },
-                    user
+                    new UpdateVehicleCategory(
+                        "cat"
+                    )
                 )
             );
         }
@@ -144,11 +142,10 @@ namespace DetailingArsenal.Tests.Domain.Settings {
                 Id = Guid.NewGuid(),
             };
 
-            await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => {
                     await service.Delete(
-                        cat,
-                        user
+                        cat
                     );
                 }
             );

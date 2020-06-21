@@ -21,17 +21,16 @@ namespace DetailingArsenal.Application.Settings {
                 throw new EntityNotFoundException();
             }
 
-            if (cat.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!cat.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
             await service.Update(
                 cat,
-                new UpdateVehicleCategory() {
-                    Name = command.Name,
-                    Description = command.Description
-                },
-                user!
+                new UpdateVehicleCategory(
+                    command.Name,
+                    command.Description
+                )
             );
 
             return mapper.Map<VehicleCategory, VehicleCategoryDto>(cat);

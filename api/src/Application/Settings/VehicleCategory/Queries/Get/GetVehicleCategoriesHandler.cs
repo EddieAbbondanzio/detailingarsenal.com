@@ -6,16 +6,16 @@ using DetailingArsenal.Domain.Settings;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "vehicle-categories")]
     public class GetVehicleCategoriesHandler : ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryDto>> {
-        private IVehicleCategoryRepo repo;
+        private IVehicleCategoryService service;
         private IMapper mapper;
 
-        public GetVehicleCategoriesHandler(IVehicleCategoryRepo repo, IMapper mapper) {
-            this.repo = repo;
+        public GetVehicleCategoriesHandler(IVehicleCategoryService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<List<VehicleCategoryDto>> Execute(GetVehicleCategoriesQuery query, User? user) {
-            var vcs = await repo.FindByUser(user!);
+            var vcs = await service.FindByUser(user!);
             return mapper.Map<List<VehicleCategory>, List<VehicleCategoryDto>>(vcs);
         }
     }

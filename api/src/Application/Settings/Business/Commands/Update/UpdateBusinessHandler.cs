@@ -17,8 +17,8 @@ namespace DetailingArsenal.Application.Settings {
         public async override Task<BusinessDto> Execute(UpdateBusinessCommand command, User? user) {
             Business b = (await repo.FindById(command.Id)) ?? throw new EntityNotFoundException();
 
-            if (b.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!b.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
             b.Name = command.Name;

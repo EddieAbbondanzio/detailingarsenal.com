@@ -18,8 +18,8 @@ namespace DetailingArsenal.Application {
         public async override Task<ClientDto> Execute(DeleteClientCommand input, User? user) {
             var c = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
 
-            if (c.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!c.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
             await specification.CheckAndThrow(c);

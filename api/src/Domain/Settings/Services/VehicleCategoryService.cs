@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Settings {
     public interface IVehicleCategoryService : IService {
         Task<VehicleCategory?> FindById(Guid id);
+        Task<List<VehicleCategory>> FindByUser(User user);
         Task<VehicleCategory> Create(CreateVehicleCategory create, User user);
-        Task Update(VehicleCategory category, UpdateVehicleCategory update, User user);
-        Task Delete(VehicleCategory category, User user);
+        Task Update(VehicleCategory category, UpdateVehicleCategory update);
+        Task Delete(VehicleCategory category);
     }
 
     public class VehicleCategoryService : IVehicleCategoryService {
@@ -24,6 +26,10 @@ namespace DetailingArsenal.Domain.Settings {
             return await repo.FindById(id);
         }
 
+        public async Task<List<VehicleCategory>> FindByUser(User user) {
+            return await repo.FindByUser(user);
+        }
+
         public async Task<VehicleCategory> Create(CreateVehicleCategory create, User user) {
             var cat = VehicleCategory.Create(create, user);
 
@@ -33,7 +39,7 @@ namespace DetailingArsenal.Domain.Settings {
             return cat;
         }
 
-        public async Task Update(VehicleCategory category, UpdateVehicleCategory update, User user) {
+        public async Task Update(VehicleCategory category, UpdateVehicleCategory update) {
             category.Name = update.Name;
             category.Description = update.Description;
 
@@ -41,7 +47,7 @@ namespace DetailingArsenal.Domain.Settings {
             await repo.Update(category);
         }
 
-        public async Task Delete(VehicleCategory category, User user) {
+        public async Task Delete(VehicleCategory category) {
             await notInUseSpec.CheckAndThrow(category);
             await repo.Delete(category);
         }

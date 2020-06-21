@@ -7,36 +7,35 @@ using DetailingArsenal.Domain.Settings;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "update", Scope = "services")]
     public class UpdateServiceHandler : ActionHandler<UpdateServiceCommand, ServiceDto> {
-        private ServiceNameUniqueSpecification specification;
-        private IServiceRepo repo;
+        IServiceService service;
         private IMapper mapper;
 
-        public UpdateServiceHandler(ServiceNameUniqueSpecification specification, IServiceRepo repo, IMapper mapper) {
-            this.specification = specification;
-            this.repo = repo;
+        public UpdateServiceHandler(IServiceService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<ServiceDto> Execute(UpdateServiceCommand input, User? user) {
-            var service = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
+            var service = (await this.service.FindById(input.Id)) ?? throw new EntityNotFoundException();
 
-            if (service.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!service.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
-            service.Name = input.Name;
-            service.Description = input.Description;
-            service.PricingMethod = input.PricingMethod;
-            service.Configurations = input.Configurations.Select(c => ServiceConfiguration.Create(
-                service.Id,
-                c.VehicleCategoryId,
-                c.Price,
-                c.Duration
-            )).ToList();
+            await this.service.Update(
+                service,
+                new UpdateService(
+                    input.Name,
+                    input.Description,
+                    input.PricingMethod,
+                    input.Configurations.Select(c => new UpdateServiceConfiguration(
+                        c.VehicleCategoryId,
+                        c.Price,
+                        c.Duration
+                    )).ToList()
+                )
+            );
 
-            await specification.CheckAndThrow(service);
-
-            await repo.Update(service);
             return mapper.Map<Service, ServiceDto>(service);
         }
     }

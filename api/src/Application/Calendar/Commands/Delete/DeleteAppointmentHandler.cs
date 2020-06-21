@@ -13,8 +13,8 @@ namespace DetailingArsenal.Application {
         public async override Task Execute(DeleteAppointmentCommand input, User? user) {
             var app = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
 
-            if (app.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!app.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
             await repo.Delete(app);

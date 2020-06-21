@@ -21,8 +21,8 @@ namespace DetailingArsenal.Application {
 
             var appointment = await appointmentRepo.FindById(input.Id) ?? throw new EntityNotFoundException();
 
-            if (appointment.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!appointment.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
             appointment.ServiceId = appointment.ServiceId;

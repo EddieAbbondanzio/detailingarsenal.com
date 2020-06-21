@@ -7,35 +7,32 @@ using DetailingArsenal.Domain.Settings;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "create", Scope = "services")]
     public class CreateServiceHandler : ActionHandler<CreateServiceCommand, ServiceDto> {
-        private ServiceNameUniqueSpecification specification;
-        private IServiceRepo repo;
+
+        private IServiceService service;
         private IMapper mapper;
 
-        public CreateServiceHandler(ServiceNameUniqueSpecification specification, IServiceRepo repo, IMapper mapper) {
-            this.specification = specification;
-            this.repo = repo;
+        public CreateServiceHandler(IServiceService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<ServiceDto> Execute(CreateServiceCommand input, User? user) {
-            var service = Service.Create(
-                user!.Id,
-                input.Name,
-                input.Description,
-                input.PricingMethod
+            var s = await service.Create(
+                new CreateService(
+                    user!.Id,
+                    input.Name,
+                    input.Description,
+                    input.PricingMethod,
+                    input.Configurations.Select(c => new CreateServiceConfiguration(
+                        c.VehicleCategoryId,
+                        c.Price,
+                        c.Duration
+                    )).ToList()
+                ),
+                user!
             );
 
-            service.Configurations = input.Configurations.Select(c => ServiceConfiguration.Create(
-                service.Id,
-                c.VehicleCategoryId,
-                c.Price,
-                c.Duration
-            )).ToList();
-
-            await specification.CheckAndThrow(service);
-
-            await repo.Add(service);
-            return mapper.Map<Service, ServiceDto>(service);
+            return mapper.Map<Service, ServiceDto>(s);
         }
     }
 }

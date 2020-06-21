@@ -16,8 +16,8 @@ namespace DetailingArsenal.Application {
         public async override Task<ClientDto> Execute(UpdateClientCommand input, User? user) {
             var c = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
 
-            if (c.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!c.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
             c.Name = input.Name;

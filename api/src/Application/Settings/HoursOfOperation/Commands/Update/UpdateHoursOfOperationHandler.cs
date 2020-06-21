@@ -18,8 +18,8 @@ namespace DetailingArsenal.Application.Settings {
         public async override Task<HoursOfOperationDto> Execute(UpdateHoursOfOperationCommand input, User? user) {
             var hours = await repo.FindById(input.Id) ?? throw new InvalidOperationException();
 
-            if (hours.UserId != user!.Id) {
-                throw new AuthorizationException("Unauthorized");
+            if (!hours.IsOwner(user!)) {
+                throw new AuthorizationException();
             }
 
             hours.Days = input.Days.Select(d => HoursOfOperationDay.Create(
