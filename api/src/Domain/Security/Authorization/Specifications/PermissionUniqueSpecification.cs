@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Security {
     public class PermissionUniqueSpecification : Specification<Permission> {
         private IPermissionRepo repo;
 

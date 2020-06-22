@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Clients;
+using DetailingArsenal.Domain.Security;
 
 namespace DetailingArsenal.Application {
     [Authorization(Action = "update", Scope = "appointments")]

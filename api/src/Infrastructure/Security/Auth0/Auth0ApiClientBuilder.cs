@@ -5,7 +5,7 @@ using Auth0.AuthenticationApi.Models;
 using Auth0.ManagementApi;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Infrastructure {
+namespace DetailingArsenal.Infrastructure.Security {
     public class Auth0ApiClientBuilder : IAuth0ApiClientBuilder {
         private Auth0Config config;
 

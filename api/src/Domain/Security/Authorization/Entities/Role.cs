@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Security {
     public class Role : Aggregate<Role> {
         public const int NameMaxLength = 32;
 

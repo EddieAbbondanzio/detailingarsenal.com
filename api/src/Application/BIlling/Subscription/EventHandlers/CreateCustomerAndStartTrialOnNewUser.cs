@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 using Serilog;
 
 namespace DetailingArsenal.Application {

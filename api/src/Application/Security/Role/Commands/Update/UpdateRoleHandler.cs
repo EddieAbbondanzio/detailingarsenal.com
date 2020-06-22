@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Security {
     [Validation(typeof(UpdateRoleValidator))]
     [Authorization(Action = "update", Scope = "roles")]
     public class UpdateRoleHandler : ActionHandler<UpdateRoleCommand, RoleDto> {

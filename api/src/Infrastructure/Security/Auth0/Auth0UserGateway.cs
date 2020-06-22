@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Auth0.ManagementApi.Models;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Infrastructure {
+namespace DetailingArsenal.Infrastructure.Security {
     public class Auth0UserGateway : IUserGateway {
         private IAuth0ApiClientBuilder tokenGenerator;
         private IUserRepo userRepo;

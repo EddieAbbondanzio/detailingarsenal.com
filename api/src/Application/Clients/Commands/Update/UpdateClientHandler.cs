@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Clients;
+using DetailingArsenal.Domain.Security;
 
 namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "update", Scope = "clients")]

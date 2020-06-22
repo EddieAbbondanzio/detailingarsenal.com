@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

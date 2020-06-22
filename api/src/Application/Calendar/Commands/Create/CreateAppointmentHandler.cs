@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Clients;
 
 namespace DetailingArsenal.Application {
     [Authorization(Action = "create", Scope = "appointments")]

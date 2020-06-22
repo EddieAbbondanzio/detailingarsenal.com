@@ -27,6 +27,11 @@ using DetailingArsenal.Domain.Core;
 using DetailingArsenal.Infrastructure.Core;
 using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.Settings;
+using DetailingArsenal.Infrastructure.Security;
+using DetailingArsenal.Domain.Clients;
+using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Application.Security;
+using DetailingArsenal.Application.Clients;
 
 namespace DetailingArsenal.Api {
     public class Startup {

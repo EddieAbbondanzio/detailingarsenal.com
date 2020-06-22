@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
+using DetailingArsenal.Application.Clients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ namespace DetailingArsenal.Api {
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateClient(Guid id, [FromBody]UpdateClientCommand command) {
+        public async Task<IActionResult> UpdateClient(Guid id, [FromBody] UpdateClientCommand command) {
             var client = await mediator.Dispatch<UpdateClientCommand, ClientDto>(command, User.GetUserId());
             return Ok(client);
         }

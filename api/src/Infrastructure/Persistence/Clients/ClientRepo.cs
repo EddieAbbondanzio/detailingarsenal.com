@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Clients;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
     public class ClientRepo : DatabaseInteractor, IClientRepo {

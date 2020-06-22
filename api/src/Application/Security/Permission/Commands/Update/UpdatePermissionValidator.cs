@@ -1,7 +1,8 @@
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 using FluentValidation;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Security {
     public class UpdatePermissionValidator : FluentValidatorAdapter<UpdatePermissionCommand> {
         public UpdatePermissionValidator() {
             RuleFor(c => c.Action).MaximumLength(Permission.ActionMaxLength).WithMessage($"Name must be {Permission.ActionMaxLength} characters or less.");

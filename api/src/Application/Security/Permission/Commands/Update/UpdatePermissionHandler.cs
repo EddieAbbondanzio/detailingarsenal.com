@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Security {
     [Validation(typeof(UpdatePermissionValidator))]
     [Authorization(Action = "update", Scope = "permissions")]
     public class UpdatePermissionHandler : ActionHandler<UpdatePermissionCommand, PermissionDto> {

@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Security {
     [Authorization(Action = "add-role", Scope = "users")]
     public class AddRoleToUserHandler : ActionHandler<AddRoleToUserCommand> {
         IUserRepo userRepo;

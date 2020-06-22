@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Security {
     [Validation(typeof(CreateRoleValidator))]
     [Authorization(Action = "create", Scope = "roles")]
     public class CreateRoleHandler : ActionHandler<CreateRoleCommand, RoleDto> {

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Dapper;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Infrastructure.Persistence {

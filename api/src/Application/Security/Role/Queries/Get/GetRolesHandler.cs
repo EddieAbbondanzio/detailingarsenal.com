@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Security {
     [Authorization(Action = "read", Scope = "roles")]
     public class GetRolesHandler : ActionHandler<GetRolesQuery, List<RoleDto>> {
         private IRoleRepo repo;

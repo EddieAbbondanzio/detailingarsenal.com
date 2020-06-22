@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Security {
     public class Permission : Aggregate<Permission> {
         public const int ActionMaxLength = 32;
         public const int ScopeMaxLength = 32;

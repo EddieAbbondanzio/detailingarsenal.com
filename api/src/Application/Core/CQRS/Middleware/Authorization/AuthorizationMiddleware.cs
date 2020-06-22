@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 
 namespace DetailingArsenal.Application {
     public class AuthorizationMiddleware : ActionMiddleware {

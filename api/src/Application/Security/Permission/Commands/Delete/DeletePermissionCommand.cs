@@ -1,5 +1,7 @@
 using System;
 
-public class DeletePermissionCommand : IAction {
-    public Guid Id { get; set; }
+namespace DetailingArsenal.Application.Security {
+    public class DeletePermissionCommand : IAction {
+        public Guid Id { get; set; }
+    }
 }

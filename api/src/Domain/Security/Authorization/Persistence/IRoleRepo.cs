@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Security {
     public interface IRoleRepo : IRepo<Role> {
         Task<List<Role>> FindAll();
         Task<Role?> Find(string name);

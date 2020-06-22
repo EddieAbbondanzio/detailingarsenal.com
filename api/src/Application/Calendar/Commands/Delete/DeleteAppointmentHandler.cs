@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Security;
 
 namespace DetailingArsenal.Application {
     [Authorization(Action = "delete", Scope = "appointments")]

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Security {
     public class PermissionNotInUseSpecification : Specification<Permission> {
         private IPermissionRepo repo;
 

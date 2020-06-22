@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DetailingArsenal.Domain.Clients;
 using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Domain {

@@ -1,1 +1,3 @@
-public class GetPermissionsQuery : IAction { }
+namespace DetailingArsenal.Application.Security {
+    public class GetPermissionsQuery : IAction { }
+}
