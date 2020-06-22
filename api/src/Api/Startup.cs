@@ -129,6 +129,7 @@ namespace DetailingArsenal.Api {
             // Authorization
             services.AddTransient<IPermissionRepo, PermissionRepo>();
             services.AddTransient<IRoleRepo, RoleRepo>();
+            services.AddTransient<IPermissionService, PermissionService>();
             services.AddTransient<PermissionUniqueSpecification>();
             services.AddTransient<PermissionNotInUseSpecification>();
             services.AddTransient<RoleNameUniqueSpecification>();

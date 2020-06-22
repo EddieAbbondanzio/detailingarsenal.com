@@ -1,3 +1,0 @@
-namespace DetailingArsenal.Domain.Security {
-
-}

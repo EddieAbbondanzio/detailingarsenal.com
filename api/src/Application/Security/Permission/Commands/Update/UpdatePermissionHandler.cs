@@ -6,29 +6,21 @@ namespace DetailingArsenal.Application.Security {
     [Validation(typeof(UpdatePermissionValidator))]
     [Authorization(Action = "update", Scope = "permissions")]
     public class UpdatePermissionHandler : ActionHandler<UpdatePermissionCommand, PermissionDto> {
-        private PermissionUniqueSpecification specification;
-        private IPermissionRepo repo;
-        private IMapper mapper;
+        IPermissionService service;
+        IMapper mapper;
 
-        public UpdatePermissionHandler(PermissionUniqueSpecification specification, IPermissionRepo repo, IMapper mapper) {
-            this.specification = specification;
-            this.repo = repo;
+        public UpdatePermissionHandler(IPermissionService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<PermissionDto> Execute(UpdatePermissionCommand input, User? user) {
-            var p = await repo.FindById(input.Id);
+            var p = await service.GetById(input.Id);
+            await service.Update(p, new UpdatePermission(
+                input.Action,
+                input.Scope
+            ));
 
-            if (p == null) {
-                throw new EntityNotFoundException();
-            }
-
-            p.Action = input.Action;
-            p.Scope = input.Scope;
-
-            await specification.CheckAndThrow(p);
-
-            await repo.Update(p);
             return mapper.Map<Permission, PermissionDto>(p);
         }
     }

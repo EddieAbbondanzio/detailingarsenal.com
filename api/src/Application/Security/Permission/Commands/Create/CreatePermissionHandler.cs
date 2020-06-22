@@ -7,25 +7,22 @@ namespace DetailingArsenal.Application.Security {
     [Validation(typeof(CreatePermissionValidator))]
     [Authorization(Action = "create", Scope = "permissions")]
     public class CreatePermissionHandler : ActionHandler<CreatePermissionCommand, PermissionDto> {
-        private PermissionUniqueSpecification specification;
-        private IPermissionRepo repo;
+        IPermissionService service;
         private IMapper mapper;
 
-        public CreatePermissionHandler(PermissionUniqueSpecification specification, IPermissionRepo repo, IMapper mapper) {
-            this.specification = specification;
-            this.repo = repo;
+        public CreatePermissionHandler(IPermissionService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<PermissionDto> Execute(CreatePermissionCommand input, User? user) {
-            var p = Permission.Create(
-                input.Action,
-                input.Scope
+            var p = await service.Create(
+                new CreatePermission(
+                    input.Action,
+                    input.Scope
+                ),
+                user!
             );
-
-            await specification.CheckAndThrow(p);
-
-            await repo.Add(p);
             return mapper.Map<Permission, PermissionDto>(p);
         }
     }
