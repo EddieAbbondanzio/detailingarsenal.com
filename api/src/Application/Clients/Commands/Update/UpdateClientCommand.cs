@@ -1,8 +1,8 @@
 using System;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application {
-    public class ClientDto : IDataTransferObject {
+namespace DetailingArsenal.Application.Clients {
+    public class UpdateClientCommand : IAction {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string? Phone { get; set; }

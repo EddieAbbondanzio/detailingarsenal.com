@@ -1,30 +1,32 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Clients;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "update", Scope = "clients")]
     public class UpdateClientHandler : ActionHandler<UpdateClientCommand, ClientDto> {
-        private IClientRepo repo;
+        IClientService service;
         private IMapper mapper;
 
-        public UpdateClientHandler(IClientRepo repo, IMapper mapper) {
-            this.repo = repo;
+        public UpdateClientHandler(IClientService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<ClientDto> Execute(UpdateClientCommand input, User? user) {
-            var c = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
+            var c = await service.GetById(input.Id);
 
             if (!c.IsOwner(user!)) {
                 throw new AuthorizationException();
             }
 
-            c.Name = input.Name;
-            c.Phone = input.Phone;
-            c.Email = input.Email;
+            await service.Update(c, new UpdateClient(
+                input.Name,
+                input.Phone,
+                input.Email
+            ));
 
-            await repo.Update(c);
             return mapper.Map<Client, ClientDto>(c);
         }
     }

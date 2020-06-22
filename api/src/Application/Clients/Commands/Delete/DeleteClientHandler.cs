@@ -1,30 +1,27 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Clients;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "delete", Scope = "clients")]
     public class DeleteClientHandler : ActionHandler<DeleteClientCommand, ClientDto> {
-        private ClientHasNoAppointmentsSpecification specification;
-        private IClientRepo repo;
+        IClientService service;
         private IMapper mapper;
 
-        public DeleteClientHandler(ClientHasNoAppointmentsSpecification specification, IClientRepo repo, IMapper mapper) {
-            this.specification = specification;
-            this.repo = repo;
+        public DeleteClientHandler(IClientService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<ClientDto> Execute(DeleteClientCommand input, User? user) {
-            var c = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
+            var c = await service.GetById(input.Id);
 
             if (!c.IsOwner(user!)) {
                 throw new AuthorizationException();
             }
 
-            await specification.CheckAndThrow(c);
-
-            await repo.Delete(c);
+            await service.Delete(c);
             return mapper.Map<Client, ClientDto>(c);
         }
     }

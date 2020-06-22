@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Clients {
     public class ClientHasNoAppointmentsSpecification : Specification<Client> {
         private IAppointmentRepo repo;
 

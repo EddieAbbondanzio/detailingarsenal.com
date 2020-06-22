@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Clients;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "read", Scope = "clients")]
     public class GetClientsHandler : ActionHandler<GetClientsQuery, List<ClientDto>> {
-        private IClientRepo repo;
+        IClientService service;
         private IMapper mapper;
 
-        public GetClientsHandler(IClientRepo repo, IMapper mapper) {
-            this.repo = repo;
+        public GetClientsHandler(IClientService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<List<ClientDto>> Execute(GetClientsQuery input, User? user) {
-            List<Client> clients = await repo.FindByUser(user!);
+            List<Client> clients = await service.GetByUser(user!);
             return mapper.Map<List<Client>, List<ClientDto>>(clients);
         }
     }

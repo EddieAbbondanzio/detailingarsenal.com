@@ -204,6 +204,7 @@ namespace DetailingArsenal.Api {
             // Clients
             services.AddTransient<ClientHasNoAppointmentsSpecification>();
             services.AddTransient<IClientRepo, ClientRepo>();
+            services.AddTransient<IClientService, ClientService>();
             services.AddTransient<ActionHandler<GetClientsQuery, List<ClientDto>>, GetClientsHandler>();
             services.AddTransient<ActionHandler<CreateClientCommand, ClientDto>, CreateClientHandler>();
             services.AddTransient<ActionHandler<UpdateClientCommand, ClientDto>, UpdateClientHandler>();
