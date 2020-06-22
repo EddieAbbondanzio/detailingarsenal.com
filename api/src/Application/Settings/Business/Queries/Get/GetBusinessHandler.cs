@@ -6,16 +6,16 @@ using DetailingArsenal.Domain.Settings;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "businesses")]
     public class GetBusinessHandler : ActionHandler<GetBusinessQuery, BusinessDto> {
-        private IBusinessRepo repo;
+        private IBusinessService service;
         private IMapper mapper;
 
-        public GetBusinessHandler(IBusinessRepo repo, IMapper mapper) {
-            this.repo = repo;
+        public GetBusinessHandler(IBusinessService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<BusinessDto> Execute(GetBusinessQuery query, User? user) {
-            var b = await repo.FindByUser(user!);
+            var b = await service.GetByUser(user!);
             return mapper.Map<Business, BusinessDto>(b);
         }
     }

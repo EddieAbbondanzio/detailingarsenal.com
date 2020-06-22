@@ -8,18 +8,14 @@ namespace DetailingArsenal.Application.Settings {
     /// When a new user is generated, go ahead and create an empty business for the user.
     /// </summary>
     public class NewUserBusinessCreator : IBusEventHandler<NewUserEvent> {
-        private IBusinessRepo repo;
+        IBusinessService service;
 
-        public NewUserBusinessCreator(IBusinessRepo repo) {
-            this.repo = repo;
+        public NewUserBusinessCreator(IBusinessService service) {
+            this.service = service;
         }
 
         public async Task Handle(NewUserEvent busEvent) {
-            var b = Business.Create(
-                busEvent.User.Id
-            );
-
-            await repo.Add(b);
+            await service.CreateDefault(busEvent.User);
         }
     }
 }

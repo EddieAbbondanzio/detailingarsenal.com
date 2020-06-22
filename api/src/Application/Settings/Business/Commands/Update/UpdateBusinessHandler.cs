@@ -6,26 +6,27 @@ namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateBusinessValidator))]
     [Authorization(Action = "update", Scope = "businesses")]
     public class UpdateBusinessHandler : ActionHandler<UpdateBusinessCommand, BusinessDto> {
-        private IBusinessRepo repo;
+        IBusinessService service;
         private IMapper mapper;
 
-        public UpdateBusinessHandler(IBusinessRepo repo, IMapper mapper) {
-            this.repo = repo;
+        public UpdateBusinessHandler(IBusinessService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<BusinessDto> Execute(UpdateBusinessCommand command, User? user) {
-            Business b = (await repo.FindById(command.Id)) ?? throw new EntityNotFoundException();
+            Business b = await service.GetByUser(user!);
 
             if (!b.IsOwner(user!)) {
                 throw new AuthorizationException();
             }
 
-            b.Name = command.Name;
-            b.Address = command.Address;
-            b.Phone = command.Phone;
+            await service.Update(b, new UpdateBusiness(
+                command.Name,
+                command.Address,
+                command.Phone
+            ));
 
-            await repo.Update(b);
             return mapper.Map<Business, BusinessDto>(b);
         }
     }

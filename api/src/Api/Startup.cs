@@ -175,6 +175,7 @@ namespace DetailingArsenal.Api {
 
             // Business
             services.AddTransient<IBusinessRepo, BusinessRepo>();
+            services.AddTransient<IBusinessService, BusinessService>();
             services.AddTransient<ActionHandler<GetBusinessQuery, BusinessDto>, GetBusinessHandler>();
             services.AddTransient<UpdateBusinessValidator>();
             services.AddTransient<ActionHandler<UpdateBusinessCommand, BusinessDto>, UpdateBusinessHandler>();
