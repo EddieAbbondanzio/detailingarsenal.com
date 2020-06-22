@@ -15,7 +15,7 @@ namespace DetailingArsenal.Application.Settings {
         }
 
         public async override Task<List<VehicleCategoryDto>> Execute(GetVehicleCategoriesQuery query, User? user) {
-            var vcs = await service.FindByUser(user!);
+            var vcs = await service.GetByUser(user!);
             return mapper.Map<List<VehicleCategory>, List<VehicleCategoryDto>>(vcs);
         }
     }

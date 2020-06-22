@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Settings {
     public interface IVehicleCategoryService : IService {
-        Task<VehicleCategory?> FindById(Guid id);
-        Task<List<VehicleCategory>> FindByUser(User user);
+        Task<VehicleCategory> GetById(Guid id);
+        Task<List<VehicleCategory>> GetByUser(User user);
         Task<VehicleCategory> Create(CreateVehicleCategory create, User user);
         Task Update(VehicleCategory category, UpdateVehicleCategory update);
         Task Delete(VehicleCategory category);
@@ -22,11 +22,11 @@ namespace DetailingArsenal.Domain.Settings {
             this.repo = repo;
         }
 
-        public async Task<VehicleCategory?> FindById(Guid id) {
-            return await repo.FindById(id);
+        public async Task<VehicleCategory> GetById(Guid id) {
+            return await repo.FindById(id) ?? throw new EntityNotFoundException();
         }
 
-        public async Task<List<VehicleCategory>> FindByUser(User user) {
+        public async Task<List<VehicleCategory>> GetByUser(User user) {
             return await repo.FindByUser(user);
         }
 

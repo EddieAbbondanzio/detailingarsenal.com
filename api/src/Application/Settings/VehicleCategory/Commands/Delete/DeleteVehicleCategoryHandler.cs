@@ -13,11 +13,7 @@ namespace DetailingArsenal.Application.Settings {
         }
 
         public async override Task Execute(DeleteVehicleCategoryCommand command, User? user) {
-            var cat = await service.FindById(command.Id);
-
-            if (cat == null) {
-                throw new EntityNotFoundException();
-            }
+            var cat = await service.GetById(command.Id);
 
             if (!cat.IsOwner(user!)) {
                 throw new AuthorizationException();

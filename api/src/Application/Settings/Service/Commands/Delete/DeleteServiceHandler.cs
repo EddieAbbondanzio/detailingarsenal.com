@@ -12,7 +12,7 @@ namespace DetailingArsenal.Application.Settings {
         }
 
         public async override Task Execute(DeleteServiceCommand input, User? user) {
-            var s = await this.service.FindById(input.Id) ?? throw new EntityNotFoundException();
+            var s = await this.service.GetById(input.Id);
 
             if (!s.IsOwner(user!)) {
                 throw new AuthorizationException();

@@ -15,7 +15,7 @@ namespace DetailingArsenal.Application.Settings {
         }
 
         public async override Task<List<ServiceDto>> Execute(GetServicesQuery input, User? user) {
-            var services = await service.FindByUser(user!);
+            var services = await service.GetByUser(user!);
             return mapper.Map<List<Service>, List<ServiceDto>>(services);
         }
     }

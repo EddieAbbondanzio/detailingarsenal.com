@@ -5,16 +5,16 @@ using DetailingArsenal.Domain.Settings;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "hours-of-operations")]
     public class GetHoursOfOperationHandler : ActionHandler<GetHoursOfOperationQuery, HoursOfOperationDto> {
-        private IHoursOfOperationRepo repo;
+        private IHoursOfOperationService service;
         private IMapper mapper;
 
-        public GetHoursOfOperationHandler(IHoursOfOperationRepo repo, IMapper mapper) {
-            this.repo = repo;
+        public GetHoursOfOperationHandler(IHoursOfOperationService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<HoursOfOperationDto> Execute(GetHoursOfOperationQuery query, User? user) {
-            var hours = await repo.FindForUser(user!);
+            var hours = await service.GetByUser(user!);
             return mapper.Map<HoursOfOperation, HoursOfOperationDto>(hours);
         }
     }

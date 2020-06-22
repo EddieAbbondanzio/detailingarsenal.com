@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Settings {
     public interface IServiceService : IService {
-        Task<Service?> FindById(Guid id);
-        Task<List<Service>> FindByUser(User user);
+        Task<Service> GetById(Guid id);
+        Task<List<Service>> GetByUser(User user);
         Task<Service> Create(CreateService create, User user);
         Task Update(Service service, UpdateService update);
         Task Delete(Service service);
@@ -23,11 +23,11 @@ namespace DetailingArsenal.Domain.Settings {
             this.notInUseSpec = notInUseSpec;
         }
 
-        public async Task<Service?> FindById(Guid id) {
-            return await repo.FindById(id);
+        public async Task<Service> GetById(Guid id) {
+            return await repo.FindById(id) ?? throw new EntityNotFoundException();
         }
 
-        public async Task<List<Service>> FindByUser(User user) {
+        public async Task<List<Service>> GetByUser(User user) {
             return await repo.FindByUser(user);
         }
 

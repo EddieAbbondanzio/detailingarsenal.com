@@ -164,6 +164,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<VehicleCategoryNameUniqueSpecification>();
             services.AddTransient<VehicleCategoryNotInUseSpecification>();
             services.AddTransient<IVehicleCategoryRepo, VehicleCategoryRepo>();
+            services.AddTransient<IVehicleCategoryService, VehicleCategoryService>();
             services.AddTransient<ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryDto>>, GetVehicleCategoriesHandler>();
             services.AddTransient<CreateVehicleCategoryValidator>();
             services.AddTransient<ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryDto>, CreateVehicleCategoryHandler>();
@@ -181,7 +182,9 @@ namespace DetailingArsenal.Api {
 
             // Hours Of Operation
             services.AddTransient<IHoursOfOperationRepo, HoursOfOperationRepo>();
+            services.AddTransient<IHoursOfOperationService, HoursOfOperationService>();
             services.AddTransient<ActionHandler<GetHoursOfOperationQuery, HoursOfOperationDto>, GetHoursOfOperationHandler>();
+            services.AddTransient<UpdateHoursOfOperationValidator>();
             services.AddTransient<ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationDto>, UpdateHoursOfOperationHandler>();
             services.AddTransient<IBusEventHandler<NewUserEvent>, NewUserHoursOfOperationCreator>();
 
@@ -189,9 +192,12 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ServiceNameUniqueSpecification>();
             services.AddTransient<ServiceNotInUseSpecification>();
             services.AddTransient<IServiceRepo, ServiceRepo>();
+            services.AddTransient<IServiceService, ServiceService>();
             services.AddTransient<ActionHandler<GetServicesQuery, List<ServiceDto>>, GetServicesHandler>();
             services.AddTransient<ActionHandler<CreateServiceCommand, ServiceDto>, CreateServiceHandler>();
+            services.AddTransient<CreateServiceValidator>();
             services.AddTransient<ActionHandler<UpdateServiceCommand, ServiceDto>, UpdateServiceHandler>();
+            services.AddTransient<UpdateServiceValidator>();
             services.AddTransient<ActionHandler<DeleteServiceCommand>, DeleteServiceHandler>();
 
             // Clients

@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "create", Scope = "services")]
+    [Validation(typeof(CreateServiceValidator))]
     public class CreateServiceHandler : ActionHandler<CreateServiceCommand, ServiceDto> {
 
         private IServiceService service;

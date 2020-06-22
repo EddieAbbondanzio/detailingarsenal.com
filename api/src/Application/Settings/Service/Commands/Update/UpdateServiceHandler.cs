@@ -17,7 +17,7 @@ namespace DetailingArsenal.Application.Settings {
         }
 
         public async override Task<ServiceDto> Execute(UpdateServiceCommand input, User? user) {
-            var service = (await this.service.FindById(input.Id)) ?? throw new EntityNotFoundException();
+            var service = await this.service.GetById(input.Id);
 
             if (!service.IsOwner(user!)) {
                 throw new AuthorizationException();
