@@ -5,15 +5,22 @@ using DetailingArsenal.Domain.Security;
 using Serilog;
 
 namespace DetailingArsenal.Application {
+    /// <summary>
+    /// Jesus christ refactor this.
+    /// </summary>
     public class CreateCustomerAndStartTrialOnNewUser : IBusEventHandler<NewUserEvent> {
+        ISubscriptionConfig config;
         private ICustomerRepo customerRepo;
         private ISubscriptionRepo subscriptionRepo;
+        private ISubscriptionPlanRepo planRepo;
         private IRoleRepo roleRepo;
         private IExternalSubscriptionGateway subscriptionGateway;
 
-        public CreateCustomerAndStartTrialOnNewUser(ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, IRoleRepo roleRepo, IExternalSubscriptionGateway subscriptionService) {
+        public CreateCustomerAndStartTrialOnNewUser(ISubscriptionConfig config, ICustomerRepo customerRepo, ISubscriptionRepo subscriptionRepo, ISubscriptionPlanRepo planRepo, IRoleRepo roleRepo, IExternalSubscriptionGateway subscriptionService) {
+            this.config = config;
             this.customerRepo = customerRepo;
             this.subscriptionRepo = subscriptionRepo;
+            this.planRepo = planRepo;
             this.roleRepo = roleRepo;
             this.subscriptionGateway = subscriptionService;
         }
@@ -28,14 +35,10 @@ namespace DetailingArsenal.Application {
             await customerRepo.Add(customer);
 
             // Now create and start the trial subscription
-            // var sub = await subscriptionGateway.CreateTrialSubscription(customer);
-            // await subscriptionRepo.Add(sub);
+            var plan = await planRepo.FindByExternalId(config.DefaultPlan) ?? throw new Exception("No default subscription plan specified");
 
-            throw new Exception();
-
-            // get the plan
-
-            // create their role
+            var sub = await subscriptionGateway.CreateTrialSubscription(plan, customer);
+            await subscriptionRepo.Add(sub);
         }
     }
 }

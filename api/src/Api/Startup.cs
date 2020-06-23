@@ -128,10 +128,11 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>, UpdateSubscriptionPlanHandler>();
             services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
 
-            // Authorization
+            // Security
             services.AddTransient<IPermissionRepo, PermissionRepo>();
             services.AddTransient<IRoleRepo, RoleRepo>();
             services.AddTransient<IPermissionService, PermissionService>();
+            services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<PermissionUniqueSpecification>();
             services.AddTransient<PermissionNotInUseSpecification>();
             services.AddTransient<RoleNameUniqueSpecification>();
@@ -218,8 +219,9 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<UpdateClientCommand, ClientDto>, UpdateClientHandler>();
             services.AddTransient<ActionHandler<DeleteClientCommand, ClientDto>, DeleteClientHandler>();
 
-            // Appointments
+            // Calendar
             services.AddTransient<IAppointmentRepo, AppointmentRepo>();
+            services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<ActionHandler<GetAppointmentsQuery, List<AppointmentDto>>, GetAppointmentsHandler>();
             services.AddTransient<ActionHandler<CreateAppointmentCommand, AppointmentDto>, CreateAppointmentHandler>();
             services.AddTransient<ActionHandler<UpdateAppointmentCommand, AppointmentDto>, UpdateAppointmentHandler>();
