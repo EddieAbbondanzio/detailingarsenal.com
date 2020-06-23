@@ -1,7 +1,7 @@
 using System;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Calendar {
     public class AppointmentBlockDto : IDataTransferObject {
         public DateTime Start { get; set; }
         public DateTime End { get; set; }

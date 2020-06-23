@@ -2,44 +2,41 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Calendar;
 using DetailingArsenal.Domain.Clients;
 using DetailingArsenal.Domain.Security;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "update", Scope = "appointments")]
     public class UpdateAppointmentHandler : ActionHandler<UpdateAppointmentCommand, AppointmentDto> {
-        private IClientRepo clientRepo;
-        private IAppointmentRepo appointmentRepo;
-        private IMapper mapper;
+        IAppointmentService service;
+        IMapper mapper;
 
-        public UpdateAppointmentHandler(IAppointmentRepo appointmentRepo, IClientRepo clientRepo, IMapper mapper) {
-            this.appointmentRepo = appointmentRepo;
-            this.clientRepo = clientRepo;
+        public UpdateAppointmentHandler(IAppointmentService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<AppointmentDto> Execute(UpdateAppointmentCommand input, User? user) {
-            var client = await clientRepo.FindById(input.ClientId) ?? throw new EntityNotFoundException();
-
-            var appointment = await appointmentRepo.FindById(input.Id) ?? throw new EntityNotFoundException();
+            var appointment = await service.GetById(input.Id);
 
             if (!appointment.IsOwner(user!)) {
                 throw new AuthorizationException();
             }
 
-            appointment.ServiceId = appointment.ServiceId;
-            appointment.ClientId = client.Id;
-            appointment.Price = appointment.Price;
-            appointment.Notes = appointment.Notes;
+            var update = new UpdateAppointment(
+                input.ServiceId,
+                input.ClientId,
+                input.Price,
+                input.Notes
+            );
 
-            appointment.Blocks = input.Blocks.Select(t => new AppointmentBlock() {
-                Id = Guid.NewGuid(),
-                AppointmentId = appointment.Id,
-                Start = t.Start,
-                End = t.End
-            }).ToList();
+            update.Blocks = input.Blocks.Select(b => new UpdateAppointmentBlock(
+                b.Start,
+                b.Start
+            )).ToList();
 
-            await appointmentRepo.Update(appointment);
+            await service.Update(appointment, update);
             return mapper.Map<Appointment, AppointmentDto>(appointment);
         }
     }

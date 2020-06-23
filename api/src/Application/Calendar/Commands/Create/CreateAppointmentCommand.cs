@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Calendar {
     public class CreateAppointmentCommand : IAction {
         public Guid ServiceId { get; set; }
         public Guid ClientId { get; set; }

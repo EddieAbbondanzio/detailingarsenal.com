@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Calendar;
 using DetailingArsenal.Domain.Clients;
 using DetailingArsenal.Domain.Settings;
 

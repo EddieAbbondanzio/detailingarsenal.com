@@ -32,6 +32,8 @@ using DetailingArsenal.Domain.Clients;
 using DetailingArsenal.Domain.Security;
 using DetailingArsenal.Application.Security;
 using DetailingArsenal.Application.Clients;
+using DetailingArsenal.Application.Calendar;
+using DetailingArsenal.Domain.Calendar;
 
 namespace DetailingArsenal.Api {
     public class Startup {

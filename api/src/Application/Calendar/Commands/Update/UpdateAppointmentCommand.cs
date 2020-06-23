@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Calendar {
     public class UpdateAppointmentCommand : IAction {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }

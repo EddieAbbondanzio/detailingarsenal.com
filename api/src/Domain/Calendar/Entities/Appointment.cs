@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Calendar {
     public class Appointment : Aggregate<Appointment>, IUserEntity {
         public const int NotesMaxLength = 1024;
 

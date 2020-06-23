@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DetailingArsenal.Domain.Calendar;
 
 namespace DetailingArsenal.Domain.Clients {
     public class ClientHasNoAppointmentsSpecification : Specification<Client> {

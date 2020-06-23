@@ -1,7 +1,7 @@
 
 using System;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Calendar {
     public class AppointmentBlock : Entity<AppointmentBlock> {
         public Guid AppointmentId { get; set; }
         public DateTime Start { get; set; }

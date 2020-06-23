@@ -1,24 +1,25 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Calendar;
 using DetailingArsenal.Domain.Security;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "delete", Scope = "appointments")]
     public class DeleteAppointmentHandler : ActionHandler<DeleteAppointmentCommand> {
-        private IAppointmentRepo repo;
+        IAppointmentService service;
 
-        public DeleteAppointmentHandler(IAppointmentRepo repo) {
-            this.repo = repo;
+        public DeleteAppointmentHandler(IAppointmentService service) {
+            this.service = service;
         }
 
         public async override Task Execute(DeleteAppointmentCommand input, User? user) {
-            var app = (await repo.FindById(input.Id)) ?? throw new EntityNotFoundException();
+            var app = await service.GetById(input.Id);
 
             if (!app.IsOwner(user!)) {
                 throw new AuthorizationException();
             }
 
-            await repo.Delete(app);
+            await service.Delete(app);
         }
     }
 }

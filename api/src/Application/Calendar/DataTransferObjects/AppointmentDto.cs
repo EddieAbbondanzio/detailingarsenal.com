@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Calendar {
     public class AppointmentDto : IDataTransferObject {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }

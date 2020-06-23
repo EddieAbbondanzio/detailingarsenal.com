@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DetailingArsenal.Domain.Calendar;
 
 namespace DetailingArsenal.Domain.Settings {
     public class ServiceNotInUseSpecification : Specification<Service> {

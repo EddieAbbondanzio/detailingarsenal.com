@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
+using DetailingArsenal.Application.Calendar;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Calendar;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +20,7 @@ namespace DetailingArsenal.Api {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery]string range, [FromQuery]DateTime date) {
+        public async Task<IActionResult> Get([FromQuery] string range, [FromQuery] DateTime date) {
             AppointmentRange appointmentRange;
 
             if (!Enum.TryParse(range, true, out appointmentRange)) {
