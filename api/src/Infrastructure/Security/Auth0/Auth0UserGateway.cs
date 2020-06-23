@@ -64,8 +64,8 @@ namespace DetailingArsenal.Infrastructure.Security {
             return user;
         }
 
-        public async Task<Domain.User?> GetUserById(string id) {
-            var user = await userRepo.FindById(new Guid(id));
+        public async Task<Domain.User?> GetUserById(Guid id) {
+            var user = await userRepo.FindById(id);
 
             if (user == null) {
                 return null;

@@ -5,28 +5,19 @@ using DetailingArsenal.Domain.Security;
 namespace DetailingArsenal.Application.Security {
     [Authorization(Action = "remove-role", Scope = "users")]
     public class RemoveRoleFromUserHandler : ActionHandler<RemoveRoleFromUserCommand> {
-        IUserRepo userRepo;
-        IRoleRepo roleRepo;
+        IUserGateway userGateway;
+        IRoleService roleService;
 
-        public RemoveRoleFromUserHandler(IUserRepo userRepo, IRoleRepo roleRepo) {
-            this.userRepo = userRepo;
-            this.roleRepo = roleRepo;
+        public RemoveRoleFromUserHandler(IUserGateway userGateway, IRoleService roleService) {
+            this.userGateway = userGateway;
+            this.roleService = roleService;
         }
 
         public async override Task Execute(RemoveRoleFromUserCommand input, User? user) {
-            var userToAddRoleTo = await userRepo.FindById(input.UserId);
+            var userToAddTo = await userGateway.GetUserById(input.UserId) ?? throw new EntityNotFoundException();
+            var role = await roleService.GetById(input.RoleId);
 
-            if (userToAddRoleTo == null) {
-                throw new EntityNotFoundException();
-            }
-
-            var role = await roleRepo.FindById(input.RoleId);
-
-            if (role == null) {
-                throw new EntityNotFoundException();
-            }
-
-            await roleRepo.RemoveFromUser(userToAddRoleTo, role);
+            await roleService.AddRoleToUser(role, userToAddTo);
         }
     }
 }

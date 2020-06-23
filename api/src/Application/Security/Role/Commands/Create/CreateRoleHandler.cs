@@ -7,25 +7,20 @@ namespace DetailingArsenal.Application.Security {
     [Validation(typeof(CreateRoleValidator))]
     [Authorization(Action = "create", Scope = "roles")]
     public class CreateRoleHandler : ActionHandler<CreateRoleCommand, RoleDto> {
-        private RoleNameUniqueSpecification specification;
-        private IRoleRepo repo;
+        IRoleService service;
         private IMapper mapper;
 
-        public CreateRoleHandler(RoleNameUniqueSpecification specification, IRoleRepo repo, IMapper mapper) {
-            this.specification = specification;
-            this.repo = repo;
+        public CreateRoleHandler(IRoleService service, IMapper mapper) {
+            this.service = service;
             this.mapper = mapper;
         }
 
         public async override Task<RoleDto> Execute(CreateRoleCommand input, User? user) {
-            var r = Role.Create(
+            var r = await service.Create(new CreateRole(
                 input.Name,
                 input.PermissionIds
-            );
+            ));
 
-            await specification.CheckAndThrow(r);
-
-            await repo.Add(r);
             return mapper.Map<Role, RoleDto>(r);
         }
     }

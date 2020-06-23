@@ -5,20 +5,15 @@ using DetailingArsenal.Domain.Security;
 namespace DetailingArsenal.Application.Security {
     [Authorization(Action = "delete", Scope = "roles")]
     public class DeleteRoleHandler : ActionHandler<DeleteRoleCommand> {
-        private IRoleRepo repo;
+        IRoleService service;
 
-        public DeleteRoleHandler(IRoleRepo repo) {
-            this.repo = repo;
+        public DeleteRoleHandler(IRoleService service) {
+            this.service = service;
         }
 
         public async override Task Execute(DeleteRoleCommand input, User? user) {
-            var r = await repo.FindById(input.Id);
-
-            if (r == null) {
-                return;
-            }
-
-            await repo.Delete(r);
+            var r = await service.GetById(input.Id);
+            await service.Delete(r);
         }
     }
 }
