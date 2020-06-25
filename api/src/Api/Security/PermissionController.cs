@@ -23,7 +23,7 @@ namespace DetailingArsenal.Api {
             return Ok(perms);
         }
 
-        [HttpGet("/user")]
+        [HttpGet("user")]
         public async Task<IActionResult> GetUserPermissions() {
             List<PermissionDto> perms = await mediator.Dispatch<GetUserPermissionsQuery, List<PermissionDto>>(new GetUserPermissionsQuery(), User.GetUserId());
             return Ok(perms);

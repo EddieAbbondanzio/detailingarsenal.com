@@ -27,13 +27,15 @@ using DetailingArsenal.Domain.Core;
 using DetailingArsenal.Infrastructure.Core;
 using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.Settings;
-using DetailingArsenal.Infrastructure.Security;
+using DetailingArsenal.Infrastructure.Users;
 using DetailingArsenal.Domain.Clients;
 using DetailingArsenal.Domain.Security;
 using DetailingArsenal.Application.Security;
 using DetailingArsenal.Application.Clients;
 using DetailingArsenal.Application.Calendar;
+using DetailingArsenal.Application.Users;
 using DetailingArsenal.Domain.Calendar;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -85,8 +87,6 @@ namespace DetailingArsenal.Api {
             services.AddScoped<IMediator, Mediator>();
             services.AddTransient<ActionMiddleware, AuthorizationMiddleware>();
             services.AddTransient<ActionMiddleware, ValidationMiddleware>();
-            services.AddScoped<IEventBus, EventBus>();
-            services.AddTransient<IBusEventHandler<StartupEvent>, RunMigrationsOnStartup>();
 
 
             // Mapping
@@ -121,8 +121,6 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IExternalCustomerGateway, StripeCustomerGateway>();
             services.AddTransient<IExternalSubscriptionGateway, StripeSubscriptionGateway>();
             services.AddTransient<IExternalSubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
-            services.AddTransient<IBusEventHandler<NewUserEvent>, CreateCustomerAndStartTrialOnNewUser>();
-            services.AddTransient<IBusEventHandler<StartupEvent>, RefreshSubscriptionPlansOnStartup>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>, UpdateSubscriptionPlanHandler>();
@@ -163,11 +161,6 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<ActionHandler<UpdateUserCommand, UserDto>, UpdateUserHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserDto>, GetUserByAuth0IdHandler>();
-            services.AddTransient<IBusEventHandler<StartupEvent>, CreateOrUpdateAdminOnStartup>();
-
-            if (environment.IsProduction()) {
-                services.AddTransient<IBusEventHandler<NewUserEvent>, NotifyEdOfNewUser>();
-            }
 
             // Vehicle Categories
             services.AddTransient<VehicleCategoryNameUniqueSpecification>();
@@ -188,7 +181,6 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetBusinessQuery, BusinessDto>, GetBusinessHandler>();
             services.AddTransient<UpdateBusinessValidator>();
             services.AddTransient<ActionHandler<UpdateBusinessCommand, BusinessDto>, UpdateBusinessHandler>();
-            services.AddTransient<IBusEventHandler<NewUserEvent>, NewUserBusinessCreator>();
 
             // Hours Of Operation
             services.AddTransient<IHoursOfOperationRepo, HoursOfOperationRepo>();
@@ -196,7 +188,6 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetHoursOfOperationQuery, HoursOfOperationDto>, GetHoursOfOperationHandler>();
             services.AddTransient<UpdateHoursOfOperationValidator>();
             services.AddTransient<ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationDto>, UpdateHoursOfOperationHandler>();
-            services.AddTransient<IBusEventHandler<NewUserEvent>, NewUserHoursOfOperationCreator>();
 
             // Service
             services.AddTransient<ServiceNameUniqueSpecification>();

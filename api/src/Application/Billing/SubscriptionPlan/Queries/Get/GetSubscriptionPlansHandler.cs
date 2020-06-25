@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application {
     [Authorization(Action = "read", Scope = "subscription-plans")]

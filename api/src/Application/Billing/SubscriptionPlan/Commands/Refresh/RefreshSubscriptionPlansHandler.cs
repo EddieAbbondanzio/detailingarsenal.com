@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application {
     [Authorization(Action = "refresh", Scope = "subscription-plans")]

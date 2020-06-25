@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application {
     public abstract class ActionHandler {

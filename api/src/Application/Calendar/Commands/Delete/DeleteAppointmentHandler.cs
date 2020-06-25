@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Calendar;
 using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "delete", Scope = "appointments")]

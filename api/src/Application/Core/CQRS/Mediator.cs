@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DetailingArsenal.Application {

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Settings {
     public interface IHoursOfOperationService : IService {

@@ -1,4 +1,5 @@
 using System;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain {
     public interface IUserEntity {

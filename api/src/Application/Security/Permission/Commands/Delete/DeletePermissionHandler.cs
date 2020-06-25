@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Application;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Security {
     [Authorization(Action = "delete", Scope = "permissions")]

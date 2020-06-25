@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using DetailingArsenal.Domain.Settings;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
     public class VehicleCategoryRepo : DatabaseInteractor, IVehicleCategoryRepo {

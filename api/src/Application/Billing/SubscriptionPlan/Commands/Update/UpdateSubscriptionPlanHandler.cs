@@ -1,6 +1,7 @@
 
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application {
     [Authorization(Scope = "subscription-plans", Action = "update")]

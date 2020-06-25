@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DetailingArsenal.Application {

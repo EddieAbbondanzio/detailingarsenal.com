@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Settings;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
     public class HoursOfOperationRepo : DatabaseInteractor, IHoursOfOperationRepo {

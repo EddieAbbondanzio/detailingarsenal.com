@@ -25,8 +25,8 @@ namespace DetailingArsenal.Api {
             var host = CreateHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope()) {
-                var bus = scope.ServiceProvider.GetRequiredService<IEventBus>();
-                await bus.Dispatch(new StartupEvent());
+                // var bus = scope.ServiceProvider.GetRequiredService<IEventBus>();
+                // await bus.Dispatch(new StartupEvent());
             }
 
             await host.RunAsync();

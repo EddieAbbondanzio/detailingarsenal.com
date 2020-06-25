@@ -7,6 +7,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Calendar;
 using DetailingArsenal.Domain.Clients;
 using DetailingArsenal.Domain.Settings;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Infrastructure.Persistence {
     public class AppointmentRepo : DatabaseInteractor, IAppointmentRepo {
