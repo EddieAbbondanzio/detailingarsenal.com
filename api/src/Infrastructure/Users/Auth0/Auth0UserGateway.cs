@@ -106,11 +106,10 @@ namespace DetailingArsenal.Infrastructure.Users {
                 Connection = "email-pass-auth"
             });
 
-            var user = new Domain.Users.User() {
-                Id = Guid.NewGuid(),
-                Auth0Id = auth0User.UserId,
-                Email = auth0User.Email
-            };
+            var user = Domain.Users.User.Create(
+                auth0User.UserId,
+                auth0User.Email
+            );
 
             await userRepo.Add(user);
             // await eventBus.Dispatch(new NewUserEvent(user));

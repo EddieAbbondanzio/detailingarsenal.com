@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Users {
-    public interface IUserGateway : IService {
+    public interface IUserGateway : IGateway {
         Task<User?> GetUserByAuth0Id(string auth0Id);
         Task<User> GetOrCreateUserByAuth0Id(string auth0Id);
         Task<User?> GetUserById(Guid id);

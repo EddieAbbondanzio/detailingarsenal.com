@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain {
-    public interface IExternalCustomerGateway : IService {
+    public interface ICustomerGateway : IGateway {
         Task<ExternalCustomer> FindByExternalId(string externalId);
         Task<ExternalCustomer> Create(string email);
     }
