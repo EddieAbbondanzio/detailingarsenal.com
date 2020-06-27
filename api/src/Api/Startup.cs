@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using Dapper;
 using System.Text;
 using DetailingArsenal.Application;
-using DetailingArsenal.Infrastructure.Persistence;
+using DetailingArsenal.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +36,12 @@ using DetailingArsenal.Domain.Calendar;
 using DetailingArsenal.Domain.Users;
 using DetailingArsenal.Application.Common;
 using DetailingArsenal.Domain.Common;
+using DetailingArsenal.Persistence.Billing;
+using DetailingArsenal.Persistence.Security;
+using DetailingArsenal.Persistence.Settings;
+using DetailingArsenal.Persistence.Users;
+using DetailingArsenal.Persistence.Clients;
+using DetailingArsenal.Persistence.Calendar;
 
 namespace DetailingArsenal.Api {
     public class Startup {
