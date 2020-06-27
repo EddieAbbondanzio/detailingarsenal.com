@@ -3,14 +3,14 @@ using DetailingArsenal.Domain.Common;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Common {
-    public class SynchronizeHandler : ActionHandler<SynchronizeCommand> {
+    public class StartupHandler : ActionHandler<StartupCommand> {
         SynchronizationSaga saga;
 
-        public SynchronizeHandler(SynchronizationSaga saga) {
+        public StartupHandler(SynchronizationSaga saga) {
             this.saga = saga;
         }
 
-        public async override Task Execute(SynchronizeCommand input, User? user) {
+        public async override Task Execute(StartupCommand input, User? user) {
             await saga.Execute();
         }
     }

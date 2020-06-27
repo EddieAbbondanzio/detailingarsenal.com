@@ -7,8 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DetailingArsenal.Application {
     public interface IMediator {
-        Task Dispatch<TInput>(TInput input, string userId = "") where TInput : class, IAction;
-        Task<TOutput> Dispatch<TInput, TOutput>(TInput input, string userId = "") where TInput : class, IAction;
+        Task Dispatch<TInput>(TInput input, string? userId = null) where TInput : class, IAction;
+        Task<TOutput> Dispatch<TInput, TOutput>(TInput input, string? userId = null) where TInput : class, IAction;
     }
 
     /// <summary>
@@ -26,7 +26,7 @@ namespace DetailingArsenal.Application {
             userService = serviceProvider.GetRequiredService<IUserGateway>();
         }
 
-        public async Task Dispatch<TInput>(TInput input, string userId = "") where TInput : class, IAction {
+        public async Task Dispatch<TInput>(TInput input, string? userId = null) where TInput : class, IAction {
             ActionHandler<TInput> handler = serviceProvider.GetRequiredService<ActionHandler<TInput>>();
 
             var user = userId != null ? await userService.GetOrCreateUserByAuth0Id(userId) : null;
@@ -38,7 +38,7 @@ namespace DetailingArsenal.Application {
             await handler.Execute(input, user);
         }
 
-        public async Task<TOutput> Dispatch<TInput, TOutput>(TInput input, string userId = "") where TInput : class, IAction {
+        public async Task<TOutput> Dispatch<TInput, TOutput>(TInput input, string? userId = null) where TInput : class, IAction {
             ActionHandler<TInput, TOutput> handler = serviceProvider.GetRequiredService<ActionHandler<TInput, TOutput>>();
 
             var user = userId != null ? await userService.GetOrCreateUserByAuth0Id(userId) : null;

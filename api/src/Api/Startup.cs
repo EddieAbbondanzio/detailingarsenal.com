@@ -34,6 +34,8 @@ using DetailingArsenal.Application.Calendar;
 using DetailingArsenal.Application.Users;
 using DetailingArsenal.Domain.Calendar;
 using DetailingArsenal.Domain.Users;
+using DetailingArsenal.Application.Common;
+using DetailingArsenal.Domain.Common;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -86,7 +88,6 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionMiddleware, AuthorizationMiddleware>();
             services.AddTransient<ActionMiddleware, ValidationMiddleware>();
 
-
             // Mapping
             var mapperConfiguration = new MapperConfiguration(config => {
                 config.CreateMap<Client, ClientDto>();
@@ -105,6 +106,13 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<SubscriptionPlan, SubscriptionPlanDto>();
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
+
+            // Common
+            services.AddTransient<ActionHandler<StartupCommand>, StartupHandler>();
+            services.AddTransient<SynchronizationSaga>();
+            services.AddTransient<RunDatabaseMigrations>();
+            services.AddTransient<RefreshSubscriptionPlans>();
+            services.AddTransient<CreateOrUpdateAdmin>();
 
             // Email
             services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
