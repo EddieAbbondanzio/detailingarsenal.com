@@ -23,8 +23,6 @@ using DetailingArsenal.Infrastructure;
 using System.Text.Json.Serialization;
 using Npgsql.Logging;
 using Stripe;
-using DetailingArsenal.Domain.Core;
-using DetailingArsenal.Infrastructure.Core;
 using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Infrastructure.Users;

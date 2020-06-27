@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain.Core {
+namespace DetailingArsenal.Domain {
     public interface IDomainEventPublisher {
         Task Dispatch<TEvent>(TEvent domainEvent) where TEvent : class, IDomainEvent;
     }

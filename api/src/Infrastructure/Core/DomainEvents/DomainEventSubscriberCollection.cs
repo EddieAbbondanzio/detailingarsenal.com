@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using DetailingArsenal.Domain.Core;
+using DetailingArsenal.Domain;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DetailingArsenal.Infrastructure.Core {
+namespace DetailingArsenal.Infrastructure {
     public sealed class DomainEventSubscriberCollection : IDomainEventSubscriberCollection {
         private IServiceProvider serviceProvider;
 

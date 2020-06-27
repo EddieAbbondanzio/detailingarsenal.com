@@ -1,3 +1,3 @@
-namespace DetailingArsenal.Domain.Core {
+namespace DetailingArsenal.Domain {
     public interface IDomainEvent { }
 }

@@ -1,7 +1,7 @@
 
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain.Core {
+namespace DetailingArsenal.Domain {
     /// <summary>
     /// Subscriber that wants to listen for a particular domain event.
     /// </summary>
