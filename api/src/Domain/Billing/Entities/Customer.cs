@@ -1,18 +1,9 @@
 using System;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Billing {
     public class Customer : Aggregate<Customer>, IUserEntity {
         public Guid UserId { get; set; }
-        public ExternalCustomer External { get; set; } = null!;
-
-        public Customer() { }
-
-        public static Customer Create(Guid userId, ExternalCustomer external) {
-            return new Customer() {
-                Id = Guid.NewGuid(),
-                UserId = userId,
-                External = external
-            };
-        }
+        public string ExternalId { get; set; } = null!;
+        public Subscription Subscription { get; set; } = null!;
     }
 }

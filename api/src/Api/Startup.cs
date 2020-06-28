@@ -42,6 +42,9 @@ using DetailingArsenal.Persistence.Settings;
 using DetailingArsenal.Persistence.Users;
 using DetailingArsenal.Persistence.Clients;
 using DetailingArsenal.Persistence.Calendar;
+using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Application.Billing;
+using DetailingArsenal.Infrastructure.Billing;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -116,13 +119,13 @@ namespace DetailingArsenal.Api {
             // Common
             services.AddTransient<ActionHandler<StartupCommand>, StartupHandler>();
             services.AddTransient<SynchronizationSaga>();
-            services.AddTransient<RunDatabaseMigrations>();
-            services.AddTransient<RefreshSubscriptionPlans>();
-            services.AddTransient<CreateOrUpdateAdmin>();
+            services.AddTransient<RunDatabaseMigrationsStep>();
+            services.AddTransient<RefreshSubscriptionPlansStep>();
+            services.AddTransient<CreateOrUpdateAdminStep>();
 
-            services.AddTransient<NewUserSaga>();
-            services.AddTransient<CreateBusiness>();
-            services.AddTransient<CreateHoursOfOperation>();
+            services.AddTransient<NewUserInitializationSaga>();
+            services.AddTransient<CreateBusinessStep>();
+            services.AddTransient<CreateHoursOfOperationStep>();
 
             services.AddTransient<IUserResolver, UserResolver>();
 
@@ -139,10 +142,6 @@ namespace DetailingArsenal.Api {
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
-            services.AddTransient<ISubscriptionRepo, SubscriptionRepo>();
-            services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
-            services.AddTransient<ISubscriptionGateway, StripeSubscriptionGateway>();
-            services.AddTransient<IPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>, UpdateSubscriptionPlanHandler>();

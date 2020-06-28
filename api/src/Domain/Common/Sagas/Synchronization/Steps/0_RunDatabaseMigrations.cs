@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Common {
-    public class RunDatabaseMigrations : SagaStep {
+    public class RunDatabaseMigrationsStep : SagaStep {
         IDatabaseMigrationRunner migrationRunner;
 
-        public RunDatabaseMigrations(IDatabaseMigrationRunner migrationRunner) {
+        public RunDatabaseMigrationsStep(IDatabaseMigrationRunner migrationRunner) {
             this.migrationRunner = migrationRunner;
         }
 

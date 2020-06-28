@@ -1,9 +1,9 @@
 namespace DetailingArsenal.Domain.Common {
     public class SynchronizationSaga : Saga {
         public SynchronizationSaga(
-            RunDatabaseMigrations runDatabaseMigrations,
-            RefreshSubscriptionPlans refreshSubscriptionPlans,
-            CreateOrUpdateAdmin createOrUpdateAdmin
+            RunDatabaseMigrationsStep runDatabaseMigrations,
+            RefreshSubscriptionPlansStep refreshSubscriptionPlans,
+            CreateOrUpdateAdminStep createOrUpdateAdmin
             ) {
             Add(runDatabaseMigrations);
             Add(refreshSubscriptionPlans);

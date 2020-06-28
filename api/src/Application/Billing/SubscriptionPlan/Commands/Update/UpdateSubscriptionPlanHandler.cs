@@ -1,9 +1,10 @@
 
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Billing;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Billing {
     [Authorization(Scope = "subscription-plans", Action = "update")]
     public class UpdateSubscriptionPlanHandler : ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto> {
         private ISubscriptionPlanRepo repo;

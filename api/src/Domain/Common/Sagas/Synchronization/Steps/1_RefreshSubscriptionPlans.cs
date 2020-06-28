@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
+using DetailingArsenal.Domain.Billing;
 
 namespace DetailingArsenal.Domain.Common {
-    public class RefreshSubscriptionPlans : SagaStep {
+    public class RefreshSubscriptionPlansStep : SagaStep {
         ISubscriptionPlanService subscriptionPlanService;
 
-        public RefreshSubscriptionPlans(ISubscriptionPlanService subscriptionPlanService) {
+        public RefreshSubscriptionPlansStep(ISubscriptionPlanService subscriptionPlanService) {
             this.subscriptionPlanService = subscriptionPlanService;
         }
 

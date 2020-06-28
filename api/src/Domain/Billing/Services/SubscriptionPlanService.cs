@@ -4,57 +4,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Billing {
     public interface ISubscriptionPlanService : IService {
+        Task<SubscriptionPlan> GetTrialPlan();
         Task<List<SubscriptionPlan>> RefreshPlans();
     }
 
     public class SubscriptionPlanService : ISubscriptionPlanService {
-        private IPlanGateway infoGateway;
-        private ISubscriptionPlanRepo repo;
+        ISubscriptionPlanGateway gateway;
+        ISubscriptionConfig config;
+        SubscriptionPlan? trialPlan;
 
-        public SubscriptionPlanService(IPlanGateway infoGateway, ISubscriptionPlanRepo repo) {
-            this.infoGateway = infoGateway;
-            this.repo = repo;
+        public SubscriptionPlanService(ISubscriptionConfig config, ISubscriptionPlanGateway gateway) {
+            this.config = config;
+            this.gateway = gateway;
+        }
+
+        public async Task<SubscriptionPlan> GetTrialPlan() {
+            if (trialPlan == null) {
+                trialPlan = await gateway.GetByExternalId(config.DefaultPlan);
+            }
+
+            return trialPlan;
         }
 
         public async Task<List<SubscriptionPlan>> RefreshPlans() {
-            var planInfos = await infoGateway.GetAll();
-            var plans = new List<SubscriptionPlan>();
-
-            foreach (ExternalSubscriptionPlan info in planInfos) {
-                var plan = await repo.FindByExternalId(info.ExternalId);
-
-                if (plan == null) {
-                    plan = SubscriptionPlan.Create(
-                        info.Name,
-                        info.ExternalId,
-                        info.Prices.Select(
-                            p => SubscriptionPlanPrice.Create(
-                                p.ExternalId,
-                                p.Price,
-                                p.Interval
-                            )
-                        ).ToList()
-                    );
-
-                    await repo.Add(plan);
-                } else {
-                    plan.Prices = info.Prices.Select(
-                        p => SubscriptionPlanPrice.Create(
-                            p.ExternalId,
-                            p.Price,
-                            p.Interval
-                        )
-                    ).ToList();
-
-                    await repo.Update(plan);
-                }
-
-                plans.Add(plan);
-            }
-
-            return plans;
+            return await gateway.RefreshPlans();
         }
     }
 }

@@ -10,9 +10,9 @@ namespace DetailingArsenal.Application.Users {
 
     public class UserResolver : IUserResolver {
         IUserService userService;
-        NewUserSaga newUserSaga;
+        NewUserInitializationSaga newUserSaga;
 
-        public UserResolver(IUserService userService, NewUserSaga newUserSaga) {
+        public UserResolver(IUserService userService, NewUserInitializationSaga newUserSaga) {
             this.userService = userService;
             this.newUserSaga = newUserSaga;
         }

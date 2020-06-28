@@ -1,0 +1,3 @@
+namespace DetailingArsenal.Domain.Billing {
+    
+}

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Billing;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application {
+namespace DetailingArsenal.Application.Billing {
     [Authorization(Action = "read", Scope = "subscription-plans")]
     public class GetSubscriptionPlansHandler : ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>> {
         private ISubscriptionPlanRepo repo;

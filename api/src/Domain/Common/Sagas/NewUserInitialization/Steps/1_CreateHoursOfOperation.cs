@@ -4,10 +4,10 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Common {
-    public class CreateHoursOfOperation : SagaStep<User> {
+    public class CreateHoursOfOperationStep : SagaStep<User> {
         IHoursOfOperationService service;
 
-        public CreateHoursOfOperation(IHoursOfOperationService service) {
+        public CreateHoursOfOperationStep(IHoursOfOperationService service) {
             this.service = service;
         }
 

@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Billing {
     public interface ISubscriptionConfig {
         string SecretKey { get; set; }
         string DefaultPlan { get; set; }

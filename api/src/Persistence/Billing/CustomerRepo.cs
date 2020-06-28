@@ -2,16 +2,14 @@ using System;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Billing;
 
 namespace DetailingArsenal.Persistence.Billing {
     public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
-        private ICustomerGateway infoService;
-        public CustomerRepo(IDatabase database, ICustomerGateway infoService) : base(database) {
-            this.infoService = infoService;
-        }
+        public CustomerRepo(IDatabase database) : base(database) { }
 
         public async Task<Customer?> FindById(Guid id) {
-            var c = await Connection.QueryFirstOrDefaultAsync<CustomerModel>(
+            var c = await Connection.QueryFirstOrDefaultAsync<Customer>(
                 @"select * from customers where id = @Id;", new { Id = id }
             );
 
@@ -19,34 +17,59 @@ namespace DetailingArsenal.Persistence.Billing {
                 return null;
             }
 
-            var info = await infoService.FindByExternalId(c.ExternalId);
+            c.Subscription = await Connection.QueryFirstAsync<Subscription>(
+                @"select * from subscriptions where customer_id = @Id;",
+                c
+            );
 
-            return Map(c, info);
+            return c;
         }
 
         public async Task Add(Customer entity) {
-            entity.External = await infoService.Create(entity.External.Email);
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"insert into customers (id, user_id, external_id) values (@Id, @UserId, @ExternalId);",
+                    entity
+                );
 
-            await Connection.ExecuteAsync(
-                @"insert into customers (id, user_id, external_id) values (@Id, @UserId, @ExternalId);",
-                new CustomerModel() { Id = entity.Id, UserId = entity.UserId, ExternalId = entity.External.Id }
-            );
+                await Connection.ExecuteAsync(
+                    @"insert into subscriptions (id, customer_id, plan_id, external_id, status) values (@Id, @CustomerId, @PlanId, @ExternalId, @Status);",
+                    entity.Subscription
+                );
+
+                await t.CommitAsync();
+            }
         }
 
         public async Task Update(Customer entity) {
-            throw new NotImplementedException();
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"update customers set user_id = @UserId, external_id = @ExternalId where id = @Id;",
+                    entity
+                );
+
+                await Connection.ExecuteAsync(
+                    @"update subscriptions set customer_id = @CustomerId, plan_id = @PlanId, external_id = @ExternalId, status = @Status where id = @Id;",
+                    entity.Subscription
+                );
+
+                await t.CommitAsync();
+            }
         }
 
         public async Task Delete(Customer entity) {
-            throw new NotImplementedException();
-        }
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"delete from subscriptions where customer_id = @Id;",
+                    entity
+                );
 
-        private Customer Map(CustomerModel model, ExternalCustomer info) {
-            return new Customer() {
-                Id = model.Id,
-                UserId = model.UserId,
-                External = info
-            };
+                await Connection.ExecuteAsync(
+                    @"delete from customer where id = @Id",
+                    entity
+                );
+                await t.CommitAsync();
+            }
         }
     }
 }

@@ -3,10 +3,10 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Common {
-    public class CreateBusiness : SagaStep<User> {
+    public class CreateBusinessStep : SagaStep<User> {
         IBusinessService service;
 
-        public CreateBusiness(IBusinessService service) {
+        public CreateBusinessStep(IBusinessService service) {
             this.service = service;
         }
 

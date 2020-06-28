@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal.Domain.Billing {
     public class SubscriptionPlanPrice : Entity<SubscriptionPlanPrice> {
         public decimal Price { get; set; }
         public string Interval { get; set; } = null!;

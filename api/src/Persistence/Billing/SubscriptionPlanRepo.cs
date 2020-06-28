@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Billing;
 
 namespace DetailingArsenal.Persistence.Billing {
     public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {

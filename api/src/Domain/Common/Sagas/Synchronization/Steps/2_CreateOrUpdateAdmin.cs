@@ -4,12 +4,12 @@ using DetailingArsenal.Domain.Users;
 using Serilog;
 
 namespace DetailingArsenal.Domain.Common {
-    public class CreateOrUpdateAdmin : SagaStep {
+    public class CreateOrUpdateAdminStep : SagaStep {
         AdminConfig config;
         IUserService userService;
         IRoleRepo roleRepo;
 
-        public CreateOrUpdateAdmin(AdminConfig config, IUserService userService, IRoleRepo roleRepo) {
+        public CreateOrUpdateAdminStep(AdminConfig config, IUserService userService, IRoleRepo roleRepo) {
             this.config = config;
             this.userService = userService;
             this.roleRepo = roleRepo;
