@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Infrastructure {
-    public class StripeSubscriptionGateway : IExternalSubscriptionGateway {
+    public class StripeSubscriptionGateway : ISubscriptionGateway {
         private ISubscriptionConfig config;
         private Stripe.SubscriptionService service;
         private ISubscriptionPlanRepo planRepo;

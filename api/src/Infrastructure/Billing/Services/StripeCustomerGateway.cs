@@ -4,7 +4,7 @@ using DetailingArsenal.Domain;
 using Stripe;
 
 namespace DetailingArsenal.Infrastructure {
-    public class StripeCustomerGateway : IExternalCustomerGateway {
+    public class StripeCustomerGateway : ICustomerGateway {
         Stripe.CustomerService customerService;
 
         public StripeCustomerGateway() {

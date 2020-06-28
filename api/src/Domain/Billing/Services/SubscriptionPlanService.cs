@@ -10,10 +10,10 @@ namespace DetailingArsenal.Domain {
     }
 
     public class SubscriptionPlanService : ISubscriptionPlanService {
-        private IExternalSubscriptionPlanGateway infoGateway;
+        private IPlanGateway infoGateway;
         private ISubscriptionPlanRepo repo;
 
-        public SubscriptionPlanService(IExternalSubscriptionPlanGateway infoGateway, ISubscriptionPlanRepo repo) {
+        public SubscriptionPlanService(IPlanGateway infoGateway, ISubscriptionPlanRepo repo) {
             this.infoGateway = infoGateway;
             this.repo = repo;
         }

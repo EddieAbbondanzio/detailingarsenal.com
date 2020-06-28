@@ -9,6 +9,7 @@ namespace DetailingArsenal.Domain.Settings {
         Task<HoursOfOperation> GetById(Guid id);
         Task<HoursOfOperation> CreateDefault(User user);
         Task Update(HoursOfOperation hours, UpdateHoursOfOperation update);
+        Task Delete(HoursOfOperation hours);
     }
 
     public class HoursOfOperationService : IHoursOfOperationService {
@@ -59,5 +60,6 @@ namespace DetailingArsenal.Domain.Settings {
             await repo.Update(hours);
         }
 
+        public async Task Delete(HoursOfOperation hours) => await repo.Delete(hours);
     }
 }

@@ -6,7 +6,7 @@ using DetailingArsenal.Domain;
 using Stripe;
 
 namespace DetailingArsenal.Infrastructure {
-    public class StripeSubscriptionPlanGateway : IExternalSubscriptionPlanGateway {
+    public class StripeSubscriptionPlanGateway : IPlanGateway {
         private Stripe.ProductService productService;
         private Stripe.PriceService priceService;
 

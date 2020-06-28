@@ -8,6 +8,7 @@ namespace DetailingArsenal.Domain.Settings {
         Task<Business> GetByUser(User user);
         Task<Business> CreateDefault(User user);
         Task Update(Business business, UpdateBusiness update);
+        Task Delete(Business business);
     }
 
     public class BusinessService : IBusinessService {
@@ -38,6 +39,10 @@ namespace DetailingArsenal.Domain.Settings {
             business.Phone = update.Phone;
 
             await repo.Update(business);
+        }
+
+        public async Task Delete(Business business) {
+            await repo.Delete(business);
         }
     }
 }

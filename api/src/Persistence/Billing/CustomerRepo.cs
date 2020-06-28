@@ -5,8 +5,8 @@ using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Persistence.Billing {
     public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
-        private IExternalCustomerGateway infoService;
-        public CustomerRepo(IDatabase database, IExternalCustomerGateway infoService) : base(database) {
+        private ICustomerGateway infoService;
+        public CustomerRepo(IDatabase database, ICustomerGateway infoService) : base(database) {
             this.infoService = infoService;
         }
 

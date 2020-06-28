@@ -120,6 +120,16 @@ namespace DetailingArsenal.Api {
             services.AddTransient<RefreshSubscriptionPlans>();
             services.AddTransient<CreateOrUpdateAdmin>();
 
+            services.AddTransient<NewUserSaga>();
+            services.AddTransient<CreateBusiness>();
+            services.AddTransient<CreateHoursOfOperation>();
+
+            services.AddTransient<IUserResolver, UserResolver>();
+
+            if (environment.IsProduction()) {
+                services.AddTransient<IDomainEventSubscriber<NewUserCreatedEvent>, EmailEdOnNewUser>();
+            }
+
             // Email
             services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
             services.AddTransient<IEmailClient, SmtpEmailClient>();
@@ -130,9 +140,9 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ISubscriptionRepo, SubscriptionRepo>();
-            services.AddTransient<IExternalCustomerGateway, StripeCustomerGateway>();
-            services.AddTransient<IExternalSubscriptionGateway, StripeSubscriptionGateway>();
-            services.AddTransient<IExternalSubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
+            services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
+            services.AddTransient<ISubscriptionGateway, StripeSubscriptionGateway>();
+            services.AddTransient<IPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>, UpdateSubscriptionPlanHandler>();
@@ -171,6 +181,7 @@ namespace DetailingArsenal.Api {
             // User
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<ActionHandler<UpdateUserCommand, UserDto>, UpdateUserHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserDto>, GetUserByAuth0IdHandler>();
 
