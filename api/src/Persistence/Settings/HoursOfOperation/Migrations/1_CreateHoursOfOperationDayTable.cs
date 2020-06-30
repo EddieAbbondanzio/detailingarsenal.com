@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistance.Settings.Migrations {
+namespace DetailingArsenal.Persistence.Settings.Migrations {
     [Migration(2020_03_20_1, "Create hours_of_operation_days table")]
     public class CreateHoursOfOperationDayTable : Migration {
         public override void Up() {

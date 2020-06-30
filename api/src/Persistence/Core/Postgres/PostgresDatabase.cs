@@ -5,7 +5,7 @@ using Npgsql;
 
 namespace DetailingArsenal.Persistence {
     /// <summary>
-    /// A database for data persistance that runs PostgreSQL.
+    /// A database for data persistence that runs PostgreSQL.
     /// </summary>
     public sealed class PostgresDatabase : Database {
         /// <summary>

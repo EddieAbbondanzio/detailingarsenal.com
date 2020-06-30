@@ -67,7 +67,7 @@ namespace DetailingArsenal.Api {
             services.AddCors();
 
             // Core
-            services.AddSingleton<DomainEventPublisher>();
+            services.AddSingleton<IDomainEventPublisher, DomainEventPublisher>();
             services.AddSingleton<IDomainEventSubscriberCollection, DomainEventSubscriberCollection>();
 
             // Auth0
@@ -140,7 +140,6 @@ namespace DetailingArsenal.Api {
             // Billing
             var stripeConfig = services.AddConfig<ISubscriptionConfig, StripeConfig>(Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
-            services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();

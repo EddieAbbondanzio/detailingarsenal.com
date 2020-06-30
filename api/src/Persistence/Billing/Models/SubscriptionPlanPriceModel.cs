@@ -1,9 +1,10 @@
 using System;
+using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Persistence.Billing {
-    public class SubscriptionPlanPriceModel {
+    public class SubscriptionPlanPriceModel : IDataTransferObject {
         public Guid Id { get; set; }
-        public string ExternalId { get; set; } = null!;
+        public Guid BillingReferenceId { get; set; }
         public Guid PlanId { get; set; }
         public decimal Price { get; set; }
         public string Interval { get; set; } = null!;

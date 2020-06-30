@@ -4,7 +4,7 @@ using System.Data.Common;
 
 namespace DetailingArsenal.Persistence {
     /// <summary>
-    /// Database for data persistance.
+    /// Database for data persistence.
     /// </summary>
     public interface IDatabase {
         /// <summary>
