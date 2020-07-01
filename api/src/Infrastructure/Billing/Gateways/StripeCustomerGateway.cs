@@ -7,10 +7,12 @@ namespace DetailingArsenal.Infrastructure.Billing {
     public class StripeCustomerGateway : ICustomerGateway {
         Stripe.CustomerService customerService;
         Stripe.SubscriptionService subscriptionService;
+        ISubscriptionConfig config;
 
-        public StripeCustomerGateway() {
+        public StripeCustomerGateway(ISubscriptionConfig config) {
             customerService = new Stripe.CustomerService();
             subscriptionService = new Stripe.SubscriptionService();
+            this.config = config;
         }
 
         public async Task<Customer> CreateTrialCustomer(User user, SubscriptionPlan trialPlan) {
@@ -22,9 +24,10 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 Customer = customer.Id,
                 Items = new List<Stripe.SubscriptionItemOptions> {
                     new Stripe.SubscriptionItemOptions {
-                        Price = trialPlan.Prices.Find(p => p.Interval == "year")!.BillingReference.BillingId
+                        Price = trialPlan.Prices.Find(p => p.BillingReference.BillingId == config.DefaultPrice)!.BillingReference.BillingId
                     }
-                }
+                },
+                TrialPeriodDays = config.TrialPeriod
             });
 
             return Customer.Create(

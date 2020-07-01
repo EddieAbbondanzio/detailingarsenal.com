@@ -60,8 +60,9 @@ namespace DetailingArsenal.Persistence.Billing {
                     join billing_references br on sp.billing_reference_id = br.id
                     where br.billing_id = @BillingId;
 
-                  select spp.*, br2.* from subscription_plan_prices spp
+                  select spp.*, br1.* from subscription_plan_prices spp
                     join subscription_plans sp on spp.plan_id = sp.id
+                    join billing_references br1 on spp.billing_reference_id = br1.id
                     join billing_references br2 on sp.billing_reference_id = br2.id
                     where br2.billing_id = @BillingId;        
                 ",
