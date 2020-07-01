@@ -13,8 +13,8 @@ namespace DetailingArsenal.Domain.Common {
             await subscriptionPlanService.RefreshPlans();
         }
 
-        public override Task Compensate() {
-            throw new System.NotImplementedException();
+        public async override Task Compensate() {
+            // throw new System.NotImplementedException();
         }
     }
 }

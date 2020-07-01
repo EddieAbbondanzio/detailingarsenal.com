@@ -154,7 +154,8 @@ namespace DetailingArsenal.Persistence.Billing {
 
                 await Connection.ExecuteAsync(
                     @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                    planBillingRef
+                    planBillingRef,
+                    t
                 );
 
                 // insert plan
@@ -165,11 +166,14 @@ namespace DetailingArsenal.Persistence.Billing {
                         Name = entity.Name,
                         BillingReferenceId = planBillingRef.Id,
                         RoleId = entity.RoleId
-                    }
+                    },
+                    t
                 );
 
-                // insert price billing refs
-                var priceModels = entity.Prices.Select(p => {
+                var prices = new List<SubscriptionPlanPriceModel>();
+                var billingReferences = new List<BillingReferenceModel>();
+
+                foreach (var p in entity.Prices) {
                     var billingRefModel = new BillingReferenceModel() {
                         Id = Guid.NewGuid(),
                         BillingId = p.BillingReference.BillingId,
@@ -180,21 +184,26 @@ namespace DetailingArsenal.Persistence.Billing {
                         Id = Guid.NewGuid(),
                         Interval = p.Interval,
                         Price = p.Price,
+                        PlanId = entity.Id,
                         BillingReferenceId = billingRefModel.Id
                     };
 
-                    return Tuple.Create(priceModel, billingRefModel);
-                });
+                    prices.Add(priceModel);
+                    billingReferences.Add(billingRefModel);
+                }
+
 
                 await Connection.ExecuteAsync(
                     @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                    priceModels.Select(p => p.Item2).ToList()
+                    billingReferences,
+                    t
                 );
 
                 // insert price s
                 await Connection.ExecuteAsync(
                     @"insert into subscription_plan_prices (id, plan_id, billing_reference_id, interval, price) values (@Id, @PlanId, @BillingReferenceId, @Interval, @Price);",
-                    priceModels.Select(p => p.Item1).ToList()
+                    prices,
+                    t
                 );
 
                 t.Commit();
@@ -221,25 +230,28 @@ namespace DetailingArsenal.Persistence.Billing {
         public async Task Delete(SubscriptionPlan entity) {
             using (var t = Connection.BeginTransaction()) {
                 await Connection.ExecuteAsync(
-                    @"delete from billing_references where billing_id = @BillingId;",
-                    entity.BillingReference
-                );
-
-                await Connection.ExecuteAsync(
-                    @"delete from billing_references where billing_id = @BillingId;",
-                    entity.Prices.Select(p => p.BillingReference).ToList()
-                );
-
-                await Connection.ExecuteAsync(
                     @"delete from subscription_plan_prices where plan_id = @Id;",
-                    entity
+                    entity,
+                    t
                 );
 
                 await Connection.ExecuteAsync(
                     @"delete from subscription_plans where id = @Id;",
-                    entity
+                    entity,
+                    t
                 );
 
+                await Connection.ExecuteAsync(
+                    @"delete from billing_references where billing_id = @BillingId;",
+                    entity.BillingReference,
+                    t
+                );
+
+                await Connection.ExecuteAsync(
+                    @"delete from billing_references where billing_id = @BillingId;",
+                    entity.Prices.Select(p => p.BillingReference).ToList(),
+                    t
+                );
                 t.Commit();
             }
         }

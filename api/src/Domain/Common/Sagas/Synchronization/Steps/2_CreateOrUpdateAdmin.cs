@@ -31,8 +31,10 @@ namespace DetailingArsenal.Domain.Common {
             }
         }
 
-        public override Task Compensate() {
-            throw new System.NotImplementedException();
+#pragma warning disable 1998
+        public async override Task Compensate() {
+            // throw new System.NotImplementedException();
         }
+#pragma warning restore 1998
     }
 }

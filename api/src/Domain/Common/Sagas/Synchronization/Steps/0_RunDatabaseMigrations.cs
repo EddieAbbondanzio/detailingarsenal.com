@@ -13,7 +13,7 @@ namespace DetailingArsenal.Domain.Common {
         }
 
         public async override Task Compensate() {
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace DetailingArsenal.Domain.Common {
         }
 
         public async override Task Compensate(User user) {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
     }
 }

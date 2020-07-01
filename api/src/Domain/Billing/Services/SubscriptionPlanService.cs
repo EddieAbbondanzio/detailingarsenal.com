@@ -18,8 +18,8 @@ namespace DetailingArsenal.Domain.Billing {
         ISubscriptionPlanRepo repo;
         ISubscriptionConfig config;
 
-        public SubscriptionPlanService(ISubscriptionPlanRepo repo, ISubscriptionConfig config) {
-            // this.gateway = gateway;
+        public SubscriptionPlanService(ISubscriptionPlanGateway gateway, ISubscriptionPlanRepo repo, ISubscriptionConfig config) {
+            this.gateway = gateway;
             this.repo = repo;
             this.config = config;
         }

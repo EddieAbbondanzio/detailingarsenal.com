@@ -7,7 +7,7 @@ namespace DetailingArsenal.Persistence.Billing.Migrations {
             Create.Table("billing_references")
             .WithColumn("id").AsGuid().PrimaryKey()
             .WithColumn("billing_id").AsString(255)
-            .WithColumn("type").AsString(54);
+            .WithColumn("type").AsByte();
         }
 
         public override void Down() {
