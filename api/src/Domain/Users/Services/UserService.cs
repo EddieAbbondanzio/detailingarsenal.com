@@ -8,7 +8,7 @@ namespace DetailingArsenal.Domain.Users {
         Task<User?> TryGetUserByEmail(string email);
         Task<User?> TryGetUserByAuth0Id(string auth0Id);
         Task<User> CreateUser(string auth0Id);
-        Task<User> CreateUser(string email, string password);
+        Task<User> CreateAdminUser(string email, string password);
         Task UpdatePassword(User user, string newPassword);
     }
 
@@ -62,9 +62,11 @@ namespace DetailingArsenal.Domain.Users {
             return newUser;
         }
 
-        public async Task<User> CreateUser(string email, string password) {
+        public async Task<User> CreateAdminUser(string email, string password) {
             var user = await userGateway.CreateUser(email, password);
             await userRepo.Add(user);
+
+            // Don't trigger new user event, since this SHOULD be used for admin only.
 
             return user;
         }

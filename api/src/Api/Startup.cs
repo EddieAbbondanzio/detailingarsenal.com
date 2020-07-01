@@ -126,6 +126,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<NewUserInitializationSaga>();
             services.AddTransient<CreateBusinessStep>();
             services.AddTransient<CreateHoursOfOperationStep>();
+            services.AddTransient<CreateTrialCustomerStep>();
 
             services.AddTransient<IUserResolver, UserResolver>();
 

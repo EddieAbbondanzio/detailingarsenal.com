@@ -21,7 +21,7 @@ namespace DetailingArsenal.Tests.Domain.Users {
                 eventPublisher
             );
 
-            await service.CreateUser(
+            await service.CreateAdminUser(
                 "fake@mail.com",
                 "password"
             );

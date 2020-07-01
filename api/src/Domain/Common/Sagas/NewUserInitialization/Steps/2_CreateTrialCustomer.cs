@@ -4,11 +4,11 @@ using DetailingArsenal.Domain.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Common {
-    public class CreateCustomerAndStartSubscriptionStep : SagaStep<User> {
+    public class CreateTrialCustomerStep : SagaStep<User> {
         ICustomerService customerService;
         ISubscriptionPlanService subscriptionPlanService;
 
-        public CreateCustomerAndStartSubscriptionStep(ICustomerService customerService, ISubscriptionPlanService subscriptionPlanService) {
+        public CreateTrialCustomerStep(ICustomerService customerService, ISubscriptionPlanService subscriptionPlanService) {
             this.customerService = customerService;
             this.subscriptionPlanService = subscriptionPlanService;
         }

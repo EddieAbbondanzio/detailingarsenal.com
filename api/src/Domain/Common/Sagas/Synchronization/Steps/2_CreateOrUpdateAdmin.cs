@@ -22,7 +22,7 @@ namespace DetailingArsenal.Domain.Common {
                 await userService.UpdatePassword(user, config.Password);
                 Log.Information("Updated admin password");
             } else {
-                user = await userService.CreateUser(config.Email, config.Password);
+                user = await userService.CreateAdminUser(config.Email, config.Password);
 
                 var adminRole = await roleRepo.Find("Admin");
                 await roleRepo.AddToUser(user, adminRole!);
