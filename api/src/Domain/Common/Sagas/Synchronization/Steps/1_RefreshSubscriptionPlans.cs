@@ -13,8 +13,10 @@ namespace DetailingArsenal.Domain.Common {
             await subscriptionPlanService.RefreshPlans();
         }
 
+#pragma warning disable 1998
         public async override Task Compensate() {
             // throw new System.NotImplementedException();
         }
+#pragma warning restore 1998
     }
 }

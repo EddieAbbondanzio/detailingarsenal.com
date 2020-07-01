@@ -1,6 +1,6 @@
 namespace DetailingArsenal.Domain.Billing {
     public enum BillingReferenceType {
-        Product,
-        Price
+        Product = 0,
+        Price = 1
     }
 }

@@ -255,5 +255,27 @@ namespace DetailingArsenal.Persistence.Billing {
                 t.Commit();
             }
         }
+
+        public async Task DeleteAll() {
+            using (var t = Connection.BeginTransaction()) {
+                await Connection.ExecuteAsync(
+                    @"delete from subscription_plan_prices;"
+                );
+
+                await Connection.ExecuteAsync(
+                    @"delete from subscription_plans;"
+                );
+
+                await Connection.ExecuteAsync(
+                    @"delete from billing_references where type in (0, 1);"
+                );
+
+                await Connection.ExecuteAsync(
+                    @"delete from billing_references;"
+                );
+
+                t.Commit();
+            }
+        }
     }
 }

@@ -45,8 +45,9 @@ namespace DetailingArsenal.Domain.Billing {
         public async Task<List<SubscriptionPlan>> RefreshPlans() {
             var plans = await gateway.GetAll();
 
+            await repo.DeleteAll();
+
             foreach (var plan in plans) {
-                await repo.Delete(plan);
                 await repo.Add(plan);
             }
 
