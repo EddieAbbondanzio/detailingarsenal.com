@@ -1,8 +1,9 @@
 using System;
 using Auth0.AuthenticationApi.Models;
+using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Infrastructure.Users {
-    public class Auth0ApiToken {
+    public class Auth0ApiToken : IDataTransferObject {
         public string AccessToken { get; }
         public string RefreshToken { get; }
         public DateTime Expiration { get; }

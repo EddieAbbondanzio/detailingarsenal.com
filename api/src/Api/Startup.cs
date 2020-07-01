@@ -141,6 +141,7 @@ namespace DetailingArsenal.Api {
             var stripeConfig = services.AddConfig<ISubscriptionConfig, StripeConfig>(Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
+            services.AddTransient<ICustomerService, Domain.Billing.CustomerService>();
             services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();

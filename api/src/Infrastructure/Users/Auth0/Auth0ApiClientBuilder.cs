@@ -6,6 +6,12 @@ using Auth0.ManagementApi;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Infrastructure.Users {
+    public interface IAuth0ApiClientBuilder {
+
+        Task<AuthenticationApiClient> GetAuthenticationApiClient();
+        Task<ManagementApiClient> GetManagementApiClient();
+    }
+
     public class Auth0ApiClientBuilder : IAuth0ApiClientBuilder {
         private Auth0Config config;
 

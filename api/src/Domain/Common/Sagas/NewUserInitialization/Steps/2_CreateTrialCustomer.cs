@@ -6,13 +6,16 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Domain.Common {
     public class CreateCustomerAndStartSubscriptionStep : SagaStep<User> {
         ICustomerService customerService;
+        ISubscriptionPlanService subscriptionPlanService;
 
-        public CreateCustomerAndStartSubscriptionStep(ICustomerService customerService) {
+        public CreateCustomerAndStartSubscriptionStep(ICustomerService customerService, ISubscriptionPlanService subscriptionPlanService) {
             this.customerService = customerService;
+            this.subscriptionPlanService = subscriptionPlanService;
         }
 
         public override async Task Execute(User user) {
-            await customerService.CreateTrialCustomer(user);
+            var trialPlan = await subscriptionPlanService.GetTrialPlan();
+            await customerService.CreateTrialCustomer(user, trialPlan);
         }
 
         public async override Task Compensate(User user) {
