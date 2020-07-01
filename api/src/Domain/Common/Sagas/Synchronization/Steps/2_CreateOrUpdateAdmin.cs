@@ -16,7 +16,7 @@ namespace DetailingArsenal.Domain.Common {
         }
 
         public async override Task Execute() {
-            var user = await userService.GetUserByEmail(config.Email);
+            var user = await userService.TryGetUserByEmail(config.Email);
 
             if (user != null) {
                 await userService.UpdatePassword(user, config.Password);

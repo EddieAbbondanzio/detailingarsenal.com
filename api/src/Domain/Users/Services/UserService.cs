@@ -5,6 +5,7 @@ namespace DetailingArsenal.Domain.Users {
     public interface IUserService : IService {
         Task<User> GetUserById(Guid id);
         Task<User> GetUserByEmail(string email);
+        Task<User?> TryGetUserByEmail(string email);
         Task<User?> TryGetUserByAuth0Id(string auth0Id);
         Task<User> CreateUser(string auth0Id);
         Task<User> CreateUser(string email, string password);
@@ -29,6 +30,11 @@ namespace DetailingArsenal.Domain.Users {
         public async Task<User> GetUserByEmail(string email) {
             return await userRepo.FindByEmail(email) ?? throw new EntityNotFoundException();
         }
+
+        public async Task<User?> TryGetUserByEmail(string email) {
+            return await userRepo.FindByEmail(email);
+        }
+
 
         public async Task<User?> TryGetUserByAuth0Id(string auth0Id) {
             return await userRepo.FindByAuth0Id(auth0Id);
