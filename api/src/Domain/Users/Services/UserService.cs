@@ -63,7 +63,10 @@ namespace DetailingArsenal.Domain.Users {
         }
 
         public async Task<User> CreateUser(string email, string password) {
-            return await userGateway.CreateUser(email, password);
+            var user = await userGateway.CreateUser(email, password);
+            await userRepo.Add(user);
+
+            return user;
         }
 
         public async Task UpdatePassword(User user, string newPassword) {
