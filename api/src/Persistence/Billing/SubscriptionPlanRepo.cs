@@ -222,6 +222,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 );
 
                 // TODO: Implement update for prices
+                Console.WriteLine("SubscriptionPlanRepo.Update(): Hey bud, you never finished implementing this function.");
 
                 t.Commit();
             }

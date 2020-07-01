@@ -1,7 +1,7 @@
 using System;
 
 namespace DetailingArsenal.Domain.Billing {
-    public class Subscription : Entity<Subscription> {
+    public class Subscription : Entity<Subscription>, IBillingEntity {
         public Guid PlanId { get; set; }
         public string Status { get; set; } = null!;
         public BillingReference BillingReference { get; set; } = null!;
