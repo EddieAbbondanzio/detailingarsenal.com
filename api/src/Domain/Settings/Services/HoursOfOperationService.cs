@@ -51,7 +51,6 @@ namespace DetailingArsenal.Domain.Settings {
 
         public async Task Update(HoursOfOperation hours, UpdateHoursOfOperation update) {
             hours.Days = update.Days.Select(d => HoursOfOperationDay.Create(
-                hours.Id,
                 d.Day,
                 d.Open,
                 d.Open,

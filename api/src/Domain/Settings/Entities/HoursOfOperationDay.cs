@@ -2,7 +2,6 @@ using System;
 
 namespace DetailingArsenal.Domain.Settings {
     public class HoursOfOperationDay : Entity<HoursOfOperationDay> {
-        public Guid HoursOfOperationId { get; set; } = Guid.Empty;
         public int Day { get; set; }
         public int Open {
             get => open;
@@ -29,10 +28,9 @@ namespace DetailingArsenal.Domain.Settings {
         private int open;
         private int close;
 
-        public static HoursOfOperationDay Create(Guid hoursOfOperationId, int day, int open, int close, bool enabled = true) {
+        public static HoursOfOperationDay Create(int day, int open, int close, bool enabled = true) {
             return new HoursOfOperationDay() {
                 Id = Guid.NewGuid(),
-                HoursOfOperationId = hoursOfOperationId,
                 Day = day,
                 Open = open,
                 Close = close,

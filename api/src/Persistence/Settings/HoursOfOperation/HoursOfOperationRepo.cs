@@ -50,9 +50,18 @@ namespace DetailingArsenal.Persistence.Settings {
                     entity
                 );
 
+                var days = entity.Days.Select(d => new HoursOfOperationDayModel {
+                    Id = d.Id,
+                    HoursOfOperationId = entity.Id,
+                    Day = d.Day,
+                    Open = d.Day,
+                    Close = d.Close,
+                    Enabled = d.Enabled
+                });
+
                 await Connection.ExecuteAsync(
                     @"insert into hours_of_operation_days (id, hours_of_operation_id, day, open, close, enabled) values (@Id, @HoursOfOperationId, @Day, @Open, @Close, @Enabled);",
-                    entity.Days
+                    days
                 );
 
                 t.Commit();
@@ -71,9 +80,18 @@ namespace DetailingArsenal.Persistence.Settings {
                     entity
                 );
 
+                var days = entity.Days.Select(d => new HoursOfOperationDayModel {
+                    Id = d.Id,
+                    HoursOfOperationId = entity.Id,
+                    Day = d.Day,
+                    Open = d.Day,
+                    Close = d.Close,
+                    Enabled = d.Enabled
+                });
+
                 await Connection.ExecuteAsync(
                     @"insert into hours_of_operation_days (id, hours_of_operation_id, day, open, close, enabled) values (@Id, @HoursOfOperationId, @Day, @Open, @Close, @Enabled);",
-                    entity.Days
+                    days
                 );
 
                 t.Commit();
