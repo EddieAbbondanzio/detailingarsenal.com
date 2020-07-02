@@ -8,7 +8,20 @@
             >Detailing Arsenal</h1>
             <p class="has-text-white">Thanks for using Detailing Arsenal! See you soon.</p>
 
-            <b-button class="has-margin-top-3" type="is-white" outlined @click="onLogIn">Log in</b-button>
+            <div class="is-flex is-flex-row has-margin-top-3">
+                <b-button
+                    class="has-margin-right-1"
+                    type="is-white"
+                    outlined
+                    @click="onLogIn"
+                >Log in</b-button>
+                <b-button
+                    class="has-margin-left-1"
+                    type="is-white"
+                    outlined
+                    @click="onLogIn"
+                >Sign up</b-button>
+            </div>
         </div>
     </div>
 </template>
