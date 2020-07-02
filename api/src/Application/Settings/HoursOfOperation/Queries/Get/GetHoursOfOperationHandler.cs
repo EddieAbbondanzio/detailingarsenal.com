@@ -15,7 +15,7 @@ namespace DetailingArsenal.Application.Settings {
         }
 
         public async override Task<HoursOfOperationDto> Execute(GetHoursOfOperationQuery query, User? user) {
-            var hours = await service.GetByUser(user!);
+            var hours = await service.GetOrCreateForUser(user!);
             return mapper.Map<HoursOfOperation, HoursOfOperationDto>(hours);
         }
     }

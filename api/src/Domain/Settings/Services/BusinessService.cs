@@ -6,6 +6,7 @@ namespace DetailingArsenal.Domain.Settings {
     public interface IBusinessService : IService {
         Task<Business> GetById(Guid id);
         Task<Business> GetByUser(User user);
+        Task<Business> GetOrCreateForUser(User user);
         Task<Business> CreateDefault(User user);
         Task Update(Business business, UpdateBusiness update);
         Task Delete(Business business);
@@ -24,6 +25,17 @@ namespace DetailingArsenal.Domain.Settings {
 
         public async Task<Business> GetByUser(User user) {
             return await repo.FindByUser(user) ?? throw new EntityNotFoundException();
+        }
+
+        public async Task<Business> GetOrCreateForUser(User user) {
+            var b = await repo.FindByUser(user);
+
+            if (b == null) {
+                b = Business.Create(user.Id);
+                await repo.Add(b);
+            }
+
+            return b;
         }
 
         public async Task<Business> CreateDefault(User user) {

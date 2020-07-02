@@ -16,7 +16,7 @@ namespace DetailingArsenal.Application.Settings {
         }
 
         public async override Task<BusinessDto> Execute(GetBusinessQuery query, User? user) {
-            var b = await service.GetByUser(user!);
+            var b = await service.GetOrCreateForUser(user!);
             return mapper.Map<Business, BusinessDto>(b);
         }
     }

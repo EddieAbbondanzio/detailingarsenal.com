@@ -7,6 +7,7 @@ namespace DetailingArsenal.Domain.Settings {
     public interface IHoursOfOperationService : IService {
         Task<HoursOfOperation> GetByUser(User user);
         Task<HoursOfOperation> GetById(Guid id);
+        Task<HoursOfOperation> GetOrCreateForUser(User user);
         Task<HoursOfOperation> CreateDefault(User user);
         Task Update(HoursOfOperation hours, UpdateHoursOfOperation update);
         Task Delete(HoursOfOperation hours);
@@ -27,22 +28,22 @@ namespace DetailingArsenal.Domain.Settings {
             return await repo.FindById(id) ?? throw new EntityNotFoundException();
         }
 
+        public async Task<HoursOfOperation> GetOrCreateForUser(User user) {
+            var hours = await repo.FindForUser(user);
+
+            if (hours == null) {
+                hours = HoursOfOperation.Create(user.Id);
+                await repo.Add(hours);
+            }
+
+            return hours;
+        }
+
+
         public async Task<HoursOfOperation> CreateDefault(User user) {
             var hours = HoursOfOperation.Create(
                 user.Id
             );
-
-            // Default to Mon - Fri 8AM to 5PM
-            for (int d = 1; d <= 6; d++) {
-                hours.Days.Add(
-                    HoursOfOperationDay.Create(
-                        hours.Id,
-                        d,
-                        8 * 60,
-                        17 * 60
-                    )
-                );
-            }
 
             await repo.Add(hours);
             return hours;
