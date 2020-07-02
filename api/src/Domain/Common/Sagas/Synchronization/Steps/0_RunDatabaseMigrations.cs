@@ -8,12 +8,10 @@ namespace DetailingArsenal.Domain.Common {
             this.migrationRunner = migrationRunner;
         }
 
+#pragma warning disable 1998
         public async override Task Execute() {
             migrationRunner.MigrateUp();
         }
-
-        public async override Task Compensate() {
-            // throw new System.NotImplementedException();
-        }
+#pragma warning restore 1998
     }
 }

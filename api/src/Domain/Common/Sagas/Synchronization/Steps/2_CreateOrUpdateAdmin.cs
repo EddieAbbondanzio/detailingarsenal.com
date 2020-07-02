@@ -30,11 +30,5 @@ namespace DetailingArsenal.Domain.Common {
                 Log.Information("Created new admin user");
             }
         }
-
-#pragma warning disable 1998
-        public async override Task Compensate() {
-            // throw new System.NotImplementedException();
-        }
-#pragma warning restore 1998
     }
 }
