@@ -56,30 +56,6 @@ namespace DetailingArsenal.Persistence.Billing {
 
         public async Task Add(Customer entity) {
             using (var t = Connection.BeginTransaction()) {
-                var subBillingReference = new BillingReferenceModel() {
-                    Id = Guid.NewGuid(),
-                    BillingId = entity.Subscription.BillingReference.BillingId,
-                    Type = entity.Subscription.BillingReference.Type
-                };
-
-                await Connection.ExecuteAsync(
-                    @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                    subBillingReference
-                );
-
-                await Connection.ExecuteAsync(
-                    @"insert into subscriptions 
-                    (id, plan_id, customer_id, billing_reference_id, status) 
-                    values (@Id, @PlanId, @CustomerId, @BillingReferenceId, @Status);",
-                    new SubscriptionModel() {
-                        Id = entity.Subscription.Id,
-                        PlanId = entity.Subscription.PlanId,
-                        CustomerId = entity.Id,
-                        BillingReferenceId = subBillingReference.Id,
-                        Status = entity.Subscription.Status
-                    }
-                );
-
                 var customerBillingReference = new BillingReferenceModel() {
                     Id = Guid.NewGuid(),
                     BillingId = entity.BillingReference.BillingId,
@@ -97,6 +73,31 @@ namespace DetailingArsenal.Persistence.Billing {
                         Id = entity.Id,
                         UserId = entity.UserId,
                         BillingReferenceId = customerBillingReference.Id
+                    }
+                );
+
+                var subBillingReference = new BillingReferenceModel() {
+                    Id = Guid.NewGuid(),
+                    BillingId = entity.Subscription.BillingReference.BillingId,
+                    Type = entity.Subscription.BillingReference.Type
+                };
+
+
+                await Connection.ExecuteAsync(
+                    @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
+                    subBillingReference
+                );
+
+                await Connection.ExecuteAsync(
+                    @"insert into subscriptions 
+                    (id, plan_id, customer_id, billing_reference_id, status) 
+                    values (@Id, @PlanId, @CustomerId, @BillingReferenceId, @Status);",
+                    new SubscriptionModel() {
+                        Id = entity.Subscription.Id,
+                        PlanId = entity.Subscription.PlanId,
+                        CustomerId = entity.Id,
+                        BillingReferenceId = subBillingReference.Id,
+                        Status = entity.Subscription.Status
                     }
                 );
 
