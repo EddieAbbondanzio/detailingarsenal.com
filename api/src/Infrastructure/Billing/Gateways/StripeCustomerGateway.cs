@@ -43,5 +43,9 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 )
             );
         }
+
+        public async Task Delete(Customer customer) {
+            await customerService.DeleteAsync(customer.BillingReference.BillingId);
+        }
     }
 }

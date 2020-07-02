@@ -19,7 +19,7 @@ namespace DetailingArsenal.Domain.Common {
         }
 
         public async override Task Compensate(User user) {
-            // throw new NotImplementedException();
+            await customerService.DeleteForUser(user);
         }
     }
 }

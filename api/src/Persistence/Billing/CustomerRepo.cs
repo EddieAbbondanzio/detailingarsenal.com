@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Billing {
     public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
@@ -21,6 +22,50 @@ namespace DetailingArsenal.Persistence.Billing {
                   new {
                       Id = id
                   }
+            )) {
+                var subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
+                    (s, br) => new Subscription {
+                        Id = s.Id,
+                        PlanId = s.PlanId,
+                        Status = s.Status,
+                        BillingReference = new BillingReference(
+                            br.BillingId,
+                            br.Type
+                        )
+                    }
+                ).FirstOrDefault();
+
+                if (subscription == null) {
+                    return null;
+                }
+
+                var customer = reader.Read<CustomerModel, BillingReferenceModel, Customer>(
+                    (c, br) => new Customer {
+                        Id = c.Id,
+                        UserId = c.UserId,
+                        BillingReference = new BillingReference(
+                            br.BillingId,
+                            br.Type
+                        ),
+                        Subscription = subscription
+                    }
+                ).First();
+
+                return customer;
+            }
+        }
+
+        public async Task<Customer?> FindByUser(User user) {
+            using (var reader = await Connection.QueryMultipleAsync(
+                @"select s.*, br.* from subscriptions s
+                  left join billing_references br on s.billing_reference_id = br.id
+                  left join customers c on s.customer_id = c.id
+                  where c.user_id = @Id;
+                  
+                  select c.*, br.* from customers c
+                  left join billing_references br on c.billing_reference_id = br.id
+                  where c.user_id = @Id",
+                user
             )) {
                 var subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
                     (s, br) => new Subscription {
