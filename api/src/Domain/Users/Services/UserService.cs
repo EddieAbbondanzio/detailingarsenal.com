@@ -10,6 +10,7 @@ namespace DetailingArsenal.Domain.Users {
         Task<User> CreateUser(string auth0Id);
         Task<User> CreateAdminUser(string email, string password);
         Task UpdatePassword(User user, string newPassword);
+        Task DeleteUser(User user);
     }
 
     public class UserService : IUserService {
@@ -73,6 +74,10 @@ namespace DetailingArsenal.Domain.Users {
 
         public async Task UpdatePassword(User user, string newPassword) {
             await userGateway.UpdatePassword(user, newPassword);
+        }
+
+        public async Task DeleteUser(User user) {
+            await userRepo.Delete(user);
         }
 
     }

@@ -123,7 +123,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<RefreshSubscriptionPlansStep>();
             services.AddTransient<CreateOrUpdateAdminStep>();
 
-            services.AddTransient<NewUserInitializationSaga>();
+            services.AddTransient<NewUserSaga>();
             services.AddTransient<CreateBusinessStep>();
             services.AddTransient<CreateHoursOfOperationStep>();
             services.AddTransient<CreateTrialCustomerStep>();

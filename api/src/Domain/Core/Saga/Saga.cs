@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain {
@@ -7,14 +8,15 @@ namespace DetailingArsenal.Domain {
 
         public async Task Execute() {
             int i = 0;
+            SagaContext context = new SagaContext();
 
             try {
                 for (; i < Steps.Count; i++) {
-                    await Steps[i].Execute();
+                    await Steps[i].Execute(context);
                 }
             } catch {
                 for (i -= 1; i >= 0; i--) {
-                    await Steps[i].Compensate();
+                    await Steps[i].Compensate(context);
                 }
 
                 throw;
@@ -35,14 +37,15 @@ namespace DetailingArsenal.Domain {
 
         public async Task Execute(TInput input) {
             int i = 0;
+            SagaContext<TInput> context = new SagaContext<TInput>(input);
 
             try {
                 for (; i < Steps.Count; i++) {
-                    await Steps[i].Execute(input);
+                    await Steps[i].Execute(context);
                 }
             } catch {
                 for (i -= 1; i >= 0; i--) {
-                    await Steps[i].Compensate(input);
+                    await Steps[i].Compensate(context);
                 }
 
                 throw;

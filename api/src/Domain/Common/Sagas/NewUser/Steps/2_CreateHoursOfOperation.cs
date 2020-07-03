@@ -4,19 +4,19 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Common {
-    public class CreateHoursOfOperationStep : SagaStep<User> {
+    public class CreateHoursOfOperationStep : SagaStep<string> {
         IHoursOfOperationService service;
 
         public CreateHoursOfOperationStep(IHoursOfOperationService service) {
             this.service = service;
         }
 
-        public async override Task Execute(User user) {
-            await service.CreateDefault(user);
+        public async override Task Execute(SagaContext<string> context) {
+            await service.CreateDefault(context.Data.User);
         }
 
-        public async override Task Compensate(User user) {
-            var hours = await service.GetByUser(user);
+        public async override Task Compensate(SagaContext<string> context) {
+            var hours = await service.GetByUser(context.Data.User);
             await service.Delete(hours);
         }
     }
