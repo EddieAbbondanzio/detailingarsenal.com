@@ -211,7 +211,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 // delete subscription billing reference
                 await Connection.ExecuteAsync(
                     @"delete from billing_references where billing_id = @BillingId",
-                    entity.Subscription.BillingReference.BillingId
+                    entity.Subscription.BillingReference
                 );
 
                 // delete subscription
@@ -223,7 +223,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 // delete customer billing reference
                 await Connection.ExecuteAsync(
                     @"delete from billing_references where billing_id = @BillingId",
-                    entity.BillingReference.BillingId
+                    entity.BillingReference
                 );
 
                 // delete customer
