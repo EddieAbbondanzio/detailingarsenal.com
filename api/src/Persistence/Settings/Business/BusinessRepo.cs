@@ -13,8 +13,8 @@ namespace DetailingArsenal.Persistence.Settings {
             return await Connection.QueryFirstOrDefaultAsync<Business>(@"select * from businesses where id = @Id;", new { Id = id });
         }
 
-        public async Task<Business> FindByUser(User user) {
-            return await Connection.QueryFirstAsync<Business>(@"select * from businesses where user_id = @Id;", user);
+        public async Task<Business?> FindByUser(User user) {
+            return await Connection.QueryFirstOrDefaultAsync<Business>(@"select * from businesses where user_id = @Id;", user);
         }
 
         public async Task Add(Business entity) {

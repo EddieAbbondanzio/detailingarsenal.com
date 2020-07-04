@@ -4,6 +4,6 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Settings {
     public interface IHoursOfOperationRepo : IRepo<HoursOfOperation> {
-        Task<HoursOfOperation> FindForUser(User user);
+        Task<HoursOfOperation?> FindForUser(User user);
     }
 }

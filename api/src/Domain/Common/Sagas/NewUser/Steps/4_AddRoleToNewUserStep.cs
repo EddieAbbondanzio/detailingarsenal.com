@@ -14,7 +14,14 @@ namespace DetailingArsenal.Domain.Common {
 
         public async override Task Execute(SagaContext<string> context) {
             //TODO: Refactor this out. It's not good to hardcode these but it works for now!
-            var role = (await roleService.GetAll()).Find(r => r.Name == context.Data.Plan.Name);
+            var roles = await roleService.GetAll();
+
+            var role = roles.Find(r => r.Name == context.Data.Plan.Name);
+
+            if (role == null) {
+                throw new InvalidOperationException($"No role with name ${context.Data.Plan.Name} exists");
+            }
+
             await roleService.AddRoleToUser(role, context.Data.User);
         }
 

@@ -29,11 +29,15 @@ namespace DetailingArsenal.Persistence.Settings {
             return hours;
         }
 
-        public async Task<HoursOfOperation> FindForUser(User user) {
-            var hours = await Connection.QueryFirstAsync<HoursOfOperation>(
+        public async Task<HoursOfOperation?> FindForUser(User user) {
+            var hours = await Connection.QueryFirstOrDefaultAsync<HoursOfOperation>(
                 @"select * from hours_of_operations where user_id = @Id",
                 user
             );
+
+            if (hours == null) {
+                return null;
+            }
 
             hours.Days = (await Connection.QueryAsync<HoursOfOperationDay>(
                 @"select * from hours_of_operation_days where hours_of_operation_id = @Id",
