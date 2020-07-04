@@ -21,7 +21,7 @@ namespace DetailingArsenal.Application.Security {
             var roles = await roleRepo.FindForUser(user!);
             var perms = await service.GetForRoles(roles);
 
-            return mapper.Map<List<Permission>, List<PermissionDto>>(perms);
+            return mapper.Map<List<Permission>, List<PermissionDto>>(perms.ToList());
         }
     }
 }

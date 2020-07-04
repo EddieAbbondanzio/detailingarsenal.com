@@ -28,16 +28,18 @@ namespace DetailingArsenal.Persistence.Security {
         }
 
 
-        public async Task<List<Permission>> FindForRoles(IEnumerable<Role> roles) {
+        public async Task<PermissionSet> FindForRoles(IEnumerable<Role> roles) {
             var rolePerms = await Connection.QueryAsync<Guid>(
                 @"select distinct permission_id from role_permissions where role_id = any(@Ids);",
                 new { Ids = roles.Select(r => r.Id).ToList() }
             );
 
-            return (await Connection.QueryAsync<Permission>(
+            var perms = await Connection.QueryAsync<Permission>(
                 @"select * from permissions where id = any(@Ids);",
                 new { Ids = rolePerms.ToList() }
-            )).ToList();
+            );
+
+            return new PermissionSet(perms);
         }
 
         public async Task<List<Permission>> FindAll() {

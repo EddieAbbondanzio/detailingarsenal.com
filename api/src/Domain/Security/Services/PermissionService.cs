@@ -7,7 +7,7 @@ namespace DetailingArsenal.Domain.Security {
     public interface IPermissionService : IService {
         Task<List<Permission>> GetAll();
         Task<Permission> GetById(Guid id);
-        Task<List<Permission>> GetForRoles(IEnumerable<Role> roles);
+        Task<PermissionSet> GetForRoles(IEnumerable<Role> roles);
 
         Task<Permission> Create(CreatePermission create, User user);
         Task Update(Permission permission, UpdatePermission update);
@@ -33,7 +33,7 @@ namespace DetailingArsenal.Domain.Security {
             return await repo.FindById(id) ?? throw new EntityNotFoundException();
         }
 
-        public async Task<List<Permission>> GetForRoles(IEnumerable<Role> roles) {
+        public async Task<PermissionSet> GetForRoles(IEnumerable<Role> roles) {
             return await repo.FindForRoles(roles);
         }
 

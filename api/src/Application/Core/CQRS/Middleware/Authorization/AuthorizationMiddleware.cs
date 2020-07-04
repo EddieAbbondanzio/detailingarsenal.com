@@ -28,13 +28,10 @@ namespace DetailingArsenal.Application {
                     var roles = await roleRepo.FindForUser(user);
                     var perms = await permissionRepo.FindForRoles(roles);
 
-                    foreach (Permission permission in perms) {
-                        if (permission.Action == attribute.Action && permission.Scope == attribute.Scope) {
-                            return;
-                        }
+                    if (!perms.HasPermission(attribute.Action, attribute.Scope)) {
+                        throw new AuthorizationException("Not permitted.");
                     }
 
-                    throw new AuthorizationException("Not permitted.");
                 }
             }
         }
