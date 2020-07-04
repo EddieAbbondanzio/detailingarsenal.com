@@ -4,7 +4,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Billing {
     public interface ICustomerService : IService {
-        Task<Customer> CreateTrialCustomer(User user, SubscriptionPlan plan);
+        Task<Customer> StartSubscription(User user, SubscriptionPlan plan);
         Task DeleteForUser(User user);
     }
 
@@ -17,7 +17,7 @@ namespace DetailingArsenal.Domain.Billing {
             this.customerRepo = customerRepo;
         }
 
-        public async Task<Customer> CreateTrialCustomer(User user, SubscriptionPlan plan) {
+        public async Task<Customer> StartSubscription(User user, SubscriptionPlan plan) {
             var customer = await customerGateway.CreateTrialCustomer(user, plan);
             await customerRepo.Add(customer);
 

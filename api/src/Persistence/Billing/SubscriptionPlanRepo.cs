@@ -53,6 +53,51 @@ namespace DetailingArsenal.Persistence.Billing {
             }
         }
 
+
+        public async Task<SubscriptionPlan?> FindByName(string name) {
+            using (var reader = await Connection.QueryMultipleAsync(
+                @"select sp.*, br.* from subscription_plans sp
+                    left join billing_references br on sp.billing_reference_id = br.id
+                    where sp.name = @Name;
+                    
+                  select spp.*, br.* from subscription_plan_prices spp
+                    left join billing_references br on spp.billing_reference_id = br.id
+                    left join subscription_plan sp on spp.plan_id = sp.id
+                    where sp.name = @Name",
+                new {
+                    Name = name
+                }
+            )) {
+
+                var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                (sp, br) => new SubscriptionPlan() {
+                    Id = sp.Id,
+                    Name = sp.Name,
+                    BillingReference = new BillingReference(
+                            br.BillingId, br.Type
+                        )
+                }
+                ).SingleOrDefault();
+
+                if (sp == null) {
+                    return null;
+                }
+
+                sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                    (spp, br) => new SubscriptionPlanPrice(
+                            spp.Price,
+                            spp.Interval,
+                            new BillingReference(
+                                br.BillingId,
+                                br.Type
+                            )
+                        )
+                ).ToList();
+
+                return sp;
+            }
+        }
+
         public async Task<SubscriptionPlan?> FindByBillingReference(BillingReference reference) {
             using (var reader = await Connection.QueryMultipleAsync(
                 @"select sp.*, br.* from subscription_plans sp

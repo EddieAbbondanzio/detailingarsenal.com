@@ -6,12 +6,14 @@ namespace DetailingArsenal.Domain.Common {
                             CreateUserStep createUser,
                             CreateBusinessStep createBusiness,
                             CreateHoursOfOperationStep createHoursOfOperation,
-                            CreateTrialCustomerStep createTrialCustomer
+                            CreateSubscriptionStep createSubscription,
+                            AddRoleToNewUserStep addRoleToNewUser
                             ) {
             Add(createUser);
             Add(createBusiness);
             Add(createHoursOfOperation);
-            Add(createTrialCustomer);
+            Add(createSubscription);
+            Add(addRoleToNewUser);
         }
     }
 }
