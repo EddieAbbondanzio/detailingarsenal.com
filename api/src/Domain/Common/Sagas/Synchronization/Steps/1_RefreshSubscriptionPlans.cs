@@ -9,7 +9,7 @@ namespace DetailingArsenal.Domain.Common {
             this.subscriptionPlanService = subscriptionPlanService;
         }
 
-        public async override Task Execute() {
+        public async override Task Execute(SagaContext context) {
             await subscriptionPlanService.RefreshPlans();
         }
     }

@@ -19,23 +19,39 @@ namespace DetailingArsenal.Infrastructure.Billing {
             var products = await productService.ListAsync();
             var plans = new List<SubscriptionPlan>();
 
-            foreach (Product product in products) {
-                var prices = await priceService.ListAsync(new PriceListOptions() { Product = product.Id });
+            for (int i = 0; i < products.Count(); i++) {
+                var product = products.ElementAt(i);
 
-                plans.Add(SubscriptionPlan.Create(
-                    product.Name,
-                    new BillingReference(product.Id, BillingReferenceType.Product),
-                    null,
-                    prices.Select(p => new SubscriptionPlanPrice(
-                        p.UnitAmountDecimal ?? throw new InvalidOperationException($"No price for product {product.Name}"),
-                        p.Recurring.Interval,
-                        new BillingReference(p.Id, BillingReferenceType.Price)
-                        )
-                    ).ToList())
-                );
+                // Check to see if we've given it an ID yet. 
+                if (!product.Metadata.ContainsKey("id")) {
+                    var updateOpts = new ProductUpdateOptions();
+                    updateOpts.Metadata = new Dictionary<string, string>();
+                    updateOpts.Metadata["id"] = Guid.NewGuid().ToString();
+
+                    product = await productService.UpdateAsync(product.Id, updateOpts);
+                }
+
+                var plan = new SubscriptionPlan() {
+                    Id = Guid.Parse(product.Metadata["id"]),
+                    Name = product.Name,
+                    BillingReference = new BillingReference(product.Id, BillingReferenceType.Product),
+                    Prices = await GetPrices(product.Id)
+                };
+                plans.Add(plan);
             }
 
             return plans;
+        }
+
+        async Task<List<SubscriptionPlanPrice>> GetPrices(string planBillingId) {
+            var prices = await priceService.ListAsync(new PriceListOptions() { Product = planBillingId });
+
+            return prices.Select(p => new SubscriptionPlanPrice(
+                         p.UnitAmountDecimal ?? throw new InvalidOperationException($"No price amount specified for price {p.Id}"),
+                         p.Recurring.Interval,
+                         new BillingReference(p.Id, BillingReferenceType.Price)
+                         )
+                    ).ToList();
         }
     }
 }

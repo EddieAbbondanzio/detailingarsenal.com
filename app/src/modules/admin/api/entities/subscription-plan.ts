@@ -2,7 +2,7 @@ import { SubscriptionPlanPrice } from '@/modules/admin/api/entities/subscription
 import { Entity } from '@/core';
 
 export class SubscriptionPlan extends Entity {
-    constructor(public name: string, public prices: SubscriptionPlanPrice[], public roleId: string | null = null) {
+    constructor(public name: string, public prices: SubscriptionPlanPrice[]) {
         super();
     }
 }

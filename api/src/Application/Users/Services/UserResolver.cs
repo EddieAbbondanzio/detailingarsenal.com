@@ -21,9 +21,8 @@ namespace DetailingArsenal.Application.Users {
             var user = await userService.TryGetUserByAuth0Id(auth0Id);
 
             if (user == null) {
-                user = await userService.CreateUser(auth0Id);
-
-                await newUserSaga.Execute(user);
+                await newUserSaga.Execute(auth0Id);
+                user = await (userService.TryGetUserByAuth0Id(auth0Id))!;
             }
 
             return user;

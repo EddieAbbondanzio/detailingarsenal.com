@@ -9,7 +9,7 @@ namespace DetailingArsenal.Domain.Common {
         }
 
 #pragma warning disable 1998
-        public async override Task Execute() {
+        public async override Task Execute(SagaContext context) {
             migrationRunner.MigrateUp();
         }
 #pragma warning restore 1998

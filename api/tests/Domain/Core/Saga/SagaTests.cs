@@ -18,15 +18,15 @@ namespace DetailingArsenal.Tests.Domain {
 
             await saga.Execute();
 
-            stepA.Verify(s => s.Execute(), Times.Once);
-            stepB.Verify(s => s.Execute(), Times.Once);
+            stepA.Verify(s => s.Execute(It.IsAny<SagaContext>()), Times.Once);
+            stepB.Verify(s => s.Execute(It.IsAny<SagaContext>()), Times.Once);
         }
 
         [TestMethod]
         public async Task ExecuteCompensatesOnException() {
             var stepA = new Mock<SagaStep>();
             var stepB = new Mock<SagaStep>();
-            stepB.Setup(s => s.Execute()).ThrowsAsync(new Exception());
+            stepB.Setup(s => s.Execute(It.IsAny<SagaContext>())).ThrowsAsync(new Exception());
 
             var saga = Mock.Of<Saga>();
             saga.Add(stepA.Object);
@@ -36,7 +36,7 @@ namespace DetailingArsenal.Tests.Domain {
                 await saga.Execute();
             } catch { }
 
-            stepA.Verify(s => s.Compensate(), Times.Once);
+            stepA.Verify(s => s.Compensate(It.IsAny<SagaContext>()), Times.Once);
         }
     }
 }

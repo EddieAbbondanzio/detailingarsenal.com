@@ -15,7 +15,7 @@ namespace DetailingArsenal.Domain.Common {
             this.roleRepo = roleRepo;
         }
 
-        public async override Task Execute() {
+        public async override Task Execute(SagaContext context) {
             var user = await userService.TryGetUserByEmail(config.Email);
 
             if (user != null) {

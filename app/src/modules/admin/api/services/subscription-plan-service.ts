@@ -14,11 +14,6 @@ export class SubscriptionPlanService {
         return this._map(res.data);
     }
 
-    async updatePlan(update: UpdateSubscriptionPlan) {
-        const res = await http.put(`/billing/subscription-plan/${update.id}`, update);
-        return this._map([res.data])[0]; //lol
-    }
-
     _map(data: any[]) {
         return data.map(d => {
             const prices =
@@ -31,7 +26,7 @@ export class SubscriptionPlanService {
                           return price;
                       });
 
-            const plan = new SubscriptionPlan(d.name, prices, d.roleId);
+            const plan = new SubscriptionPlan(d.name, prices);
             plan.id = d.id;
 
             return plan;

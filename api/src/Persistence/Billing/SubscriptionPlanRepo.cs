@@ -28,7 +28,6 @@ namespace DetailingArsenal.Persistence.Billing {
                 (sp, br) => new SubscriptionPlan() {
                     Id = sp.Id,
                     Name = sp.Name,
-                    RoleId = sp.RoleId,
                     BillingReference = new BillingReference(
                             br.BillingId, br.Type
                         )
@@ -73,7 +72,6 @@ namespace DetailingArsenal.Persistence.Billing {
                 (sp, br) => new SubscriptionPlan() {
                     Id = sp.Id,
                     Name = sp.Name,
-                    RoleId = sp.RoleId,
                     BillingReference = new BillingReference(
                             br.BillingId, br.Type
                         )
@@ -114,7 +112,6 @@ namespace DetailingArsenal.Persistence.Billing {
                     (sp, br) => new SubscriptionPlan() {
                         Id = sp.Id,
                         Name = sp.Name,
-                        RoleId = sp.RoleId,
                         BillingReference = new BillingReference(
                                 br.BillingId, br.Type
                             )
@@ -161,12 +158,11 @@ namespace DetailingArsenal.Persistence.Billing {
 
                 // insert plan
                 await Connection.ExecuteAsync(
-                    @"insert into subscription_plans (id, name, billing_reference_id, role_id) values (@Id, @Name, @BillingReferenceId, @RoleId);",
+                    @"insert into subscription_plans (id, name, billing_reference_id) values (@Id, @Name, @BillingReferenceId);",
                     new SubscriptionPlanModel() {
                         Id = entity.Id,
                         Name = entity.Name,
-                        BillingReferenceId = planBillingRef.Id,
-                        RoleId = entity.RoleId
+                        BillingReferenceId = planBillingRef.Id
                     },
                     t
                 );
@@ -214,11 +210,10 @@ namespace DetailingArsenal.Persistence.Billing {
         public async Task Update(SubscriptionPlan entity) {
             using (var t = Connection.BeginTransaction()) {
                 await Connection.ExecuteAsync(
-                    @"update subscription_plans set name = @Name, role_id = @RoleId where id = @Id;",
+                    @"update subscription_plans set name = @Name where id = @Id;",
                     new SubscriptionPlanModel {
                         Id = entity.Id,
-                        Name = entity.Name,
-                        RoleId = entity.RoleId == Guid.Empty ? (Nullable<Guid>)null : entity.RoleId
+                        Name = entity.Name
                     }
                 );
 

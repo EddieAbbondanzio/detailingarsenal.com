@@ -30,16 +30,6 @@ namespace DetailingArsenal.Api {
             return Ok(plans);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(UpdateSubscriptionPlanCommand command) {
-            var plan = await mediator.Dispatch<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>(
-                command,
-                User.GetUserId()
-            );
-
-            return Ok(plan);
-        }
-
         /// <summary>
         /// Endpoint to refresh the cache of subscription plans by querying Auth0.
         /// </summary>

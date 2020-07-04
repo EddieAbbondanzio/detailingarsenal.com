@@ -10,7 +10,6 @@ namespace DetailingArsenal.Domain.Billing {
         Task<List<SubscriptionPlan>> GetAllPlans();
         Task<SubscriptionPlan> GetTrialPlan();
         Task<List<SubscriptionPlan>> RefreshPlans();
-        Task Update(SubscriptionPlan plan, UpdateSubscriptionPlan update);
     }
 
     public class SubscriptionPlanService : ISubscriptionPlanService {
@@ -45,18 +44,17 @@ namespace DetailingArsenal.Domain.Billing {
         public async Task<List<SubscriptionPlan>> RefreshPlans() {
             var plans = await gateway.GetAll();
 
-            await repo.DeleteAll();
-
             foreach (var plan in plans) {
-                await repo.Add(plan);
+                var existingPlan = await repo.FindById(plan.Id);
+
+                if (existingPlan == null) {
+                    await repo.Add(plan);
+                } else {
+                    await repo.Update(plan);
+                }
             }
 
             return plans;
-        }
-
-        public async Task Update(SubscriptionPlan plan, UpdateSubscriptionPlan update) {
-            plan.RoleId = update.RoleId;
-            await repo.Update(plan);
         }
     }
 }

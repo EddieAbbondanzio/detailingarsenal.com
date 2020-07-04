@@ -124,6 +124,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<CreateOrUpdateAdminStep>();
 
             services.AddTransient<NewUserSaga>();
+            services.AddTransient<CreateUserStep>();
             services.AddTransient<CreateBusinessStep>();
             services.AddTransient<CreateHoursOfOperationStep>();
             services.AddTransient<CreateTrialCustomerStep>();
@@ -148,7 +149,6 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
-            services.AddTransient<ActionHandler<UpdateSubscriptionPlanCommand, SubscriptionPlanDto>, UpdateSubscriptionPlanHandler>();
             services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
 
             // Security
