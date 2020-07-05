@@ -100,7 +100,7 @@ namespace DetailingArsenal.Api {
             // Mapping
             var mapperConfiguration = new MapperConfiguration(config => {
                 config.CreateMap<Client, ClientDto>();
-                config.CreateMap<User, UserDto>();
+                config.CreateMap<User, UserView>();
                 config.CreateMap<Business, BusinessDto>();
                 config.CreateMap<VehicleCategory, VehicleCategoryDto>();
                 config.CreateMap<Service, ServiceDto>();
@@ -109,7 +109,7 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<HoursOfOperationDay, HoursOfOperationDayDto>();
                 config.CreateMap<Appointment, AppointmentDto>();
                 config.CreateMap<AppointmentBlock, AppointmentBlockDto>();
-                config.CreateMap<Permission, PermissionDto>();
+                config.CreateMap<Permission, PermissionView>();
                 config.CreateMap<Role, RoleDto>();
                 config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceDto>();
                 config.CreateMap<SubscriptionPlan, SubscriptionPlanDto>();
@@ -164,10 +164,10 @@ namespace DetailingArsenal.Api {
             services.AddTransient<UpdatePermissionValidator>();
             services.AddTransient<CreateRoleValidator>();
             services.AddTransient<UpdateRoleValidator>();
-            services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionDto>>, GetPermissionsHandler>();
-            services.AddTransient<ActionHandler<GetUserPermissionsQuery, List<PermissionDto>>, GetUserPermissionsHandler>();
-            services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionDto>, CreatePermissionHandler>();
-            services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionDto>, UpdatePermissionHandler>();
+            services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionView>>, GetPermissionsHandler>();
+            services.AddTransient<ActionHandler<GetUserPermissionsQuery, List<PermissionView>>, GetUserPermissionsHandler>();
+            services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionView>, CreatePermissionHandler>();
+            services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionView>, UpdatePermissionHandler>();
             services.AddTransient<ActionHandler<DeletePermissionCommand>, DeletePermissionHandler>();
             services.AddTransient<ActionHandler<GetRolesQuery, List<RoleDto>>, GetRolesHandler>();
             services.AddTransient<ActionHandler<CreateRoleCommand, RoleDto>, CreateRoleHandler>();
@@ -186,8 +186,8 @@ namespace DetailingArsenal.Api {
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ActionHandler<UpdateUserCommand, UserDto>, UpdateUserHandler>();
-            services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserDto>, GetUserByAuth0IdHandler>();
+            services.AddTransient<ActionHandler<UpdateUserCommand, UserView>, UpdateUserHandler>();
+            services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserView>, GetUserByAuth0IdHandler>();
 
             // Vehicle Categories
             services.AddTransient<VehicleCategoryNameUniqueSpecification>();

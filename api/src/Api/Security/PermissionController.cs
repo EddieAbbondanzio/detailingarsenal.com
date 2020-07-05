@@ -19,25 +19,19 @@ namespace DetailingArsenal.Api {
 
         [HttpGet]
         public async Task<IActionResult> GetAllPermissions() {
-            List<PermissionDto> perms = await mediator.Dispatch<GetPermissionsQuery, List<PermissionDto>>(new GetPermissionsQuery(), User.GetUserId());
-            return Ok(perms);
-        }
-
-        [HttpGet("user")]
-        public async Task<IActionResult> GetUserPermissions() {
-            List<PermissionDto> perms = await mediator.Dispatch<GetUserPermissionsQuery, List<PermissionDto>>(new GetUserPermissionsQuery(), User.GetUserId());
+            List<PermissionView> perms = await mediator.Dispatch<GetPermissionsQuery, List<PermissionView>>(new GetPermissionsQuery(), User.GetUserId());
             return Ok(perms);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreatePermission(CreatePermissionCommand command) {
-            PermissionDto perm = await mediator.Dispatch<CreatePermissionCommand, PermissionDto>(command, User.GetUserId());
+            PermissionView perm = await mediator.Dispatch<CreatePermissionCommand, PermissionView>(command, User.GetUserId());
             return Ok(perm);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePermission(Guid id, [FromBody] UpdatePermissionCommand command) {
-            PermissionDto perm = await mediator.Dispatch<UpdatePermissionCommand, PermissionDto>(command, User.GetUserId());
+            PermissionView perm = await mediator.Dispatch<UpdatePermissionCommand, PermissionView>(command, User.GetUserId());
             return Ok(perm);
         }
 
