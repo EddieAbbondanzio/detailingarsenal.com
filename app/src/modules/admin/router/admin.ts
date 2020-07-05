@@ -1,6 +1,8 @@
 import { authGuard } from '@/core/router/auth-guard';
+import { adminGuard } from '@/modules/admin/router/admin-guard';
+import { RouteConfig } from 'vue-router';
 
-export const admin = [
+const adminRoutes: RouteConfig[] = [
     {
         path: 'admin',
         name: 'adminPanel',
@@ -52,3 +54,8 @@ export const admin = [
         component: () => import('@/modules/admin/views/subscription-plan/subscription-plan.vue')
     }
 ];
+
+export const admin = adminRoutes.map(a => {
+    a.beforeEnter = adminGuard;
+    return a;
+});

@@ -39,6 +39,7 @@
                     exact
                     tag="router-link"
                     :to="{ name: 'adminPanel' }"
+                    v-if="isAdmin"
                 >Admin</b-navbar-item>
             </template>
 
@@ -90,6 +91,10 @@ export default class AppNavbar extends Vue {
 
     get isAuthenticated() {
         return userStore.isAuthenticated;
+    }
+
+    get isAdmin() {
+        return userStore.user.isAdmin;
     }
 
     public async onLoginClick() {
