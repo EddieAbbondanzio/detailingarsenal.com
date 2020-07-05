@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Billing;
 using Stripe;
+using Stripe.Checkout;
 
 namespace DetailingArsenal.Infrastructure.Billing {
     public class StripeSubscriptionPlanGateway : ISubscriptionPlanGateway {

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
 using DetailingArsenal.Application.Billing;
+using DetailingArsenal.Domain.Billing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DetailingArsenal.Api.Billing {
     [Route("/billing/session")]
     [ApiController]
-    public class BillingSessionController : ControllerBase {
+    public class SessionController : ControllerBase {
         private IMediator mediator;
 
-        public BillingSessionController(IMediator mediator) {
+        public SessionController(IMediator mediator) {
             this.mediator = mediator;
         }
 
@@ -21,7 +22,12 @@ namespace DetailingArsenal.Api.Billing {
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> CreateSession() {
-            throw new NotImplementedException();
+            var billingRef = await mediator.Dispatch<CreateSessionCommand, BillingReference>(
+                new CreateSessionCommand(),
+                User!.GetUserId()
+            );
+
+            return Ok(billingRef.BillingId);
         }
 
         /// <summary>

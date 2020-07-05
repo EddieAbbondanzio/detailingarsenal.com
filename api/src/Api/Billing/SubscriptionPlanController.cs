@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DetailingArsenal.Api.Billing {
     [Authorize]
-    [Route("/billing/subscription-plan/")]
+    [Route("/billing/subscription-plan")]
     [ApiController]
     public class SubscriptionPlanController : ControllerBase {
         private IMediator mediator;

@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Billing {
     public interface ICustomerService : IService {
+        Task<Customer> GetByUser(User user);
         Task<Customer> StartSubscription(User user, SubscriptionPlan plan);
         Task DeleteForUser(User user);
     }
@@ -15,6 +16,11 @@ namespace DetailingArsenal.Domain.Billing {
         public CustomerService(ICustomerGateway customerGateway, ICustomerRepo customerRepo) {
             this.customerGateway = customerGateway;
             this.customerRepo = customerRepo;
+        }
+
+        public async Task<Customer> GetByUser(User user) {
+            var customer = await customerRepo.FindByUser(user);
+            return customer ?? throw new EntityNotFoundException();
         }
 
         public async Task<Customer> StartSubscription(User user, SubscriptionPlan plan) {

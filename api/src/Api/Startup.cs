@@ -147,6 +147,8 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ICustomerService, Domain.Billing.CustomerService>();
             services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
             services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
+            services.AddTransient<ISessionGateway, StripeSessionGateway>();
+            services.AddTransient<ActionHandler<CreateSessionCommand, BillingReference>, CreateSessionHandler>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanView>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
