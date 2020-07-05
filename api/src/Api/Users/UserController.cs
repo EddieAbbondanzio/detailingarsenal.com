@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Users {
     [Authorize]
     [ApiController]
     [Route("user")]

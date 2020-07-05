@@ -8,7 +8,7 @@ using DetailingArsenal.Domain.Calendar;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Calendar {
     [Authorize]
     [ApiController]
     [Route("appointment")]

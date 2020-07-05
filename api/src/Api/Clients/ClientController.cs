@@ -6,7 +6,7 @@ using DetailingArsenal.Application.Clients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Clients {
 
     [Authorize]
     [Route("client")]

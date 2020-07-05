@@ -5,7 +5,7 @@ using DetailingArsenal.Application.Billing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Billing {
     [Authorize]
     [Route("/billing/subscription-plan/")]
     [ApiController]

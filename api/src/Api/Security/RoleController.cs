@@ -6,7 +6,7 @@ using DetailingArsenal.Application.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DetailingArsenal.Api {
+namespace DetailingArsenal.Api.Security {
     [Authorize]
     [Route("/security/role")]
     [ApiController]
