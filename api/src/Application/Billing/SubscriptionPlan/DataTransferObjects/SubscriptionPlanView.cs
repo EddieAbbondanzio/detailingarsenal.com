@@ -7,6 +7,6 @@ namespace DetailingArsenal.Application.Billing {
         public Guid Id { get; set; }
         public Guid RoleId { get; set; }
         public string Name { get; set; } = null!;
-        public List<SubscriptionPlanPriceDto> Prices { get; set; } = null!;
+        public List<SubscriptionPlanPriceView> Prices { get; set; } = null!;
     }
 }

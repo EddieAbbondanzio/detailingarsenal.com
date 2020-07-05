@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateVehicleCategoryValidator))]
     [Authorization(Action = "update", Scope = "vehicle-categories")]
-    public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryDto> {
+    public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryView> {
         private IVehicleCategoryService service;
         private IMapper mapper;
 
@@ -16,7 +16,7 @@ namespace DetailingArsenal.Application.Settings {
             this.mapper = mapper;
         }
 
-        public async override Task<VehicleCategoryDto> Execute(UpdateVehicleCategoryCommand command, User? user) {
+        public async override Task<VehicleCategoryView> Execute(UpdateVehicleCategoryCommand command, User? user) {
             VehicleCategory cat = await service.GetById(command.Id);
 
             if (!cat.IsOwner(user!)) {
@@ -31,7 +31,7 @@ namespace DetailingArsenal.Application.Settings {
                 )
             );
 
-            return mapper.Map<VehicleCategory, VehicleCategoryDto>(cat);
+            return mapper.Map<VehicleCategory, VehicleCategoryView>(cat);
         }
     }
 }

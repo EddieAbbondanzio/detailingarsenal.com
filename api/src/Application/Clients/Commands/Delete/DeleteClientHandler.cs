@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "delete", Scope = "clients")]
-    public class DeleteClientHandler : ActionHandler<DeleteClientCommand, ClientDto> {
+    public class DeleteClientHandler : ActionHandler<DeleteClientCommand, ClientView> {
         IClientService service;
         private IMapper mapper;
 
@@ -16,7 +16,7 @@ namespace DetailingArsenal.Application.Clients {
             this.mapper = mapper;
         }
 
-        public async override Task<ClientDto> Execute(DeleteClientCommand input, User? user) {
+        public async override Task<ClientView> Execute(DeleteClientCommand input, User? user) {
             var c = await service.GetById(input.Id);
 
             if (!c.IsOwner(user!)) {
@@ -24,7 +24,7 @@ namespace DetailingArsenal.Application.Clients {
             }
 
             await service.Delete(c);
-            return mapper.Map<Client, ClientDto>(c);
+            return mapper.Map<Client, ClientView>(c);
         }
     }
 }

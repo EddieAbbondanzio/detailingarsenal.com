@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Security {
     [Authorization(Action = "read", Scope = "roles")]
-    public class GetRolesHandler : ActionHandler<GetRolesQuery, List<RoleDto>> {
+    public class GetRolesHandler : ActionHandler<GetRolesQuery, List<RoleView>> {
         IRoleService service;
         IMapper mapper;
 
@@ -16,9 +16,9 @@ namespace DetailingArsenal.Application.Security {
             this.mapper = mapper;
         }
 
-        public async override Task<List<RoleDto>> Execute(GetRolesQuery input, User? user) {
+        public async override Task<List<RoleView>> Execute(GetRolesQuery input, User? user) {
             List<Role> perms = await service.GetAll();
-            return mapper.Map<List<Role>, List<RoleDto>>(perms);
+            return mapper.Map<List<Role>, List<RoleView>>(perms);
         }
     }
 }

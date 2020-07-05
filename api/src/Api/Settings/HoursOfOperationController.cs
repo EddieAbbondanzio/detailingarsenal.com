@@ -21,13 +21,13 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpGet]
         public async Task<IActionResult> GetHoursOfOperation() {
-            HoursOfOperationDto? hours = await mediator.Dispatch<GetHoursOfOperationQuery, HoursOfOperationDto>(new GetHoursOfOperationQuery(), User.GetUserId());
+            HoursOfOperationView? hours = await mediator.Dispatch<GetHoursOfOperationQuery, HoursOfOperationView>(new GetHoursOfOperationQuery(), User.GetUserId());
             return Ok(hours);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHoursOfOperation(string id, [FromBody] UpdateHoursOfOperationCommand update) {
-            HoursOfOperationDto hours = await mediator.Dispatch<UpdateHoursOfOperationCommand, HoursOfOperationDto>(update, User.GetUserId());
+            HoursOfOperationView hours = await mediator.Dispatch<UpdateHoursOfOperationCommand, HoursOfOperationView>(update, User.GetUserId());
             return Ok(hours);
         }
     }

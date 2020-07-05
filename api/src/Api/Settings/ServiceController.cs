@@ -21,7 +21,7 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpGet]
         public async Task<IActionResult> GetServices() {
-            List<ServiceDto> services = await mediator.Dispatch<GetServicesQuery, List<ServiceDto>>(
+            List<ServiceView> services = await mediator.Dispatch<GetServicesQuery, List<ServiceView>>(
                 new GetServicesQuery(),
                 User.GetUserId()
             );
@@ -31,7 +31,7 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpPost]
         public async Task<IActionResult> CreateService(CreateServiceCommand command) {
-            ServiceDto s = await mediator.Dispatch<CreateServiceCommand, ServiceDto>(
+            ServiceView s = await mediator.Dispatch<CreateServiceCommand, ServiceView>(
                 command,
                 User.GetUserId()
             );
@@ -41,7 +41,7 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateService(Guid id, [FromBody] UpdateServiceCommand command) {
-            ServiceDto s = await mediator.Dispatch<UpdateServiceCommand, ServiceDto>(
+            ServiceView s = await mediator.Dispatch<UpdateServiceCommand, ServiceView>(
                 command,
                 User.GetUserId()
             );

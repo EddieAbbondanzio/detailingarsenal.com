@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "businesses")]
-    public class GetBusinessHandler : ActionHandler<GetBusinessQuery, BusinessDto> {
+    public class GetBusinessHandler : ActionHandler<GetBusinessQuery, BusinessView> {
         private IBusinessService service;
         private IMapper mapper;
 
@@ -15,9 +15,9 @@ namespace DetailingArsenal.Application.Settings {
             this.mapper = mapper;
         }
 
-        public async override Task<BusinessDto> Execute(GetBusinessQuery query, User? user) {
+        public async override Task<BusinessView> Execute(GetBusinessQuery query, User? user) {
             var b = await service.GetOrCreateForUser(user!);
-            return mapper.Map<Business, BusinessDto>(b);
+            return mapper.Map<Business, BusinessView>(b);
         }
     }
 }

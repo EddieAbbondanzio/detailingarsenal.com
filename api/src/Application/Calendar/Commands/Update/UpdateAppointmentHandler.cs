@@ -9,7 +9,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "update", Scope = "appointments")]
-    public class UpdateAppointmentHandler : ActionHandler<UpdateAppointmentCommand, AppointmentDto> {
+    public class UpdateAppointmentHandler : ActionHandler<UpdateAppointmentCommand, AppointmentView> {
         IAppointmentService service;
         IMapper mapper;
 
@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application.Calendar {
             this.mapper = mapper;
         }
 
-        public async override Task<AppointmentDto> Execute(UpdateAppointmentCommand input, User? user) {
+        public async override Task<AppointmentView> Execute(UpdateAppointmentCommand input, User? user) {
             var appointment = await service.GetById(input.Id);
 
             if (!appointment.IsOwner(user!)) {
@@ -38,7 +38,7 @@ namespace DetailingArsenal.Application.Calendar {
             )).ToList();
 
             await service.Update(appointment, update);
-            return mapper.Map<Appointment, AppointmentDto>(appointment);
+            return mapper.Map<Appointment, AppointmentView>(appointment);
         }
     }
 }

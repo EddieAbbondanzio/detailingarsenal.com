@@ -19,13 +19,13 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpGet]
         public async Task<IActionResult> GetBusiness() {
-            BusinessDto b = await mediator.Dispatch<GetBusinessQuery, BusinessDto>(new GetBusinessQuery(), User.GetUserId());
+            BusinessView b = await mediator.Dispatch<GetBusinessQuery, BusinessView>(new GetBusinessQuery(), User.GetUserId());
             return Ok(b);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBusiness(Guid id, [FromBody] UpdateBusinessCommand update) {
-            BusinessDto b = await mediator.Dispatch<UpdateBusinessCommand, BusinessDto>(update, User.GetUserId());
+            BusinessView b = await mediator.Dispatch<UpdateBusinessCommand, BusinessView>(update, User.GetUserId());
             return Ok(b);
         }
     }

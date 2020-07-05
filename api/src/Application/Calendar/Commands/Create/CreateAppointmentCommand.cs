@@ -7,7 +7,7 @@ namespace DetailingArsenal.Application.Calendar {
         public Guid ClientId { get; set; }
         public decimal Price { get; set; }
         public int Duration { get; set; }
-        public List<AppointmentBlockDto> Blocks { get; set; } = new List<AppointmentBlockDto>();
+        public List<AppointmentBlockView> Blocks { get; set; } = new List<AppointmentBlockView>();
         public string? Notes { get; set; }
     }
 }

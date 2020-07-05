@@ -22,7 +22,7 @@ namespace DetailingArsenal.Api {
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Get() {
-            var plans = await mediator.Dispatch<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>(
+            var plans = await mediator.Dispatch<GetSubscriptionPlansQuery, List<SubscriptionPlanView>>(
                 new GetSubscriptionPlansQuery(),
                 User.GetUserId()
             );
@@ -35,7 +35,7 @@ namespace DetailingArsenal.Api {
         /// </summary>
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh() {
-            var plans = await mediator.Dispatch<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>(
+            var plans = await mediator.Dispatch<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>>(
                 new RefreshSubscriptionPlansCommand(),
                 User.GetUserId()
             );

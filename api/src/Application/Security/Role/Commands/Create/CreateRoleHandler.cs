@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Security {
     [Validation(typeof(CreateRoleValidator))]
     [Authorization(Action = "create", Scope = "roles")]
-    public class CreateRoleHandler : ActionHandler<CreateRoleCommand, RoleDto> {
+    public class CreateRoleHandler : ActionHandler<CreateRoleCommand, RoleView> {
         IRoleService service;
         private IMapper mapper;
 
@@ -16,13 +16,13 @@ namespace DetailingArsenal.Application.Security {
             this.mapper = mapper;
         }
 
-        public async override Task<RoleDto> Execute(CreateRoleCommand input, User? user) {
+        public async override Task<RoleView> Execute(CreateRoleCommand input, User? user) {
             var r = await service.Create(new CreateRole(
                 input.Name,
                 input.PermissionIds
             ));
 
-            return mapper.Map<Role, RoleDto>(r);
+            return mapper.Map<Role, RoleView>(r);
         }
     }
 }

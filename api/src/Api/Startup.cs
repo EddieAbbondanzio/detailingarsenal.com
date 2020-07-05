@@ -99,20 +99,19 @@ namespace DetailingArsenal.Api {
 
             // Mapping
             var mapperConfiguration = new MapperConfiguration(config => {
-                config.CreateMap<Client, ClientDto>();
-                config.CreateMap<User, UserView>();
-                config.CreateMap<Business, BusinessDto>();
-                config.CreateMap<VehicleCategory, VehicleCategoryDto>();
-                config.CreateMap<Service, ServiceDto>();
-                config.CreateMap<ServiceConfiguration, ServiceConfigurationDto>();
-                config.CreateMap<HoursOfOperation, HoursOfOperationDto>();
-                config.CreateMap<HoursOfOperationDay, HoursOfOperationDayDto>();
-                config.CreateMap<Appointment, AppointmentDto>();
-                config.CreateMap<AppointmentBlock, AppointmentBlockDto>();
+                config.CreateMap<Client, ClientView>();
+                config.CreateMap<Business, BusinessView>();
+                config.CreateMap<VehicleCategory, VehicleCategoryView>();
+                config.CreateMap<Service, ServiceView>();
+                config.CreateMap<ServiceConfiguration, ServiceConfigurationView>();
+                config.CreateMap<HoursOfOperation, HoursOfOperationView>();
+                config.CreateMap<HoursOfOperationDay, HoursOfOperationDayView>();
+                config.CreateMap<Appointment, AppointmentView>();
+                config.CreateMap<AppointmentBlock, AppointmentBlockView>();
                 config.CreateMap<Permission, PermissionView>();
-                config.CreateMap<Role, RoleDto>();
-                config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceDto>();
-                config.CreateMap<SubscriptionPlan, SubscriptionPlanDto>();
+                config.CreateMap<Role, RoleView>();
+                config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceView>();
+                config.CreateMap<SubscriptionPlan, SubscriptionPlanView>();
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
@@ -148,8 +147,8 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ICustomerService, Domain.Billing.CustomerService>();
             services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
             services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
-            services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanDto>>, GetSubscriptionPlansHandler>();
-            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>>, RefreshSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanView>>, GetSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
 
             // Security
@@ -165,13 +164,12 @@ namespace DetailingArsenal.Api {
             services.AddTransient<CreateRoleValidator>();
             services.AddTransient<UpdateRoleValidator>();
             services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionView>>, GetPermissionsHandler>();
-            services.AddTransient<ActionHandler<GetUserPermissionsQuery, List<PermissionView>>, GetUserPermissionsHandler>();
             services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionView>, CreatePermissionHandler>();
             services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionView>, UpdatePermissionHandler>();
             services.AddTransient<ActionHandler<DeletePermissionCommand>, DeletePermissionHandler>();
-            services.AddTransient<ActionHandler<GetRolesQuery, List<RoleDto>>, GetRolesHandler>();
-            services.AddTransient<ActionHandler<CreateRoleCommand, RoleDto>, CreateRoleHandler>();
-            services.AddTransient<ActionHandler<UpdateRoleCommand, RoleDto>, UpdateRoleHandler>();
+            services.AddTransient<ActionHandler<GetRolesQuery, List<RoleView>>, GetRolesHandler>();
+            services.AddTransient<ActionHandler<CreateRoleCommand, RoleView>, CreateRoleHandler>();
+            services.AddTransient<ActionHandler<UpdateRoleCommand, RoleView>, UpdateRoleHandler>();
             services.AddTransient<ActionHandler<DeleteRoleCommand>, DeleteRoleHandler>();
             services.AddTransient<ActionHandler<AddRoleToUserCommand>, AddRoleToUserHandler>();
             services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
@@ -185,46 +183,47 @@ namespace DetailingArsenal.Api {
             // User
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
+            services.AddTransient<IUserReader, UserReader>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ActionHandler<UpdateUserCommand, UserView>, UpdateUserHandler>();
-            services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserView>, GetUserByAuth0IdHandler>();
+            services.AddTransient<ActionHandler<UpdateUserCommand>, UpdateUserHandler>();
+            services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserReadModel>, GetUserByAuth0IdHandler>();
 
             // Vehicle Categories
             services.AddTransient<VehicleCategoryNameUniqueSpecification>();
             services.AddTransient<VehicleCategoryNotInUseSpecification>();
             services.AddTransient<IVehicleCategoryRepo, VehicleCategoryRepo>();
             services.AddTransient<IVehicleCategoryService, VehicleCategoryService>();
-            services.AddTransient<ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryDto>>, GetVehicleCategoriesHandler>();
+            services.AddTransient<ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryView>>, GetVehicleCategoriesHandler>();
             services.AddTransient<CreateVehicleCategoryValidator>();
-            services.AddTransient<ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryDto>, CreateVehicleCategoryHandler>();
+            services.AddTransient<ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryView>, CreateVehicleCategoryHandler>();
             services.AddTransient<UpdateVehicleCategoryValidator>();
-            services.AddTransient<ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryDto>, UpdateVehicleCategoryHandler>();
+            services.AddTransient<ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryView>, UpdateVehicleCategoryHandler>();
             services.AddTransient<DeleteVehicleCategoryValidator>();
             services.AddTransient<ActionHandler<DeleteVehicleCategoryCommand>, DeleteVehicleCategoryHandler>();
 
             // Business
             services.AddTransient<IBusinessRepo, BusinessRepo>();
             services.AddTransient<IBusinessService, BusinessService>();
-            services.AddTransient<ActionHandler<GetBusinessQuery, BusinessDto>, GetBusinessHandler>();
+            services.AddTransient<ActionHandler<GetBusinessQuery, BusinessView>, GetBusinessHandler>();
             services.AddTransient<UpdateBusinessValidator>();
-            services.AddTransient<ActionHandler<UpdateBusinessCommand, BusinessDto>, UpdateBusinessHandler>();
+            services.AddTransient<ActionHandler<UpdateBusinessCommand, BusinessView>, UpdateBusinessHandler>();
 
             // Hours Of Operation
             services.AddTransient<IHoursOfOperationRepo, HoursOfOperationRepo>();
             services.AddTransient<IHoursOfOperationService, HoursOfOperationService>();
-            services.AddTransient<ActionHandler<GetHoursOfOperationQuery, HoursOfOperationDto>, GetHoursOfOperationHandler>();
+            services.AddTransient<ActionHandler<GetHoursOfOperationQuery, HoursOfOperationView>, GetHoursOfOperationHandler>();
             services.AddTransient<UpdateHoursOfOperationValidator>();
-            services.AddTransient<ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationDto>, UpdateHoursOfOperationHandler>();
+            services.AddTransient<ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationView>, UpdateHoursOfOperationHandler>();
 
             // Service
             services.AddTransient<ServiceNameUniqueSpecification>();
             services.AddTransient<ServiceNotInUseSpecification>();
             services.AddTransient<IServiceRepo, ServiceRepo>();
             services.AddTransient<IServiceService, ServiceService>();
-            services.AddTransient<ActionHandler<GetServicesQuery, List<ServiceDto>>, GetServicesHandler>();
-            services.AddTransient<ActionHandler<CreateServiceCommand, ServiceDto>, CreateServiceHandler>();
+            services.AddTransient<ActionHandler<GetServicesQuery, List<ServiceView>>, GetServicesHandler>();
+            services.AddTransient<ActionHandler<CreateServiceCommand, ServiceView>, CreateServiceHandler>();
             services.AddTransient<CreateServiceValidator>();
-            services.AddTransient<ActionHandler<UpdateServiceCommand, ServiceDto>, UpdateServiceHandler>();
+            services.AddTransient<ActionHandler<UpdateServiceCommand, ServiceView>, UpdateServiceHandler>();
             services.AddTransient<UpdateServiceValidator>();
             services.AddTransient<ActionHandler<DeleteServiceCommand>, DeleteServiceHandler>();
 
@@ -232,17 +231,17 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ClientHasNoAppointmentsSpecification>();
             services.AddTransient<IClientRepo, ClientRepo>();
             services.AddTransient<IClientService, ClientService>();
-            services.AddTransient<ActionHandler<GetClientsQuery, List<ClientDto>>, GetClientsHandler>();
-            services.AddTransient<ActionHandler<CreateClientCommand, ClientDto>, CreateClientHandler>();
-            services.AddTransient<ActionHandler<UpdateClientCommand, ClientDto>, UpdateClientHandler>();
-            services.AddTransient<ActionHandler<DeleteClientCommand, ClientDto>, DeleteClientHandler>();
+            services.AddTransient<ActionHandler<GetClientsQuery, List<ClientView>>, GetClientsHandler>();
+            services.AddTransient<ActionHandler<CreateClientCommand, ClientView>, CreateClientHandler>();
+            services.AddTransient<ActionHandler<UpdateClientCommand, ClientView>, UpdateClientHandler>();
+            services.AddTransient<ActionHandler<DeleteClientCommand, ClientView>, DeleteClientHandler>();
 
             // Calendar
             services.AddTransient<IAppointmentRepo, AppointmentRepo>();
             services.AddTransient<IAppointmentService, AppointmentService>();
-            services.AddTransient<ActionHandler<GetAppointmentsQuery, List<AppointmentDto>>, GetAppointmentsHandler>();
-            services.AddTransient<ActionHandler<CreateAppointmentCommand, AppointmentDto>, CreateAppointmentHandler>();
-            services.AddTransient<ActionHandler<UpdateAppointmentCommand, AppointmentDto>, UpdateAppointmentHandler>();
+            services.AddTransient<ActionHandler<GetAppointmentsQuery, List<AppointmentView>>, GetAppointmentsHandler>();
+            services.AddTransient<ActionHandler<CreateAppointmentCommand, AppointmentView>, CreateAppointmentHandler>();
+            services.AddTransient<ActionHandler<UpdateAppointmentCommand, AppointmentView>, UpdateAppointmentHandler>();
             services.AddTransient<ActionHandler<DeleteAppointmentCommand>, DeleteAppointmentHandler>();
         }
 

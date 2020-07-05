@@ -3,16 +3,17 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users {
-    public class GetUserByAuth0IdHandler : ActionHandler<GetUserByAuth0IdQuery, UserView> {
-        private IMapper mapper;
+    [Authorization]
+    public class GetUserByAuth0IdHandler : ActionHandler<GetUserByAuth0IdQuery, UserReadModel> {
+        IUserReader userReader;
 
-        public GetUserByAuth0IdHandler(IMapper mapper) {
-            this.mapper = mapper;
+        public GetUserByAuth0IdHandler(IUserReader userReader) {
+            this.userReader = userReader;
         }
 
-        public override Task<UserView> Execute(GetUserByAuth0IdQuery input, User? user) {
-            // Change this later.
-            return Task.FromResult(mapper.Map<User, UserView>(user!));
+        public async override Task<UserReadModel> Execute(GetUserByAuth0IdQuery input, User? user) {
+            var readModel = await userReader.ReadById(user!.Id);
+            return readModel;
         }
     }
 }

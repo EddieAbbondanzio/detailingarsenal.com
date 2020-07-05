@@ -9,6 +9,6 @@ namespace DetailingArsenal.Application.Settings {
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public ServicePricingMethod PricingMethod { get; set; }
-        public IEnumerable<ServiceConfigurationDto> Configurations { get; set; } = null!;
+        public IEnumerable<ServiceConfigurationView> Configurations { get; set; } = null!;
     }
 }

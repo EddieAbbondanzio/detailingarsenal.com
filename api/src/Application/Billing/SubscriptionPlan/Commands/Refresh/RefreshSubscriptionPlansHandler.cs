@@ -8,7 +8,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Billing {
     [Authorization(Action = "refresh", Scope = "subscription-plans")]
-    public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanDto>> {
+    public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>> {
         ISubscriptionPlanService service;
         private IMapper mapper;
 
@@ -17,9 +17,9 @@ namespace DetailingArsenal.Application.Billing {
             this.mapper = mapper;
         }
 
-        public async override Task<List<SubscriptionPlanDto>> Execute(RefreshSubscriptionPlansCommand input, User? user) {
+        public async override Task<List<SubscriptionPlanView>> Execute(RefreshSubscriptionPlansCommand input, User? user) {
             var plans = await service.RefreshPlans();
-            return mapper.Map<List<SubscriptionPlan>, List<SubscriptionPlanDto>>(plans);
+            return mapper.Map<List<SubscriptionPlan>, List<SubscriptionPlanView>>(plans);
         }
     }
 }

@@ -9,7 +9,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "update", Scope = "hours-of-operations")]
     [Validation(typeof(UpdateHoursOfOperationValidator))]
-    public class UpdateHoursOfOperationHandler : ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationDto> {
+    public class UpdateHoursOfOperationHandler : ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationView> {
         private IHoursOfOperationService service;
         private IMapper mapper;
 
@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application.Settings {
             this.mapper = mapper;
         }
 
-        public async override Task<HoursOfOperationDto> Execute(UpdateHoursOfOperationCommand input, User? user) {
+        public async override Task<HoursOfOperationView> Execute(UpdateHoursOfOperationCommand input, User? user) {
             var hours = await service.GetById(input.Id);
 
             if (!hours.IsOwner(user!)) {
@@ -34,7 +34,7 @@ namespace DetailingArsenal.Application.Settings {
                 )).ToList()
             ));
 
-            return mapper.Map<HoursOfOperation, HoursOfOperationDto>(hours);
+            return mapper.Map<HoursOfOperation, HoursOfOperationView>(hours);
         }
     }
 }

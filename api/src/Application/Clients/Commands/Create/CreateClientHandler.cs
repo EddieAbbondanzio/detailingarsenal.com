@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "create", Scope = "clients")]
-    public class CreateClientHandler : ActionHandler<CreateClientCommand, ClientDto> {
+    public class CreateClientHandler : ActionHandler<CreateClientCommand, ClientView> {
         IClientService service;
         private IMapper mapper;
 
@@ -15,7 +15,7 @@ namespace DetailingArsenal.Application.Clients {
             this.mapper = mapper;
         }
 
-        public async override Task<ClientDto> Execute(CreateClientCommand input, User? user) {
+        public async override Task<ClientView> Execute(CreateClientCommand input, User? user) {
             var c = await service.Create(
                 new CreateClient(
                     input.Name,
@@ -25,7 +25,7 @@ namespace DetailingArsenal.Application.Clients {
                 user!
             );
 
-            return mapper.Map<Client, ClientDto>(c);
+            return mapper.Map<Client, ClientView>(c);
         }
     }
 }

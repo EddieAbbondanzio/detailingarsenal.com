@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "update", Scope = "clients")]
-    public class UpdateClientHandler : ActionHandler<UpdateClientCommand, ClientDto> {
+    public class UpdateClientHandler : ActionHandler<UpdateClientCommand, ClientView> {
         IClientService service;
         private IMapper mapper;
 
@@ -16,7 +16,7 @@ namespace DetailingArsenal.Application.Clients {
             this.mapper = mapper;
         }
 
-        public async override Task<ClientDto> Execute(UpdateClientCommand input, User? user) {
+        public async override Task<ClientView> Execute(UpdateClientCommand input, User? user) {
             var c = await service.GetById(input.Id);
 
             if (!c.IsOwner(user!)) {
@@ -29,7 +29,7 @@ namespace DetailingArsenal.Application.Clients {
                 input.Email
             ));
 
-            return mapper.Map<Client, ClientDto>(c);
+            return mapper.Map<Client, ClientView>(c);
         }
     }
 }

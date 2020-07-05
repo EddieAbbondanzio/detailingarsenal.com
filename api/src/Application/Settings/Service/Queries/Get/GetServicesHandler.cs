@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "services")]
-    public class GetServicesHandler : ActionHandler<GetServicesQuery, List<ServiceDto>> {
+    public class GetServicesHandler : ActionHandler<GetServicesQuery, List<ServiceView>> {
         private IServiceService service;
         private IMapper mapper;
 
@@ -15,9 +15,9 @@ namespace DetailingArsenal.Application.Settings {
             this.mapper = mapper;
         }
 
-        public async override Task<List<ServiceDto>> Execute(GetServicesQuery input, User? user) {
+        public async override Task<List<ServiceView>> Execute(GetServicesQuery input, User? user) {
             var services = await service.GetByUser(user!);
-            return mapper.Map<List<Service>, List<ServiceDto>>(services);
+            return mapper.Map<List<Service>, List<ServiceView>>(services);
         }
     }
 }

@@ -9,6 +9,6 @@ export class UserService {
 
     async updateUser(update: { name: string }) {
         var res = await http.put(`/user`, update);
-        return new User(res.data.email, res.data.name);
+        return await this.getUser();
     }
 }

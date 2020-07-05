@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateBusinessValidator))]
     [Authorization(Action = "update", Scope = "businesses")]
-    public class UpdateBusinessHandler : ActionHandler<UpdateBusinessCommand, BusinessDto> {
+    public class UpdateBusinessHandler : ActionHandler<UpdateBusinessCommand, BusinessView> {
         IBusinessService service;
         private IMapper mapper;
 
@@ -16,7 +16,7 @@ namespace DetailingArsenal.Application.Settings {
             this.mapper = mapper;
         }
 
-        public async override Task<BusinessDto> Execute(UpdateBusinessCommand command, User? user) {
+        public async override Task<BusinessView> Execute(UpdateBusinessCommand command, User? user) {
             Business b = await service.GetByUser(user!);
 
             if (!b.IsOwner(user!)) {
@@ -29,7 +29,7 @@ namespace DetailingArsenal.Application.Settings {
                 command.Phone
             ));
 
-            return mapper.Map<Business, BusinessDto>(b);
+            return mapper.Map<Business, BusinessView>(b);
         }
     }
 }

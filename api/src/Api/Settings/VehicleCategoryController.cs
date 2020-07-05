@@ -21,7 +21,7 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpGet]
         public async Task<IActionResult> GetVehicleCategories() {
-            List<VehicleCategoryDto> categories = await mediator.Dispatch<GetVehicleCategoriesQuery, List<VehicleCategoryDto>>(
+            List<VehicleCategoryView> categories = await mediator.Dispatch<GetVehicleCategoriesQuery, List<VehicleCategoryView>>(
                 new GetVehicleCategoriesQuery(),
                 User.GetUserId()
                 );
@@ -31,7 +31,7 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpPost]
         public async Task<IActionResult> CreateVehicleCategory(CreateVehicleCategoryCommand create) {
-            VehicleCategoryDto cat = await mediator.Dispatch<CreateVehicleCategoryCommand, VehicleCategoryDto>(
+            VehicleCategoryView cat = await mediator.Dispatch<CreateVehicleCategoryCommand, VehicleCategoryView>(
                 create,
                 User.GetUserId()
             );
@@ -41,7 +41,7 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateVehicleCategory(Guid id, [FromBody] UpdateVehicleCategoryCommand update) {
-            VehicleCategoryDto cat = await mediator.Dispatch<UpdateVehicleCategoryCommand, VehicleCategoryDto>(
+            VehicleCategoryView cat = await mediator.Dispatch<UpdateVehicleCategoryCommand, VehicleCategoryView>(
                 update,
                 User!.GetUserId()
             );

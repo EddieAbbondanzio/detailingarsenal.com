@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "read", Scope = "appointments")]
-    public class GetAppointmentsHandler : ActionHandler<GetAppointmentsQuery, List<AppointmentDto>> {
+    public class GetAppointmentsHandler : ActionHandler<GetAppointmentsQuery, List<AppointmentView>> {
         IAppointmentService service;
         private IMapper mapper;
 
@@ -15,9 +15,9 @@ namespace DetailingArsenal.Application.Calendar {
             this.mapper = mapper;
         }
 
-        public async override Task<List<AppointmentDto>> Execute(GetAppointmentsQuery input, User? user) {
+        public async override Task<List<AppointmentView>> Execute(GetAppointmentsQuery input, User? user) {
             List<Appointment> appointments = await service.GetWithinRange(input.Date, input.Range, user!);
-            return mapper.Map<List<Appointment>, List<AppointmentDto>>(appointments);
+            return mapper.Map<List<Appointment>, List<AppointmentView>>(appointments);
         }
     }
 }

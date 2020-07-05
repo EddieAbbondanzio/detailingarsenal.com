@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "read", Scope = "clients")]
-    public class GetClientsHandler : ActionHandler<GetClientsQuery, List<ClientDto>> {
+    public class GetClientsHandler : ActionHandler<GetClientsQuery, List<ClientView>> {
         IClientService service;
         private IMapper mapper;
 
@@ -15,9 +15,9 @@ namespace DetailingArsenal.Application.Clients {
             this.mapper = mapper;
         }
 
-        public async override Task<List<ClientDto>> Execute(GetClientsQuery input, User? user) {
+        public async override Task<List<ClientView>> Execute(GetClientsQuery input, User? user) {
             List<Client> clients = await service.GetByUser(user!);
-            return mapper.Map<List<Client>, List<ClientDto>>(clients);
+            return mapper.Map<List<Client>, List<ClientView>>(clients);
         }
     }
 }

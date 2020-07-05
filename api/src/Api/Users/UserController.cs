@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Application;
 using DetailingArsenal.Application.Users;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,14 +21,14 @@ namespace DetailingArsenal.Api {
 
         [HttpGet]
         public async Task<IActionResult> GetUser() {
-            var user = await mediator.Dispatch<GetUserByAuth0IdQuery, UserView>(new GetUserByAuth0IdQuery(), User.GetUserId());
+            var user = await mediator.Dispatch<GetUserByAuth0IdQuery, UserReadModel>(new GetUserByAuth0IdQuery(), User.GetUserId());
             return Ok(user);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(UpdateUserCommand command) {
-            var user = await mediator.Dispatch<UpdateUserCommand, UserView>(command, User.GetUserId());
-            return Ok(user);
+            await mediator.Dispatch<UpdateUserCommand>(command, User.GetUserId());
+            return Ok();
         }
     }
 }

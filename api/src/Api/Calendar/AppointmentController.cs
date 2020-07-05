@@ -27,7 +27,7 @@ namespace DetailingArsenal.Api {
                 return BadRequest("Invalid range specified");
             }
 
-            var appointments = await mediator.Dispatch<GetAppointmentsQuery, List<AppointmentDto>>(
+            var appointments = await mediator.Dispatch<GetAppointmentsQuery, List<AppointmentView>>(
                 new GetAppointmentsQuery() { Range = appointmentRange, Date = date },
                 User.GetUserId()
             );
@@ -37,13 +37,13 @@ namespace DetailingArsenal.Api {
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateAppointmentCommand command) {
-            AppointmentDto appointment = await mediator.Dispatch<CreateAppointmentCommand, AppointmentDto>(command, User.GetUserId());
+            AppointmentView appointment = await mediator.Dispatch<CreateAppointmentCommand, AppointmentView>(command, User.GetUserId());
             return Ok(appointment);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(UpdateAppointmentCommand command) {
-            AppointmentDto appointment = await mediator.Dispatch<UpdateAppointmentCommand, AppointmentDto>(command, User.GetUserId());
+            AppointmentView appointment = await mediator.Dispatch<UpdateAppointmentCommand, AppointmentView>(command, User.GetUserId());
             return Ok(appointment);
         }
 

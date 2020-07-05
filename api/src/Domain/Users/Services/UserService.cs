@@ -79,6 +79,5 @@ namespace DetailingArsenal.Domain.Users {
         public async Task DeleteUser(User user) {
             await userRepo.Delete(user);
         }
-
     }
 }

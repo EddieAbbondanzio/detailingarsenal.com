@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "vehicle-categories")]
-    public class GetVehicleCategoriesHandler : ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryDto>> {
+    public class GetVehicleCategoriesHandler : ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryView>> {
         private IVehicleCategoryService service;
         private IMapper mapper;
 
@@ -15,9 +15,9 @@ namespace DetailingArsenal.Application.Settings {
             this.mapper = mapper;
         }
 
-        public async override Task<List<VehicleCategoryDto>> Execute(GetVehicleCategoriesQuery query, User? user) {
+        public async override Task<List<VehicleCategoryView>> Execute(GetVehicleCategoriesQuery query, User? user) {
             var vcs = await service.GetByUser(user!);
-            return mapper.Map<List<VehicleCategory>, List<VehicleCategoryDto>>(vcs);
+            return mapper.Map<List<VehicleCategory>, List<VehicleCategoryView>>(vcs);
         }
     }
 }

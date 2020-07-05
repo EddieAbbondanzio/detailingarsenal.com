@@ -8,7 +8,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "create", Scope = "appointments")]
-    public class CreateAppointmentHandler : ActionHandler<CreateAppointmentCommand, AppointmentDto> {
+    public class CreateAppointmentHandler : ActionHandler<CreateAppointmentCommand, AppointmentView> {
         IAppointmentService service;
         private IMapper mapper;
 
@@ -17,7 +17,7 @@ namespace DetailingArsenal.Application.Calendar {
             this.mapper = mapper;
         }
 
-        public async override Task<AppointmentDto> Execute(CreateAppointmentCommand command, User? user) {
+        public async override Task<AppointmentView> Execute(CreateAppointmentCommand command, User? user) {
             var create = new CreateAppointment(
                 command.ServiceId,
                 command.ClientId,
@@ -31,7 +31,7 @@ namespace DetailingArsenal.Application.Calendar {
             )).ToList();
 
             var appointment = await service.Create(create, user!);
-            return mapper.Map<Appointment, AppointmentDto>(appointment);
+            return mapper.Map<Appointment, AppointmentView>(appointment);
         }
     }
 }

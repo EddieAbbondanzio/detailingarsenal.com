@@ -9,7 +9,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "update", Scope = "services")]
     [Validation(typeof(UpdateServiceValidator))]
-    public class UpdateServiceHandler : ActionHandler<UpdateServiceCommand, ServiceDto> {
+    public class UpdateServiceHandler : ActionHandler<UpdateServiceCommand, ServiceView> {
         IServiceService service;
         private IMapper mapper;
 
@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application.Settings {
             this.mapper = mapper;
         }
 
-        public async override Task<ServiceDto> Execute(UpdateServiceCommand input, User? user) {
+        public async override Task<ServiceView> Execute(UpdateServiceCommand input, User? user) {
             var service = await this.service.GetById(input.Id);
 
             if (!service.IsOwner(user!)) {
@@ -39,7 +39,7 @@ namespace DetailingArsenal.Application.Settings {
                 )
             );
 
-            return mapper.Map<Service, ServiceDto>(service);
+            return mapper.Map<Service, ServiceView>(service);
         }
     }
 }
