@@ -23,11 +23,6 @@ namespace DetailingArsenal.Persistence.Security.Migrations {
                         Action = "refresh",
                         Scope = Scope
                     },
-                                        new {
-                        Id = Guid.NewGuid(),
-                        Action = "update",
-                        Scope = Scope
-                    },
                 };
 
                 c.Execute(

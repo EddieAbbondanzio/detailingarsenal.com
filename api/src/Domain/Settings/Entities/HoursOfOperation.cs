@@ -26,7 +26,8 @@ namespace DetailingArsenal.Domain.Settings {
 
             return new HoursOfOperation() {
                 Id = Guid.NewGuid(),
-                UserId = userId
+                UserId = userId,
+                Days = days
             };
         }
     }

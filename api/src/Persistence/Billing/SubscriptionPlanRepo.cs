@@ -144,10 +144,10 @@ namespace DetailingArsenal.Persistence.Billing {
 
         public async Task<List<SubscriptionPlan>> FindAll() {
             using (var reader = await Connection.QueryMultipleAsync(
-                @"select sp.* from subscription_plans sp
+                @"select sp.*, br.* from subscription_plans sp
                     join billing_references br on sp.billing_reference_id = br.id;
 
-                  select spp.* from subscription_plan_prices spp
+                  select spp.*, br2.* from subscription_plan_prices spp
                     join subscription_plans sp on spp.plan_id = sp.id
                     join billing_references br2 on sp.billing_reference_id = br2.id;
                 ")
