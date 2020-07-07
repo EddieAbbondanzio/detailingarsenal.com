@@ -14,7 +14,7 @@ namespace DetailingArsenal.Domain.Common {
         }
 
         public override async Task Execute(SagaContext<string> context) {
-            var trialPlan = await subscriptionPlanService.GetTrialPlan();
+            var trialPlan = await subscriptionPlanService.GetDefaultPlan();
             await customerService.StartSubscription(context.Data.User, trialPlan);
 
             context.Data.Plan = trialPlan;

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DetailingArsenal.Api.Billing {
-    [Authorize]
     [Route("/billing/subscription-plan")]
     [ApiController]
     public class SubscriptionPlanController : ControllerBase {
@@ -20,6 +19,7 @@ namespace DetailingArsenal.Api.Billing {
         /// <summary>
         /// Get a list of all the subscription plans.
         /// </summary>
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Get() {
             var plans = await mediator.Dispatch<GetSubscriptionPlansQuery, List<SubscriptionPlanView>>(
@@ -30,9 +30,19 @@ namespace DetailingArsenal.Api.Billing {
             return Ok(plans);
         }
 
+        [HttpGet("default")]
+        public async Task<IActionResult> GetDefault() {
+            var plan = await mediator.Dispatch<GetDefaultSubscriptionPlanQuery, SubscriptionPlanView>(
+                new GetDefaultSubscriptionPlanQuery()
+            );
+
+            return Ok(plan);
+        }
+
         /// <summary>
         /// Endpoint to refresh the cache of subscription plans by querying Auth0.
         /// </summary>
+        [Authorize]
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh() {
             var plans = await mediator.Dispatch<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>>(

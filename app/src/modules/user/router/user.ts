@@ -10,5 +10,10 @@ export const user = [
         path: 'user/settings/edit',
         name: 'editUserSettings',
         component: () => import('@/modules/user/views/edit-user-settings.vue')
+    },
+    {
+        path: 'user/subscription',
+        name: 'userSubscription',
+        component: () => import('@/modules/user/views/user-subscription.vue')
     }
 ];

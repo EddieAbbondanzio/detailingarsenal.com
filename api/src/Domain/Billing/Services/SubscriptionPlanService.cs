@@ -8,7 +8,7 @@ namespace DetailingArsenal.Domain.Billing {
     public interface ISubscriptionPlanService : IService {
         Task<SubscriptionPlan> GetById(Guid id);
         Task<List<SubscriptionPlan>> GetAllPlans();
-        Task<SubscriptionPlan> GetTrialPlan();
+        Task<SubscriptionPlan> GetDefaultPlan();
         Task<List<SubscriptionPlan>> RefreshPlans();
     }
 
@@ -31,7 +31,7 @@ namespace DetailingArsenal.Domain.Billing {
             return await repo.FindById(id) ?? throw new EntityNotFoundException();
         }
 
-        public async Task<SubscriptionPlan> GetTrialPlan() {
+        public async Task<SubscriptionPlan> GetDefaultPlan() {
             return await repo.FindByBillingReference(
                 new BillingReference(
                     config.DefaultPlan,

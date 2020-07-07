@@ -9,6 +9,11 @@ export class SubscriptionPlanService {
         return this._map(res.data);
     }
 
+    async getDefault() {
+        const res = await http.get('/billing/subscription-plan/default');
+        return this._map([res.data])[0];
+    }
+
     async refreshPlans() {
         const res = await http.post('/billing/subscription-plan/refresh');
         return this._map(res.data);

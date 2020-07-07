@@ -23,6 +23,13 @@
                     <b-icon icon="settings" type="is-dark" class="has-padding-right-3" />Settings
                 </router-link>
             </b-dropdown-item>
+
+            <b-dropdown-item aria-role="listitem" has-link>
+                <router-link :to="{name: 'userSubscription'}" class="is-flex is-flex-row">
+                    <b-icon icon="currency-usd" type="is-dark" class="has-padding-right-3" />Subscription
+                </router-link>
+            </b-dropdown-item>
+
             <b-dropdown-item
                 aria-role="listitem"
                 @click="onLogoutClick"

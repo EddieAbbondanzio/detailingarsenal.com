@@ -5,12 +5,14 @@ import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
 import { Route } from 'vue-router';
 import router from '@/core/router';
+import { SubscriptionPlan } from '@/modules/admin/api/entities/subscription-plan';
 
 @Module({ namespaced: true, name: 'user', dynamic: true, store })
 class UserStore extends InitableModule {
     public isAuthenticated: boolean = false;
     public isLoading: boolean = true; // Used to show loading screen
     public user: User = null!;
+    defaultSubscriptionPlan: SubscriptionPlan = null!;
 
     @Mutation
     public SET_IS_AUTHENTICATED(isAuthenticated: boolean) {
@@ -27,6 +29,11 @@ class UserStore extends InitableModule {
         this.user = user;
     }
 
+    @Mutation
+    SET_DEFAULT_SUBSCRIPTION_PLAN(subscriptionPlan: SubscriptionPlan) {
+        this.defaultSubscriptionPlan = subscriptionPlan;
+    }
+
     @Action({ rawError: true })
     async _init() {
         await api.authentication.init();
@@ -36,8 +43,12 @@ class UserStore extends InitableModule {
             this.context.commit('SET_USER', user);
         }
 
+        const plan = await api.billing.subscriptionPlan.getDefault();
+
         this.context.commit('SET_IS_AUTHENTICATED', api.authentication.isAuthenticated);
         this.context.commit('SET_IS_LOADING', false);
+        this.context.commit('SET_DEFAULT_SUBSCRIPTION_PLAN', plan);
+        console.log(plan);
     }
 
     @Action({ rawError: true })
