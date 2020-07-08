@@ -11,7 +11,11 @@ namespace DetailingArsenal.Domain.Common {
         }
 
         public async override Task Execute(SagaContext context) {
-            await roleService.Create(new CreateRole("Pro", new List<System.Guid>()));
+            var role = await roleService.TryGetByName("Pro");
+
+            if (role == null) {
+                await roleService.Create(new CreateRole("Pro", new List<System.Guid>()));
+            }
         }
     }
 }

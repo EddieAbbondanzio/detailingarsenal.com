@@ -9,19 +9,23 @@ namespace DetailingArsenal.Persistence.Billing {
 
         public async Task<SubscriptionReadModel> ReadForUser(User user) {
             var sub = await Connection.QueryFirstAsync(
-                @"select sp.name name, s.status status, spp.price price, spp.interval priceInterval from subcription s
-                left join subscription_plan sp on s.plan_id = sp.id
+                @"select sp.name as name, s.status as status, spp.price as price, spp.interval as price_interval, br.billing_id as price_billing_id from subscriptions s
+                left join subscription_plans sp on s.plan_id = sp.id
                 left join subscription_plan_prices spp on sp.id = spp.plan_id
+                left join billing_references br on spp.billing_reference_id = br.id
                 left join customers c on s.customer_id = c.id
-                where c.user_id = @Id and spp.id = s.price_billing_id;",
+                where c.user_id = @Id and br.billing_id = s.price_billing_id;",
                 user
             );
 
             return new SubscriptionReadModel(
                 sub.name,
                 sub.status,
-                sub.price,
-                sub.priceInterval
+                new SubscriptionPlanPriceReadModel(
+                    sub.price,
+                    sub.price_interval,
+                    sub.price_billing_id
+                )
             );
         }
     }

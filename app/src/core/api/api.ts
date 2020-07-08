@@ -9,6 +9,7 @@ import { AppointmentService } from '@/modules/calendar/api/service/appointment-s
 import { PermissionService } from '@/modules/admin/api/services/permission-service';
 import { RoleService } from '@/modules/admin/api/services/role-service';
 import { SubscriptionPlanService } from '@/modules/admin/api/services/subscription-plan-service';
+import { SubscriptionService } from '@/modules/user/api/services/subscription-service';
 
 export const api = {
     authentication: new AuthenticationService(),
@@ -26,6 +27,7 @@ export const api = {
         role: new RoleService()
     },
     billing: {
-        subscriptionPlan: new SubscriptionPlanService()
+        subscriptionPlan: new SubscriptionPlanService(),
+        subscription: new SubscriptionService()
     }
 };

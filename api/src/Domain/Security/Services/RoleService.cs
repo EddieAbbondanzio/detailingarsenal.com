@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Domain.Security {
     public interface IRoleService : IService {
         Task<Role> GetById(Guid id);
+        Task<Role?> TryGetByName(string name);
         Task<List<Role>> GetAll();
         Task<Role> Create(CreateRole create);
         Task Update(Role role, UpdateRole update);
@@ -26,6 +27,10 @@ namespace DetailingArsenal.Domain.Security {
 
         public async Task<Role> GetById(Guid id) {
             return await repo.FindById(id) ?? throw new EntityNotFoundException();
+        }
+
+        public async Task<Role?> TryGetByName(string name) {
+            return await repo.Find(name);
         }
 
         public async Task<List<Role>> GetAll() {

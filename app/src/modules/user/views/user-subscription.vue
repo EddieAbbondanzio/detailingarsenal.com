@@ -30,7 +30,7 @@
                 <div class="has-background-primary has-padding-all-4">
                     <p
                         class="is-size-4 has-text-weight-bold has-text-white has-text-centered"
-                    >Professional Plan</p>
+                    >Detailing Arsenal {{ name }}</p>
                 </div>
 
                 <div class="level has-padding-all-4">
@@ -104,9 +104,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import billingStore from '../store/billing-store';
+import { api } from '../../../core/api/api';
 
 @Component({})
 export default class UserSubscription extends Vue {
+    get name() {
+        return billingStore.defaultPlan == null ? '' : billingStore.defaultPlan.name;
+    }
+
     get isTrialing() {
         return false;
     }
@@ -129,6 +134,7 @@ export default class UserSubscription extends Vue {
 
     async created() {
         await billingStore.init();
+        await api.billing.subscription.getUserSubscription();
     }
 
     showYearly = false;
