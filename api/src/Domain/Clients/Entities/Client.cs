@@ -57,6 +57,7 @@ namespace DetailingArsenal.Domain.Clients {
         public static Client Create(Guid userId, string name, string? phone, string? email) {
             return new Client() {
                 Id = Guid.NewGuid(),
+                UserId = userId,
                 Name = name,
                 Phone = phone,
                 Email = email
