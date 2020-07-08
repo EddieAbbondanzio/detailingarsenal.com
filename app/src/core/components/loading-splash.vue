@@ -1,6 +1,6 @@
 <template>
     <div
-        class="loading-splash is-flex is-flex-column is-flex-grow-1 has-background-primary is-align-items-center is-justify-content-center"
+        class="loading-splash is-flex is-flex-column is-flex-grow-1 has-background-primary is-align-items-center is-justify-content-center has-h-50"
     >
         <div class="is-flex is-flex-column is-align-items-center">
             <h1
@@ -10,6 +10,13 @@
             <b-loading :active="true" :is-full-page="false" />
             <p class="has-text-white">{{ message }}</p>
         </div>
+
+        <b-button
+            style="position: absolute; bottom: 12.5%; z-index: 9001"
+            type="is-white"
+            outlined
+            @click="onCancel"
+        >Cancel</b-button>
     </div>
 </template>
 
@@ -21,6 +28,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import userStore from '../../modules/user/store/user-store';
 
 @Component({
     name: 'loading-splash'
@@ -44,6 +52,10 @@ export default class LoadingSplash extends Vue {
     pickNextMessage() {
         const rand = Math.floor(Math.random() * loadingMessages.length);
         return loadingMessages[rand];
+    }
+
+    onCancel() {
+        userStore.logout();
     }
 }
 
