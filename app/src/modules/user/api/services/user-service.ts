@@ -5,12 +5,12 @@ import { UserPermission } from '@/modules/user/api/entities/user-permission';
 export class UserService {
     async getUser(): Promise<User> {
         const res = await http.get('user');
-        return new User(
-            res.data.email,
-            res.data.name,
-            res.data.isAdmin,
-            (res.data.permissions as any[]).map(p => new UserPermission(p.action, p.scope))
-        );
+
+        var perms = Array.isArray(res.data.permissions)
+            ? (res.data.permissions as any[]).map(p => new UserPermission(p.action, p.scope))
+            : [];
+
+        return new User(res.data.email, res.data.name, res.data.isAdmin, perms);
     }
 
     async updateUser(update: { name: string }) {
