@@ -4,11 +4,11 @@ using DetailingArsenal.Domain.Billing;
 using Stripe.Checkout;
 
 namespace DetailingArsenal.Infrastructure.Billing {
-    public class StripeSessionGateway : ISessionGateway {
+    public class StripeCheckoutSessionGateway : ICheckoutSessionGateway {
         ISubscriptionConfig config;
         SessionService sessionService;
 
-        public StripeSessionGateway(ISubscriptionConfig config) {
+        public StripeCheckoutSessionGateway(ISubscriptionConfig config) {
             this.config = config;
             this.sessionService = new SessionService();
         }

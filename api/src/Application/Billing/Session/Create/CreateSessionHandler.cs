@@ -5,16 +5,16 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Billing {
     [Authorization]
-    public class CreateSessionHandler : ActionHandler<CreateSessionCommand, BillingReference> {
+    public class CreateSessionHandler : ActionHandler<CreateCheckoutSessionCommand, BillingReference> {
         ICustomerService customerService;
-        ISessionGateway sessionGateway;
+        ICheckoutSessionGateway sessionGateway;
 
-        public CreateSessionHandler(ICustomerService customerService, ISessionGateway sessionGateway) {
+        public CreateSessionHandler(ICustomerService customerService, ICheckoutSessionGateway sessionGateway) {
             this.customerService = customerService;
             this.sessionGateway = sessionGateway;
         }
 
-        public async override Task<BillingReference> Execute(CreateSessionCommand input, User? user) {
+        public async override Task<BillingReference> Execute(CreateCheckoutSessionCommand input, User? user) {
             var customer = await customerService.GetByUser(user!);
             var billingReference = await sessionGateway.CreateSession(customer, input.PriceBillingId);
             return billingReference;
