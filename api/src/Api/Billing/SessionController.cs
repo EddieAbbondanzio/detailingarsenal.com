@@ -21,9 +21,9 @@ namespace DetailingArsenal.Api.Billing {
         /// Create a new session with Stripe. User wishes to start checkout. Returns sessionId.
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> CreateSession() {
+        public async Task<IActionResult> CreateSession(CreateSessionCommand create) {
             var billingRef = await mediator.Dispatch<CreateSessionCommand, BillingReference>(
-                new CreateSessionCommand(),
+                create,
                 User!.GetUserId()
             );
 
