@@ -103,7 +103,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import userStore from '../store/user-store';
+import billingStore from '../store/billing-store';
 
 @Component({})
 export default class UserSubscription extends Vue {
@@ -116,19 +116,19 @@ export default class UserSubscription extends Vue {
     }
 
     get price() {
-        if (userStore.defaultSubscriptionPlan == null) {
+        if (billingStore.defaultPlan == null) {
             return 0;
         }
 
         if (this.showYearly) {
-            return userStore.defaultSubscriptionPlan.prices.find(p => p.interval == 'year');
+            return billingStore.defaultPlan.prices.find(p => p.interval == 'year');
         } else {
-            return userStore.defaultSubscriptionPlan.prices.find(p => p.interval == 'month');
+            return billingStore.defaultPlan.prices.find(p => p.interval == 'month');
         }
     }
 
     async created() {
-        await userStore.init();
+        await billingStore.init();
     }
 
     showYearly = false;

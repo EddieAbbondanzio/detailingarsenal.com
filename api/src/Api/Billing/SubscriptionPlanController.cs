@@ -34,6 +34,7 @@ namespace DetailingArsenal.Api.Billing {
         public async Task<IActionResult> GetDefault() {
             var plan = await mediator.Dispatch<GetDefaultSubscriptionPlanQuery, SubscriptionPlanView>(
                 new GetDefaultSubscriptionPlanQuery()
+            // Anon is allowed
             );
 
             return Ok(plan);
