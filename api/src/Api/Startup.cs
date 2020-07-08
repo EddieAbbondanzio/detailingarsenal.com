@@ -122,6 +122,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<RefreshSubscriptionPlansStep>();
             services.AddTransient<CreateOrUpdateAdminStep>();
             services.AddTransient<CreateProRoleStep>();
+            services.AddTransient<ValidateSubscriptionConfigStep>();
 
             services.AddTransient<NewUserSaga>();
             services.AddTransient<CreateUserStep>();
@@ -143,6 +144,7 @@ namespace DetailingArsenal.Api {
             // Billing
             var stripeConfig = services.AddConfig<ISubscriptionConfig, StripeConfig>(Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
+            services.AddTransient<SubscriptionConfigValidator>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ISubscriptionReader, SubscriptionReader>();
