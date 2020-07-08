@@ -64,7 +64,7 @@ export default class RoleView extends Vue {
         return adminStore.permissions;
     }
 
-    role: Role = null!;
+    role: Role | null = null;
     enabledPermissions: Permission[] = [];
 
     @displayLoading
@@ -72,6 +72,11 @@ export default class RoleView extends Vue {
         await adminStore.init();
 
         this.role = adminStore.roles.find(r => r.id == this.$route.params.id)!;
+
+        if (this.role == null) {
+            throw new Error('Role not found');
+        }
+
         this.enabledPermissions = this.role.permissionIds.map(id => adminStore.permissions.find(p => p.id == id)!);
     }
 }
