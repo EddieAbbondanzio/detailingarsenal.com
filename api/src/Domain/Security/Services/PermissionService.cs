@@ -9,8 +9,8 @@ namespace DetailingArsenal.Domain.Security {
         Task<Permission> GetById(Guid id);
         Task<PermissionSet> GetForRoles(IEnumerable<Role> roles);
 
-        Task<Permission> Create(CreatePermission create, User user);
-        Task Update(Permission permission, UpdatePermission update);
+        Task<Permission> Create(PermissionCreate create, User user);
+        Task Update(Permission permission, PermissionUpdate update);
         Task Delete(Permission permission);
     }
 
@@ -37,7 +37,7 @@ namespace DetailingArsenal.Domain.Security {
             return await repo.FindForRoles(roles);
         }
 
-        public async Task<Permission> Create(CreatePermission create, User user) {
+        public async Task<Permission> Create(PermissionCreate create, User user) {
             var p = Permission.Create(
                 create.Action,
                 create.Scope
@@ -49,7 +49,7 @@ namespace DetailingArsenal.Domain.Security {
             return p;
         }
 
-        public async Task Update(Permission permission, UpdatePermission update) {
+        public async Task Update(Permission permission, PermissionUpdate update) {
             permission.Action = update.Action;
             permission.Scope = update.Scope;
 

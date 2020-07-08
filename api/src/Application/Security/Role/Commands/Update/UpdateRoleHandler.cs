@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application.Security {
 
         public async override Task<RoleView> Execute(UpdateRoleCommand input, User? user) {
             var r = await service.GetById(input.Id);
-            await service.Update(r, new UpdateRole(
+            await service.Update(r, new RoleUpdate(
                 input.Name,
                 input.PermissionIds
             ));

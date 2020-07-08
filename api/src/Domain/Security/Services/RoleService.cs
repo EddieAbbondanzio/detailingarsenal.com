@@ -8,8 +8,8 @@ namespace DetailingArsenal.Domain.Security {
         Task<Role> GetById(Guid id);
         Task<Role?> TryGetByName(string name);
         Task<List<Role>> GetAll();
-        Task<Role> Create(CreateRole create);
-        Task Update(Role role, UpdateRole update);
+        Task<Role> Create(RoleCreate create);
+        Task Update(Role role, RoleUpdate update);
         Task Delete(Role role);
 
         Task AddRoleToUser(Role role, User user);
@@ -37,7 +37,7 @@ namespace DetailingArsenal.Domain.Security {
             return await repo.FindAll();
         }
 
-        public async Task<Role> Create(CreateRole create) {
+        public async Task<Role> Create(RoleCreate create) {
             var r = Role.Create(
                 create.Name,
                 create.PermissionIds
@@ -49,7 +49,7 @@ namespace DetailingArsenal.Domain.Security {
             return r;
         }
 
-        public async Task Update(Role role, UpdateRole update) {
+        public async Task Update(Role role, RoleUpdate update) {
             role.Name = update.Name;
             role.PermissionIds = update.PermissionIds;
 

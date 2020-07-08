@@ -7,8 +7,8 @@ namespace DetailingArsenal.Domain.Settings {
     public interface IVehicleCategoryService : IService {
         Task<VehicleCategory> GetById(Guid id);
         Task<List<VehicleCategory>> GetByUser(User user);
-        Task<VehicleCategory> Create(CreateVehicleCategory create, User user);
-        Task Update(VehicleCategory category, UpdateVehicleCategory update);
+        Task<VehicleCategory> Create(VehicleCategoryCreate create, User user);
+        Task Update(VehicleCategory category, VehicleCategoryUpdate update);
         Task Delete(VehicleCategory category);
     }
 
@@ -31,7 +31,7 @@ namespace DetailingArsenal.Domain.Settings {
             return await repo.FindByUser(user);
         }
 
-        public async Task<VehicleCategory> Create(CreateVehicleCategory create, User user) {
+        public async Task<VehicleCategory> Create(VehicleCategoryCreate create, User user) {
             var cat = VehicleCategory.Create(create, user);
 
             await uniqueNameSpec.CheckAndThrow(cat);
@@ -40,7 +40,7 @@ namespace DetailingArsenal.Domain.Settings {
             return cat;
         }
 
-        public async Task Update(VehicleCategory category, UpdateVehicleCategory update) {
+        public async Task Update(VehicleCategory category, VehicleCategoryUpdate update) {
             category.Name = update.Name;
             category.Description = update.Description;
 

@@ -1,9 +1,9 @@
 namespace DetailingArsenal.Domain.Security {
-    public class CreatePermission : IDataTransferObject {
+    public class PermissionUpdate : IDataTransferObject {
         public string Action { get; }
         public string Scope { get; }
 
-        public CreatePermission(string action, string scope) {
+        public PermissionUpdate(string action, string scope) {
             Action = action;
             Scope = scope;
         }

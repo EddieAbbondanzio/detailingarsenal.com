@@ -9,7 +9,7 @@ namespace DetailingArsenal.Domain.Settings {
         Task<HoursOfOperation> GetById(Guid id);
         Task<HoursOfOperation> GetOrCreateForUser(User user);
         Task<HoursOfOperation> CreateDefault(User user);
-        Task Update(HoursOfOperation hours, UpdateHoursOfOperation update);
+        Task Update(HoursOfOperation hours, HoursOfOperationUpdate update);
         Task Delete(HoursOfOperation hours);
     }
 
@@ -49,7 +49,7 @@ namespace DetailingArsenal.Domain.Settings {
             return hours;
         }
 
-        public async Task Update(HoursOfOperation hours, UpdateHoursOfOperation update) {
+        public async Task Update(HoursOfOperation hours, HoursOfOperationUpdate update) {
             hours.Days = update.Days.Select(d => HoursOfOperationDay.Create(
                 d.Day,
                 d.Open,

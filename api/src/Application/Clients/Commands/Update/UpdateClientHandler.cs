@@ -23,7 +23,7 @@ namespace DetailingArsenal.Application.Clients {
                 throw new AuthorizationException();
             }
 
-            await service.Update(c, new UpdateClient(
+            await service.Update(c, new ClientUpdate(
                 input.Name,
                 input.Phone,
                 input.Email

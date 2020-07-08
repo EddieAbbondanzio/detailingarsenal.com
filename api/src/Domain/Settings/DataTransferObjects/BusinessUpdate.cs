@@ -1,10 +1,10 @@
 namespace DetailingArsenal.Domain.Settings {
-    public class UpdateBusiness : IDataTransferObject {
+    public class BusinessUpdate : IDataTransferObject {
         public string? Name { get; }
         public string? Address { get; }
         public string? Phone { get; }
 
-        public UpdateBusiness(string? name, string? address, string? phone) {
+        public BusinessUpdate(string? name, string? address, string? phone) {
             Name = name;
             Address = address;
             Phone = phone;

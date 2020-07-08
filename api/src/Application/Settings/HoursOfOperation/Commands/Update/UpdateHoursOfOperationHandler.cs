@@ -25,8 +25,8 @@ namespace DetailingArsenal.Application.Settings {
                 throw new AuthorizationException();
             }
 
-            await service.Update(hours, new UpdateHoursOfOperation(
-                input.Days.Select(d => new UpdateHoursOfOperationDay(
+            await service.Update(hours, new HoursOfOperationUpdate(
+                input.Days.Select(d => new HoursOfOperationDayUpdate(
                     d.Day,
                     d.Open,
                     d.Close,

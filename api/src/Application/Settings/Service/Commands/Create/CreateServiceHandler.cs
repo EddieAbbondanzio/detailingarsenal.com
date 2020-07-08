@@ -20,12 +20,12 @@ namespace DetailingArsenal.Application.Settings {
 
         public async override Task<ServiceView> Execute(CreateServiceCommand input, User? user) {
             var s = await service.Create(
-                new CreateService(
+                new ServiceCreate(
                     user!.Id,
                     input.Name,
                     input.Description,
                     input.PricingMethod,
-                    input.Configurations.Select(c => new CreateServiceConfiguration(
+                    input.Configurations.Select(c => new ServiceConfigurationCreate(
                         c.VehicleCategoryId,
                         c.Price,
                         c.Duration

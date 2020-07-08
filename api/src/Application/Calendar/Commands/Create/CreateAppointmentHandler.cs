@@ -18,14 +18,14 @@ namespace DetailingArsenal.Application.Calendar {
         }
 
         public async override Task<AppointmentView> Execute(CreateAppointmentCommand command, User? user) {
-            var create = new CreateAppointment(
+            var create = new AppointmentCreate(
                 command.ServiceId,
                 command.ClientId,
                 command.Price,
                 command.Notes
             );
 
-            create.Blocks = command.Blocks.Select(b => new CreateAppointmentBlock(
+            create.Blocks = command.Blocks.Select(b => new AppointmentBlockCreate(
                 b.Start,
                 b.End
             )).ToList();

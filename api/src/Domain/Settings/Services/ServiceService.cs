@@ -8,8 +8,8 @@ namespace DetailingArsenal.Domain.Settings {
     public interface IServiceService : IService {
         Task<Service> GetById(Guid id);
         Task<List<Service>> GetByUser(User user);
-        Task<Service> Create(CreateService create, User user);
-        Task Update(Service service, UpdateService update);
+        Task<Service> Create(ServiceCreate create, User user);
+        Task Update(Service service, ServiceUpdate update);
         Task Delete(Service service);
     }
 
@@ -32,7 +32,7 @@ namespace DetailingArsenal.Domain.Settings {
             return await repo.FindByUser(user);
         }
 
-        public async Task<Service> Create(CreateService create, User user) {
+        public async Task<Service> Create(ServiceCreate create, User user) {
             var service = Service.Create(
                 user!.Id,
                 create.Name,
@@ -55,7 +55,7 @@ namespace DetailingArsenal.Domain.Settings {
             return service;
 
         }
-        public async Task Update(Service service, UpdateService update) {
+        public async Task Update(Service service, ServiceUpdate update) {
             service.Name = update.Name;
             service.Description = update.Description;
             service.PricingMethod = update.PricingMethod;

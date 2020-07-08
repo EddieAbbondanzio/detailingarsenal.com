@@ -27,11 +27,11 @@ namespace DetailingArsenal.Application.Settings {
 
             await this.service.Update(
                 service,
-                new UpdateService(
+                new ServiceUpdate(
                     input.Name,
                     input.Description,
                     input.PricingMethod,
-                    input.Configurations.Select(c => new UpdateServiceConfiguration(
+                    input.Configurations.Select(c => new ServiceConfigurationUpdate(
                         c.VehicleCategoryId,
                         c.Price,
                         c.Duration

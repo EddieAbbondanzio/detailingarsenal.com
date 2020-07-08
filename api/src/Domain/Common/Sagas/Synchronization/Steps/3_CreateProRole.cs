@@ -14,7 +14,7 @@ namespace DetailingArsenal.Domain.Common {
             var role = await roleService.TryGetByName("Pro");
 
             if (role == null) {
-                await roleService.Create(new CreateRole("Pro", new List<System.Guid>()));
+                await roleService.Create(new RoleCreate("Pro", new List<System.Guid>()));
             }
         }
     }

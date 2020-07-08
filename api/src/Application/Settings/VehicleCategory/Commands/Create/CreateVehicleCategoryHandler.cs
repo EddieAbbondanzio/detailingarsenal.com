@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application.Settings {
 
         public async override Task<VehicleCategoryView> Execute(CreateVehicleCategoryCommand command, User? user) {
             var cat = await service.Create(
-                new CreateVehicleCategory(
+                new VehicleCategoryCreate(
                     command.Name,
                     command.Description
                 ),

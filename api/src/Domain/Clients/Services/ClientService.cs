@@ -7,8 +7,8 @@ namespace DetailingArsenal.Domain.Clients {
     public interface IClientService : IService {
         Task<Client> GetById(Guid id);
         Task<List<Client>> GetByUser(User user);
-        Task<Client> Create(CreateClient create, User user);
-        Task Update(Client client, UpdateClient update);
+        Task<Client> Create(ClientCreate create, User user);
+        Task Update(Client client, ClientUpdate update);
         Task Delete(Client client);
     }
 
@@ -29,7 +29,7 @@ namespace DetailingArsenal.Domain.Clients {
             return await repo.FindByUser(user);
         }
 
-        public async Task<Client> Create(CreateClient create, User user) {
+        public async Task<Client> Create(ClientCreate create, User user) {
             var c = Client.Create(
                 user.Id,
                 create.Name,
@@ -41,7 +41,7 @@ namespace DetailingArsenal.Domain.Clients {
             return c;
         }
 
-        public async Task Update(Client client, UpdateClient update) {
+        public async Task Update(Client client, ClientUpdate update) {
             client.Name = update.Name;
             client.Phone = update.Phone;
             client.Email = update.Phone;

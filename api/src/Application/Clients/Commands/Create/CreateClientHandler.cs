@@ -17,7 +17,7 @@ namespace DetailingArsenal.Application.Clients {
 
         public async override Task<ClientView> Execute(CreateClientCommand input, User? user) {
             var c = await service.Create(
-                new CreateClient(
+                new ClientCreate(
                     input.Name,
                     input.Phone,
                     input.Email

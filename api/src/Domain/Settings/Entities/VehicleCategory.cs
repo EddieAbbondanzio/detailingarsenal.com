@@ -39,7 +39,7 @@ namespace DetailingArsenal.Domain.Settings {
         private string name = null!;
         private string? description = null;
 
-        public static VehicleCategory Create(CreateVehicleCategory create, User user) {
+        public static VehicleCategory Create(VehicleCategoryCreate create, User user) {
             return new VehicleCategory() {
                 Id = Guid.NewGuid(),
                 UserId = user.Id,

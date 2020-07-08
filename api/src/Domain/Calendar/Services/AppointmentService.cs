@@ -8,8 +8,8 @@ namespace DetailingArsenal.Domain.Calendar {
     public interface IAppointmentService : IService {
         Task<Appointment> GetById(Guid id);
         Task<List<Appointment>> GetWithinRange(DateTime date, AppointmentRange range, User user);
-        Task<Appointment> Create(CreateAppointment create, User user);
-        Task Update(Appointment appointment, UpdateAppointment update);
+        Task<Appointment> Create(AppointmentCreate create, User user);
+        Task Update(Appointment appointment, AppointmentUpdate update);
         Task Delete(Appointment appointment);
     }
 
@@ -32,7 +32,7 @@ namespace DetailingArsenal.Domain.Calendar {
             }
         }
 
-        public async Task<Appointment> Create(CreateAppointment create, User user) {
+        public async Task<Appointment> Create(AppointmentCreate create, User user) {
             var appointment = Appointment.Create(
                 user.Id,
                 create.ServiceId,
@@ -51,7 +51,7 @@ namespace DetailingArsenal.Domain.Calendar {
             return appointment;
         }
 
-        public async Task Update(Appointment appointment, UpdateAppointment update) {
+        public async Task Update(Appointment appointment, AppointmentUpdate update) {
             appointment.ServiceId = update.ServiceId;
             appointment.ClientId = update.ClientId;
             appointment.Price = update.Price;

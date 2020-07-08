@@ -8,7 +8,7 @@ namespace DetailingArsenal.Domain.Settings {
         Task<Business> GetByUser(User user);
         Task<Business> GetOrCreateForUser(User user);
         Task<Business> CreateDefault(User user);
-        Task Update(Business business, UpdateBusiness update);
+        Task Update(Business business, BusinessUpdate update);
         Task Delete(Business business);
     }
 
@@ -45,7 +45,7 @@ namespace DetailingArsenal.Domain.Settings {
             return b;
         }
 
-        public async Task Update(Business business, UpdateBusiness update) {
+        public async Task Update(Business business, BusinessUpdate update) {
             business.Name = update.Name;
             business.Address = update.Address;
             business.Phone = update.Phone;

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 
 namespace DetailingArsenal.Domain.Calendar {
-    public class CreateAppointment : IDataTransferObject {
+    public class AppointmentCreate : IDataTransferObject {
         public Guid ServiceId { get; }
         public Guid ClientId { get; }
         public decimal Price { get; }
         public string? Notes { get; }
-        public List<CreateAppointmentBlock> Blocks { get; set; } = new List<CreateAppointmentBlock>();
+        public List<AppointmentBlockCreate> Blocks { get; set; } = new List<AppointmentBlockCreate>();
 
-        public CreateAppointment(Guid serviceId, Guid clientId, decimal price, string? notes) {
+        public AppointmentCreate(Guid serviceId, Guid clientId, decimal price, string? notes) {
             ServiceId = serviceId;
             ClientId = clientId;
             Price = price;

@@ -23,7 +23,7 @@ namespace DetailingArsenal.Tests.Domain.Settings {
             };
 
             var cat = await service.Create(
-                new CreateVehicleCategory(
+                new VehicleCategoryCreate(
                     "name",
                     "desc"
                 ),
@@ -52,7 +52,7 @@ namespace DetailingArsenal.Tests.Domain.Settings {
 
             await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => await service.Create(
-                    new CreateVehicleCategory(
+                    new VehicleCategoryCreate(
                         "cat"
                     ),
                     user
@@ -82,7 +82,7 @@ namespace DetailingArsenal.Tests.Domain.Settings {
 
             await service.Update(
                 cat,
-                new UpdateVehicleCategory(
+                new VehicleCategoryUpdate(
                     "new",
                     "newDesc"
                 )
@@ -116,7 +116,7 @@ namespace DetailingArsenal.Tests.Domain.Settings {
             await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => await service.Update(
                     updatingCat,
-                    new UpdateVehicleCategory(
+                    new VehicleCategoryUpdate(
                         "cat"
                     )
                 )

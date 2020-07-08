@@ -25,14 +25,14 @@ namespace DetailingArsenal.Application.Calendar {
                 throw new AuthorizationException();
             }
 
-            var update = new UpdateAppointment(
+            var update = new AppointmentUpdate(
                 input.ServiceId,
                 input.ClientId,
                 input.Price,
                 input.Notes
             );
 
-            update.Blocks = input.Blocks.Select(b => new UpdateAppointmentBlock(
+            update.Blocks = input.Blocks.Select(b => new AppointmentBlockUpdate(
                 b.Start,
                 b.Start
             )).ToList();

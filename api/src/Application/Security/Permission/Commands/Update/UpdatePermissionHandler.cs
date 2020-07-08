@@ -17,7 +17,7 @@ namespace DetailingArsenal.Application.Security {
 
         public async override Task<PermissionView> Execute(UpdatePermissionCommand input, User? user) {
             var p = await service.GetById(input.Id);
-            await service.Update(p, new UpdatePermission(
+            await service.Update(p, new PermissionUpdate(
                 input.Action,
                 input.Scope
             ));

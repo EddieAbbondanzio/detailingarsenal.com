@@ -1,11 +1,11 @@
 using System;
 
 namespace DetailingArsenal.Domain.Calendar {
-    public class CreateAppointmentBlock : IDataTransferObject {
+    public class AppointmentBlockCreate : IDataTransferObject {
         public DateTime Start { get; }
         public DateTime End { get; }
 
-        public CreateAppointmentBlock(DateTime start, DateTime end) {
+        public AppointmentBlockCreate(DateTime start, DateTime end) {
             Start = start;
             End = end;
         }

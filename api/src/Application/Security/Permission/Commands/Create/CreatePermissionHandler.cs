@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application.Security {
 
         public async override Task<PermissionView> Execute(CreatePermissionCommand input, User? user) {
             var p = await service.Create(
-                new CreatePermission(
+                new PermissionCreate(
                     input.Action,
                     input.Scope
                 ),

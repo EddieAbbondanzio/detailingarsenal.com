@@ -25,7 +25,7 @@ namespace DetailingArsenal.Application.Settings {
 
             await service.Update(
                 cat,
-                new UpdateVehicleCategory(
+                new VehicleCategoryUpdate(
                     command.Name,
                     command.Description
                 )

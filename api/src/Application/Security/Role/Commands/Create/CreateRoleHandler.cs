@@ -17,7 +17,7 @@ namespace DetailingArsenal.Application.Security {
         }
 
         public async override Task<RoleView> Execute(CreateRoleCommand input, User? user) {
-            var r = await service.Create(new CreateRole(
+            var r = await service.Create(new RoleCreate(
                 input.Name,
                 input.PermissionIds
             ));

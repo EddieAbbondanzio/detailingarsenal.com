@@ -1,10 +1,10 @@
 using System;
 
 namespace DetailingArsenal.Domain.Billing {
-    public class UpdateSubscriptionPlan : IDataTransferObject {
+    public class SubscriptionPlanUpdate : IDataTransferObject {
         public Guid RoleId { get; set; }
 
-        public UpdateSubscriptionPlan(Guid roleId) {
+        public SubscriptionPlanUpdate(Guid roleId) {
             RoleId = roleId;
         }
     }
