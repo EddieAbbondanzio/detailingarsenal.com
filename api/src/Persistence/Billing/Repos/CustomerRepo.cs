@@ -229,7 +229,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 // delete customer
                 await Connection.ExecuteAsync(
                     @"delete from customers where id = @Id",
-                    entity.Id
+                    entity
                 );
 
                 // delete customer billing reference

@@ -43,14 +43,14 @@ namespace DetailingArsenal.Domain {
 
             try {
                 for (; i < Steps.Count; i++) {
-                    Log.Information($"Execute {i}");
+                    // Log.Information($"Execute {i}");
                     await Steps[i].Execute(context);
                 }
             } catch (Exception e) {
                 Log.Error($"Failed to execute step {i}", e);
 
                 for (i -= 1; i >= 0; i--) {
-                    Log.Information($"Compensate {i}");
+                    // Log.Information($"Compensate {i}");
                     await Steps[i].Compensate(context);
                 }
 

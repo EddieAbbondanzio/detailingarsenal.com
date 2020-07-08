@@ -33,7 +33,7 @@ namespace DetailingArsenal.Persistence.Settings {
 
         public async Task Delete(Business entity) {
             await Connection.ExecuteAsync(
-                "@delete from businesses where id = @Id;",
+                @"delete from businesses where id = @Id;",
                 entity
             );
         }
