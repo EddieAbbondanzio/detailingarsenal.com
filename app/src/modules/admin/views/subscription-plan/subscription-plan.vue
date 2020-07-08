@@ -13,12 +13,6 @@
                         />
                     </breadcrumb-trail>
                 </template>
-
-                <template v-slot:action>
-                    <edit-button
-                        :to="{name: 'editSubscriptionPlan', params: { id: $route.params.id }}"
-                    />
-                </template>
             </page-header>
         </template>
 
@@ -26,16 +20,6 @@
             <div class="has-margin-bottom-4">
                 <h5 class="is-size-4 title has-margin-bottom-2">{{ plan.name }}</h5>
             </div>
-
-            <input-select
-                label="Role"
-                v-model="plan.roleId"
-                :disabled="true"
-                placeholder="Role to be associated with the plan"
-            >
-                <option value="00000000-0000-0000-0000-000000000000">None</option>
-                <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
-            </input-select>
 
             <input-group-header text="Prices" />
 
@@ -69,10 +53,6 @@ import { SubscriptionPlan } from '../../api/entities/subscription-plan';
 
 @Component({})
 export default class SubscriptionPlanView extends Vue {
-    get roles() {
-        return adminStore.roles;
-    }
-
     plan: SubscriptionPlan = null!;
 
     @displayLoading

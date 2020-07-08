@@ -121,6 +121,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<RunDatabaseMigrationsStep>();
             services.AddTransient<RefreshSubscriptionPlansStep>();
             services.AddTransient<CreateOrUpdateAdminStep>();
+            services.AddTransient<CreateProRoleStep>();
 
             services.AddTransient<NewUserSaga>();
             services.AddTransient<CreateUserStep>();
