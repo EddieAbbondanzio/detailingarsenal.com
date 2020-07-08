@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace DetailingArsenal.Domain {
     public abstract class Saga {
@@ -41,10 +43,14 @@ namespace DetailingArsenal.Domain {
 
             try {
                 for (; i < Steps.Count; i++) {
+                    Log.Information($"Execute {i}");
                     await Steps[i].Execute(context);
                 }
-            } catch {
+            } catch (Exception e) {
+                Log.Error($"Failed to execute step {i}", e);
+
                 for (i -= 1; i >= 0; i--) {
+                    Log.Information($"Compensate {i}");
                     await Steps[i].Compensate(context);
                 }
 

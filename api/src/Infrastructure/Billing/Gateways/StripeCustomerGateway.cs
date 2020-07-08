@@ -20,11 +20,13 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 Email = user.Email
             });
 
+            var price = trialPlan.Prices.Find(p => p.BillingReference.BillingId == config.DefaultPrice)!;
+
             var subscription = await subscriptionService.CreateAsync(new Stripe.SubscriptionCreateOptions {
                 Customer = customer.Id,
                 Items = new List<Stripe.SubscriptionItemOptions> {
                     new Stripe.SubscriptionItemOptions {
-                        Price = trialPlan.Prices.Find(p => p.BillingReference.BillingId == config.DefaultPrice)!.BillingReference.BillingId
+                        Price = price.BillingReference.BillingId
                     }
                 },
                 TrialPeriodDays = config.TrialPeriod
@@ -35,6 +37,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 new BillingReference(customer.Id, BillingReferenceType.Customer),
                 Subscription.Create(
                     trialPlan.Id,
+                    price.BillingReference.BillingId,
                     subscription.Status,
                     new BillingReference(
                         subscription.Id,

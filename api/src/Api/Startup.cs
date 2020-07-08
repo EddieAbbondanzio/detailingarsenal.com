@@ -144,13 +144,15 @@ namespace DetailingArsenal.Api {
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ICustomerRepo, CustomerRepo>();
+            services.AddTransient<ISubscriptionReader, SubscriptionReader>();
             services.AddTransient<ICustomerService, Domain.Billing.CustomerService>();
             services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
             services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<ICheckoutSessionGateway, StripeCheckoutSessionGateway>();
-            services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();
+            services.AddTransient<ActionHandler<GetUserSubscriptionQuery, SubscriptionReadModel>, GetUserSubscriptionHandler>();
             services.AddTransient<ActionHandler<GetDefaultSubscriptionPlanQuery, SubscriptionPlanView>, GetDefaultSubscriptionPlanHandler>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanView>>, GetSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
 

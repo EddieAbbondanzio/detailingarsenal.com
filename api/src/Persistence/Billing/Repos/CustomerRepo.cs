@@ -26,7 +26,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 var subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
                     (s, br) => new Subscription {
                         Id = s.Id,
-                        PlanId = s.PlanId,
+                        PlanReference = new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
                         Status = s.Status,
                         BillingReference = new BillingReference(
                             br.BillingId,
@@ -70,7 +70,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 var subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
                     (s, br) => new Subscription {
                         Id = s.Id,
-                        PlanId = s.PlanId,
+                        PlanReference = new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
                         Status = s.Status,
                         BillingReference = new BillingReference(
                             br.BillingId,
@@ -135,11 +135,12 @@ namespace DetailingArsenal.Persistence.Billing {
 
                 await Connection.ExecuteAsync(
                     @"insert into subscriptions 
-                    (id, plan_id, customer_id, billing_reference_id, status) 
-                    values (@Id, @PlanId, @CustomerId, @BillingReferenceId, @Status);",
+                    (id, plan_id, price_billing_id, customer_id, billing_reference_id, status) 
+                    values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status);",
                     new SubscriptionModel() {
                         Id = entity.Subscription.Id,
-                        PlanId = entity.Subscription.PlanId,
+                        PlanId = entity.Subscription.PlanReference.PlanId,
+                        PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
                         CustomerId = entity.Id,
                         BillingReferenceId = subBillingReference.Id,
                         Status = entity.Subscription.Status
@@ -163,6 +164,17 @@ namespace DetailingArsenal.Persistence.Billing {
                     var customerModel = reader.Read<CustomerModel>().First();
                     var subscriptionModel = reader.Read<SubscriptionModel>().First();
 
+                    // Update the subscription
+                    await Connection.ExecuteAsync(
+                        @"update subscriptions set plan_id = @PlanId, price_billing_id = @PriceBillingId, status = @Status, customer_id = @CustomerId where id = @Id",
+                        new SubscriptionModel {
+                            PlanId = entity.Subscription.PlanReference.PlanId,
+                            Status = entity.Subscription.Status,
+                            PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
+                            CustomerId = entity.Id
+                        }
+                    );
+
                     // Update the subscription billing reference
                     await Connection.ExecuteAsync(
                         @"update billing_references set billing_id = @BillingId where id = @Id",
@@ -172,10 +184,13 @@ namespace DetailingArsenal.Persistence.Billing {
                         }
                     );
 
-                    // Update the subscription
+                    // Update the customer
                     await Connection.ExecuteAsync(
-                        @"update subscriptions set plan_id = @PlanId, status = @Status, customer_id = @CustomerId where id = @Id",
-                        entity.Subscription
+                        @"update customers set user_id = @UserId where id = @Id",
+                        new {
+                            Id = customerModel.Id,
+                            UserId = entity.UserId,
+                        }
                     );
 
                     // Update the customer billing reference
@@ -184,15 +199,6 @@ namespace DetailingArsenal.Persistence.Billing {
                         new {
                             Id = customerModel.BillingReferenceId,
                             BillingId = entity.BillingReference.BillingId
-                        }
-                    );
-
-                    // Update the customer
-                    await Connection.ExecuteAsync(
-                        @"update customers set user_id = @UserId where id = @Id",
-                        new {
-                            Id = customerModel.Id,
-                            UserId = entity.UserId,
                         }
                     );
 
@@ -208,28 +214,28 @@ namespace DetailingArsenal.Persistence.Billing {
             */
 
             using (var t = Connection.BeginTransaction()) {
-                // delete subscription billing reference
-                await Connection.ExecuteAsync(
-                    @"delete from billing_references where billing_id = @BillingId",
-                    entity.Subscription.BillingReference
-                );
-
                 // delete subscription
                 await Connection.ExecuteAsync(
                     @"delete from subscriptions where id = @Id",
                     entity.Subscription
                 );
 
-                // delete customer billing reference
+                // delete subscription billing reference
                 await Connection.ExecuteAsync(
                     @"delete from billing_references where billing_id = @BillingId",
-                    entity.BillingReference
+                    entity.Subscription.BillingReference
                 );
 
                 // delete customer
                 await Connection.ExecuteAsync(
                     @"delete from customers where id = @Id",
                     entity.Id
+                );
+
+                // delete customer billing reference
+                await Connection.ExecuteAsync(
+                    @"delete from billing_references where billing_id = @BillingId",
+                    entity.BillingReference
                 );
 
                 t.Commit();

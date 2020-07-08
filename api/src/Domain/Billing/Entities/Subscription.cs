@@ -2,14 +2,16 @@ using System;
 
 namespace DetailingArsenal.Domain.Billing {
     public class Subscription : Entity<Subscription>, IBillingEntity {
-        public Guid PlanId { get; set; }
+        public SubscriptionPlanReference PlanReference { get; set; } = null!;
         public string Status { get; set; } = null!;
         public BillingReference BillingReference { get; set; } = null!;
 
-        public static Subscription Create(Guid plainId, string status, BillingReference billingReference) {
+        public static Subscription Create(Guid planId, string priceBillingId, string status, BillingReference billingReference) {
             return new Subscription() {
                 Id = Guid.NewGuid(),
-                PlanId = plainId,
+                PlanReference = new SubscriptionPlanReference(
+                    planId, priceBillingId
+                ),
                 Status = status,
                 BillingReference = billingReference
             };
