@@ -12,6 +12,9 @@ namespace DetailingArsenal.Domain.Billing {
             RuleFor(c => c.DefaultPrice).Must((p) => p.StartsWith("price_")).WithMessage("Invalid default price format.");
 
             RuleFor(c => c.TrialPeriod).GreaterThan(0).WithMessage("Trial period must be greater than 0.");
+
+            RuleFor(c => c.SuccessUrl).NotEmpty().WithMessage("No success url");
+            RuleFor(c => c.CancelUrl).NotEmpty().WithMessage("No cancel url");
         }
     }
 }

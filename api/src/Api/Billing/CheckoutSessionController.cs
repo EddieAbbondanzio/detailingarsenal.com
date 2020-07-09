@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DetailingArsenal.Api.Billing {
-    [Route("/billing/checkout-session")]
+    [Route("billing/checkout-session")]
     [ApiController]
     public class CheckoutSessionController : ControllerBase {
         private IMediator mediator;
@@ -27,7 +27,9 @@ namespace DetailingArsenal.Api.Billing {
                 User!.GetUserId()
             );
 
-            return Ok(billingRef.BillingId);
+            return Ok(new {
+                CheckoutSessionId = billingRef.BillingId
+            });
         }
 
         /// <summary>

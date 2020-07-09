@@ -10,7 +10,9 @@ export class SubscriptionService {
         return new Subscription(
             new SubscriptionPlanInfo(res.data.id, res.data.name, res.data.description),
             new SubscriptionPlanPrice(res.data.price.amount, res.data.price.interval, res.data.price.billingId),
-            res.data.status
+            res.data.status,
+            new Date(res.data.trialStart),
+            new Date(res.data.trialEnd)
         );
     }
 }

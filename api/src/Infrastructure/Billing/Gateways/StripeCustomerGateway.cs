@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Billing;
@@ -39,6 +40,8 @@ namespace DetailingArsenal.Infrastructure.Billing {
                     trialPlan.Id,
                     price.BillingReference.BillingId,
                     subscription.Status,
+                    subscription.TrialStart ?? throw new NullReferenceException(),
+                    subscription.TrialEnd ?? throw new NullReferenceException(),
                     new BillingReference(
                         subscription.Id,
                         BillingReferenceType.Product

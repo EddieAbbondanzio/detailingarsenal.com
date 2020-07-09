@@ -28,6 +28,8 @@ namespace DetailingArsenal.Persistence.Billing {
                         Id = s.Id,
                         PlanReference = new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
                         Status = s.Status,
+                        TrialStart = s.TrialStart,
+                        TrialEnd = s.TrialEnd,
                         BillingReference = new BillingReference(
                             br.BillingId,
                             br.Type
@@ -72,6 +74,8 @@ namespace DetailingArsenal.Persistence.Billing {
                         Id = s.Id,
                         PlanReference = new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
                         Status = s.Status,
+                        TrialStart = s.TrialStart,
+                        TrialEnd = s.TrialEnd,
                         BillingReference = new BillingReference(
                             br.BillingId,
                             br.Type
@@ -135,15 +139,17 @@ namespace DetailingArsenal.Persistence.Billing {
 
                 await Connection.ExecuteAsync(
                     @"insert into subscriptions 
-                    (id, plan_id, price_billing_id, customer_id, billing_reference_id, status) 
-                    values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status);",
+                    (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, trial_start, trial_end) 
+                    values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @TrialStart, @TrialEnd);",
                     new SubscriptionModel() {
                         Id = entity.Subscription.Id,
                         PlanId = entity.Subscription.PlanReference.PlanId,
                         PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
                         CustomerId = entity.Id,
                         BillingReferenceId = subBillingReference.Id,
-                        Status = entity.Subscription.Status
+                        Status = entity.Subscription.Status,
+                        TrialStart = entity.Subscription.TrialStart,
+                        TrialEnd = entity.Subscription.TrialEnd
                     }
                 );
 
@@ -166,10 +172,19 @@ namespace DetailingArsenal.Persistence.Billing {
 
                     // Update the subscription
                     await Connection.ExecuteAsync(
-                        @"update subscriptions set plan_id = @PlanId, price_billing_id = @PriceBillingId, status = @Status, customer_id = @CustomerId where id = @Id",
+                        @"update subscriptions set 
+                        plan_id = @PlanId, 
+                        price_billing_id = @PriceBillingId, 
+                        status = @Status, 
+                        trial_start = @TrialStart, 
+                        trial_end = @TrialEnd,
+                        customer_id = @CustomerId 
+                        where id = @Id",
                         new SubscriptionModel {
                             PlanId = entity.Subscription.PlanReference.PlanId,
                             Status = entity.Subscription.Status,
+                            TrialStart = entity.Subscription.TrialStart,
+                            TrialEnd = entity.Subscription.TrialEnd,
                             PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
                             CustomerId = entity.Id
                         }

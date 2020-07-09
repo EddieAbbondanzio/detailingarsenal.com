@@ -42,7 +42,7 @@ namespace DetailingArsenal.Persistence.Users {
 
         public async Task Delete(User entity) {
             await Connection.ExecuteAsync(
-                "@delete from users where id = @Id;",
+                @"delete from users where id = @Id;",
                 entity
             );
         }

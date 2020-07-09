@@ -9,7 +9,7 @@ namespace DetailingArsenal.Persistence.Billing {
 
         public async Task<SubscriptionReadModel> ReadForUser(User user) {
             var sub = await Connection.QueryFirstAsync(
-                @"select sp.name as name, s.status as status, spp.price as price, spp.interval as price_interval, br.billing_id as price_billing_id from subscriptions s
+                @"select sp.name as name, s.status as status, s.trial_start as trial_start, s.trial_end as trial_end, spp.price as price, spp.interval as price_interval, br.billing_id as price_billing_id from subscriptions s
                 left join subscription_plans sp on s.plan_id = sp.id
                 left join subscription_plan_prices spp on sp.id = spp.plan_id
                 left join billing_references br on spp.billing_reference_id = br.id
@@ -21,6 +21,8 @@ namespace DetailingArsenal.Persistence.Billing {
             return new SubscriptionReadModel(
                 sub.name,
                 sub.status,
+                sub.trial_start,
+                sub.trial_end,
                 new SubscriptionPlanPriceReadModel(
                     sub.price,
                     sub.price_interval,

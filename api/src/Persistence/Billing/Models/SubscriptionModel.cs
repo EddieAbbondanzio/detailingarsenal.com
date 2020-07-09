@@ -9,5 +9,7 @@ namespace DetailingArsenal.Persistence.Billing {
         public string PriceBillingId { get; set; } = null!;
         public Guid BillingReferenceId { get; set; }
         public string Status { get; set; } = null!;
+        public DateTime TrialStart { get; set; }
+        public DateTime TrialEnd { get; set; }
     }
 }

@@ -10,6 +10,8 @@ export class Subscription {
     constructor(
         public plan: SubscriptionPlanInfo,
         public price: SubscriptionPlanPrice,
-        public status: SubscriptionStatus
+        public status: SubscriptionStatus,
+        public trialStart: Date,
+        public trialEnd: Date
     ) {}
 }
