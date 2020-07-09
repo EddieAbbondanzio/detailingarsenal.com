@@ -50,11 +50,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Role } from '../../api/entities/role';
 import adminStore from '../../store/admin-store';
 import { displayLoading } from '../../../../core/utils/display-loading';
-import { Permission } from '../../api/entities/permission';
 import appStore from '../../../../core/store/app-store';
+import { Permission, Role } from '@/api';
 
 @Component({
     name: 'role'

@@ -39,9 +39,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import adminStore from '../../store/admin-store';
 import { displayLoading } from '@/core/utils/display-loading';
-import { Role } from '../../api/entities/role';
-import { Permission } from '../../api/entities/permission';
 import { confirmDelete, toast, displayError } from '../../../../core';
+import { Role } from '@/api';
 
 @Component({
     name: 'roles'

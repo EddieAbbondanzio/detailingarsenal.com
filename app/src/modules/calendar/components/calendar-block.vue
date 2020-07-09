@@ -51,9 +51,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import moment from 'moment';
 import { triggerMouseEvent } from '@/core/utils/trigger-mouse-event';
-import { AppointmentBlock, BLOCK_INITIAL_TIME, BLOCK_MODIFIED } from '../api/entities/appointment-block';
 import settingsStore from '@/modules/settings/store/settings-store';
 import calendarStore from '../store/calendar-store';
+import { AppointmentBlock, BLOCK_INITIAL_TIME, BLOCK_MODIFIED } from '@/api';
 
 @Component({
     name: 'calendar-block'

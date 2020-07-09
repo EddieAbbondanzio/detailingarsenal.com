@@ -40,9 +40,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import adminStore from '../../store/admin-store';
-import { Permission } from '../../api/entities/permission';
+import { Permission, SpecificationError } from '@/api';
 import { displayLoading } from '../../../../core/utils/display-loading';
-import { SpecificationError, displayError, toast } from '@/core';
+import { displayError, toast } from '@/core';
 
 @Component({
     name: 'create-role'

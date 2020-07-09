@@ -43,10 +43,11 @@ import { getModule } from 'vuex-module-decorators';
 import ErrorMessage from '@/components/common/input/error-message.vue';
 import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
-import { ValidationError, SpecificationError, toast } from '@/core';
+import { toast } from '@/core';
 import settingsStore from '../../store/settings-store';
 import { displayError } from '@/core/utils/display-error/display-error';
 import { displayLoading } from '../../../../core/utils/display-loading';
+import { ValidationError, SpecificationError } from '@/api';
 
 /**
  * View to create a new vehicle category.

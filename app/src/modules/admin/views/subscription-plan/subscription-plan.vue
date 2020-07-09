@@ -49,7 +49,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import adminStore from '../../store/admin-store';
 import { displayLoading } from '../../../../core';
-import { SubscriptionPlan } from '../../api/entities/subscription-plan';
+import { SubscriptionPlan } from '@/api';
 
 @Component({})
 export default class SubscriptionPlanView extends Vue {
@@ -58,7 +58,7 @@ export default class SubscriptionPlanView extends Vue {
     @displayLoading
     async created() {
         await adminStore.init();
-        this.plan = adminStore.subscriptionPlans.find(p => p.id == this.$route.params.id)!;
+        this.plan = adminStore.subscriptionPlans.find(p => p.info.id == this.$route.params.id)!;
     }
 }
 </script>

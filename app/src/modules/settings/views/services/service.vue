@@ -89,9 +89,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Service } from '../../api/entities/service';
 import settingsStore from '../../store/settings-store';
 import { displayLoading } from '../../../../core/utils/display-loading';
+import { Service } from '@/api';
 
 @Component({
     name: 'service'

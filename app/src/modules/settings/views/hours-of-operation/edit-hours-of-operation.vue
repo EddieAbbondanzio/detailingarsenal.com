@@ -97,8 +97,8 @@ import { ValidationObserver } from 'vee-validate';
 import { DayOfTheWeek } from '@/core/store/day-of-the-week';
 import settingsStore from '../../store/settings-store';
 import { TimeUtils, displayError, toast } from '@/core';
-import { UpdateHoursOfOperation } from '../../api/data-transfer-objects/update-hours-of-operation';
 import { displayLoading } from '../../../../core/utils/display-loading';
+import { HoursOfOperationUpdate } from '@/api';
 
 /**
  * View to edit hours of operation.
@@ -175,7 +175,7 @@ export default class EditHoursOfOperation extends Vue {
 
     @displayLoading
     public async onSubmit() {
-        const hoursOfOp: UpdateHoursOfOperation = { id: settingsStore.hoursOfOperation.id, days: [] };
+        const hoursOfOp: HoursOfOperationUpdate = { id: settingsStore.hoursOfOperation.id, days: [] };
 
         for (let i = 0; i < this.days.length; i++) {
             const day = this.days[i];

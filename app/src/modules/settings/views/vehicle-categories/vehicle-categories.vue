@@ -46,11 +46,11 @@
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import { toast } from '@/core';
-import { VehicleCategory } from '../../api/entities/vehicle-category';
 import settingsStore from '../../store/settings-store';
 import { confirmDelete } from '@/core/utils/confirm-delete/confirm-delete';
 import { displayError } from '@/core/utils/display-error/display-error';
 import { displayLoading } from '../../../../core/utils/display-loading';
+import { VehicleCategory } from '@/api';
 
 /**
  * Settings page for managing vehicle categories.

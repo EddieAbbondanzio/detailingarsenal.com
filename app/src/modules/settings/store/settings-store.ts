@@ -1,17 +1,20 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
-import { VehicleCategory } from '@/modules/settings/api/entities/vehicle-category';
-import { Business } from '@/modules/settings/api/entities/business';
-import { HoursOfOperation } from '@/modules/settings/api/entities/hours-of-operation';
-import { Service } from '@/modules/settings/api/entities/service';
-import { UpdateBusiness } from '@/modules/settings/api/data-transfer-objects/update-business';
-import { CreateVehicleCategory } from '@/modules/settings/api/data-transfer-objects/create-vehicle-category';
-import { UpdateVehicleCategory } from '@/modules/settings/api/data-transfer-objects/update-vehicle-category';
-import { CreateService } from '@/modules/settings/api/data-transfer-objects/create-service';
-import { UpdateService } from '@/modules/settings/api/data-transfer-objects/update-service';
-import { api } from '@/core/api/api';
+
+import { api } from '@/api/api';
 import { InitableModule } from '@/core/store/initable-module';
-import { UpdateHoursOfOperation } from '@/modules/settings/api/data-transfer-objects/update-hours-of-operation';
 import store from '@/core/store/index';
+import {
+    VehicleCategory,
+    Business,
+    HoursOfOperation,
+    Service,
+    VehicleCategoryCreate,
+    VehicleCategoryUpdate,
+    BusinessUpdate,
+    HoursOfOperationUpdate,
+    ServiceCreate,
+    ServiceUpdate
+} from '@/api';
 
 /**
  * Store for the service view.
@@ -106,13 +109,13 @@ class SettingsStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    public async createVehicleCategory(createVehicleCategory: CreateVehicleCategory) {
+    public async createVehicleCategory(createVehicleCategory: VehicleCategoryCreate) {
         var vc = await api.settings.vehicleCategory.createVehicleCategory(createVehicleCategory);
         this.context.commit('CREATE_VEHICLE_CATEGORY', vc);
     }
 
     @Action({ rawError: true })
-    public async updateVehicleCategory(updateVehicleCategory: UpdateVehicleCategory) {
+    public async updateVehicleCategory(updateVehicleCategory: VehicleCategoryUpdate) {
         var vc = await api.settings.vehicleCategory.updateVehicleCategory(updateVehicleCategory);
         this.context.commit('UPDATE_VEHICLE_CATEGORY', vc);
     }
@@ -128,7 +131,7 @@ class SettingsStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    public async updateBusiness(updateBusiness: UpdateBusiness) {
+    public async updateBusiness(updateBusiness: BusinessUpdate) {
         const b = await api.settings.business.updateBusiness(updateBusiness);
         this.context.commit('SET_BUSINESS', b);
     }
@@ -139,19 +142,19 @@ class SettingsStore extends InitableModule {
      * @param hoursOfOperation The hours to set.
      */
     @Action({ rawError: true })
-    public async updateHoursOfOperation(update: UpdateHoursOfOperation) {
+    public async updateHoursOfOperation(update: HoursOfOperationUpdate) {
         const hours = await api.settings.hoursOfOperation.updateHoursOfOperation(update);
         this.context.commit('SET_HOURS_OF_OPERATION', hours);
     }
 
     @Action({ rawError: true })
-    public async createService(createService: CreateService) {
+    public async createService(createService: ServiceCreate) {
         const service = await api.settings.service.createService(createService);
         this.context.commit('CREATE_SERVICE', service);
     }
 
     @Action({ rawError: true })
-    public async updateService(updateService: UpdateService) {
+    public async updateService(updateService: ServiceUpdate) {
         const service = await api.settings.service.updateService(updateService);
         this.context.commit('UPDATE_SERVICE', service);
     }

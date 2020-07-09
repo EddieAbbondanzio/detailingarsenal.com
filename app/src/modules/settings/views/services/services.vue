@@ -40,9 +40,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import settingsStore from '../../store/settings-store';
-import { Service } from '../../api/entities/service';
 import { confirmDelete, displayError, toast } from '@/core';
 import { displayLoading } from '../../../../core/utils/display-loading';
+import { Service } from '@/api';
 
 @Component({
     name: 'services'

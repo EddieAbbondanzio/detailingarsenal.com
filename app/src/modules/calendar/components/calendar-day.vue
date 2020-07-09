@@ -58,9 +58,9 @@ import CalendarBlock from '@/modules/calendar/components/calendar-block.vue';
 import moment, { duration } from 'moment';
 import Calendar from '../mixins/calendar';
 import calendarStore from '../store/calendar-store';
-import { HoursOfOperationDay } from '@/modules/settings/api/entities/hours-of-operation-day';
 import settingsStore from '@/modules/settings/store/settings-store';
 import store from '@/core/store';
+import { HoursOfOperationDay } from '@/api';
 
 @Component({
     name: 'calendar-day',

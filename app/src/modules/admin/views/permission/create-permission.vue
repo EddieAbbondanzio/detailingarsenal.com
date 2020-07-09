@@ -34,10 +34,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { toast, displayError, SpecificationError } from '../../../../core';
+import { toast, displayError } from '../../../../core';
 import adminStore from '../../store/admin-store';
 import appStore from '@/core/store/app-store';
 import { displayLoading } from '@/core/utils/display-loading';
+import { SpecificationError } from '@/api';
 
 @Component({
     name: 'create-permission'

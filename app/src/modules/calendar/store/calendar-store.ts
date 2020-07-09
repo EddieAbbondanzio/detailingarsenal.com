@@ -8,15 +8,15 @@ import {
     BLOCK_PENDING_FLAG,
     BLOCK_MODIFIED,
     BLOCK_INITIAL_TIME
-} from '@/modules/calendar/api/entities/appointment-block';
+} from '@/api/calendar/data-transfer-objects/appointment-block';
 import store from '@/core/store/index';
 import { CalendarCreateStep } from '@/modules/calendar/store/calendar-create-step';
 import { CalendarRange } from '@/modules/calendar/store/calendar-range';
 import { displayError } from '@/core/utils/display-error/display-error';
 import Vue from 'vue';
-import { Appointment } from '@/modules/calendar/api/entities/appointment';
-import { api } from '@/core/api/api';
-import { CreateAppointment } from '@/modules/calendar/api/data-transfer-objects/create-appointment';
+import { Appointment } from '@/api/calendar/data-transfer-objects/appointment';
+import { api } from '@/api/api';
+import { AppointmentCreate } from '@/api/calendar/data-transfer-objects/appointment-create';
 
 /**
  * Store for the Calendar view.
@@ -213,7 +213,7 @@ class CalendarStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async createAppointment(create: CreateAppointment) {
+    async createAppointment(create: AppointmentCreate) {
         let a = await api.appointment.createAppointment(create);
         this.context.commit('ADD_BLOCKS', a.blocks);
         return a;

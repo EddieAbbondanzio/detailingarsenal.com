@@ -1,8 +1,8 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
-import { SubscriptionPlan } from '@/modules/admin/api/entities/subscription-plan';
+import { SubscriptionPlan } from '@/api/billing/data-transfer-objects/subscription-plan';
 import store from '@/core/store/index';
-import { api } from '@/core/api/api';
+import { api } from '@/api/api';
 
 @Module({ namespaced: true, name: 'billing', dynamic: true, store })
 class BillingStore extends InitableModule {

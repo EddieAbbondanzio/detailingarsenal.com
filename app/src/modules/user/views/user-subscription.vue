@@ -104,12 +104,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import billingStore from '../store/billing-store';
-import { api } from '../../../core/api/api';
 
 @Component({})
 export default class UserSubscription extends Vue {
     get name() {
-        return billingStore.defaultPlan == null ? '' : billingStore.defaultPlan.name;
+        return billingStore.defaultPlan == null ? '' : billingStore.defaultPlan.info.name;
     }
 
     get isTrialing() {
@@ -134,7 +133,6 @@ export default class UserSubscription extends Vue {
 
     async created() {
         await billingStore.init();
-        await api.billing.subscription.getUserSubscription();
     }
 
     showYearly = false;

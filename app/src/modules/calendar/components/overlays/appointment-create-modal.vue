@@ -192,13 +192,15 @@ import { duration, displayError } from '@/core';
 import settingsStore from '@/modules/settings/store/settings-store';
 import clientsStore from '@/modules/clients/store/clients-store';
 import calendarStore from '../../store/calendar-store';
-import { Service } from '../../../settings/api/entities/service';
-import { VehicleCategory } from '@/modules/settings/api/entities/vehicle-category';
 import store from '@/core/store';
-import { ServiceConfiguration } from '@/modules/settings/api/entities/service-configuration';
-import { AppointmentBlock } from '../../api/entities/appointment-block';
-import { CreateAppointmentBlock } from '../../api/data-transfer-objects/create-appointment-block';
-import { Client } from '@/modules/clients/api/entities/client';
+import {
+    VehicleCategory,
+    Service,
+    ServiceConfiguration,
+    Client,
+    AppointmentBlock,
+    AppointmentBlockCreate
+} from '@/api';
 
 @Component({
     name: 'appointment-create-modal'
@@ -379,7 +381,7 @@ export default class AppointmentCreateModal extends Vue {
         serviceId: string,
         price: number,
         clientId: string,
-        blocks: CreateAppointmentBlock[],
+        blocks: AppointmentBlockCreate[],
         notes: string
     ) {
         return calendarStore.createAppointment({

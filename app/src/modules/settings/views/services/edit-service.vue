@@ -157,11 +157,10 @@ import InputFeedback from '@/components/common/input/input-feedback.vue';
 import ErrorMessage from '@/components/common/input/error-message.vue';
 import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
-import { SpecificationError, toast, displayError } from '@/core';
-import { VehicleCategory } from '../../api/entities/vehicle-category';
-import { ServicePricingMethod } from '../../api/value-objects/service-pricing-method';
+import { toast, displayError } from '@/core';
 import settingsStore from '../../store/settings-store';
 import { displayLoading } from '../../../../core/utils/display-loading';
+import { VehicleCategory, ServicePricingMethod } from '@/api';
 
 @Component({
     name: 'edit-service',

@@ -1,11 +1,10 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
-import { User } from '@/modules/user/api/entities/user';
-import { api } from '@/core/api/api';
+import { api } from '@/api/api';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
 import { Route } from 'vue-router';
 import router from '@/core/router';
-import { SubscriptionPlan } from '@/modules/admin/api/entities/subscription-plan';
+import { User } from '@/api';
 
 @Module({ namespaced: true, name: 'user', dynamic: true, store })
 class UserStore extends InitableModule {

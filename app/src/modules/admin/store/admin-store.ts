@@ -1,15 +1,14 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
-import { Permission } from '@/modules/admin/api/entities/permission';
-import { api } from '@/core/api/api';
-import { CreatePermission } from '@/modules/admin/api/data-transfer-objects/create-permission';
-import { UpdatePermission } from '@/modules/admin/api/data-transfer-objects/update-permission';
+import { Permission } from '@/api/security/data-transfer-objects/permission';
+import { api } from '@/api/api';
+import { PermissionCreate } from '@/api/security/data-transfer-objects/permission-create';
+import { PermissionUpdate } from '@/api/security/data-transfer-objects/permission-update';
 import store from '@/core/store/index';
-import { Role } from '@/modules/admin/api/entities/role';
-import { CreateRole } from '@/modules/admin/api/data-transfer-objects/create-role';
-import { UpdateRole } from '@/modules/admin/api/data-transfer-objects/update-role';
-import { SubscriptionPlan } from '@/modules/admin/api/entities/subscription-plan';
-import { UpdateSubscriptionPlan } from '@/modules/admin/api/data-transfer-objects/update-subscription-plan';
+import { Role } from '@/api/security/data-transfer-objects/role';
+import { RoleCreate } from '@/api/security/data-transfer-objects/role-create';
+import { RoleUpdate } from '@/api/security/data-transfer-objects/role-update';
+import { SubscriptionPlan } from '@/api/billing/data-transfer-objects/subscription-plan';
 
 /**
  * Store for the schedule view.
@@ -90,7 +89,7 @@ class AdminStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async createPermission(createPermission: CreatePermission) {
+    async createPermission(createPermission: PermissionCreate) {
         const p = await api.security.permission.createPermission(createPermission);
         this.context.commit('CREATE_PERMISSION', p);
 
@@ -98,7 +97,7 @@ class AdminStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async updatePermission(updatePermission: UpdatePermission) {
+    async updatePermission(updatePermission: PermissionUpdate) {
         const p = await api.security.permission.updatePermission(updatePermission);
         this.context.commit('UPDATE_PERMISSION', p);
 
@@ -112,7 +111,7 @@ class AdminStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async createRole(createRole: CreateRole) {
+    async createRole(createRole: RoleCreate) {
         const r = await api.security.role.createRole(createRole);
         this.context.commit('CREATE_ROLE', r);
 
@@ -120,7 +119,7 @@ class AdminStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async updateRole(updateRole: UpdateRole) {
+    async updateRole(updateRole: RoleUpdate) {
         const r = await api.security.role.updateRole(updateRole);
         this.context.commit('UPDATE_ROLE', r);
 

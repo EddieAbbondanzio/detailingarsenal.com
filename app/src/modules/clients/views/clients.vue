@@ -48,8 +48,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import clientsStore from '../store/clients-store';
-import { Client } from '../api/entities/client';
 import { displayLoading } from '../../../core/utils/display-loading';
+import { Client } from '@/api';
 
 @Component({
     name: 'clients'

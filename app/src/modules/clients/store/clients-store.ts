@@ -1,10 +1,8 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
-import { Client } from '@/modules/clients/api/entities/client';
 import { InitableModule } from '@/core/store/initable-module';
-import { CreateClient } from '@/modules/clients/api/data-transfer-objects/create-client';
-import { UpdateClient } from '@/modules/clients/api/data-transfer-objects/update-client';
 import store from '@/core/store/index';
-import { api } from '@/core/api/api';
+import { api } from '@/api/api';
+import { Client, ClientUpdate, ClientCreate } from '@/api';
 
 /**
  * Store for the schedule view.
@@ -45,14 +43,14 @@ class ClientsStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    public async createClient(create: CreateClient): Promise<Client> {
+    public async createClient(create: ClientCreate): Promise<Client> {
         const c = await api.client.createClient(create);
         this.context.commit('CREATE_CLIENT', c);
         return c;
     }
 
     @Action({ rawError: true })
-    public async updateClient(update: UpdateClient): Promise<Client> {
+    public async updateClient(update: ClientUpdate): Promise<Client> {
         const c = await api.client.updateClient(update);
         this.context.commit('UPDATE_CLIENT', c);
         return c;

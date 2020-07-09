@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Permission } from '@/modules/admin/api/entities/permission';
+import { Permission } from '@/api';
 import { confirmDelete, toast, displayError } from '@/core';
 import adminStore from '../../store/admin-store';
 import { displayLoading } from '../../../../core/utils/display-loading';

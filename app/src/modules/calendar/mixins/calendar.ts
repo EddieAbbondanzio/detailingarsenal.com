@@ -1,10 +1,9 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
-import { AppointmentBlock } from '@/modules/calendar/api/entities/appointment-block';
+import { AppointmentBlock } from '@/api/calendar/data-transfer-objects/appointment-block';
 import calendarStore from '@/modules/calendar/store/calendar-store';
 import moment from 'moment';
 import { CalendarRange } from '@/modules/calendar/store/calendar-range';
-import { uuid } from '@/core/utils/uuid';
 
 /**
  * Mixin to create, resize, move, or update appointment blocks using
@@ -32,9 +31,12 @@ export default class Calendar extends Vue {
             .add(time + duration, 'minutes')
             .toDate();
 
-        const block = new AppointmentBlock(start, end, { pending: true, modifying: true });
+        //TODO: Fix this crap
+        const block = new AppointmentBlock((Math.random() * 1000).toString(), start, end, {
+            pending: true,
+            modifying: true
+        });
         block.meta.initialTime = time;
-        block.id = uuid();
         calendarStore.ADD_BLOCK(block);
         return block;
     }

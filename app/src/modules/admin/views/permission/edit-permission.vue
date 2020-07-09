@@ -38,8 +38,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { toast, displayError, SpecificationError } from '../../../../core';
-import { Permission } from '../../api/entities/permission';
+import { toast, displayError } from '../../../../core';
+import { Permission, SpecificationError } from '@/api';
 import adminStore from '../../store/admin-store';
 
 @Component({
