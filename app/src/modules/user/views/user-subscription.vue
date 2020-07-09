@@ -40,12 +40,12 @@
                             <div class="is-flex is-flex-column">
                                 <p class="is-size-1">
                                     <small class="is-size-3" style="vertical-align: text-top;">$</small>
-                                    {{ price.price / 100 }}
+                                    {{ price / 100 }}
                                 </p>
                                 <p
                                     class="is-size-5 has-text-grey is-uppercase"
                                     style="align-self: bottom"
-                                >/ {{ price.interval }}</p>
+                                >/ {{ interval }}</p>
 
                                 <b-switch
                                     class="has-margin-y-3"
@@ -125,9 +125,17 @@ export default class UserSubscription extends Vue {
         }
 
         if (this.showYearly) {
-            return billingStore.defaultPlan.prices.find(p => p.interval == 'year');
+            return billingStore.defaultPlan.prices.find(p => p.interval == 'year')!.amount;
         } else {
-            return billingStore.defaultPlan.prices.find(p => p.interval == 'month');
+            return billingStore.defaultPlan.prices.find(p => p.interval == 'month')!.amount;
+        }
+    }
+
+    get interval() {
+        if (this.showYearly) {
+            return 'year';
+        } else {
+            return 'month';
         }
     }
 

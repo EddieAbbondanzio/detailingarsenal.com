@@ -8,7 +8,7 @@ namespace DetailingArsenal.Persistence.Billing.Migrations {
         }
 
         public override void Down() {
-            Delete.Column("price_billing_id").FromTable("price_billing_id");
+            Delete.Column("price_billing_id").FromTable("subscriptions");
         }
     }
 }

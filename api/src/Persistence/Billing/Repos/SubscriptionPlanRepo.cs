@@ -28,6 +28,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 (sp, br) => new SubscriptionPlan() {
                     Id = sp.Id,
                     Name = sp.Name,
+                    Description = sp.Description,
                     BillingReference = new BillingReference(
                             br.BillingId, br.Type
                         )
@@ -73,6 +74,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 (sp, br) => new SubscriptionPlan() {
                     Id = sp.Id,
                     Name = sp.Name,
+                    Description = sp.Description,
                     BillingReference = new BillingReference(
                             br.BillingId, br.Type
                         )
@@ -117,6 +119,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 (sp, br) => new SubscriptionPlan() {
                     Id = sp.Id,
                     Name = sp.Name,
+                    Description = sp.Description,
                     BillingReference = new BillingReference(
                             br.BillingId, br.Type
                         )
@@ -207,6 +210,7 @@ namespace DetailingArsenal.Persistence.Billing {
                     new SubscriptionPlanModel() {
                         Id = entity.Id,
                         Name = entity.Name,
+                        Description = entity.Description,
                         BillingReferenceId = planBillingRef.Id
                     },
                     t
@@ -225,7 +229,7 @@ namespace DetailingArsenal.Persistence.Billing {
                     var priceModel = new SubscriptionPlanPriceModel() {
                         Id = Guid.NewGuid(),
                         Interval = p.Interval,
-                        Price = p.Price,
+                        Price = p.Amount,
                         PlanId = entity.Id,
                         BillingReferenceId = billingRefModel.Id
                     };
@@ -258,7 +262,8 @@ namespace DetailingArsenal.Persistence.Billing {
                     @"update subscription_plans set name = @Name where id = @Id;",
                     new SubscriptionPlanModel {
                         Id = entity.Id,
-                        Name = entity.Name
+                        Name = entity.Name,
+                        Description = entity.Description
                     }
                 );
 

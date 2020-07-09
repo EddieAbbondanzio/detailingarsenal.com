@@ -110,8 +110,9 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<AppointmentBlock, AppointmentBlockView>();
                 config.CreateMap<Permission, PermissionView>();
                 config.CreateMap<Role, RoleView>();
-                config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceView>();
                 config.CreateMap<SubscriptionPlan, SubscriptionPlanView>();
+                config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceView>()
+                    .ForMember(v => v.BillingId, p => p.MapFrom(p => p.BillingReference.BillingId));
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 

@@ -35,6 +35,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 var plan = new SubscriptionPlan() {
                     Id = Guid.Parse(product.Metadata["id"]),
                     Name = product.Name,
+                    Description = product.Description,
                     BillingReference = new BillingReference(product.Id, BillingReferenceType.Product),
                     Prices = await GetPrices(product.Id)
                 };
