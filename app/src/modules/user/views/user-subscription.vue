@@ -4,33 +4,29 @@
             <page-header title="Subscription" description="Subscription plan and billing">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb
-                            name="Subscription"
-                            :to="{name: 'userSubscription'}"
-                            active="true"
-                        />
+                        <breadcrumb name="Subscription" :to="{ name: 'userSubscription' }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
         <div class="box is-shadowless" v-if="subscription != null">
-            <p
-                class="is-size-4 has-text-weight-bold has-text-centered has-margin-bottom-4"
-            >One plan, no confusion.</p>
+            <p class="is-size-4 has-text-weight-bold has-text-centered has-margin-bottom-4">One plan, no confusion.</p>
 
             <div class="card has-margin-y-3">
                 <!-- Status -->
                 <div
                     v-if="subscription.status == 'trialing'"
                     class="has-background-warning has-w-100 has-padding-all-1 has-text-centered"
-                >Trialing. {{ trialDaysRemaining }} {{ trialDaysRemaining == 1 ? 'day' : 'days' }} remaining.</div>
+                >
+                    Trialing. {{ trialDaysRemaining }} {{ trialDaysRemaining == 1 ? 'day' : 'days' }} remaining.
+                </div>
 
                 <!-- Title -->
                 <div class="has-background-primary has-padding-all-4">
-                    <p
-                        class="is-size-4 has-text-weight-bold has-text-white has-text-centered"
-                    >Detailing Arsenal {{ name }}</p>
+                    <p class="is-size-4 has-text-weight-bold has-text-white has-text-centered">
+                        Detailing Arsenal {{ name }}
+                    </p>
                 </div>
 
                 <div class="level has-padding-all-4">
@@ -46,16 +42,11 @@
                                     <small class="is-size-3" style="vertical-align: text-top;">$</small>
                                     {{ yearPrice }}
                                 </p>
-                                <p
-                                    class="is-size-5 has-text-grey is-uppercase"
-                                    style="align-self: bottom"
-                                >/ {{ showYearly ? 'year' : 'month' }}</p>
+                                <p class="is-size-5 has-text-grey is-uppercase" style="align-self: bottom">
+                                    / {{ showYearly ? 'year' : 'month' }}
+                                </p>
 
-                                <b-switch
-                                    class="has-margin-y-3"
-                                    type="is-info"
-                                    v-model="showYearly"
-                                >
+                                <b-switch class="has-margin-y-3" type="is-info" v-model="showYearly">
                                     Yearly
                                     <small class="has-text-grey">(2 months free!)</small>
                                 </b-switch>
@@ -68,25 +59,16 @@
                         <div class="is-flex is-flex-column">
                             <ul class="has-margin-bottom-4">
                                 <li>
-                                    <b-icon
-                                        icon="check"
-                                        type="is-success"
-                                        class="has-padding-right-3"
-                                    />Unlimited appointment bookings
+                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Unlimited
+                                    appointment bookings
                                 </li>
                                 <li>
-                                    <b-icon
-                                        icon="check"
-                                        type="is-success"
-                                        class="has-padding-right-3"
-                                    />Unlimited contacts
+                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Unlimited
+                                    contacts
                                 </li>
                                 <li>
-                                    <b-icon
-                                        icon="check"
-                                        type="is-success"
-                                        class="has-padding-right-3"
-                                    />Synchronized multi device support
+                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Synchronized
+                                    multi device support
                                 </li>
                             </ul>
 
@@ -97,12 +79,16 @@
                                     :outlined="subscription.status == 'active'"
                                     :disabled="subscription.status == 'active'"
                                     @click="onActionClick"
-                                >{{ subscription.status == 'active' ? 'Active!' : 'Activate' }}</b-button>
+                                    >{{ subscription.status == 'active' ? 'Active!' : 'Activate' }}</b-button
+                                >
 
-                                <b-button
-                                    type="is-text"
-                                    v-if="subscription.status == 'active'"
-                                >Cancel my subscription</b-button>
+                                <span class="has-text-grey has-margin-left-1" v-if="subscription.status == 'trialing'"
+                                    >Trial ends on {{ subscription.trialEnd | date }}</span
+                                >
+
+                                <b-button type="is-text" v-if="subscription.status == 'active'"
+                                    >Cancel my subscription</b-button
+                                >
                             </div>
                         </div>
                     </div>
@@ -157,7 +143,7 @@ export default class UserSubscription extends Vue {
         if (this.subscription.status == 'trialing') {
             const price = billingStore.defaultPlan.prices.find(p => p.interval == (this.showYearly ? 'year' : 'month'));
 
-            await billingStore.startCheckout(price!.billingId);
+            await billingStore.createCheckoutSession(price!.billingId);
         }
     }
 }

@@ -15,6 +15,7 @@
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import LoadingSplash from '@/core/components/loading-splash.vue';
 import userStore from './modules/user/store/user-store';
+import { loadStripeJs } from '@/plugins/stripe';
 
 @Component({
     name: 'app',
@@ -28,6 +29,7 @@ export default class App extends Vue {
     }
 
     async created() {
+        await loadStripeJs();
         await userStore.init();
     }
 }

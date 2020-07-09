@@ -4,6 +4,7 @@ import { SubscriptionPlan } from '@/api/billing/data-transfer-objects/subscripti
 import store from '@/core/store/index';
 import { api } from '@/api/api';
 import { Subscription } from '@/api';
+import { stripe } from '@/plugins/stripe';
 
 @Module({ namespaced: true, name: 'billing', dynamic: true, store })
 class BillingStore extends InitableModule {
@@ -23,8 +24,6 @@ class BillingStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        await api.billing.checkoutSession.init();
-
         const [plan, sub] = await Promise.all([
             api.billing.subscriptionPlan.getDefault(),
             api.billing.subscription.getUserSubscription()
@@ -35,9 +34,9 @@ class BillingStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async startCheckout(priceBillingId: string) {
-        var sessId = await api.billing.checkoutSession.createSession(priceBillingId);
-        await api.billing.checkoutSession.enterSession(sessId);
+    async createCheckoutSession(priceBillingId: string) {
+        var id = await api.billing.checkoutSession.createSession(priceBillingId);
+        await stripe.redirectToCheckout({ sessionId: id });
     }
 }
 
