@@ -16,7 +16,7 @@ namespace DetailingArsenal.Application.Billing {
 
         public async override Task<BillingReference> Execute(CreateCheckoutSessionCommand input, User? user) {
             var customer = await customerService.GetByUser(user!);
-            var billingReference = await sessionGateway.CreateSession(customer, input.PriceBillingId);
+            var billingReference = await sessionGateway.CreateSession(customer, user!.Email, input.PriceBillingId);
             return billingReference;
         }
     }

@@ -10,14 +10,15 @@ namespace DetailingArsenal.Infrastructure.Billing {
 
         public StripeCheckoutSessionGateway(ISubscriptionConfig config) {
             this.config = config;
-            this.sessionService = new SessionService(); 
+            this.sessionService = new SessionService();
         }
 
-        public async Task<BillingReference> CreateSession(Customer customer, string priceBillingId) {
+        public async Task<BillingReference> CreateSession(Customer customer, string userEmail, string priceBillingId) {
             var opts = new SessionCreateOptions {
                 PaymentMethodTypes = new List<string> {
                     "card"
                 },
+                CustomerEmail = userEmail,
                 LineItems = new List<SessionLineItemOptions>() {
                     new SessionLineItemOptions {
                         Price = priceBillingId,
