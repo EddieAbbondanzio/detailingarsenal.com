@@ -13,19 +13,19 @@ namespace DetailingArsenal.Infrastructure.Billing {
             this.sessionService = new SessionService();
         }
 
-        public async Task<BillingReference> CreateSession(Customer customer, string userEmail, string priceBillingId) {
+        public async Task<BillingReference> CreateSession(Customer customer, string priceBillingId) {
             var opts = new SessionCreateOptions {
                 PaymentMethodTypes = new List<string> {
                     "card"
                 },
-                CustomerEmail = userEmail,
-                LineItems = new List<SessionLineItemOptions>() {
-                    new SessionLineItemOptions {
-                        Price = priceBillingId,
-                        Quantity = 1
+                Customer = customer.BillingReference.BillingId,
+                SetupIntentData = new SessionSetupIntentDataOptions() {
+                    Metadata = new Dictionary<string, string> {
+                        { "customer_id", customer.BillingReference.BillingId},
+                        { "subscription_id", customer.Subscription.BillingReference.BillingId }
                     }
                 },
-                Mode = "subscription",
+                Mode = "setup",
                 SuccessUrl = config.SuccessUrl,
                 CancelUrl = config.CancelUrl
             };
