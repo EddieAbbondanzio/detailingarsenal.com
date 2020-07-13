@@ -7,9 +7,10 @@ export * from './core/errors/validation-error';
 
 //Billing
 export * from './billing/data-transfer-objects/billing-interval';
+export * from './billing/data-transfer-objects/customer';
+export * from './billing/data-transfer-objects/payment-method';
 export * from './billing/data-transfer-objects/subscription';
 export * from './billing/data-transfer-objects/subscription-plan';
-export * from './billing/data-transfer-objects/subscription-plan-info';
 export * from './billing/data-transfer-objects/subscription-plan-price';
 export * from './billing/data-transfer-objects/subscription-status';
 

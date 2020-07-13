@@ -1,6 +1,5 @@
 import { SubscriptionPlanPrice } from '@/api/billing/data-transfer-objects/subscription-plan-price';
 import { SubscriptionPlan } from '@/api/billing/data-transfer-objects/subscription-plan';
-import { SubscriptionPlanInfo } from '@/api/billing/data-transfer-objects/subscription-plan-info';
 import { http } from '@/api/core/http';
 
 export class SubscriptionPlanService {
@@ -26,7 +25,7 @@ export class SubscriptionPlanService {
                     ? []
                     : d.prices.map((p: any) => new SubscriptionPlanPrice(p.amount, p.interval, p.billingId));
 
-            const plan = new SubscriptionPlan(new SubscriptionPlanInfo(d.id, d.name, d.description), prices);
+            const plan = new SubscriptionPlan(d.id, d.name, d.description, prices);
 
             return plan;
         });

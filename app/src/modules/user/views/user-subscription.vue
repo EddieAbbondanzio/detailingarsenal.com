@@ -10,16 +10,17 @@
             </page-header>
         </template>
 
-        <div class="box is-shadowless" v-if="subscription != null">
-            <p class="is-size-4 has-text-weight-bold has-text-centered has-margin-bottom-4">One plan, no confusion.</p>
+        <div class="box is-shadowless" v-if="customer != null">
+            <p class="is-size-4 has-text-weight-bold has-text-centered has-margin-bottom-3">One plan, no confusion.</p>
 
-            <div class="card has-margin-y-3">
+            <div class="card has-margin-top-3 has-margin-bottom-4">
                 <!-- Status -->
                 <div
-                    v-if="subscription.status == 'trialing'"
+                    v-if="customer.subscription.status == 'trialing'"
                     class="has-background-warning has-w-100 has-padding-all-1 has-text-centered"
                 >
-                    Trialing. {{ trialDaysRemaining }} {{ trialDaysRemaining == 1 ? 'day' : 'days' }} remaining.
+                    Trialing. {{ customer.subscription.trialDaysRemaining }}
+                    {{ customer.subscription.trialDaysRemaining == 1 ? 'day' : 'days' }} remaining.
                 </div>
 
                 <!-- Title -->
@@ -76,14 +77,16 @@
                                 <b-button
                                     type="is-success"
                                     size="is-large"
-                                    :outlined="subscription.status == 'active'"
-                                    :disabled="subscription.status == 'active'"
+                                    :outlined="customer.subscription.status == 'active'"
+                                    :disabled="customer.subscription.status == 'active'"
                                     @click="onActionClick"
-                                    >{{ subscription.status == 'active' ? 'Active!' : 'Activate' }}</b-button
+                                    >{{ customer.subscription.status == 'active' ? 'Active!' : 'Activate' }}</b-button
                                 >
 
-                                <span class="has-text-grey has-margin-left-1" v-if="subscription.status == 'trialing'"
-                                    >Trial ends on {{ subscription.trialEnd | date }}</span
+                                <span
+                                    class="has-text-grey has-margin-left-1"
+                                    v-if="customer.subscription.status == 'trialing'"
+                                    >Trial ends on {{ customer.subscription.trialEnd | date }}</span
                                 >
 
                                 <b-button type="is-text" v-if="subscription.status == 'active'"
@@ -94,6 +97,30 @@
                     </div>
                 </div>
             </div>
+
+            <div class="has-margin-y-3">
+                <p class="is-size-4 has-text-weight-bold has-margin-bottom-3">Your Subscription</p>
+                <div class="has-margin-bottom-3">
+                    <p class="is-size-4 has-text-weight-bold">Plan</p>
+                    <p class="is-size-6">{{ customer.subscription.planName }}</p>
+                </div>
+
+                <div class="has-margin-bottom-3">
+                    <p class="is-size-4 has-text-weight-bold">Status</p>
+                    <p class="is-size-6 has-text-success">{{ customer.subscription.status }}</p>
+                </div>
+
+                <div class="has-margin-bottom-3">
+                    <p class="is-size-4 has-text-weight-bold">Payment Method</p>
+                    <p class="is-size-6">
+                        {{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}
+                    </p>
+                    <p class="is-size-6 has-text-grey">
+                        Next payment on {{ customer.subscription.nextPayment | date }}
+                    </p>
+                    <b-button type="is-text">Update</b-button>
+                </div>
+            </div>
         </div>
     </page>
 </template>
@@ -101,9 +128,10 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import billingStore from '../store/billing-store';
-import { Subscription } from '../../../api';
+import { Subscription, Customer } from '../../../api';
 import { adminGuard } from '../../admin/router/admin-guard';
 import moment from 'moment';
+import { displayLoading } from '../../../core';
 
 /**
  * User subscription page. Kinda hacked. Fix later.
@@ -112,7 +140,7 @@ import moment from 'moment';
 @Component({})
 export default class UserSubscription extends Vue {
     get name() {
-        return billingStore.defaultPlan == null ? '' : billingStore.defaultPlan.info.name;
+        return billingStore.defaultPlan == null ? '' : billingStore.defaultPlan.name;
     }
 
     get monthPrice() {
@@ -123,24 +151,18 @@ export default class UserSubscription extends Vue {
         return billingStore.defaultPlan.prices.find(p => p.interval == 'year')!.amount / 100;
     }
 
-    get trialDaysRemaining() {
-        const today = moment();
-        const trialEnd = moment(this.subscription.trialEnd);
-
-        return trialEnd.diff(today, 'days');
-    }
-
-    subscription: Subscription = null!;
     showYearly = false;
+    customer: Customer = null!;
 
+    @displayLoading
     async created() {
         await billingStore.init();
-        this.subscription = billingStore.subscription;
-        this.showYearly = this.subscription.price.interval == 'year';
+        this.customer = billingStore.customer;
+        this.showYearly = this.customer.subscription.price.interval == 'year';
     }
 
     async onActionClick() {
-        if (this.subscription.status == 'trialing') {
+        if (this.customer.subscription.status == 'trialing') {
             const price = billingStore.defaultPlan.prices.find(p => p.interval == (this.showYearly ? 'year' : 'month'));
 
             await billingStore.createCheckoutSession(price!.billingId);

@@ -4,11 +4,11 @@
             <page-header :title="plan != null ? plan.name : ``">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Subscription Plans" :to="{name: 'subscriptionPlans'}" />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Subscription Plans" :to="{ name: 'subscriptionPlans' }" />
                         <breadcrumb
                             :name="plan != null ? plan.name : ''"
-                            :to="{name: 'subscriptionPlan', params: $route.params}"
+                            :to="{ name: 'subscriptionPlan', params: $route.params }"
                             :active="true"
                         />
                     </breadcrumb-trail>
@@ -25,16 +25,10 @@
 
             <b-table :data="plan.prices">
                 <template slot-scope="props">
-                    <b-table-column
-                        label="Price"
-                        field="label"
-                        sortable
-                    >{{ (props.row.price / 100) | currency }}</b-table-column>
-                    <b-table-column
-                        label="Interval"
-                        field="action"
-                        sortable
-                    >{{ props.row.interval }}</b-table-column>
+                    <b-table-column label="Price" field="label" sortable>{{
+                        (props.row.price / 100) | currency
+                    }}</b-table-column>
+                    <b-table-column label="Interval" field="action" sortable>{{ props.row.interval }}</b-table-column>
                 </template>
 
                 <template slot="empty">
@@ -58,7 +52,7 @@ export default class SubscriptionPlanView extends Vue {
     @displayLoading
     async created() {
         await adminStore.init();
-        this.plan = adminStore.subscriptionPlans.find(p => p.info.id == this.$route.params.id)!;
+        this.plan = adminStore.subscriptionPlans.find(p => p.id == this.$route.params.id)!;
     }
 }
 </script>

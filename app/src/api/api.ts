@@ -9,7 +9,7 @@ import { BusinessService } from '@/api/settings/services/business-service';
 import { HoursOfOperationService } from '@/api/settings/services/hours-of-operation-service';
 import { ServiceService } from '@/api/settings/services/service-service';
 import { VehicleCategoryService } from '@/api/settings/services/vehicle-category-service';
-import { SubscriptionService } from '@/api/billing/services/subscription-service';
+import { CustomerService } from '@/api/billing/services/customer-service';
 import { CheckoutSessionService } from '@/api/billing/services/checkout-session-service';
 
 export const api = {
@@ -38,7 +38,7 @@ export const api = {
      */
     billing: {
         subscriptionPlan: new SubscriptionPlanService(),
-        subscription: new SubscriptionService(),
+        customer: new CustomerService(),
         checkoutSession: new CheckoutSessionService()
     }
 };
