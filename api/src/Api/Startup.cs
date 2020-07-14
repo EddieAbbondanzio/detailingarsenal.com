@@ -148,12 +148,12 @@ namespace DetailingArsenal.Api {
             services.AddTransient<SubscriptionConfigValidator>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ICustomerRepo, CustomerRepo>();
-            services.AddTransient<ISubscriptionReader, SubscriptionReader>();
+            services.AddTransient<ICustomerReader, CustomerReader>();
             services.AddTransient<ICustomerService, Domain.Billing.CustomerService>();
             services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
             services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<ICheckoutSessionGateway, StripeCheckoutSessionGateway>();
-            services.AddTransient<ActionHandler<GetUserSubscriptionQuery, SubscriptionReadModel>, GetUserSubscriptionHandler>();
+            services.AddTransient<ActionHandler<GetCustomerQuery, CustomerReadModel>, GetCustomerHandler>();
             services.AddTransient<ActionHandler<GetDefaultSubscriptionPlanQuery, SubscriptionPlanView>, GetDefaultSubscriptionPlanHandler>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanView>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();

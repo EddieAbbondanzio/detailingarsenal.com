@@ -4,6 +4,7 @@ namespace DetailingArsenal.Domain.Billing {
     public class Subscription : Entity<Subscription>, IBillingEntity {
         public SubscriptionPlanReference PlanReference { get; set; } = null!;
         public string Status { get; set; } = null!;
+        public DateTime? NextPayment { get; set; }
         public DateTime TrialStart { get; set; }
         public DateTime TrialEnd { get; set; }
         public BillingReference BillingReference { get; set; } = null!;
@@ -17,7 +18,7 @@ namespace DetailingArsenal.Domain.Billing {
                 Status = status,
                 TrialStart = trialStart,
                 TrialEnd = trialEnd,
-                BillingReference = billingReference
+                BillingReference = billingReference,
             };
         }
     }

@@ -2,19 +2,20 @@ using System;
 
 namespace DetailingArsenal.Domain.Billing {
     public class SubscriptionReadModel : IDataTransferObject {
-        public string Name { get; }
+        public string PlanName { get; }
+        public SubscriptionPlanPriceReadModel Price { get; }
         public string Status { get; }
+        public DateTime? NextPayment { get; }
         public DateTime TrialStart { get; }
         public DateTime TrialEnd { get; }
-        public SubscriptionPlanPriceReadModel Price { get; }
 
-
-        public SubscriptionReadModel(string name, string status, DateTime trialStart, DateTime trialEnd, SubscriptionPlanPriceReadModel price) {
-            Name = name;
+        public SubscriptionReadModel(string planName, SubscriptionPlanPriceReadModel price, string status, DateTime nextPayment, DateTime trialStart, DateTime trialEnd) {
+            PlanName = planName;
+            Price = price;
             Status = status;
+            NextPayment = nextPayment;
             TrialStart = trialStart;
             TrialEnd = trialEnd;
-            Price = price;
         }
     }
 }

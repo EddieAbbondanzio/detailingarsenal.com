@@ -89,7 +89,7 @@
                                     >Trial ends on {{ customer.subscription.trialEnd | date }}</span
                                 >
 
-                                <b-button type="is-text" v-if="subscription.status == 'active'"
+                                <b-button type="is-text" v-if="customer.subscription.status == 'active'"
                                     >Cancel my subscription</b-button
                                 >
                             </div>
@@ -110,7 +110,7 @@
                     <p class="is-size-6 has-text-success">{{ customer.subscription.status }}</p>
                 </div>
 
-                <div class="has-margin-bottom-3">
+                <div class="has-margin-bottom-3" v-if="customer.paymentMethod != null">
                     <p class="is-size-4 has-text-weight-bold">Payment Method</p>
                     <p class="is-size-6">
                         {{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}

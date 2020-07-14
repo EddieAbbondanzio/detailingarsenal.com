@@ -18,7 +18,12 @@ namespace DetailingArsenal.Persistence.Billing {
                   
                   select c.*, br.* from customers c
                   left join billing_references br on c.billing_reference_id = br.id
-                  where c.id = @Id",
+                  where c.id = @Id;
+                  
+                  select pm.* from payment_methods pm
+                  inner join customers c on pm.customer_id = c.id
+                  where c.id = @Id;
+                  ",
                   new {
                       Id = id
                   }
@@ -53,6 +58,8 @@ namespace DetailingArsenal.Persistence.Billing {
                     }
                 ).First();
 
+                customer.PaymentMethod = reader.Read<PaymentMethodModel>().Select(p => new PaymentMethod(p.Brand, p.Last4)).FirstOrDefault();
+
                 return customer;
             }
         }
@@ -66,7 +73,12 @@ namespace DetailingArsenal.Persistence.Billing {
                   
                   select c.*, br.* from customers c
                   left join billing_references br on c.billing_reference_id = br.id
-                  where c.user_id = @Id",
+                  where c.user_id = @Id;
+                  
+                  select pm.* from payment_methods pm
+                  inner join customers c on pm.customer_id = c.id
+                  where c.user_id = @Id; 
+                  ",
                 user
             )) {
                 var subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
@@ -99,6 +111,8 @@ namespace DetailingArsenal.Persistence.Billing {
                     }
                 ).First();
 
+                customer.PaymentMethod = reader.Read<PaymentMethodModel>().Select(p => new PaymentMethod(p.Brand, p.Last4)).FirstOrDefault();
+
                 return customer;
             }
         }
@@ -125,6 +139,18 @@ namespace DetailingArsenal.Persistence.Billing {
                     }
                 );
 
+                if (entity.PaymentMethod != null) {
+                    await Connection.ExecuteAsync(
+                        @"insert into payment_methods (id, customer_id, brand, last_4) values (@Id, @CustomerId, @Brand, @Last4);",
+                        new PaymentMethodModel() {
+                            Id = Guid.NewGuid(),
+                            CustomerId = entity.Id,
+                            Brand = entity.PaymentMethod.Brand,
+                            Last4 = entity.PaymentMethod.Last4
+                        }
+                    );
+                }
+
                 var subBillingReference = new BillingReferenceModel() {
                     Id = Guid.NewGuid(),
                     BillingId = entity.Subscription.BillingReference.BillingId,
@@ -139,8 +165,8 @@ namespace DetailingArsenal.Persistence.Billing {
 
                 await Connection.ExecuteAsync(
                     @"insert into subscriptions 
-                    (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, trial_start, trial_end) 
-                    values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @TrialStart, @TrialEnd);",
+                    (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end) 
+                    values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd);",
                     new SubscriptionModel() {
                         Id = entity.Subscription.Id,
                         PlanId = entity.Subscription.PlanReference.PlanId,
@@ -148,6 +174,7 @@ namespace DetailingArsenal.Persistence.Billing {
                         CustomerId = entity.Id,
                         BillingReferenceId = subBillingReference.Id,
                         Status = entity.Subscription.Status,
+                        NextPayment = entity.Subscription.NextPayment,
                         TrialStart = entity.Subscription.TrialStart,
                         TrialEnd = entity.Subscription.TrialEnd
                     }
@@ -176,6 +203,7 @@ namespace DetailingArsenal.Persistence.Billing {
                         plan_id = @PlanId, 
                         price_billing_id = @PriceBillingId, 
                         status = @Status, 
+                        next_payment = @NextPayment,
                         trial_start = @TrialStart, 
                         trial_end = @TrialEnd,
                         customer_id = @CustomerId 
@@ -183,6 +211,7 @@ namespace DetailingArsenal.Persistence.Billing {
                         new SubscriptionModel {
                             PlanId = entity.Subscription.PlanReference.PlanId,
                             Status = entity.Subscription.Status,
+                            NextPayment = entity.Subscription.NextPayment,
                             TrialStart = entity.Subscription.TrialStart,
                             TrialEnd = entity.Subscription.TrialEnd,
                             PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
@@ -198,6 +227,23 @@ namespace DetailingArsenal.Persistence.Billing {
                             BillingId = entity.Subscription.BillingReference.BillingId
                         }
                     );
+
+                    await Connection.ExecuteAsync(
+                        @"delete from payment_methods where customer_id = @Id",
+                        entity
+                    );
+
+                    if (entity.PaymentMethod != null) {
+                        await Connection.ExecuteAsync(
+                            @"insert into payment_methods (id, customer_id, brand, last_4) values (@Id, @CustomerId, @Brand, @Last4);",
+                            new PaymentMethodModel() {
+                                Id = Guid.NewGuid(),
+                                CustomerId = entity.Id,
+                                Brand = entity.PaymentMethod.Brand,
+                                Last4 = entity.PaymentMethod.Last4
+                            }
+                        );
+                    }
 
                     // Update the customer
                     await Connection.ExecuteAsync(
@@ -239,6 +285,11 @@ namespace DetailingArsenal.Persistence.Billing {
                 await Connection.ExecuteAsync(
                     @"delete from billing_references where billing_id = @BillingId",
                     entity.Subscription.BillingReference
+                );
+
+                await Connection.ExecuteAsync(
+                    @"delete from payment_methods where customer_id = @Id",
+                    entity
                 );
 
                 // delete customer

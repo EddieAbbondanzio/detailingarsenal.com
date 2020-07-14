@@ -5,13 +5,15 @@ namespace DetailingArsenal.Domain.Billing {
         public Guid UserId { get; set; }
         public BillingReference BillingReference { get; set; } = null!;
         public Subscription Subscription { get; set; } = null!;
+        public PaymentMethod? PaymentMethod { get; set; }
 
-        public static Customer Create(Guid userId, BillingReference reference, Subscription subscription) {
+        public static Customer Create(Guid userId, BillingReference reference, Subscription subscription, PaymentMethod? paymentMethod = null) {
             return new Customer() {
                 Id = Guid.NewGuid(),
                 UserId = userId,
                 BillingReference = reference,
-                Subscription = subscription
+                Subscription = subscription,
+                PaymentMethod = paymentMethod
             };
         }
     }

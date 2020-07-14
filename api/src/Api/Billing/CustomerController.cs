@@ -8,18 +8,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace DetailingArsenal.Api.Billing {
     [Authorize]
     [ApiController]
-    [Route("/billing/subscription")]
-    public class SubscriptionController : ControllerBase {
+    [Route("/billing/customer")]
+    public class CustomerController : ControllerBase {
         IMediator mediator;
 
-        public SubscriptionController(IMediator mediator) {
+        public CustomerController(IMediator mediator) {
             this.mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUserSubscription() {
-            var sub = await mediator.Dispatch<GetUserSubscriptionQuery, SubscriptionReadModel>(
-                new GetUserSubscriptionQuery(),
+        public async Task<IActionResult> GetCustomer() {
+            var sub = await mediator.Dispatch<GetCustomerQuery, CustomerReadModel>(
+                new GetCustomerQuery(),
                 User.GetUserId()
             );
 
