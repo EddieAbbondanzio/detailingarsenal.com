@@ -15,6 +15,8 @@ namespace DetailingArsenal.Domain.Billing {
 
             RuleFor(c => c.SuccessUrl).NotEmpty().WithMessage("No success url");
             RuleFor(c => c.CancelUrl).NotEmpty().WithMessage("No cancel url");
+
+            RuleFor(c => c.WebhookSecret).NotNull().WithMessage("No webhook secret set");
         }
     }
 }

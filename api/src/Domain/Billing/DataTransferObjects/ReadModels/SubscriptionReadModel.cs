@@ -9,7 +9,7 @@ namespace DetailingArsenal.Domain.Billing {
         public DateTime TrialStart { get; }
         public DateTime TrialEnd { get; }
 
-        public SubscriptionReadModel(string planName, SubscriptionPlanPriceReadModel price, string status, DateTime nextPayment, DateTime trialStart, DateTime trialEnd) {
+        public SubscriptionReadModel(string planName, SubscriptionPlanPriceReadModel price, string status, DateTime? nextPayment, DateTime trialStart, DateTime trialEnd) {
             PlanName = planName;
             Price = price;
             Status = status;

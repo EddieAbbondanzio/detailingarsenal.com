@@ -34,5 +34,10 @@ namespace DetailingArsenal.Infrastructure.Billing {
         /// </summary>
         /// <value></value>
         public string CancelUrl { get; set; } = null!;
+
+        /// <summary>
+        /// Secret used to sign webhooks to verify they came from a legit sender.
+        /// </summary>
+        public string WebhookSecret { get; set; } = null!;
     }
 }

@@ -5,8 +5,10 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Domain.Billing {
     public interface ICustomerService : IService {
         Task<Customer> GetByUser(User user);
+        Task<Customer> GetByBillingId(string billingId);
         Task<Customer> StartSubscription(User user, SubscriptionPlan plan);
         Task DeleteForUser(User user);
+        Task Refresh(Customer customer);
     }
 
     public class CustomerService : ICustomerService {
@@ -21,6 +23,10 @@ namespace DetailingArsenal.Domain.Billing {
         public async Task<Customer> GetByUser(User user) {
             var customer = await customerRepo.FindByUser(user);
             return customer ?? throw new EntityNotFoundException();
+        }
+
+        public async Task<Customer> GetByBillingId(string billingId) {
+            return await customerRepo.FindByBillingId(billingId) ?? throw new EntityNotFoundException();
         }
 
         public async Task<Customer> StartSubscription(User user, SubscriptionPlan plan) {
@@ -39,6 +45,16 @@ namespace DetailingArsenal.Domain.Billing {
 
             await customerGateway.Delete(customer);
             await customerRepo.Delete(customer);
+        }
+
+        public async Task Refresh(Customer customer) {
+            var refreshedCustomer = await customerGateway.GetByBillingId(customer.BillingReference.BillingId);
+
+            customer.Subscription.Status = refreshedCustomer.Subscription.Status;
+            customer.Subscription.NextPayment = refreshedCustomer.Subscription.NextPayment;
+            customer.PaymentMethod = refreshedCustomer.PaymentMethod;
+
+            await customerRepo.Update(customer);
         }
     }
 }

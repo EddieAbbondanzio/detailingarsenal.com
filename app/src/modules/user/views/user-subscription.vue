@@ -115,7 +115,7 @@
                     <p class="is-size-6">
                         {{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}
                     </p>
-                    <p class="is-size-6 has-text-grey">
+                    <p class="is-size-6 has-text-grey" v-if="customer.subscription.nextPayment != null">
                         Next payment on {{ customer.subscription.nextPayment | date }}
                     </p>
                     <b-button type="is-text">Update</b-button>

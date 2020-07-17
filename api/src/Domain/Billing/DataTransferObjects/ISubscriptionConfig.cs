@@ -6,5 +6,6 @@ namespace DetailingArsenal.Domain.Billing {
         int TrialPeriod { get; set; }
         string SuccessUrl { get; set; }
         string CancelUrl { get; set; }
+        string WebhookSecret {get;set;}
     }
 }

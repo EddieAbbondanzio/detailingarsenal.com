@@ -64,6 +64,63 @@ namespace DetailingArsenal.Persistence.Billing {
             }
         }
 
+        public async Task<Customer?> FindByBillingId(string billingId) {
+            using (var reader = await Connection.QueryMultipleAsync(
+                @"select s.*, br.* from subscriptions s
+                  left join billing_references sbr on s.billing_reference_id = sbr.id
+                  left join customers c on s.customer_id = c.id
+                  left join billing_references cbr on c.billing_reference_id = cbr.id
+                  where cbr.billing_id = @BillingId;
+                  
+                  select c.*, br.* from customers c
+                  left join billing_references br on c.billing_reference_id = br.id
+                  where c.billing_id = @BillingId;
+                  
+                  select pm.* from payment_methods pm
+                  inner join customers c on pm.customer_id = c.id
+                  left join billing_references br on c.billing_reference_id = br.id
+                  where c.billing_id = @BillingId;
+                  ",
+                  new {
+                      BillingId = billingId
+                  }
+            )) {
+                var subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
+                    (s, br) => new Subscription {
+                        Id = s.Id,
+                        PlanReference = new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
+                        Status = s.Status,
+                        TrialStart = s.TrialStart,
+                        TrialEnd = s.TrialEnd,
+                        BillingReference = new BillingReference(
+                            br.BillingId,
+                            br.Type
+                        )
+                    }
+                ).FirstOrDefault();
+
+                if (subscription == null) {
+                    return null;
+                }
+
+                var customer = reader.Read<CustomerModel, BillingReferenceModel, Customer>(
+                    (c, br) => new Customer {
+                        Id = c.Id,
+                        UserId = c.UserId,
+                        BillingReference = new BillingReference(
+                            br.BillingId,
+                            br.Type
+                        ),
+                        Subscription = subscription
+                    }
+                ).First();
+
+                customer.PaymentMethod = reader.Read<PaymentMethodModel>().Select(p => new PaymentMethod(p.Brand, p.Last4)).FirstOrDefault();
+
+                return customer;
+            }
+        }
+
         public async Task<Customer?> FindByUser(User user) {
             using (var reader = await Connection.QueryMultipleAsync(
                 @"select s.*, br.* from subscriptions s
