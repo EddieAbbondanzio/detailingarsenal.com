@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
 using DetailingArsenal.Application.Billing;
+using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Billing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,14 @@ namespace DetailingArsenal.Api.Billing {
     [Route("billing/checkout-session")]
     [ApiController]
     public class CheckoutSessionController : ControllerBase {
-        private IMediator mediator;
+        IMediator mediator;
         ISubscriptionConfig config;
+        IDomainEventPublisher eventPublisher;
 
-        public CheckoutSessionController(IMediator mediator, ISubscriptionConfig config) {
+        public CheckoutSessionController(IMediator mediator, ISubscriptionConfig config, IDomainEventPublisher eventPublisher) {
             this.mediator = mediator;
             this.config = config;
+            this.eventPublisher = eventPublisher;
         }
 
         /// <summary>
@@ -52,9 +55,9 @@ namespace DetailingArsenal.Api.Billing {
                 if (stripeEvent.Type == Events.CheckoutSessionCompleted) {
                     var session = stripeEvent.Data.Object as Stripe.Checkout.Session ?? throw new NullReferenceException();
 
-                    await mediator.Dispatch(new RefreshCustomerCommand {
-                        BillingId = session.CustomerId
-                    });
+                    await eventPublisher.Dispatch(new CheckoutSessionCompletedSuccessfully(
+                        session.CustomerId
+                    ));
 
                     return Ok(420);
                 } else {
