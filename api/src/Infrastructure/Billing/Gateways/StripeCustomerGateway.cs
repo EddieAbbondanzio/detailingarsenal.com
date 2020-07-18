@@ -99,10 +99,6 @@ namespace DetailingArsenal.Infrastructure.Billing {
             if (sources.Data.Count > 0) {
                 var sCard = sources.Data[0].Card;
 
-                if (sCard == null) {
-                    throw new InvalidOperationException("Hey dummy. Don't hardcode this if you want to support other payment methods.");
-                }
-
                 c.PaymentMethod = new PaymentMethod(
                     sCard.Brand,
                     sCard.Last4
