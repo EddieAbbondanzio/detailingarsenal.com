@@ -66,7 +66,7 @@ namespace DetailingArsenal.Persistence.Billing {
 
         public async Task<Customer?> FindByBillingId(string billingId) {
             using (var reader = await Connection.QueryMultipleAsync(
-                @"select s.*, br.* from subscriptions s
+                @"select s.*, sbr.* from subscriptions s
                   left join billing_references sbr on s.billing_reference_id = sbr.id
                   left join customers c on s.customer_id = c.id
                   left join billing_references cbr on c.billing_reference_id = cbr.id
@@ -74,12 +74,12 @@ namespace DetailingArsenal.Persistence.Billing {
                   
                   select c.*, br.* from customers c
                   left join billing_references br on c.billing_reference_id = br.id
-                  where c.billing_id = @BillingId;
+                  where br.billing_id = @BillingId;
                   
                   select pm.* from payment_methods pm
                   inner join customers c on pm.customer_id = c.id
                   left join billing_references br on c.billing_reference_id = br.id
-                  where c.billing_id = @BillingId;
+                  where br.billing_id = @BillingId;
                   ",
                   new {
                       BillingId = billingId

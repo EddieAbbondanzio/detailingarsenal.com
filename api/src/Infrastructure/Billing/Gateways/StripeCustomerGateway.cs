@@ -8,11 +8,13 @@ namespace DetailingArsenal.Infrastructure.Billing {
     public class StripeCustomerGateway : ICustomerGateway {
         Stripe.CustomerService customerService;
         Stripe.SubscriptionService subscriptionService;
+        Stripe.PaymentMethodService paymentMethodService;
         ISubscriptionConfig config;
 
         public StripeCustomerGateway(ISubscriptionConfig config) {
             customerService = new Stripe.CustomerService();
             subscriptionService = new Stripe.SubscriptionService();
+            paymentMethodService = new Stripe.PaymentMethodService();
             this.config = config;
         }
 
@@ -72,7 +74,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
             // Safe to assume the customer will always have 1!.
             var sSub = sCustomer.Subscriptions.Data[0];
 
-            return Customer.Create(
+            var c = Customer.Create(
                 Guid.Parse(sCustomer.Metadata["UserId"]),
                 new BillingReference(sCustomer.Id, BillingReferenceType.Customer),
                 Subscription.Create(
@@ -87,6 +89,27 @@ namespace DetailingArsenal.Infrastructure.Billing {
                     )
                 )
             );
+
+            var sources = await paymentMethodService.ListAsync(new Stripe.PaymentMethodListOptions() {
+                Customer = sCustomer.Id,
+                Type = "card"
+            });
+
+
+            if (sources.Data.Count > 0) {
+                var sCard = sources.Data[0].Card;
+
+                if (sCard == null) {
+                    throw new InvalidOperationException("Hey dummy. Don't hardcode this if you want to support other payment methods.");
+                }
+
+                c.PaymentMethod = new PaymentMethod(
+                    sCard.Brand,
+                    sCard.Last4
+                );
+            }
+
+            return c;
         }
     }
 }

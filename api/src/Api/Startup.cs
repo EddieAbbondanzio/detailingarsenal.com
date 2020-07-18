@@ -161,6 +161,8 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
             services.AddTransient<IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully>, RefreshCustomerOnCheckoutSuccess>();
             services.AddTransient<IDomainEventSubscriber<CustomerTrialWillEndSoon>, EmailEdOnCustomerTrialWillEnd>();
+            services.AddTransient<IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated>, RefreshCustomerOnInvoiceUpdate>();
+            services.AddTransient<IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated>, EmailCustomerOnInvoicePaymentFailure>();
 
             // Security
             services.AddTransient<IPermissionRepo, PermissionRepo>();

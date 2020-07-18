@@ -34,7 +34,7 @@ namespace DetailingArsenal.Api.Billing {
             return Ok(sub);
         }
 
-        [HttpGet("subscription/trial-will-end")]
+        [HttpPost("subscription/trial-will-end")]
         public async Task<IActionResult> TrialWillEnd() {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
@@ -47,6 +47,32 @@ namespace DetailingArsenal.Api.Billing {
                     var subscription = stripeEvent.Data.Object as Stripe.Subscription ?? throw new NullReferenceException();
 
                     await eventPublisher.Dispatch(new CustomerTrialWillEndSoon(
+                        subscription.CustomerId
+                    ));
+
+                    return Ok(420);
+                } else {
+                    return Ok();
+                }
+            } catch (StripeException) {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("subscription/invoice/updated")]
+        public async Task<IActionResult> InvoicePaymentSucceeded() {
+            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+
+            try {
+                var stripeEvent = EventUtility.ConstructEvent(json,
+                    Request.Headers["Stripe-Signature"], config.WebhookSecret);
+
+                // Handle the checkout.session.completed event
+                if (stripeEvent.Type == Events.InvoiceUpdated) {
+                    var subscription = stripeEvent.Data.Object as Stripe.Subscription ?? throw new NullReferenceException();
+
+                    await eventPublisher.Dispatch(new CustomerSubscriptionInvoiceUpdated(
+                        subscription.Status,
                         subscription.CustomerId
                     ));
 
