@@ -4,8 +4,15 @@ using DetailingArsenal.Domain.Billing;
 
 namespace DetailingArsenal.Application.Billing {
     public class RefreshCustomerOnCheckoutSuccess : IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully> {
-        public Task Notify(CheckoutSessionCompletedSuccessfully busEvent) {
-            throw new System.NotImplementedException();
+        ICustomerService customerService;
+
+        public RefreshCustomerOnCheckoutSuccess(ICustomerService customerService) {
+            this.customerService = customerService;
+        }
+
+        public async Task Notify(CheckoutSessionCompletedSuccessfully busEvent) {
+            var c = await customerService.GetByBillingId(busEvent.CustomerBillingId);
+            await customerService.Refresh(c);
         }
     }
 }
