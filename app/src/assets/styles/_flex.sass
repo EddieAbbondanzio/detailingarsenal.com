@@ -25,6 +25,10 @@ $justify-options: ('flex-start', 'flex-end', 'end', 'start', 'center', 'space-be
         .is-justify-content-#{$justify-option}#{if($target == '', '', '-' + $target)}
             justify-content: #{$justify-option}!important
 
+        // .is-justify-self-center
+        .is-justify-self-#{$justify-option}#{if($target == '', '', '-' + $target)}
+            justify-self: #{$justify-option}!important
+
 
 +flexs()
 
