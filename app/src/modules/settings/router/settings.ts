@@ -2,22 +2,22 @@ import { authGuard } from '@/core/router/auth-guard';
 
 export const settings = [
     {
-        path: 'services',
+        path: 'settings/services',
         name: 'services',
         component: () => import('@/modules/settings/views/services/services.vue')
     },
     {
-        path: 'services/:id',
+        path: 'settings/services/:id',
         name: 'service',
         component: () => import('@/modules/settings/views/services/service.vue')
     },
     {
-        path: 'services/:id/edit',
+        path: 'settings/services/:id/edit',
         name: 'editService',
         component: () => import('@/modules/settings/views/services/edit-service.vue')
     },
     {
-        path: 'service/create',
+        path: 'settings/service/create',
         name: 'createService',
         component: () => import('@/modules/settings/views/services/create-service.vue')
     },
