@@ -179,7 +179,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 var customerBillingReference = new BillingReferenceModel() {
                     Id = Guid.NewGuid(),
                     BillingId = entity.BillingReference.BillingId,
-                    Type = entity.Subscription.BillingReference.Type
+                    Type = entity.BillingReference.Type
                 };
 
                 await Connection.ExecuteAsync(
@@ -208,34 +208,36 @@ namespace DetailingArsenal.Persistence.Billing {
                     );
                 }
 
-                var subBillingReference = new BillingReferenceModel() {
-                    Id = Guid.NewGuid(),
-                    BillingId = entity.Subscription.BillingReference.BillingId,
-                    Type = entity.Subscription.BillingReference.Type
-                };
+                if (entity.Subscription != null) {
+                    var subBillingReference = new BillingReferenceModel() {
+                        Id = Guid.NewGuid(),
+                        BillingId = entity.Subscription.BillingReference.BillingId,
+                        Type = entity.Subscription.BillingReference.Type
+                    };
 
 
-                await Connection.ExecuteAsync(
-                    @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                    subBillingReference
-                );
+                    await Connection.ExecuteAsync(
+                        @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
+                        subBillingReference
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"insert into subscriptions 
+                    await Connection.ExecuteAsync(
+                        @"insert into subscriptions 
                     (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end) 
                     values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd);",
-                    new SubscriptionModel() {
-                        Id = entity.Subscription.Id,
-                        PlanId = entity.Subscription.PlanReference.PlanId,
-                        PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
-                        CustomerId = entity.Id,
-                        BillingReferenceId = subBillingReference.Id,
-                        Status = entity.Subscription.Status,
-                        NextPayment = entity.Subscription.NextPayment,
-                        TrialStart = entity.Subscription.TrialStart,
-                        TrialEnd = entity.Subscription.TrialEnd
-                    }
-                );
+                        new SubscriptionModel() {
+                            Id = entity.Subscription.Id,
+                            PlanId = entity.Subscription.PlanReference.PlanId,
+                            PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
+                            CustomerId = entity.Id,
+                            BillingReferenceId = subBillingReference.Id,
+                            Status = entity.Subscription.Status,
+                            NextPayment = entity.Subscription.NextPayment,
+                            TrialStart = entity.Subscription.TrialStart,
+                            TrialEnd = entity.Subscription.TrialEnd
+                        }
+                    );
+                }
 
                 t.Commit();
             }
@@ -254,36 +256,39 @@ namespace DetailingArsenal.Persistence.Billing {
                     var customerModel = reader.Read<CustomerModel>().First();
                     var subscriptionModel = reader.Read<SubscriptionModel>().First();
 
-                    // Update the subscription
-                    await Connection.ExecuteAsync(
-                        @"update subscriptions set 
-                        plan_id = @PlanId, 
-                        price_billing_id = @PriceBillingId, 
-                        status = @Status, 
-                        next_payment = @NextPayment,
-                        trial_start = @TrialStart, 
-                        trial_end = @TrialEnd,
-                        customer_id = @CustomerId 
-                        where id = @Id",
-                        new SubscriptionModel {
-                            PlanId = entity.Subscription.PlanReference.PlanId,
-                            Status = entity.Subscription.Status,
-                            NextPayment = entity.Subscription.NextPayment,
-                            TrialStart = entity.Subscription.TrialStart,
-                            TrialEnd = entity.Subscription.TrialEnd,
-                            PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
-                            CustomerId = entity.Id
-                        }
-                    );
+                    await Connection.ExecuteAsync(@"delete from subscriptions where customer_id = @Id;", entity);
+                    await Connection.ExecuteAsync(@"delete from billing_references where id = @BillingReferenceId", subscriptionModel);
 
-                    // Update the subscription billing reference
-                    await Connection.ExecuteAsync(
-                        @"update billing_references set billing_id = @BillingId where id = @Id",
-                        new {
-                            Id = subscriptionModel.BillingReferenceId,
-                            BillingId = entity.Subscription.BillingReference.BillingId
-                        }
-                    );
+                    if (entity.Subscription != null) {
+                        var subBillingReference = new BillingReferenceModel() {
+                            Id = Guid.NewGuid(),
+                            BillingId = entity.Subscription.BillingReference.BillingId,
+                            Type = entity.Subscription.BillingReference.Type
+                        };
+
+
+                        await Connection.ExecuteAsync(
+                            @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
+                            subBillingReference
+                        );
+
+                        await Connection.ExecuteAsync(
+                            @"insert into subscriptions 
+                                (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end) 
+                                values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd);",
+                            new SubscriptionModel() {
+                                Id = entity.Subscription.Id,
+                                PlanId = entity.Subscription.PlanReference.PlanId,
+                                PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
+                                CustomerId = entity.Id,
+                                BillingReferenceId = subBillingReference.Id,
+                                Status = entity.Subscription.Status,
+                                NextPayment = entity.Subscription.NextPayment,
+                                TrialStart = entity.Subscription.TrialStart,
+                                TrialEnd = entity.Subscription.TrialEnd
+                            }
+                        );
+                    }
 
                     await Connection.ExecuteAsync(
                         @"delete from payment_methods where customer_id = @Id",

@@ -22,10 +22,10 @@ namespace DetailingArsenal.Application.Users {
 
             if (user == null) {
                 await newUserSaga.Execute(auth0Id);
-                user = await (userService.TryGetUserByAuth0Id(auth0Id))!;
+                user = (await (userService.TryGetUserByAuth0Id(auth0Id)))!;
             }
 
-            return user;
+            return user!;
         }
     }
 }

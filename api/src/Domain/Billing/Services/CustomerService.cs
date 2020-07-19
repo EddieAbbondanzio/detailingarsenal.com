@@ -50,8 +50,7 @@ namespace DetailingArsenal.Domain.Billing {
         public async Task Refresh(Customer customer) {
             var refreshedCustomer = await customerGateway.GetByBillingId(customer.BillingReference.BillingId);
 
-            customer.Subscription.Status = refreshedCustomer.Subscription.Status;
-            customer.Subscription.NextPayment = refreshedCustomer.Subscription.NextPayment;
+            customer.Subscription = refreshedCustomer.Subscription;
             customer.PaymentMethod = refreshedCustomer.PaymentMethod;
 
             await customerRepo.Update(customer);

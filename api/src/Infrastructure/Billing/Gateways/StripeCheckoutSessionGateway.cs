@@ -22,13 +22,16 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 SetupIntentData = new SessionSetupIntentDataOptions() {
                     Metadata = new Dictionary<string, string> {
                         { "customer_id", customer.BillingReference.BillingId},
-                        { "subscription_id", customer.Subscription.BillingReference.BillingId }
                     }
                 },
                 Mode = "setup",
                 SuccessUrl = config.SuccessUrl,
                 CancelUrl = config.CancelUrl
             };
+
+            if (customer.Subscription != null) {
+                opts.SetupIntentData.Metadata.Add("subscription_id", customer.Subscription.BillingReference.BillingId);
+            }
 
             var session = await sessionService.CreateAsync(opts);
             return new BillingReference(session.Id, BillingReferenceType.Session);

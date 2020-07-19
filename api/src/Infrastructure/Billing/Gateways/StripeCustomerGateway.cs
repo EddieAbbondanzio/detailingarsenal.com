@@ -90,6 +90,10 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 )
             );
 
+            /*
+            * Payment sources on customer from CustomerService.GetAsync() will always be empty.
+            * Need to get them manually instead.
+            */
             var sources = await paymentMethodService.ListAsync(new Stripe.PaymentMethodListOptions() {
                 Customer = sCustomer.Id,
                 Type = "card"
