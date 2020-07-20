@@ -2,23 +2,28 @@ import { authGuard } from '@/core/router/auth-guard';
 
 export const user = [
     {
-        path: 'user/settings',
-        name: 'userSettings',
-        component: () => import('@/modules/user/views/user-settings.vue')
+        path: 'account',
+        name: 'account',
+        component: () => import('@/modules/user/views/account.vue')
     },
     {
-        path: 'user/settings/edit',
-        name: 'editUserSettings',
-        component: () => import('@/modules/user/views/edit-user-settings.vue')
+        path: 'account/profile',
+        name: 'profile',
+        component: () => import('@/modules/user/views/profile.vue')
     },
     {
-        path: 'user/subscription',
-        name: 'userSubscription',
-        component: () => import('@/modules/user/views/user-subscription.vue')
+        path: 'account/profile/edit',
+        name: 'editProfile',
+        component: () => import('@/modules/user/views/edit-profile.vue')
     },
     {
-        path: 'user/subscription/success',
-        name: 'userSubscriptionSuccess',
-        component: () => import('@/modules/user/views/user-subscription-success.vue')
+        path: 'account/subscription',
+        name: 'subscription',
+        component: () => import('@/modules/user/views/subscription.vue')
+    },
+    {
+        path: 'account/subscription/success',
+        name: 'subscriptionSuccess',
+        component: () => import('@/modules/user/views/subscription-success.vue')
     }
 ];

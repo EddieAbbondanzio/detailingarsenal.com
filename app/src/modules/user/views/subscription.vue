@@ -4,14 +4,21 @@
             <page-header title="Subscription" description="Subscription plan and billing">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Subscription" :to="{ name: 'userSubscription' }" active="true" />
+                        <breadcrumb name="Account" :to="{ name: 'account' }" />
+                        <breadcrumb
+                            name="Subscription"
+                            :to="{ name: 'subscription' }"
+                            active="true"
+                        />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
         <div class="box is-shadowless" v-if="customer != null">
-            <p class="is-size-4 has-text-weight-bold has-text-centered has-margin-bottom-3">One plan, no confusion.</p>
+            <p
+                class="is-size-4 has-text-weight-bold has-text-centered has-margin-bottom-3"
+            >One plan, no confusion.</p>
 
             <div class="card has-margin-top-3 has-margin-bottom-4">
                 <!-- Status -->
@@ -25,9 +32,9 @@
 
                 <!-- Title -->
                 <div class="has-background-primary has-padding-all-4">
-                    <p class="is-size-4 has-text-weight-bold has-text-white has-text-centered">
-                        Detailing Arsenal {{ name }}
-                    </p>
+                    <p
+                        class="is-size-4 has-text-weight-bold has-text-white has-text-centered"
+                    >Detailing Arsenal {{ name }}</p>
                 </div>
 
                 <div class="level has-padding-all-4">
@@ -43,11 +50,16 @@
                                     <small class="is-size-3" style="vertical-align: text-top;">$</small>
                                     {{ yearPrice }}
                                 </p>
-                                <p class="is-size-5 has-text-grey is-uppercase" style="align-self: bottom">
-                                    / {{ showYearly ? 'year' : 'month' }}
-                                </p>
+                                <p
+                                    class="is-size-5 has-text-grey is-uppercase"
+                                    style="align-self: bottom"
+                                >/ {{ showYearly ? 'year' : 'month' }}</p>
 
-                                <b-switch class="has-margin-y-3" type="is-info" v-model="showYearly">
+                                <b-switch
+                                    class="has-margin-y-3"
+                                    type="is-info"
+                                    v-model="showYearly"
+                                >
                                     Yearly
                                     <small class="has-text-grey">(2 months free!)</small>
                                 </b-switch>
@@ -60,15 +72,27 @@
                         <div class="is-flex is-flex-column">
                             <ul class="has-margin-bottom-4">
                                 <li>
-                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Unlimited
+                                    <b-icon
+                                        icon="check"
+                                        type="is-success"
+                                        class="has-padding-right-3"
+                                    />Unlimited
                                     appointment bookings
                                 </li>
                                 <li>
-                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Unlimited
+                                    <b-icon
+                                        icon="check"
+                                        type="is-success"
+                                        class="has-padding-right-3"
+                                    />Unlimited
                                     contacts
                                 </li>
                                 <li>
-                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Synchronized
+                                    <b-icon
+                                        icon="check"
+                                        type="is-success"
+                                        class="has-padding-right-3"
+                                    />Synchronized
                                     multi device support
                                 </li>
                             </ul>
@@ -80,18 +104,17 @@
                                     :outlined="customer.subscription.status == 'active'"
                                     :disabled="customer.subscription.status == 'active'"
                                     @click="onActionClick"
-                                    >{{ customer.subscription.status == 'active' ? 'Active!' : 'Activate' }}</b-button
-                                >
+                                >{{ customer.subscription.status == 'active' ? 'Active!' : 'Activate' }}</b-button>
 
                                 <span
                                     class="has-text-grey has-margin-left-1"
                                     v-if="customer.subscription.status == 'trialing'"
-                                    >Trial ends on {{ customer.subscription.trialEnd | date }}</span
-                                >
+                                >Trial ends on {{ customer.subscription.trialEnd | date }}</span>
 
-                                <b-button type="is-text" v-if="customer.subscription.status == 'active'"
-                                    >Cancel my subscription</b-button
-                                >
+                                <b-button
+                                    type="is-text"
+                                    v-if="customer.subscription.status == 'active'"
+                                >Cancel my subscription</b-button>
                             </div>
                         </div>
                     </div>
@@ -113,12 +136,13 @@
                 <div class="has-margin-bottom-3" v-if="customer.paymentMethod != null">
                     <p class="is-size-4 has-text-weight-bold">Payment Method</p>
                     <div class="is-flex is-flex-row is-align-items-center">
-                        <p class="is-size-6">
-                            {{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}
-                        </p>
-                        <p class="is-size-6 has-text-grey" v-if="customer.subscription.nextPayment != null">
-                            Next payment on {{ customer.subscription.nextPayment | date }}
-                        </p>
+                        <p
+                            class="is-size-6"
+                        >{{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}</p>
+                        <p
+                            class="is-size-6 has-text-grey"
+                            v-if="customer.subscription.nextPayment != null"
+                        >Next payment on {{ customer.subscription.nextPayment | date }}</p>
                         <b-button class="has-padding-y-0 has-margin-y-0" type="is-text">Update</b-button>
                     </div>
                 </div>
@@ -130,7 +154,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import billingStore from '../store/billing-store';
-import { Subscription, Customer } from '../../../api';
+import { Subscription as SubscriptionObj, Customer } from '../../../api';
 import { adminGuard } from '../../admin/router/admin-guard';
 import moment from 'moment';
 import { displayLoading } from '../../../core';
@@ -139,8 +163,8 @@ import { displayLoading } from '../../../core';
  * User subscription page. Kinda hacked. Fix later.
  * Does not support more than 1 subscription plan.
  */
-@Component({})
-export default class UserSubscription extends Vue {
+@Component
+export default class Subscription extends Vue {
     get name() {
         return billingStore.defaultPlan == null ? '' : billingStore.defaultPlan.name;
     }

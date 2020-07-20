@@ -6,5 +6,5 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({})
-export default class UserSubscriptionSuccess extends Vue {}
+export default class SubscriptionSuccess extends Vue {}
 </script>

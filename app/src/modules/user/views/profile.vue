@@ -1,19 +1,16 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header title="User settings" description="Name, and email">
+            <page-header title="Profile" description="Personal information">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb
-                            name="User settings"
-                            :to="{name: 'userSettings'}"
-                            active="true"
-                        />
+                        <breadcrumb name="Account" :to="{ name: 'account' }" />
+                        <breadcrumb name="Profile" :to="{ name: 'profile'}" active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <edit-button :to="{name: 'editUserSettings'}" />
+                    <edit-button :to="{ name: 'editProfile' }" />
                 </template>
             </page-header>
         </template>
@@ -38,10 +35,8 @@ import { getModule } from 'vuex-module-decorators';
 import userStore from '../store/user-store';
 import { displayLoading } from '../../../core/utils/display-loading';
 
-@Component({
-    name: 'user-settings'
-})
-export default class UserSettings extends Vue {
+@Component
+export default class Profile extends Vue {
     get user() {
         return userStore.user;
     }

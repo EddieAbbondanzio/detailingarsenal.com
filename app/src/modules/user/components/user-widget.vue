@@ -6,7 +6,8 @@
             </button>
 
             <b-dropdown-item aria-role="listitem" custom>
-                <div
+                <router-link
+                    :to="{name: 'account' }"
                     class="is-flex is-flex-column is-align-items-center has-text-dark has-padding-y-3"
                 >
                     <b-icon
@@ -16,16 +17,16 @@
                         class="has-padding-bottom-3"
                     ></b-icon>
                     {{ email }}
-                </div>
+                </router-link>
             </b-dropdown-item>
             <b-dropdown-item aria-role="listitem" has-link>
-                <router-link :to="{name: 'userSettings'}" class="is-flex is-flex-row">
-                    <b-icon icon="settings" type="is-dark" class="has-padding-right-3" />Settings
+                <router-link :to="{name: 'profile'}" class="is-flex is-flex-row">
+                    <b-icon icon="account" type="is-dark" class="has-padding-right-3" />Profile
                 </router-link>
             </b-dropdown-item>
 
             <b-dropdown-item aria-role="listitem" has-link>
-                <router-link :to="{name: 'userSubscription'}" class="is-flex is-flex-row">
+                <router-link :to="{name: 'subscription'}" class="is-flex is-flex-row">
                     <b-icon icon="currency-usd" type="is-dark" class="has-padding-right-3" />Subscription
                 </router-link>
             </b-dropdown-item>

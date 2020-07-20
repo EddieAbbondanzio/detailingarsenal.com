@@ -1,20 +1,12 @@
 <template>
-    <page
-        title="Edit User Settings"
-        description="Edit name, email, and more"
-        :breadcrumbs="[
-                { name: 'User Settings', to: { name: 'userSettings' } },
-                { name: 'Edit', to: { name: 'editUserSettings' } },
-            ]"
-        actionText="Save changes"
-        @input="onSubmit"
-    >
+    <page>
         <template v-slot:header>
-            <page-header title="Edit user settings" description="Edit name, and email">
+            <page-header title="Profile" description="Edit personal information">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="User settings" :to="{name: 'userSettings'}" />
-                        <breadcrumb name="Edit" :to="{name: 'editUserSettings'}" :active="true" />
+                        <breadcrumb name="Account" :to="{ name: 'account' }" />
+                        <breadcrumb name="Profile" :to="{ name: 'profile' }" />
+                        <breadcrumb name="Edit" :to="{ name: 'editProfile' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -38,10 +30,8 @@ import { toast } from '@/core';
 import userStore from '../store/user-store';
 import { displayLoading } from '../../../core/utils/display-loading';
 
-@Component({
-    name: 'edit-user-settings'
-})
-export default class EditUserSettings extends Vue {
+@Component
+export default class EditProfile extends Vue {
     get user() {
         return userStore.user;
     }

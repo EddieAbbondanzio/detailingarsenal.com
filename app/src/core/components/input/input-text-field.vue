@@ -1,16 +1,10 @@
 <template>
-    <b-field :label="hideLabel ?  null : label" :class="required ? 'is-required' : ''">
+    <b-field :label="hideLabel ? null : label" :class="required ? 'is-required' : ''">
         <template v-slot:label>
             <slot name="label"></slot>
         </template>
 
-        <validation-provider
-            :vid="vid"
-            :name="label"
-            :rules="rules"
-            v-slot="{ errors, classes }"
-            ref="validator"
-        >
+        <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
             <b-input
                 :icon="iconLeft"
                 :type="type"
@@ -94,4 +88,5 @@ export default class InputTextField extends Vue {
         });
     }
 }
-</script>",
+</script>
+",
