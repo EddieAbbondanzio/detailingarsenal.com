@@ -9,7 +9,7 @@
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Account" :to="{ name: 'user' }" :active="true" />
+                        <breadcrumb name="Account" :to="{ name: 'account' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -36,9 +36,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RawLocation } from 'vue-router';
 import userStore from '../store/user-store';
 
-@Component({
-    name: 'user'
-})
+@Component
 export default class User extends Vue {
     entries: { title: string; description: string; icon: string; to: RawLocation }[] = [
         {
