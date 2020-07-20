@@ -42,28 +42,16 @@ import userStore from '../store/user-store';
 export default class User extends Vue {
     entries: { title: string; description: string; icon: string; to: RawLocation }[] = [
         {
-            title: 'Business',
-            description: 'Name, address, and contact info',
-            icon: 'domain',
-            to: { name: 'business' }
+            title: 'Profile',
+            description: 'Personal information',
+            icon: 'account',
+            to: { name: 'profile' }
         },
         {
-            title: 'Hours Of Operation',
-            description: 'Hours the business is open',
-            icon: 'clock-outline',
-            to: { name: 'hoursOfOperation' }
-        },
-        {
-            title: 'Vehicle Categories',
-            description: 'Vehicle categories for service prices and durations',
-            icon: 'car',
-            to: { name: 'vehicleCategories' }
-        },
-        {
-            title: 'Services',
-            description: 'Services that the business offers',
-            icon: 'toolbox',
-            to: { name: 'services' }
+            title: 'Subscription',
+            description: 'Subscription plan and billing',
+            icon: 'currency-usd',
+            to: { name: 'subscription' }
         }
     ];
 }
