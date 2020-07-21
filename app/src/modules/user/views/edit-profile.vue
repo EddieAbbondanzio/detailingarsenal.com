@@ -20,7 +20,6 @@
                 v-model="email"
                 placeholder="john.smith@fake.com"
                 :disabled="true"
-                aria-disabled="true"
             />
         </input-form>
     </page>
@@ -55,8 +54,8 @@ export default class EditProfile extends Vue {
     public async onSubmit() {
         await userStore.updateUser({ name: this.name });
 
-        toast(`Edited user settings`);
-        this.$router.push({ name: 'userSettings' });
+        toast(`Edited user profile`);
+        this.$router.push({ name: 'profile' });
     }
 }
 </script>

@@ -25,6 +25,11 @@
                 <h5 class="is-size-4 title has-margin-bottom-2">Email</h5>
                 <span class="is-size-6 subtitle">{{ user.email }}</span>
             </div>
+
+            <div class="has-margin-bottom-3">
+                <h5 class="is-size-4 title has-margin-bottom-2">Joined Date</h5>
+                <span class="is-size-6 subtitle">{{ user.joinedDate | date }}</span>
+            </div>
         </div>
     </page>
 </template>

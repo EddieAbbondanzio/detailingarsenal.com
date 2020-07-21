@@ -5,6 +5,7 @@ export class User {
         public id: string,
         public email: string,
         public name: string | null,
+        public joinedDate: Date,
         public isAdmin: boolean,
         public permissions: UserPermission[]
     ) {}
