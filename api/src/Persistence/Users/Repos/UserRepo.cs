@@ -28,14 +28,14 @@ namespace DetailingArsenal.Persistence.Users {
 
         public async Task Add(User entity) {
             await Connection.ExecuteAsync(
-                @"insert into users (id, auth_0_id, name, email) VALUES (@Id, @Auth0Id, @Name, @Email);",
+                @"insert into users (id, auth_0_id, name, email, joined_date) VALUES (@Id, @Auth0Id, @Name, @Email, @JoinedDate);",
                 entity
             );
         }
 
         public async Task Update(User entity) {
             await Connection.ExecuteAsync(
-                @"update users set auth_0_id = @Auth0Id, name = @Name, email = @Email where id = @Id;",
+                @"update users set auth_0_id = @Auth0Id, name = @Name, email = @Email, joined_date = @JoinedDate where id = @Id;",
                 entity
             );
         }

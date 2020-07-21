@@ -18,6 +18,8 @@ namespace DetailingArsenal.Domain.Users {
             }
         }
 
+        public DateTime JoinedDate {get;set;}
+
         private string? name;
 
         public static User Create(string auth0Id, string email) {

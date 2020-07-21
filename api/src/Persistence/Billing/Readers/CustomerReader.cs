@@ -20,7 +20,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 spp.interval as price_interval, 
                 br.billing_id as price_billing_id
                 from customers c
-                left join subscriptions s on c.id = s.customer_customer_id 
+                left join subscriptions s on c.id = s.customer_id 
                 left join subscription_plans sp on s.plan_id = sp.id
                 left join subscription_plan_prices spp on sp.id = spp.plan_id
                 left join billing_references br on spp.billing_reference_id = br.id

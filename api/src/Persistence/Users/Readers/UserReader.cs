@@ -26,11 +26,11 @@ namespace DetailingArsenal.Persistence.Users {
                 ",
                 new { Id = id }
             )) {
-                var user = reader.ReadFirst<User>();
+                var user = reader.ReadFirst();
                 var isAdmin = reader.ReadFirst<bool>();
                 var permissions = reader.Read().Select(r => new UserPermissionReadModel(r.action, r.scope));
 
-                return new UserReadModel(user.Email, user.Name, isAdmin, permissions.ToList());
+                return new UserReadModel(user.email, user.name, user.joined_date, isAdmin, permissions.ToList());
             }
         }
     }
