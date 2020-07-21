@@ -19,6 +19,8 @@
                 rules="email|max:320"
                 v-model="email"
                 placeholder="john.smith@fake.com"
+                :disabled="true"
+                aria-disabled="true"
             />
         </input-form>
     </page>

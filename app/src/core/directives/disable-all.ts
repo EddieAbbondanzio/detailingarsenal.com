@@ -7,7 +7,13 @@ export const disableAll = {
         tags.forEach(tagName => {
             const nodes = el.getElementsByTagName(tagName);
             for (let i = 0; i < nodes.length; i++) {
-                (nodes[i] as any).disabled = binding.value;
+                // cache original disabled state
+                if (nodes[i].wasDisabled == null) {
+                    nodes[i].wasDisabled = nodes[i].disabled;
+                }
+
+                // check for a previously disabled component before re-enabling it.
+                nodes[i].disabled = nodes[i].wasDisabled ? true : binding.value;
             }
         });
     }
