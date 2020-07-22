@@ -21,9 +21,9 @@
             >One plan, no confusion.</p>
 
             <div class="card has-margin-top-3 has-margin-bottom-4">
-                <!-- Status -->
+                <!-- Trial Banner -->
                 <div
-                    v-if="customer.subscription.status == 'trialing'"
+                    v-if="isOnTrialWithNoPaymentMethod()"
                     class="has-background-warning has-w-100 has-padding-all-1 has-text-centered"
                 >
                     Trialing. {{ customer.subscription.trialDaysRemaining }}
@@ -177,6 +177,25 @@ export default class Subscription extends Vue {
         return billingStore.defaultPlan.prices.find(p => p.interval == 'year')!.amount / 100;
     }
 
+    /**
+     * The current state of the page and what should be displayed.
+     */
+    get state(): 'trialing' | 'trialing-will-upgrade' | 'active' | 'cancelling' | 'inactive' | 'issue' {
+        // Check for no subscription first
+        if (this.customer.subscription == null) {
+            return 'inactive';
+        }
+
+        switch (this.customer.subscription?.status) {
+            case 'active':
+                return 'active';
+            case 'trialing':
+                return this.customer.paymentMethod == null ? 'trialing' : 'trialing-will-upgrade';
+            default:
+                return 'inactive';
+        }
+    }
+
     showYearly = false;
     customer: Customer = null!;
 
@@ -193,6 +212,10 @@ export default class Subscription extends Vue {
 
             await billingStore.createCheckoutSession(price!.billingId);
         }
+    }
+
+    isOnTrialWithNoPaymentMethod() {
+        return this.customer.subscription?.status == 'trialing' && this.customer.paymentMethod == null;
     }
 }
 </script>

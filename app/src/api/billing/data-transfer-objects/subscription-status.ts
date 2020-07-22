@@ -1,1 +1,1 @@
-export type SubscriptionStatus = 'active' | 'trialing';
+export type SubscriptionStatus = 'active' | 'trialing' | 'past_due' | 'incomplete' | 'incomplete_expired';

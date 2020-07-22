@@ -49,7 +49,6 @@ namespace DetailingArsenal.Domain.Users {
             }
 
             var newUser = await userGateway.GetUserByAuth0Id(auth0Id);
-            newUser.JoinedDate = new DateTime();
 
             // TODO: Switch to webhooks to avoid this.
             try {

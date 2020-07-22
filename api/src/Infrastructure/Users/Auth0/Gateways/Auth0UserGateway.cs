@@ -17,12 +17,15 @@ namespace DetailingArsenal.Infrastructure.Users {
 
         public async Task<Domain.Users.User> GetUserByAuth0Id(string auth0Id) {
             var managementApiClient = await tokenGenerator.GetManagementApiClient();
-            var user = await managementApiClient.Users.GetAsync(auth0Id) ?? throw new EntityNotFoundException();
+            var auth0User = await managementApiClient.Users.GetAsync(auth0Id) ?? throw new EntityNotFoundException();
 
-            return Domain.Users.User.Create(
+            var user = Domain.Users.User.Create(
                 auth0Id,
-                user.Email
+                auth0User.Email
             );
+
+            user.JoinedDate = auth0User.CreatedAt ?? throw new NullReferenceException();
+            return user;
         }
 
         public async Task<Domain.Users.User> CreateUser(string email, string password) {
@@ -38,6 +41,8 @@ namespace DetailingArsenal.Infrastructure.Users {
                 auth0User.UserId,
                 auth0User.Email
             );
+
+            user.JoinedDate = auth0User.CreatedAt ?? throw new NullReferenceException();
 
             return user;
         }

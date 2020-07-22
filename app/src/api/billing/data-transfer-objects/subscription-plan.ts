@@ -11,4 +11,24 @@ export class SubscriptionPlan {
         public description: string | null,
         public prices: SubscriptionPlanPrice[]
     ) {}
+
+    get yearlyPrice() {
+        const p = this.prices.find(p => p.interval == 'year');
+
+        if (p == null) {
+            throw new Error('No yearly price specified');
+        }
+
+        return p;
+    }
+
+    get monthlyPrice() {
+        const p = this.prices.find(p => p.interval == 'month');
+
+        if (p == null) {
+            throw new Error('No monthly price specified');
+        }
+
+        return p;
+    }
 }
