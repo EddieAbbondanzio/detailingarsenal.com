@@ -23,7 +23,7 @@
             <div class="card has-margin-top-3 has-margin-bottom-4">
                 <!-- Trial Banner -->
                 <div
-                    v-if="isOnTrialWithNoPaymentMethod()"
+                    v-if="state == 'trialing'"
                     class="has-background-warning has-w-100 has-padding-all-1 has-text-centered"
                 >
                     Trialing. {{ customer.subscription.trialDaysRemaining }}
@@ -98,52 +98,49 @@
                             </ul>
 
                             <div class="is-flex is-flex-row is-align-items-center">
-                                <b-button
-                                    type="is-success"
-                                    size="is-large"
-                                    :outlined="customer.subscription.status == 'active'"
-                                    :disabled="customer.subscription.status == 'active'"
-                                    @click="onActionClick"
-                                >{{ customer.subscription.status == 'active' ? 'Active!' : 'Activate' }}</b-button>
+                                <!-- Subscribe button -->
+                                <div v-if="state == 'trialing'">
+                                    <b-button
+                                        type="is-success"
+                                        size="is-large"
+                                        :outlined="customer.subscription.status == 'active'"
+                                        :disabled="customer.subscription.status == 'active'"
+                                        @click="onActionClick"
+                                    >Subscribe</b-button>
 
-                                <span
-                                    class="has-text-grey has-margin-left-1"
-                                    v-if="customer.subscription.status == 'trialing'"
-                                >Trial ends on {{ customer.subscription.trialEnd | date }}</span>
+                                    <span
+                                        class="has-text-grey has-margin-left-1"
+                                        v-if="customer.subscription.status == 'trialing'"
+                                    >Trial ends on {{ customer.subscription.trialEnd | date }}</span>
 
-                                <b-button
-                                    type="is-text"
-                                    v-if="customer.subscription.status == 'active'"
-                                >Cancel my subscription</b-button>
+                                    <b-button
+                                        type="is-text"
+                                        v-if="customer.subscription.status == 'active'"
+                                    >Cancel my subscription</b-button>
+                                </div>
+                                <!-- Payment Info -->
+                                <div
+                                    class="has-margin-bottom-3"
+                                    v-if="state == 'trialing_will_upgrade' || state == 'active'"
+                                >
+                                    <p class="is-size-5 has-text-weight-bold">Payment</p>
+                                    <p>
+                                    <div class="is-flex is-flex-row is-align-items-center">
+                                        <p
+                                            class="is-size-6"
+                                        >{{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}</p>
+                                        <p
+                                            class="is-size-6 has-text-grey"
+                                            v-if="customer.subscription.nextPayment != null"
+                                        >Next payment on {{ customer.subscription.nextPayment | date }}</p>
+                                        <b-button
+                                            class="has-padding-y-0 has-margin-y-0"
+                                            type="is-text"
+                                        >Update</b-button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="has-margin-y-3">
-                <p class="is-size-4 has-text-weight-bold has-margin-bottom-3">Your Subscription</p>
-                <div class="has-margin-bottom-3">
-                    <p class="is-size-4 has-text-weight-bold">Plan</p>
-                    <p class="is-size-6">{{ customer.subscription.planName }}</p>
-                </div>
-
-                <div class="has-margin-bottom-3">
-                    <p class="is-size-4 has-text-weight-bold">Status</p>
-                    <p class="is-size-6 has-text-success">{{ customer.subscription.status }}</p>
-                </div>
-
-                <div class="has-margin-bottom-3" v-if="customer.paymentMethod != null">
-                    <p class="is-size-4 has-text-weight-bold">Payment Method</p>
-                    <div class="is-flex is-flex-row is-align-items-center">
-                        <p
-                            class="is-size-6"
-                        >{{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}</p>
-                        <p
-                            class="is-size-6 has-text-grey"
-                            v-if="customer.subscription.nextPayment != null"
-                        >Next payment on {{ customer.subscription.nextPayment | date }}</p>
-                        <b-button class="has-padding-y-0 has-margin-y-0" type="is-text">Update</b-button>
                     </div>
                 </div>
             </div>
@@ -165,6 +162,7 @@ import { displayLoading } from '../../../core';
  */
 @Component
 export default class Subscription extends Vue {
+    // FUCK
     get name() {
         return billingStore.defaultPlan == null ? '' : billingStore.defaultPlan.name;
     }
@@ -180,17 +178,12 @@ export default class Subscription extends Vue {
     /**
      * The current state of the page and what should be displayed.
      */
-    get state(): 'trialing' | 'trialing-will-upgrade' | 'active' | 'cancelling' | 'inactive' | 'issue' {
-        // Check for no subscription first
-        if (this.customer.subscription == null) {
-            return 'inactive';
-        }
-
+    get state(): 'trialing' | 'trialing_will_upgrade' | 'active' | 'cancelling' | 'inactive' | 'issue' {
         switch (this.customer.subscription?.status) {
             case 'active':
                 return 'active';
             case 'trialing':
-                return this.customer.paymentMethod == null ? 'trialing' : 'trialing-will-upgrade';
+                return this.customer.paymentMethod == null ? 'trialing' : 'trialing_will_upgrade';
             default:
                 return 'inactive';
         }
@@ -204,6 +197,7 @@ export default class Subscription extends Vue {
         await billingStore.init();
         this.customer = billingStore.customer;
         this.showYearly = this.customer.subscription?.price.interval == 'year';
+        console.log(this.state);
     }
 
     async onActionClick() {
@@ -212,10 +206,6 @@ export default class Subscription extends Vue {
 
             await billingStore.createCheckoutSession(price!.billingId);
         }
-    }
-
-    isOnTrialWithNoPaymentMethod() {
-        return this.customer.subscription?.status == 'trialing' && this.customer.paymentMethod == null;
     }
 }
 </script>

@@ -59,7 +59,8 @@ namespace DetailingArsenal.Infrastructure.Billing {
                     new BillingReference(
                         subscription.Id,
                         BillingReferenceType.Product
-                    )
+                    ),
+                    subscription.CurrentPeriodEnd
                 )
             );
         }
@@ -86,7 +87,8 @@ namespace DetailingArsenal.Infrastructure.Billing {
                     new BillingReference(
                         sSub.Id,
                         BillingReferenceType.Product
-                    )
+                    ),
+                    sSub.CurrentPeriodEnd
                 )
             );
 

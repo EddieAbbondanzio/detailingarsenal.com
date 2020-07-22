@@ -9,7 +9,7 @@ namespace DetailingArsenal.Domain.Billing {
         public DateTime TrialEnd { get; set; }
         public BillingReference BillingReference { get; set; } = null!;
 
-        public static Subscription Create(Guid planId, string priceBillingId, string status, DateTime trialStart, DateTime trialEnd, BillingReference billingReference) {
+        public static Subscription Create(Guid planId, string priceBillingId, string status, DateTime trialStart, DateTime trialEnd, BillingReference billingReference, DateTime? nextPayment) {
             return new Subscription() {
                 Id = Guid.NewGuid(),
                 PlanReference = new SubscriptionPlanReference(
@@ -19,6 +19,7 @@ namespace DetailingArsenal.Domain.Billing {
                 TrialStart = trialStart,
                 TrialEnd = trialEnd,
                 BillingReference = billingReference,
+                NextPayment = nextPayment
             };
         }
     }
