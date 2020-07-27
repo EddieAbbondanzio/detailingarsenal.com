@@ -13,7 +13,8 @@ export class Subscription {
         public status: SubscriptionStatus,
         public nextPayment: Date,
         public trialStart: Date,
-        public trialEnd: Date
+        public trialEnd: Date,
+        public cancellingAtPeriodEnd: boolean
     ) {}
 
     get trialDaysRemaining() {

@@ -12,5 +12,6 @@ namespace DetailingArsenal.Persistence.Billing {
         public DateTime? NextPayment { get; set; }
         public DateTime TrialStart { get; set; }
         public DateTime TrialEnd { get; set; }
+        public bool CancellingAtPeriodEnd { get; set; }
     }
 }

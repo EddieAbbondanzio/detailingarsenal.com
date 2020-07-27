@@ -35,6 +35,7 @@ namespace DetailingArsenal.Persistence.Billing {
                         Status = s.Status,
                         TrialStart = s.TrialStart,
                         TrialEnd = s.TrialEnd,
+                        CancellingAtPeriodEnd = s.CancellingAtPeriodEnd,
                         BillingReference = new BillingReference(
                             br.BillingId,
                             br.Type
@@ -92,6 +93,7 @@ namespace DetailingArsenal.Persistence.Billing {
                         Status = s.Status,
                         TrialStart = s.TrialStart,
                         TrialEnd = s.TrialEnd,
+                        CancellingAtPeriodEnd = s.CancellingAtPeriodEnd,
                         BillingReference = new BillingReference(
                             br.BillingId,
                             br.Type
@@ -145,6 +147,7 @@ namespace DetailingArsenal.Persistence.Billing {
                         Status = s.Status,
                         TrialStart = s.TrialStart,
                         TrialEnd = s.TrialEnd,
+                        CancellingAtPeriodEnd = s.CancellingAtPeriodEnd,
                         BillingReference = new BillingReference(
                             br.BillingId,
                             br.Type
@@ -223,8 +226,8 @@ namespace DetailingArsenal.Persistence.Billing {
 
                     await Connection.ExecuteAsync(
                         @"insert into subscriptions 
-                    (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end) 
-                    values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd);",
+                    (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end, cancelling_at_period_end) 
+                    values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd, @CancellingAtPeriodEnd);",
                         new SubscriptionModel() {
                             Id = entity.Subscription.Id,
                             PlanId = entity.Subscription.PlanReference.PlanId,
@@ -234,7 +237,8 @@ namespace DetailingArsenal.Persistence.Billing {
                             Status = entity.Subscription.Status,
                             NextPayment = entity.Subscription.NextPayment,
                             TrialStart = entity.Subscription.TrialStart,
-                            TrialEnd = entity.Subscription.TrialEnd
+                            TrialEnd = entity.Subscription.TrialEnd,
+                            CancellingAtPeriodEnd = entity.Subscription.CancellingAtPeriodEnd
                         }
                     );
                 }
@@ -274,8 +278,8 @@ namespace DetailingArsenal.Persistence.Billing {
 
                         await Connection.ExecuteAsync(
                             @"insert into subscriptions 
-                                (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end) 
-                                values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd);",
+                                (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end, cancelling_at_period_end) 
+                                values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd, @CancellingAtPeriodEnd);",
                             new SubscriptionModel() {
                                 Id = entity.Subscription.Id,
                                 PlanId = entity.Subscription.PlanReference.PlanId,
@@ -285,7 +289,8 @@ namespace DetailingArsenal.Persistence.Billing {
                                 Status = entity.Subscription.Status,
                                 NextPayment = entity.Subscription.NextPayment,
                                 TrialStart = entity.Subscription.TrialStart,
-                                TrialEnd = entity.Subscription.TrialEnd
+                                TrialEnd = entity.Subscription.TrialEnd,
+                                CancellingAtPeriodEnd = entity.Subscription.CancellingAtPeriodEnd
                             }
                         );
                     }

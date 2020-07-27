@@ -19,7 +19,8 @@ export class CustomerService {
                 res.data.subscription.status,
                 res.data.subscription.nextPayment,
                 res.data.subscription.trialStart,
-                res.data.subscription.trialEnd
+                res.data.subscription.trialEnd,
+                res.data.subscription.cancellingAtPeriodEnd
             )
         );
 
@@ -28,5 +29,13 @@ export class CustomerService {
         }
 
         return c;
+    }
+
+    async cancelSubscription() {
+        await http.delete('billing/customer/subscription');
+    }
+
+    async undoCancellingSubscription() {
+        await http.patch('billing/customer/subscription');
     }
 }
