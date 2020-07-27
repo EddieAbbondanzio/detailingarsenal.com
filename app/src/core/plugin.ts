@@ -35,6 +35,7 @@ import EditDeleteDropdown from './components/dropdowns/edit-delete-dropdown.vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { disableAll } from '@/core/directives/disable-all';
 import { mouse } from '@/core/directives/mouse/mouse';
+import { uppercase_first as uppercaseFirst } from '@/core/filters/uppercase_first';
 
 export default {
     install(vue: typeof Vue) {
@@ -71,6 +72,7 @@ export default {
         Vue.filter('fullDate', fullDate);
         Vue.filter('date', date);
         Vue.filter('twelveHourFormat', twelveHourFormat);
+        Vue.filter('uppercaseFirst', uppercaseFirst);
 
         Vue.directive('disable-all', disableAll);
         Vue.directive('mouse', mouse);

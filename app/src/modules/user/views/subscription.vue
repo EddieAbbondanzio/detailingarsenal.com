@@ -100,13 +100,14 @@
 
                             <div class="is-flex is-flex-row is-align-items-center">
                                 <!-- Subscribe button -->
-                                <div v-if="state == 'trialing'">
+                                <div
+                                    class="is-flex is-flex-row is-align-items-center"
+                                    v-if="state == 'trialing'"
+                                >
                                     <b-button
                                         type="is-success"
                                         size="is-large"
-                                        :outlined="customer.subscription.status == 'active'"
-                                        :disabled="customer.subscription.status == 'active'"
-                                        @click="onActionClick"
+                                        @click="onSubscribeClick"
                                     >Subscribe</b-button>
 
                                     <span
@@ -134,13 +135,13 @@
                                             <b-button
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
-                                                @click="onCancelTrialUpgrade"
+                                                @click="onCancel"
                                             >Cancel</b-button>
                                         </div>
 
                                         <p
                                             class="is-size-6"
-                                        >{{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}</p>
+                                        >{{ customer.paymentMethod.brand | uppercaseFirst }} ending in {{ customer.paymentMethod.last4 }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +186,7 @@ export default class Subscription extends Vue {
     get state(): 'trialing' | 'trialing_will_upgrade' | 'active' | 'cancelling' | 'inactive' | 'issue' {
         switch (this.customer.subscription?.status) {
             case 'active':
-                return 'active';
+                return this.customer.subscription.cancellingAtPeriodEnd ? 'cancelling' : 'active';
             case 'trialing':
                 return this.customer.paymentMethod == null ? 'trialing' : 'trialing_will_upgrade';
             default:
@@ -204,7 +205,7 @@ export default class Subscription extends Vue {
         console.log(this.state);
     }
 
-    async onActionClick() {
+    async onSubscribeClick() {
         if (this.customer.subscription?.status == 'trialing') {
             const price = billingStore.defaultPlan.prices.find(p => p.interval == (this.showYearly ? 'year' : 'month'));
 
@@ -212,6 +213,10 @@ export default class Subscription extends Vue {
         }
     }
 
-    async onCancelTrialUpgrade() {}
+    async onCancel() {
+        if (this.customer.subscription != null && !this.customer.subscription.cancellingAtPeriodEnd) {
+            await billingStore.cancelSubscriptionAtPeriodEnd();
+        }
+    }
 }
 </script>
