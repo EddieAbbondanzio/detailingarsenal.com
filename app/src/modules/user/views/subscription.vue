@@ -129,7 +129,7 @@
                                     <div>
                                         <div class="is-flex is-flex-row is-align-items-center">
                                             <p
-                                                class="is-size-6 has-text-grey"
+                                                class="is-size-6"
                                                 v-if="customer.subscription.nextPayment != null"
                                             >Your first bill for {{ (customer.subscription.price.amount / 100) | currency }} will be on {{ customer.subscription.nextPayment | date }}</p>
                                             <b-button

@@ -127,7 +127,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
             }
 
             var opts = new SubscriptionUpdateOptions {
-                CancelAtPeriodEnd = false
+                CancelAtPeriodEnd = true
             };
 
             await subscriptionService.UpdateAsync(customer.Subscription.BillingReference.BillingId, opts);
