@@ -16,6 +16,7 @@ namespace DetailingArsenal.Persistence.Billing {
                 next_payment, 
                 s.trial_start as trial_start, 
                 s.trial_end as trial_end, 
+                s.cancelling_at_period_end,
                 spp.price as price, 
                 spp.interval as price_interval, 
                 br.billing_id as price_billing_id
@@ -48,7 +49,8 @@ namespace DetailingArsenal.Persistence.Billing {
                         rawSubscription.status,
                         rawSubscription.next_payment,
                         rawSubscription.trial_start,
-                        rawSubscription.trial_end
+                        rawSubscription.trial_end,
+                        rawSubscription.cancelling_at_period_end
                     );
                 }
 

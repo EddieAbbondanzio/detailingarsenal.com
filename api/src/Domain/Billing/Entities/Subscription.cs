@@ -7,6 +7,7 @@ namespace DetailingArsenal.Domain.Billing {
         public DateTime? NextPayment { get; set; }
         public DateTime TrialStart { get; set; }
         public DateTime TrialEnd { get; set; }
+        public bool CancellingAtPeriodEnd { get; set; }
         public BillingReference BillingReference { get; set; } = null!;
 
         public static Subscription Create(Guid planId, string priceBillingId, string status, DateTime trialStart, DateTime trialEnd, BillingReference billingReference, DateTime? nextPayment) {
@@ -18,6 +19,7 @@ namespace DetailingArsenal.Domain.Billing {
                 Status = status,
                 TrialStart = trialStart,
                 TrialEnd = trialEnd,
+                CancellingAtPeriodEnd = false,
                 BillingReference = billingReference,
                 NextPayment = nextPayment
             };

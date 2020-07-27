@@ -7,6 +7,8 @@ namespace DetailingArsenal.Domain.Billing {
         Task<Customer> GetByUser(User user);
         Task<Customer> GetByBillingId(string billingId);
         Task<Customer> StartSubscription(User user, SubscriptionPlan plan);
+        Task CancelSubscriptionAtPeriodEnd(Customer customer);
+        Task UndoCancellingSubscription(Customer customer);
         Task DeleteForUser(User user);
         Task Refresh(Customer customer);
     }
@@ -53,6 +55,16 @@ namespace DetailingArsenal.Domain.Billing {
             customer.Subscription = refreshedCustomer.Subscription;
             customer.PaymentMethod = refreshedCustomer.PaymentMethod;
 
+            await customerRepo.Update(customer);
+        }
+
+        public async Task CancelSubscriptionAtPeriodEnd(Customer customer) {
+            await customerGateway.CancelSubscriptionAtPeriodEnd(customer);
+            await customerRepo.Update(customer);
+        }
+
+        public async Task UndoCancellingSubscription(Customer customer) {
+            await customerGateway.UndoCancellingSubscription(customer);
             await customerRepo.Update(customer);
         }
     }

@@ -59,6 +59,7 @@
                                     class="has-margin-y-3"
                                     type="is-info"
                                     v-model="showYearly"
+                                    v-if="state != 'trialing_will_upgrade' && state != 'active'"
                                 >
                                     Yearly
                                     <small class="has-text-grey">(2 months free!)</small>
@@ -118,25 +119,28 @@
                                         v-if="customer.subscription.status == 'active'"
                                     >Cancel my subscription</b-button>
                                 </div>
-                                <!-- Payment Info -->
+                                <!-- Trialing First Payment -->
                                 <div
                                     class="has-margin-bottom-3"
-                                    v-if="state == 'trialing_will_upgrade' || state == 'active'"
+                                    v-if="state == 'trialing_will_upgrade'"
                                 >
                                     <p class="is-size-5 has-text-weight-bold">Payment</p>
-                                    <p>
-                                    <div class="is-flex is-flex-row is-align-items-center">
+                                    <div>
+                                        <div class="is-flex is-flex-row is-align-items-center">
+                                            <p
+                                                class="is-size-6 has-text-grey"
+                                                v-if="customer.subscription.nextPayment != null"
+                                            >Your first bill for {{ (customer.subscription.price.amount / 100) | currency }} will be on {{ customer.subscription.nextPayment | date }}</p>
+                                            <b-button
+                                                class="has-padding-y-0 has-margin-y-0"
+                                                type="is-text"
+                                                @click="onCancelTrialUpgrade"
+                                            >Cancel</b-button>
+                                        </div>
+
                                         <p
                                             class="is-size-6"
                                         >{{ customer.paymentMethod.brand }} ending in {{ customer.paymentMethod.last4 }}</p>
-                                        <p
-                                            class="is-size-6 has-text-grey"
-                                            v-if="customer.subscription.nextPayment != null"
-                                        >Next payment on {{ customer.subscription.nextPayment | date }}</p>
-                                        <b-button
-                                            class="has-padding-y-0 has-margin-y-0"
-                                            type="is-text"
-                                        >Update</b-button>
                                     </div>
                                 </div>
                             </div>
@@ -207,5 +211,7 @@ export default class Subscription extends Vue {
             await billingStore.createCheckoutSession(price!.billingId);
         }
     }
+
+    async onCancelTrialUpgrade() {}
 }
 </script>

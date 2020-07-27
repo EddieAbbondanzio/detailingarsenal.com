@@ -34,6 +34,20 @@ namespace DetailingArsenal.Api.Billing {
             return Ok(sub);
         }
 
+        [Authorize]
+        [HttpPatch("subscription")]
+        public async Task<IActionResult> UndoCancellingSubscription() {
+            await mediator.Dispatch(new UndoCancellingSubscriptionCommand(), User.GetUserId());
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete("subscription")]
+        public async Task<IActionResult> CancelSubscriptionAtPeriodEnd() {
+            await mediator.Dispatch(new CancelSubscriptionAtPeriodEndCommand(), User.GetUserId());
+            return Ok();
+        }
+
         [HttpPost("subscription/trial-will-end")]
         public async Task<IActionResult> TrialWillEnd() {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
