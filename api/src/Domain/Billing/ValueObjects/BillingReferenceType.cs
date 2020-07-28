@@ -3,6 +3,7 @@ namespace DetailingArsenal.Domain.Billing {
         Product = 0,
         Price = 1,
         Customer = 2,
-        Session = 3
+        Session = 3,
+        PaymentMethod = 4
     }
 }

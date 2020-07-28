@@ -53,7 +53,7 @@ namespace DetailingArsenal.Domain.Billing {
             var refreshedCustomer = await customerGateway.GetByBillingId(customer.BillingReference.BillingId);
 
             customer.Subscription = refreshedCustomer.Subscription;
-            customer.PaymentMethod = refreshedCustomer.PaymentMethod;
+            customer.PaymentMethods = refreshedCustomer.PaymentMethods;
 
             await customerRepo.Update(customer);
         }

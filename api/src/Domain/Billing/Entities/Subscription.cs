@@ -2,27 +2,22 @@ using System;
 
 namespace DetailingArsenal.Domain.Billing {
     public class Subscription : Entity<Subscription>, IBillingEntity {
-        public SubscriptionPlanReference PlanReference { get; set; } = null!;
-        public string Status { get; set; } = null!;
+        public string Status { get; set; }
         public DateTime? NextPayment { get; set; }
         public DateTime TrialStart { get; set; }
         public DateTime TrialEnd { get; set; }
         public bool CancellingAtPeriodEnd { get; set; }
-        public BillingReference BillingReference { get; set; } = null!;
+        public SubscriptionPlanReference PlanReference { get; }
+        public BillingReference BillingReference { get; }
 
-        public static Subscription Create(Guid planId, string priceBillingId, string status, DateTime trialStart, DateTime trialEnd, BillingReference billingReference, DateTime? nextPayment) {
-            return new Subscription() {
-                Id = Guid.NewGuid(),
-                PlanReference = new SubscriptionPlanReference(
-                    planId, priceBillingId
-                ),
-                Status = status,
-                TrialStart = trialStart,
-                TrialEnd = trialEnd,
-                CancellingAtPeriodEnd = false,
-                BillingReference = billingReference,
-                NextPayment = nextPayment
-            };
+        public Subscription(string status, DateTime? nextPayment, DateTime trialStart, DateTime trialEnd, bool cancellingAtPeriodEnd, SubscriptionPlanReference planReference, BillingReference billingReference) {
+            Status = status;
+            NextPayment = nextPayment;
+            TrialStart = trialStart;
+            TrialEnd = trialEnd;
+            CancellingAtPeriodEnd = cancellingAtPeriodEnd;
+            PlanReference = planReference;
+            BillingReference = billingReference;
         }
     }
 }

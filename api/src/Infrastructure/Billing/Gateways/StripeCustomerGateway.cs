@@ -111,7 +111,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
             if (sources.Data.Count > 0) {
                 var sCard = sources.Data[0].Card;
 
-                c.PaymentMethod = new Domain.Billing.PaymentMethod(
+                c.PaymentMethods = new Domain.Billing.PaymentMethod(
                     sCard.Brand,
                     sCard.Last4
                 );

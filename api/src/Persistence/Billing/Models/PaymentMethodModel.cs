@@ -7,5 +7,6 @@ namespace DetailingArsenal.Persistence.Billing {
         public Guid CustomerId { get; set; }
         public string Brand { get; set; } = null!;
         public string Last4 { get; set; } = null!;
+        public Guid BillingReferenceId { get; set; }
     }
 }

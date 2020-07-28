@@ -3,7 +3,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain {
     public interface IUserEntity {
-        Guid UserId { get; set; }
+        Guid UserId { get; }
     }
 
     public static class IUserEntityExts {
