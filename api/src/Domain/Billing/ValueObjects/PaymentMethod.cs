@@ -7,6 +7,14 @@ namespace DetailingArsenal.Domain.Billing {
         public bool IsDefault { get; }
         public BillingReference BillingReference { get; }
 
+        public PaymentMethod(string brand, string last4, bool isDefault, BillingReference billingReference) {
+            Id = Guid.NewGuid();
+            Brand = brand;
+            Last4 = last4;
+            IsDefault = isDefault;
+            BillingReference = billingReference;
+        }
+
         public PaymentMethod(Guid id, string brand, string last4, bool isDefault, BillingReference billingReference) {
             Id = id;
             Brand = brand;

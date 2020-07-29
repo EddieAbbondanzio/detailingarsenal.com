@@ -8,12 +8,12 @@ namespace DetailingArsenal.Domain.Billing {
         public Subscription? Subscription { get; set; }
         public List<PaymentMethod> PaymentMethods { get; set; }
 
-        public Customer(Guid id, Guid userId, BillingReference billingReference, Subscription? subscription, List<PaymentMethod> paymentMethods) {
+        public Customer(Guid id, Guid userId, BillingReference billingReference, Subscription? subscription = null, List<PaymentMethod>? paymentMethods = null) {
             Id = id;
             UserId = userId;
             BillingReference = billingReference;
             Subscription = subscription;
-            PaymentMethods = paymentMethods;
+            PaymentMethods = paymentMethods ?? new List<PaymentMethod>();
         }
     }
 }

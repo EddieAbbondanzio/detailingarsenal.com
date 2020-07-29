@@ -10,7 +10,19 @@ namespace DetailingArsenal.Domain.Billing {
         public SubscriptionPlanReference PlanReference { get; }
         public BillingReference BillingReference { get; }
 
+        public Subscription(Guid id, string status, DateTime? nextPayment, DateTime trialStart, DateTime trialEnd, bool cancellingAtPeriodEnd, SubscriptionPlanReference planReference, BillingReference billingReference) {
+            Id = id;
+            Status = status;
+            NextPayment = nextPayment;
+            TrialStart = trialStart;
+            TrialEnd = trialEnd;
+            CancellingAtPeriodEnd = cancellingAtPeriodEnd;
+            PlanReference = planReference;
+            BillingReference = billingReference;
+        }
+
         public Subscription(string status, DateTime? nextPayment, DateTime trialStart, DateTime trialEnd, bool cancellingAtPeriodEnd, SubscriptionPlanReference planReference, BillingReference billingReference) {
+            Id = Guid.NewGuid();
             Status = status;
             NextPayment = nextPayment;
             TrialStart = trialStart;

@@ -32,13 +32,13 @@ namespace DetailingArsenal.Infrastructure.Billing {
                     product = await productService.UpdateAsync(product.Id, updateOpts);
                 }
 
-                var plan = new SubscriptionPlan() {
-                    Id = Guid.Parse(product.Metadata["id"]),
-                    Name = product.Name,
-                    Description = product.Description,
-                    BillingReference = new BillingReference(product.Id, BillingReferenceType.Product),
-                    Prices = await GetPrices(product.Id)
-                };
+                var plan = new SubscriptionPlan(
+                    product.Name,
+                    product.Description,
+                    BillingReference.Product(product.Id),
+                    await GetPrices(product.Id)
+                );
+
                 plans.Add(plan);
             }
 

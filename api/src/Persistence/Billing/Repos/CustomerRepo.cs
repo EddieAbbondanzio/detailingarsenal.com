@@ -30,32 +30,35 @@ namespace DetailingArsenal.Persistence.Billing {
                   }
             )) {
                 var customer = reader.Read<CustomerModel, BillingReferenceModel, Customer>(
-                    (c, br) => new Customer {
-                        Id = c.Id,
-                        UserId = c.UserId,
-                        BillingReference = new BillingReference(
-                            br.BillingId,
-                            br.Type
-                        )
-                    }
+                    (c, br) => new Customer(
+                        c.Id,
+                        c.UserId,
+                        BillingReference.Customer(br.BillingId)
+                    )
                 ).First();
 
                 customer.Subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
-                    (s, br) => new Subscription {
-                        Id = s.Id,
-                        PlanReference = new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
-                        Status = s.Status,
-                        TrialStart = s.TrialStart,
-                        TrialEnd = s.TrialEnd,
-                        CancellingAtPeriodEnd = s.CancellingAtPeriodEnd,
-                        BillingReference = new BillingReference(
-                            br.BillingId,
-                            br.Type
-                        )
-                    }
+                    (s, br) => new Subscription(
+                        s.Id,
+                        s.Status,
+                        s.NextPayment,
+                        s.TrialStart,
+                        s.TrialEnd,
+                        s.CancellingAtPeriodEnd,
+                        new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
+                        BillingReference.Subscription(br.BillingId)
+                    )
                 ).FirstOrDefault();
 
-                customer.PaymentMethods = reader.Read<PaymentMethodModel, BillingReferenceModel, PaymentMethod>().Select(p => new PaymentMethod(p.Brand, p.Last4)).FirstOrDefault();
+                customer.PaymentMethods = reader.Read<PaymentMethodModel, BillingReferenceModel, PaymentMethod>(
+                    (pm, br) => new PaymentMethod(
+                        pm.Id,
+                        pm.Brand,
+                        pm.Last4,
+                        pm.IsDefault,
+                        BillingReference.PaymentMethod(br.BillingId)
+                    )
+                ).ToList();
 
                 return customer;
             }

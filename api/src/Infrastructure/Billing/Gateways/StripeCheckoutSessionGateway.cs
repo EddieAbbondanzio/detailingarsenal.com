@@ -34,7 +34,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
             }
 
             var session = await sessionService.CreateAsync(opts);
-            return new BillingReference(session.Id, BillingReferenceType.Session);
+            return new BillingReference(session.Id, BillingReferenceType.CheckoutSession);
         }
     }
 }

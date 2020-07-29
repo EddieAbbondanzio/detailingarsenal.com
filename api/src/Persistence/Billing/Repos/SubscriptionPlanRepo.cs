@@ -25,15 +25,12 @@ namespace DetailingArsenal.Persistence.Billing {
             )) {
 
                 var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
-                (sp, br) => new SubscriptionPlan() {
-                    Id = sp.Id,
-                    Name = sp.Name,
-                    Description = sp.Description,
-                    BillingReference = new BillingReference(
-                            br.BillingId, br.Type
-                        )
-                }
-                ).SingleOrDefault();
+                (sp, br) => new SubscriptionPlan(
+                    sp.Id,
+                    sp.Name,
+                    sp.Description,
+                    BillingReference.Product(br.BillingId)
+                )).SingleOrDefault();
 
                 if (sp == null) {
                     return null;
@@ -71,15 +68,12 @@ namespace DetailingArsenal.Persistence.Billing {
             )) {
 
                 var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
-                (sp, br) => new SubscriptionPlan() {
-                    Id = sp.Id,
-                    Name = sp.Name,
-                    Description = sp.Description,
-                    BillingReference = new BillingReference(
-                            br.BillingId, br.Type
-                        )
-                }
-                ).SingleOrDefault();
+                (sp, br) => new SubscriptionPlan(
+                    sp.Id,
+                    sp.Name,
+                    sp.Description,
+                    BillingReference.Product(br.BillingId)
+                )).SingleOrDefault();
 
                 if (sp == null) {
                     return null;
@@ -116,15 +110,12 @@ namespace DetailingArsenal.Persistence.Billing {
             ) {
 
                 var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
-                (sp, br) => new SubscriptionPlan() {
-                    Id = sp.Id,
-                    Name = sp.Name,
-                    Description = sp.Description,
-                    BillingReference = new BillingReference(
-                            br.BillingId, br.Type
-                        )
-                }
-                ).SingleOrDefault();
+                (sp, br) => new SubscriptionPlan(
+                    sp.Id,
+                    sp.Name,
+                    sp.Description,
+                    BillingReference.Product(br.BillingId)
+                )).SingleOrDefault();
 
                 if (sp == null) {
                     return null;
@@ -157,13 +148,12 @@ namespace DetailingArsenal.Persistence.Billing {
             ) {
 
                 var plans = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
-                    (sp, br) => new SubscriptionPlan() {
-                        Id = sp.Id,
-                        Name = sp.Name,
-                        BillingReference = new BillingReference(
-                                br.BillingId, br.Type
-                            )
-                    }
+                    (sp, br) => new SubscriptionPlan(
+                        sp.Id,
+                        sp.Name,
+                        sp.Description,
+                        BillingReference.Product(br.BillingId)
+                    )
                 );
 
                 var planDict = new Dictionary<Guid, SubscriptionPlan>(plans.Select(p => KeyValuePair.Create(p.Id, p)));
