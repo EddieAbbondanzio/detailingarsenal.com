@@ -112,10 +112,12 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 Type = "card"
             });
 
-            foreach (var paymentMethod in paymentMethods) {
+            for (int i = 0; i < paymentMethods.Data.Count; i++) {
+                var paymentMethod = paymentMethods.Data[i];
+
                 // Add our id to the card if this is the first time we've seen it.
                 if (!paymentMethod.Metadata.ContainsKey("Id")) {
-                    await paymentMethodService.UpdateAsync(paymentMethod.Id, new PaymentMethodUpdateOptions() {
+                    paymentMethod = await paymentMethodService.UpdateAsync(paymentMethod.Id, new PaymentMethodUpdateOptions() {
                         Metadata = new Dictionary<string, string>(new[] {
                             KeyValuePair.Create("Id", Guid.NewGuid().ToString())
                         })

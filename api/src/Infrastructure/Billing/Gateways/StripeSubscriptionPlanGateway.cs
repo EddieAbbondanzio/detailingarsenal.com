@@ -24,15 +24,16 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 var product = products.ElementAt(i);
 
                 // Check to see if we've given it an ID yet. 
-                if (!product.Metadata.ContainsKey("id")) {
+                if (!product.Metadata.ContainsKey("Id")) {
                     var updateOpts = new ProductUpdateOptions();
                     updateOpts.Metadata = new Dictionary<string, string>();
-                    updateOpts.Metadata["id"] = Guid.NewGuid().ToString();
+                    updateOpts.Metadata["Id"] = Guid.NewGuid().ToString();
 
                     product = await productService.UpdateAsync(product.Id, updateOpts);
                 }
-
+ 
                 var plan = new SubscriptionPlan(
+                    Guid.Parse(product.Metadata["Id"]),
                     product.Name,
                     product.Description,
                     BillingReference.Product(product.Id),
