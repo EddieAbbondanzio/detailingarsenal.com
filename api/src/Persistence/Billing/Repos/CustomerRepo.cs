@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -29,160 +30,63 @@ namespace DetailingArsenal.Persistence.Billing {
                       Id = id
                   }
             )) {
-                var customer = reader.Read<CustomerModel, BillingReferenceModel, Customer>(
-                    (c, br) => new Customer(
-                        c.Id,
-                        c.UserId,
-                        BillingReference.Customer(br.BillingId)
-                    )
-                ).First();
-
-                customer.Subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
-                    (s, br) => new Subscription(
-                        s.Id,
-                        s.Status,
-                        s.NextPayment,
-                        s.TrialStart,
-                        s.TrialEnd,
-                        s.CancellingAtPeriodEnd,
-                        new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
-                        BillingReference.Subscription(br.BillingId)
-                    )
-                ).FirstOrDefault();
-
-                customer.PaymentMethods = reader.Read<PaymentMethodModel, BillingReferenceModel, PaymentMethod>(
-                    (pm, br) => new PaymentMethod(
-                        pm.Id,
-                        pm.Brand,
-                        pm.Last4,
-                        pm.IsDefault,
-                        BillingReference.PaymentMethod(br.BillingId)
-                    )
-                ).ToList();
-
-                return customer;
+                return Read(reader);
             }
         }
 
         public async Task<Customer?> FindByBillingId(string billingId) {
             using (var reader = await Connection.QueryMultipleAsync(
                 @"select s.*, sbr.* from subscriptions s
-                  left join billing_references sbr on s.billing_reference_id = sbr.id
-                  left join customers c on s.customer_id = c.id
-                  left join billing_references cbr on c.billing_reference_id = cbr.id
-                  where cbr.billing_id = @BillingId;
+                    join billing_references sbr on s.billing_reference_id = sbr.id
+                    join customers c on s.customer_id = c.id
+                    join billing_references cbr on c.billing_reference_id = cbr.id
+                    where cbr.billing_id = @BillingId;
                   
-                  select c.*, br.* from customers c
-                  left join billing_references br on c.billing_reference_id = br.id
-                  where br.billing_id = @BillingId;
+                select c.*, br.* from customers c
+                    join billing_references br on c.billing_reference_id = br.id
+                    where br.billing_id = @BillingId;
                   
-                  select pm.* from payment_methods pm
-                  inner join customers c on pm.customer_id = c.id
-                  left join billing_references br on c.billing_reference_id = br.id
-                  where br.billing_id = @BillingId;
+                select pm.* from payment_methods pm
+                    join customers c on pm.customer_id = c.id
+                    join billing_references br on c.billing_reference_id = br.id
+                    where br.billing_id = @BillingId;
                   ",
                   new {
                       BillingId = billingId
                   }
             )) {
-                var subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
-                    (s, br) => new Subscription {
-                        Id = s.Id,
-                        PlanReference = new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
-                        Status = s.Status,
-                        TrialStart = s.TrialStart,
-                        TrialEnd = s.TrialEnd,
-                        CancellingAtPeriodEnd = s.CancellingAtPeriodEnd,
-                        BillingReference = new BillingReference(
-                            br.BillingId,
-                            br.Type
-                        )
-                    }
-                ).FirstOrDefault();
-
-                if (subscription == null) {
-                    return null;
-                }
-
-                var customer = reader.Read<CustomerModel, BillingReferenceModel, Customer>(
-                    (c, br) => new Customer {
-                        Id = c.Id,
-                        UserId = c.UserId,
-                        BillingReference = new BillingReference(
-                            br.BillingId,
-                            br.Type
-                        ),
-                        Subscription = subscription
-                    }
-                ).First();
-
-                customer.PaymentMethods = reader.Read<PaymentMethodModel>().Select(p => new PaymentMethod(p.Brand, p.Last4)).FirstOrDefault();
-
-                return customer;
+                return Read(reader);
             }
         }
 
         public async Task<Customer?> FindByUser(User user) {
             using (var reader = await Connection.QueryMultipleAsync(
                 @"select s.*, br.* from subscriptions s
-                  left join billing_references br on s.billing_reference_id = br.id
-                  left join customers c on s.customer_id = c.id
-                  where c.user_id = @Id;
+                    join billing_references br on s.billing_reference_id = br.id
+                    join customers c on s.customer_id = c.id
+                    where c.user_id = @Id;
                   
-                  select c.*, br.* from customers c
-                  left join billing_references br on c.billing_reference_id = br.id
-                  where c.user_id = @Id;
+                select c.*, br.* from customers c
+                    join billing_references br on c.billing_reference_id = br.id
+                    where c.user_id = @Id;
                   
-                  select pm.* from payment_methods pm
-                  inner join customers c on pm.customer_id = c.id
-                  where c.user_id = @Id; 
+                select pm.* from payment_methods pm
+                    join customers c on pm.customer_id = c.id
+                    where c.user_id = @Id; 
                   ",
                 user
             )) {
-                var subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
-                    (s, br) => new Subscription {
-                        Id = s.Id,
-                        PlanReference = new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
-                        Status = s.Status,
-                        TrialStart = s.TrialStart,
-                        TrialEnd = s.TrialEnd,
-                        CancellingAtPeriodEnd = s.CancellingAtPeriodEnd,
-                        BillingReference = new BillingReference(
-                            br.BillingId,
-                            br.Type
-                        )
-                    }
-                ).FirstOrDefault();
-
-                if (subscription == null) {
-                    return null;
-                }
-
-                var customer = reader.Read<CustomerModel, BillingReferenceModel, Customer>(
-                    (c, br) => new Customer {
-                        Id = c.Id,
-                        UserId = c.UserId,
-                        BillingReference = new BillingReference(
-                            br.BillingId,
-                            br.Type
-                        ),
-                        Subscription = subscription
-                    }
-                ).First();
-
-                customer.PaymentMethods = reader.Read<PaymentMethodModel>().Select(p => new PaymentMethod(p.Brand, p.Last4)).FirstOrDefault();
-
-                return customer;
+                return Read(reader);
             }
         }
 
         public async Task Add(Customer entity) {
             using (var t = Connection.BeginTransaction()) {
-                // Insert customer record first
+                // Insert customer parent record
                 var customerBillingReference = new BillingReferenceModel() {
                     Id = Guid.NewGuid(),
                     BillingId = entity.BillingReference.BillingId,
-                    Type = entity.BillingReference.Type
+                    Type = BillingReferenceType.Customer
                 };
 
                 await Connection.ExecuteAsync(
@@ -200,27 +104,50 @@ namespace DetailingArsenal.Persistence.Billing {
                 );
 
                 // Insert payment method (if applicable)
-                if (entity.PaymentMethods != null) {
-                    var paymentMethodBillingReference = new BillingReferenceModel() {
-                        Id = Guid.NewGuid(),
-                        BillingId = entity.PaymentMethods.BillingReference.BillingId,
-                        Type = BillingReferenceType.PaymentMethod
-                    };
+                if (entity.PaymentMethods.Count > 0) {
+                    var paymentMethodBillingReferences = new List<BillingReferenceModel>();
+                    var paymentMethods = new List<PaymentMethodModel>();
+
+                    foreach (PaymentMethod pm in entity.PaymentMethods) {
+                        var brModel = new BillingReferenceModel() {
+                            Id = Guid.NewGuid(),
+                            BillingId = pm.BillingReference.BillingId,
+                            Type = BillingReferenceType.PaymentMethod
+                        };
+
+                        var pModel = new PaymentMethodModel() {
+                            Id = pm.Id,
+                            BillingReferenceId = brModel.Id,
+                            CustomerId = entity.Id,
+                            Brand = pm.Brand,
+                            Last4 = pm.Last4,
+                            IsDefault = pm.IsDefault
+                        };
+
+                        paymentMethodBillingReferences.Add(brModel);
+                        paymentMethods.Add(pModel);
+                    }
 
                     await Connection.ExecuteAsync(
                         @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                        paymentMethodBillingReference
+                        paymentMethodBillingReferences
                     );
 
                     await Connection.ExecuteAsync(
-                        @"insert into payment_methods (id, customer_id, brand, last_4, billing_reference_id) values (@Id, @CustomerId, @Brand, @Last4, @BillingReferenceId);",
-                        new PaymentMethodModel() {
-                            Id = Guid.NewGuid(),
-                            CustomerId = entity.Id,
-                            Brand = entity.PaymentMethods.Brand,
-                            Last4 = entity.PaymentMethods.Last4,
-                            BillingReferenceId = paymentMethodBillingReference.Id
-                        }
+                        @"insert into payment_methods (
+                            id, 
+                            customer_id, 
+                            brand, 
+                            last_4, 
+                            billing_reference_id
+                        ) values (
+                            @Id, 
+                            @CustomerId, 
+                            @Brand, 
+                            @Last4, 
+                            @BillingReferenceId
+                        );",
+                        paymentMethods
                     );
                 }
 
@@ -229,9 +156,8 @@ namespace DetailingArsenal.Persistence.Billing {
                     var subBillingReference = new BillingReferenceModel() {
                         Id = Guid.NewGuid(),
                         BillingId = entity.Subscription.BillingReference.BillingId,
-                        Type = entity.Subscription.BillingReference.Type
+                        Type = BillingReferenceType.Subscription
                     };
-
 
                     await Connection.ExecuteAsync(
                         @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
@@ -239,9 +165,30 @@ namespace DetailingArsenal.Persistence.Billing {
                     );
 
                     await Connection.ExecuteAsync(
-                        @"insert into subscriptions 
-                            (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end, cancelling_at_period_end) 
-                            values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd, @CancellingAtPeriodEnd);",
+                        @"insert into subscriptions (
+                            id, 
+                            plan_id, 
+                            price_billing_id, 
+                            customer_id, 
+                            billing_reference_id, 
+                            status, 
+                            next_payment, 
+                            trial_start, 
+                            trial_end, 
+                            cancelling_at_period_end
+                        ) 
+                        values (
+                            @Id, 
+                            @PlanId, 
+                            @PriceBillingId, 
+                            @CustomerId, 
+                            @BillingReferenceId, 
+                            @Status, 
+                            @NextPayment, 
+                            @TrialStart, 
+                            @TrialEnd, 
+                            @CancellingAtPeriodEnd
+                        );",
                         new SubscriptionModel() {
                             Id = entity.Subscription.Id,
                             PlanId = entity.Subscription.PlanReference.PlanId,
@@ -261,133 +208,179 @@ namespace DetailingArsenal.Persistence.Billing {
             }
         }
 
-        public async Task Update(Customer entity) {
+        public async Task Update(Customer customer) {
             using (var t = Connection.BeginTransaction()) {
-                // Query off the DB since we can't trust anything but the ID of the customer to change.
-                using (var reader = await Connection.QueryMultipleAsync(
-                    @"select * from customers where id = @Id;
-                      select s.* from subscriptions s left join customers c on s.customer_id = c.id where c.id = @Id;  
-                    ",
-                    entity
-                )) {
+                // Delete any old payment methods
+                var oldPaymentMethods = await Connection.QueryAsync<PaymentMethodModel>("select * from payment_methods where customer_id = @Id;", customer);
+                await Connection.ExecuteAsync("delete from payment_methods where customer_id = @Id", customer);
+                await Connection.ExecuteAsync("delete from billing_references where id = @BillingReferenceId;", oldPaymentMethods.ToList());
 
-                    var customerModel = reader.Read<CustomerModel>().First();
-                    var subscriptionModel = reader.Read<SubscriptionModel>().First();
+                if (customer.PaymentMethods.Count > 0) {
+                    var paymentMethodBillingReferences = new List<BillingReferenceModel>();
+                    var paymentMethods = new List<PaymentMethodModel>();
 
-                    await Connection.ExecuteAsync(@"delete from subscriptions where customer_id = @Id;", entity);
-                    await Connection.ExecuteAsync(@"delete from billing_references where id = @BillingReferenceId", subscriptionModel);
-
-                    if (entity.Subscription != null) {
-                        var subBillingReference = new BillingReferenceModel() {
+                    foreach (PaymentMethod pm in customer.PaymentMethods) {
+                        var brModel = new BillingReferenceModel() {
                             Id = Guid.NewGuid(),
-                            BillingId = entity.Subscription.BillingReference.BillingId,
-                            Type = entity.Subscription.BillingReference.Type
+                            BillingId = pm.BillingReference.BillingId,
+                            Type = BillingReferenceType.PaymentMethod
                         };
 
+                        var pModel = new PaymentMethodModel() {
+                            Id = pm.Id,
+                            BillingReferenceId = brModel.Id,
+                            CustomerId = customer.Id,
+                            Brand = pm.Brand,
+                            Last4 = pm.Last4,
+                            IsDefault = pm.IsDefault
+                        };
 
-                        await Connection.ExecuteAsync(
-                            @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                            subBillingReference
-                        );
-
-                        await Connection.ExecuteAsync(
-                            @"insert into subscriptions 
-                                (id, plan_id, price_billing_id, customer_id, billing_reference_id, status, next_payment, trial_start, trial_end, cancelling_at_period_end) 
-                                values (@Id, @PlanId, @PriceBillingId, @CustomerId, @BillingReferenceId, @Status, @NextPayment, @TrialStart, @TrialEnd, @CancellingAtPeriodEnd);",
-                            new SubscriptionModel() {
-                                Id = entity.Subscription.Id,
-                                PlanId = entity.Subscription.PlanReference.PlanId,
-                                PriceBillingId = entity.Subscription.PlanReference.PriceBillingId,
-                                CustomerId = entity.Id,
-                                BillingReferenceId = subBillingReference.Id,
-                                Status = entity.Subscription.Status,
-                                NextPayment = entity.Subscription.NextPayment,
-                                TrialStart = entity.Subscription.TrialStart,
-                                TrialEnd = entity.Subscription.TrialEnd,
-                                CancellingAtPeriodEnd = entity.Subscription.CancellingAtPeriodEnd
-                            }
-                        );
+                        paymentMethodBillingReferences.Add(brModel);
+                        paymentMethods.Add(pModel);
                     }
 
                     await Connection.ExecuteAsync(
-                        @"delete from payment_methods where customer_id = @Id",
-                        entity
+                        @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
+                        paymentMethodBillingReferences
                     );
 
-                    if (entity.PaymentMethods != null) {
-                        await Connection.ExecuteAsync(
-                            @"insert into payment_methods (id, customer_id, brand, last_4) values (@Id, @CustomerId, @Brand, @Last4);",
-                            new PaymentMethodModel() {
-                                Id = Guid.NewGuid(),
-                                CustomerId = entity.Id,
-                                Brand = entity.PaymentMethods.Brand,
-                                Last4 = entity.PaymentMethods.Last4
-                            }
-                        );
-                    }
-
-                    // Update the customer
                     await Connection.ExecuteAsync(
-                        @"update customers set user_id = @UserId where id = @Id",
-                        new {
-                            Id = customerModel.Id,
-                            UserId = entity.UserId,
-                        }
+                        @"insert into payment_methods (
+                            id, 
+                            customer_id, 
+                            brand, 
+                            last_4, 
+                            billing_reference_id
+                        ) values (
+                            @Id, 
+                            @CustomerId, 
+                            @Brand, 
+                            @Last4, 
+                            @BillingReferenceId
+                        );",
+                        paymentMethods
                     );
-
-                    // Update the customer billing reference
-                    await Connection.ExecuteAsync(
-                        @"update billing_references set billing_id = @BillingId where id = @Id",
-                        new {
-                            Id = customerModel.BillingReferenceId,
-                            BillingId = entity.BillingReference.BillingId
-                        }
-                    );
-
-                    t.Commit();
                 }
-            }
-        }
 
-        public async Task Delete(Customer entity) {
-            /*
-                This will probably throw an error if ever used and the entity was updated...
-                Gotta query out some data to work with first. (IE Customer)
-            */
+                // Delete subscription
+                var oldSubscription = await Connection.QueryFirstOrDefaultAsync<SubscriptionModel>("select * from subscriptions where customer_id = @Id;", customer);
+                await Connection.ExecuteAsync(@"delete from subscriptions where id = @Id;", oldSubscription);
+                await Connection.ExecuteAsync(@"delete from billing_references where id = @BillingReferenceId;", oldSubscription);
 
-            using (var t = Connection.BeginTransaction()) {
-                // delete subscription
-                await Connection.ExecuteAsync(
-                    @"delete from subscriptions where id = @Id",
-                    entity.Subscription
-                );
+                // Insert subscription (if applicable)
+                if (customer.Subscription != null) {
+                    var subBillingReference = new BillingReferenceModel() {
+                        Id = Guid.NewGuid(),
+                        BillingId = customer.Subscription.BillingReference.BillingId,
+                        Type = BillingReferenceType.Subscription
+                    };
 
-                // delete subscription billing reference
+                    await Connection.ExecuteAsync(
+                        @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
+                        subBillingReference
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"delete from billing_references where billing_id = @BillingId",
-                    entity.Subscription.BillingReference
-                );
-
-                await Connection.ExecuteAsync(
-                    @"delete from payment_methods where customer_id = @Id",
-                    entity
-                );
-
-                // delete customer
-                await Connection.ExecuteAsync(
-                    @"delete from customers where id = @Id",
-                    entity
-                );
-
-                // delete customer billing reference
-                await Connection.ExecuteAsync(
-                    @"delete from billing_references where billing_id = @BillingId",
-                    entity.BillingReference
-                );
+                    await Connection.ExecuteAsync(
+                        @"insert into subscriptions (
+                            id, 
+                            plan_id, 
+                            price_billing_id, 
+                            customer_id, 
+                            billing_reference_id, 
+                            status, 
+                            next_payment, 
+                            trial_start, 
+                            trial_end, 
+                            cancelling_at_period_end
+                        ) 
+                        values (
+                            @Id, 
+                            @PlanId, 
+                            @PriceBillingId, 
+                            @CustomerId, 
+                            @BillingReferenceId, 
+                            @Status, 
+                            @NextPayment, 
+                            @TrialStart, 
+                            @TrialEnd, 
+                            @CancellingAtPeriodEnd
+                        );",
+                        new SubscriptionModel() {
+                            Id = customer.Subscription.Id,
+                            PlanId = customer.Subscription.PlanReference.PlanId,
+                            PriceBillingId = customer.Subscription.PlanReference.PriceBillingId,
+                            CustomerId = customer.Id,
+                            BillingReferenceId = subBillingReference.Id,
+                            Status = customer.Subscription.Status,
+                            NextPayment = customer.Subscription.NextPayment,
+                            TrialStart = customer.Subscription.TrialStart,
+                            TrialEnd = customer.Subscription.TrialEnd,
+                            CancellingAtPeriodEnd = customer.Subscription.CancellingAtPeriodEnd
+                        }
+                    );
+                }
 
                 t.Commit();
             }
+        }
+
+        public async Task Delete(Customer customer) {
+            using (var t = Connection.BeginTransaction()) {
+                // Delete subscription
+                var oldSubscription = await Connection.QueryFirstOrDefaultAsync<SubscriptionModel>("select * from subscriptions where customer_id = @Id;", customer);
+                await Connection.ExecuteAsync(@"delete from subscriptions where id = @Id;", oldSubscription);
+                await Connection.ExecuteAsync(@"delete from billing_references where id = @BillingReferenceId;", oldSubscription);
+
+                // Delete any payment methods
+                var oldPaymentMethods = await Connection.QueryAsync<PaymentMethodModel>("select * from payment_methods where customer_id = @Id;", customer);
+                await Connection.ExecuteAsync("delete from payment_methods where customer_id = @Id", customer);
+                await Connection.ExecuteAsync("delete from billing_references where id = @BillingReferenceId;", oldPaymentMethods.ToList());
+
+                // Delete customer (parent) last
+                await Connection.ExecuteAsync(@"delete from customers where id = @Id", customer);
+                await Connection.ExecuteAsync(@"delete from billing_references where billing_id = @BillingId", customer.BillingReference);
+
+                t.Commit();
+            }
+        }
+
+        Customer? Read(SqlMapper.GridReader reader) {
+            var customer = reader.Read<CustomerModel, BillingReferenceModel, Customer>(
+                (c, br) => new Customer(
+                    c.Id,
+                    c.UserId,
+                    BillingReference.Customer(br.BillingId)
+                )
+            ).FirstOrDefault();
+
+            if (customer == null) {
+                return null;
+            }
+
+            customer.Subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
+                (s, br) => new Subscription(
+                    s.Id,
+                    s.Status,
+                    s.NextPayment,
+                    s.TrialStart,
+                    s.TrialEnd,
+                    s.CancellingAtPeriodEnd,
+                    new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
+                    BillingReference.Subscription(br.BillingId)
+                )
+            ).FirstOrDefault();
+
+            customer.PaymentMethods = reader.Read<PaymentMethodModel, BillingReferenceModel, PaymentMethod>(
+                (pm, br) => new PaymentMethod(
+                    pm.Id,
+                    pm.Brand,
+                    pm.Last4,
+                    pm.IsDefault,
+                    BillingReference.PaymentMethod(br.BillingId)
+                )
+            ).ToList();
+
+            return customer;
         }
     }
 }

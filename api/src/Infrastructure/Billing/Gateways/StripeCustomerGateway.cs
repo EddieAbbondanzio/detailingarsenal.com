@@ -20,16 +20,20 @@ namespace DetailingArsenal.Infrastructure.Billing {
         }
 
         public async Task<Domain.Billing.Customer> CreateTrialCustomer(User user, SubscriptionPlan trialPlan) {
+            var customerId = Guid.NewGuid();
+
             var custCreateOpts = new Stripe.CustomerCreateOptions {
                 Email = user.Email,
-                Metadata = new Dictionary<string, string>()
+                Metadata = new Dictionary<string, string>(new[] {
+                    KeyValuePair.Create("Id", customerId.ToString()),
+                    KeyValuePair.Create("UserId", user.Id.ToString()),
+                })
             };
-
-            custCreateOpts.Metadata["UserId"] = user.Id.ToString();
 
             var customer = await customerService.CreateAsync(custCreateOpts);
 
             var price = trialPlan.Prices.Find(p => p.BillingReference.BillingId == config.DefaultPrice)!;
+            var subId = Guid.NewGuid();
 
             var subCreateOpts = new Stripe.SubscriptionCreateOptions {
                 Customer = customer.Id,
@@ -39,29 +43,31 @@ namespace DetailingArsenal.Infrastructure.Billing {
                     }
                 },
                 TrialPeriodDays = config.TrialPeriod,
-                Metadata = new Dictionary<string, string>()
+                Metadata = new Dictionary<string, string>(new[] {
+                    KeyValuePair.Create("Id", subId.ToString()),
+                    KeyValuePair.Create("PlanId", trialPlan.Id.ToString()),
+                    KeyValuePair.Create("PriceBillingId", price.BillingReference.BillingId)
+                })
             };
-
-            subCreateOpts.Metadata = new Dictionary<string, string>();
-            subCreateOpts.Metadata["Id"] = trialPlan.Id.ToString();
-            subCreateOpts.Metadata["PriceBillingId"] = price.BillingReference.BillingId;
 
             var subscription = await subscriptionService.CreateAsync(subCreateOpts);
 
-            return Domain.Billing.Customer.Create(
+            return new Domain.Billing.Customer(
+                customerId,
                 user.Id,
-                new BillingReference(customer.Id, BillingReferenceType.Customer),
-                Domain.Billing.Subscription.Create(
-                    trialPlan.Id,
-                    price.BillingReference.BillingId,
+                BillingReference.Customer(customer.Id),
+                new Domain.Billing.Subscription(
+                    subId,
                     subscription.Status,
+                    subscription.CurrentPeriodEnd,
                     subscription.TrialStart ?? throw new NullReferenceException(),
                     subscription.TrialEnd ?? throw new NullReferenceException(),
-                    new BillingReference(
-                        subscription.Id,
-                        BillingReferenceType.Product
+                    subscription.CancelAtPeriodEnd,
+                    new SubscriptionPlanReference(
+                        trialPlan.Id,
+                        price.BillingReference.BillingId
                     ),
-                    subscription.CurrentPeriodEnd
+                    BillingReference.Subscription(subscription.Id)
                 )
             );
         }
@@ -71,53 +77,63 @@ namespace DetailingArsenal.Infrastructure.Billing {
         }
 
         public async Task<Domain.Billing.Customer> GetByBillingId(string billingId) {
-            var sCustomer = await customerService.GetAsync(billingId);
+            var stripeCustomer = await customerService.GetAsync(billingId);
 
-            var c = Domain.Billing.Customer.Create(
-                Guid.Parse(sCustomer.Metadata["UserId"]),
-                new BillingReference(sCustomer.Id, BillingReferenceType.Customer)
-
+            var customer = new Domain.Billing.Customer(
+                Guid.Parse(stripeCustomer.Metadata["Id"]),
+                Guid.Parse(stripeCustomer.Metadata["UserId"]),
+                BillingReference.Customer(stripeCustomer.Id)
             );
 
-            if (sCustomer.Subscriptions.Data.Count > 0) {
-                var sSub = sCustomer.Subscriptions.Data[0];
+            if (stripeCustomer.Subscriptions.Data.Count > 0) {
+                var stripeSubscription = stripeCustomer.Subscriptions.Data[0];
 
-                c.Subscription = Domain.Billing.Subscription.Create(
-                    Guid.Parse(sSub.Metadata["Id"]),
-                    sSub.Metadata["PriceBillingId"],
-                    sSub.Status,
-                    sSub.TrialStart ?? throw new NullReferenceException(),
-                    sSub.TrialEnd ?? throw new NullReferenceException(),
-                    new BillingReference(
-                        sSub.Id,
-                        BillingReferenceType.Product
+                customer.Subscription = new Domain.Billing.Subscription(
+                    Guid.Parse(stripeSubscription.Metadata["Id"]),
+                    stripeSubscription.Status,
+                    stripeSubscription.CurrentPeriodEnd,
+                    stripeSubscription.TrialStart ?? throw new NullReferenceException(),
+                    stripeSubscription.TrialEnd ?? throw new NullReferenceException(),
+                    stripeSubscription.CancelAtPeriodEnd,
+                    new SubscriptionPlanReference(
+                        Guid.Parse(stripeSubscription.Metadata["PlanId"]),
+                        stripeSubscription.Metadata["PriceBillingId"]
                     ),
-                    sSub.CurrentPeriodEnd
+                    BillingReference.Subscription(stripeSubscription.Id)
                 );
-
-                c.Subscription.CancellingAtPeriodEnd = sCustomer.Subscriptions.Data[0].CancelAtPeriodEnd;
             }
 
             /*
             * Payment sources on customer from CustomerService.GetAsync() will always be empty.
             * Need to get them manually instead.
             */
-            var sources = await paymentMethodService.ListAsync(new Stripe.PaymentMethodListOptions() {
-                Customer = sCustomer.Id,
+            var paymentMethods = await paymentMethodService.ListAsync(new Stripe.PaymentMethodListOptions() {
+                Customer = stripeCustomer.Id,
                 Type = "card"
             });
 
+            foreach (var paymentMethod in paymentMethods) {
+                // Add our id to the card if this is the first time we've seen it.
+                if (!paymentMethod.Metadata.ContainsKey("Id")) {
+                    await paymentMethodService.UpdateAsync(paymentMethod.Id, new PaymentMethodUpdateOptions() {
+                        Metadata = new Dictionary<string, string>(new[] {
+                            KeyValuePair.Create("Id", Guid.NewGuid().ToString())
+                        })
+                    });
+                }
 
-            if (sources.Data.Count > 0) {
-                var sCard = sources.Data[0].Card;
+                var card = paymentMethod.Card;
 
-                c.PaymentMethods = new Domain.Billing.PaymentMethod(
-                    sCard.Brand,
-                    sCard.Last4
-                );
+                customer.PaymentMethods.Add(new Domain.Billing.PaymentMethod(
+                    Guid.Parse(paymentMethod.Metadata["Id"]),
+                    card.Brand,
+                    card.Last4,
+                    stripeCustomer.DefaultSourceId == paymentMethod.Id,
+                    BillingReference.PaymentMethod(paymentMethod.Id)
+                ));
             }
 
-            return c;
+            return customer;
         }
 
 

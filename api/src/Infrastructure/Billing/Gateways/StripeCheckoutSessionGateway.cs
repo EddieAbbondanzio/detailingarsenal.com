@@ -21,7 +21,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 Customer = customer.BillingReference.BillingId,
                 SetupIntentData = new SessionSetupIntentDataOptions() {
                     Metadata = new Dictionary<string, string> {
-                        { "customer_id", customer.BillingReference.BillingId},
+                        { "customer_id", customer.BillingReference.BillingId },
                     }
                 },
                 Mode = "setup",
@@ -34,7 +34,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
             }
 
             var session = await sessionService.CreateAsync(opts);
-            return new BillingReference(session.Id, BillingReferenceType.CheckoutSession);
+            return BillingReference.CheckoutSession(session.Id);
         }
     }
 }

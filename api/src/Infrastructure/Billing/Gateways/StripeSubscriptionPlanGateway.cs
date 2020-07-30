@@ -51,7 +51,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
             return prices.Select(p => new SubscriptionPlanPrice(
                          p.UnitAmountDecimal ?? throw new InvalidOperationException($"No price amount specified for price {p.Id}"),
                          p.Recurring.Interval,
-                         new BillingReference(p.Id, BillingReferenceType.Price)
+                         BillingReference.Price(p.Id)
                          )
                     ).ToList();
         }
