@@ -5,8 +5,8 @@ namespace DetailingArsenal.Persistence.Billing.Migrations {
     public class AlterPaymentMethodsAddExpiration : Migration {
         public override void Up() {
             Alter.Table("payment_methods")
-                .AddColumn("expiration_month").AsString(2)
-                .AddColumn("expiration_year").AsString(4);
+                .AddColumn("expiration_month").AsString(2).WithDefaultValue("00")
+                .AddColumn("expiration_year").AsString(4).WithDefaultValue("0000");
         }
 
         public override void Down() {

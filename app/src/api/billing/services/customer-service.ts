@@ -3,6 +3,7 @@ import { Subscription } from '@/api/billing/data-transfer-objects/subscription';
 import { SubscriptionPlanPrice } from '@/api/billing/data-transfer-objects/subscription-plan-price';
 import { Customer } from '@/api/billing/data-transfer-objects/customer';
 import { PaymentMethod } from '@/api/billing/data-transfer-objects/payment-method';
+import { ExpirationDate } from '@/api/billing/data-transfer-objects/expiration_date';
 
 export class CustomerService {
     async getCustomer() {
@@ -24,10 +25,22 @@ export class CustomerService {
             )
         );
 
-        if (res.data.paymentMethod != null) {
-            c.paymentMethod = new PaymentMethod(res.data.paymentMethod.brand, res.data.paymentMethod.last4);
+        if (Array.isArray(res.data.paymentMethods)) {
+            for (let i = 0; i < res.data.paymentMethods.length; i++) {
+                const raw = res.data.paymentMethods[i];
+
+                c.paymentMethods.push(
+                    new PaymentMethod(
+                        raw.brand,
+                        raw.last4,
+                        raw.isDefault,
+                        new ExpirationDate(raw.expirationMonth, raw.expirationYear)
+                    )
+                );
+            }
         }
 
+        console.log(c);
         return c;
     }
 
