@@ -176,6 +176,7 @@ namespace DetailingArsenal.Persistence.Billing {
                     pm.Brand,
                     pm.Last4,
                     pm.IsDefault,
+                    new ExpirationDate(pm.ExpirationMonth, pm.ExpirationYear),
                     BillingReference.PaymentMethod(br.BillingId)
                 )
             ).ToList();
@@ -208,6 +209,8 @@ namespace DetailingArsenal.Persistence.Billing {
                         CustomerId = customerId,
                         Brand = pm.Brand,
                         Last4 = pm.Last4,
+                        ExpirationMonth = pm.Expiration.Month,
+                        ExpirationYear = pm.Expiration.Year,
                         IsDefault = pm.IsDefault
                     };
 
@@ -226,13 +229,17 @@ namespace DetailingArsenal.Persistence.Billing {
                             customer_id, 
                             brand, 
                             last_4, 
+                            expiration_month,
+                            expiration_year
                             billing_reference_id,
                             is_default
                         ) values (
                             @Id, 
                             @CustomerId, 
                             @Brand, 
-                            @Last4, 
+                            @Last4,
+                            @ExpirationMonth, 
+                            @ExpirationYear, 
                             @BillingReferenceId,
                             @IsDefault
                         );",

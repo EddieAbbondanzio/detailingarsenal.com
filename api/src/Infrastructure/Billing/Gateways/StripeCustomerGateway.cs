@@ -132,6 +132,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
                     card.Last4,
                     // Stripe won't set default unless there is more than 1 payment method on a customer
                     paymentMethods.Data.Count == 1 ? true : stripeCustomer.InvoiceSettings.DefaultPaymentMethodId == paymentMethod.Id,
+                    new ExpirationDate(card.ExpMonth.ToString(), card.ExpYear.ToString()),
                     BillingReference.PaymentMethod(paymentMethod.Id)
                 ));
             }

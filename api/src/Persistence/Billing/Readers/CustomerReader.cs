@@ -63,7 +63,9 @@ namespace DetailingArsenal.Persistence.Billing {
                     paymentMethods.Add(new PaymentMethodReadModel(
                         raw.brand,
                         raw.last_4,
-                        raw.is_default
+                        raw.is_default,
+                        raw.expiration_month,
+                        raw.expiration_year
                     ));
                 }
 
