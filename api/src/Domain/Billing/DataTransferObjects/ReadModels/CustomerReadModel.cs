@@ -1,11 +1,13 @@
+using System.Collections.Generic;
+
 namespace DetailingArsenal.Domain.Billing {
     public class CustomerReadModel : IDataTransferObject {
         public SubscriptionReadModel? Subscription { get; }
-        public PaymentMethodReadModel? PaymentMethod { get; }
+        public List<PaymentMethodReadModel> PaymentMethods { get; }
 
-        public CustomerReadModel(SubscriptionReadModel? subscription = null, PaymentMethodReadModel? paymentMethod = null) {
+        public CustomerReadModel(SubscriptionReadModel? subscription = null, List<PaymentMethodReadModel>? paymentMethods = null) {
             Subscription = subscription;
-            PaymentMethod = paymentMethod;
+            PaymentMethods = paymentMethods ?? new List<PaymentMethodReadModel>();
         }
     }
 }

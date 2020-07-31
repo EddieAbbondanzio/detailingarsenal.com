@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain.Billing;
@@ -27,8 +28,8 @@ namespace DetailingArsenal.Persistence.Billing {
                 left join billing_references br on spp.billing_reference_id = br.id
                 where c.user_id = @Id and br.billing_id = s.price_billing_id;
                 
-                select brand, last_4 from payment_methods pm
-                left join customers c on c.id = pm.customer_id
+                select pm.* from payment_methods pm
+                join customers c on c.id = pm.customer_id
                 where c.user_id = @Id;
                 ",
                 user
@@ -54,20 +55,21 @@ namespace DetailingArsenal.Persistence.Billing {
                     );
                 }
 
-                // Attempt to parse in payment method
-                var rawPaymentMethod = reader.ReadFirstOrDefault();
-                PaymentMethodReadModel? paymentMethod = null;
+                // Attempt to parse in payment methods
+                var rawPaymentMethods = reader.Read();
+                List<PaymentMethodReadModel> paymentMethods = new List<PaymentMethodReadModel>();
 
-                if (rawPaymentMethod != null) {
-                    paymentMethod = new PaymentMethodReadModel(
-                        rawPaymentMethod.brand,
-                        rawPaymentMethod.last_4
-                    );
+                foreach (var raw in rawPaymentMethods) {
+                    paymentMethods.Add(new PaymentMethodReadModel(
+                        raw.brand,
+                        raw.last_4,
+                        raw.is_default
+                    ));
                 }
 
                 return new CustomerReadModel(
                     subscription,
-                    paymentMethod
+                    paymentMethods
                 );
             }
         }

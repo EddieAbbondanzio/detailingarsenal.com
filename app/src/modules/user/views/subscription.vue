@@ -139,9 +139,16 @@
                                             >Cancel</b-button>
                                         </div>
 
-                                        <p
-                                            class="is-size-6"
-                                        >{{ customer.paymentMethod.brand | uppercaseFirst }} ending in {{ customer.paymentMethod.last4 }}</p>
+                                        <div class="is-flex is-flex-row is-align-items-center">
+                                            <p
+                                                class="is-size-6"
+                                            >{{ customer.paymentMethod.brand | uppercaseFirst }} ending in {{ customer.paymentMethod.last4 }}</p>
+                                            <b-button
+                                                class="has-padding-y-0 has-margin-y-0"
+                                                type="is-text"
+                                                @click="onAddCard"
+                                            >Add card</b-button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -217,6 +224,14 @@ export default class Subscription extends Vue {
         if (this.customer.subscription != null && !this.customer.subscription.cancellingAtPeriodEnd) {
             await billingStore.cancelSubscriptionAtPeriodEnd();
         }
+    }
+
+    async onAddCard() {
+        if (this.state != 'active' && this.state != 'trialing_will_upgrade') {
+            return;
+        }
+
+        await billingStore.createCheckoutSession(this.customer.subscription!.price.billingId);
     }
 }
 </script>
