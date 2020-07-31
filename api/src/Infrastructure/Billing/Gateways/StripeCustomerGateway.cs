@@ -130,7 +130,8 @@ namespace DetailingArsenal.Infrastructure.Billing {
                     Guid.Parse(paymentMethod.Metadata["Id"]),
                     card.Brand,
                     card.Last4,
-                    stripeCustomer.DefaultSourceId == paymentMethod.Id,
+                    // Stripe won't set default unless there is more than 1 payment method on a customer
+                    paymentMethods.Data.Count == 1 ? true : stripeCustomer.InvoiceSettings.DefaultPaymentMethodId == paymentMethod.Id,
                     BillingReference.PaymentMethod(paymentMethod.Id)
                 ));
             }
