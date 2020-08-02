@@ -1,8 +1,8 @@
 using FluentValidation;
 
 namespace DetailingArsenal.Domain.Billing {
-    public class SubscriptionConfigValidator : FluentValidatorAdapter<ISubscriptionConfig> {
-        public SubscriptionConfigValidator() {
+    public class BillingConfigValidator : FluentValidatorAdapter<ISubscriptionConfig> {
+        public BillingConfigValidator() {
             RuleFor(c => c.SecretKey).NotEmpty().WithMessage("No secret key.");
 
             RuleFor(c => c.DefaultPlan).NotEmpty().WithMessage("No default subscription plan.");

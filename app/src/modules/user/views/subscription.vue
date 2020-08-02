@@ -139,10 +139,14 @@
                                             >Cancel</b-button>
                                         </div>
 
-                                        <div class="is-flex is-flex-row is-align-items-center">
+                                        <div class="is-flex is-flex-column">
+                                            <p class="is-size-6 has-text-weight-bold">Cards</p>
+
                                             <p
+                                                v-for="paymentMethod in customer.paymentMethods"
+                                                :key="paymentMethod.id"
                                                 class="is-size-6"
-                                            >{{ customer.paymentMethod.brand | uppercaseFirst }} ending in {{ customer.paymentMethod.last4 }}</p>
+                                            >{{ paymentMethod.brand | uppercaseFirst }} ending in {{ paymentMethod.last4 }}</p>
                                             <b-button
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
@@ -168,10 +172,6 @@ import { adminGuard } from '../../admin/router/admin-guard';
 import moment from 'moment';
 import { displayLoading } from '../../../core';
 
-/**
- * User subscription page. Kinda hacked. Fix later.
- * Does not support more than 1 subscription plan.
- */
 @Component
 export default class Subscription extends Vue {
     // FUCK
@@ -195,7 +195,7 @@ export default class Subscription extends Vue {
             case 'active':
                 return this.customer.subscription.cancellingAtPeriodEnd ? 'cancelling' : 'active';
             case 'trialing':
-                return this.customer.paymentMethod == null ? 'trialing' : 'trialing_will_upgrade';
+                return this.customer.paymentMethods.length == 0 ? 'trialing' : 'trialing_will_upgrade';
             default:
                 return 'inactive';
         }
@@ -209,7 +209,6 @@ export default class Subscription extends Vue {
         await billingStore.init();
         this.customer = billingStore.customer;
         this.showYearly = this.customer.subscription?.price.interval == 'year';
-        console.log(this.state);
     }
 
     async onSubscribeClick() {

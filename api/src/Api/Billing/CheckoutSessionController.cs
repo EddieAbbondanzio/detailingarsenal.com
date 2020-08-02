@@ -56,7 +56,7 @@ namespace DetailingArsenal.Api.Billing {
                     var session = stripeEvent.Data.Object as Stripe.Checkout.Session ?? throw new NullReferenceException();
 
                     await eventPublisher.Dispatch(new CheckoutSessionCompletedSuccessfully(
-                        session.CustomerId
+                        session.CustomerId,
                     ));
 
                     return Ok(420);
