@@ -5,10 +5,10 @@ using Stripe.Checkout;
 
 namespace DetailingArsenal.Infrastructure.Billing {
     public class StripeCheckoutSessionGateway : ICheckoutSessionGateway {
-        ISubscriptionConfig config;
+        IBillingConfig config;
         SessionService sessionService;
 
-        public StripeCheckoutSessionGateway(ISubscriptionConfig config) {
+        public StripeCheckoutSessionGateway(IBillingConfig config) {
             this.config = config;
             this.sessionService = new SessionService();
         }

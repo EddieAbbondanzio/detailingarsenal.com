@@ -10,9 +10,9 @@ namespace DetailingArsenal.Infrastructure.Billing {
         Stripe.CustomerService customerService;
         Stripe.SubscriptionService subscriptionService;
         Stripe.PaymentMethodService paymentMethodService;
-        ISubscriptionConfig config;
+        IBillingConfig config;
 
-        public StripeCustomerGateway(ISubscriptionConfig config) {
+        public StripeCustomerGateway(IBillingConfig config) {
             customerService = new Stripe.CustomerService();
             subscriptionService = new Stripe.SubscriptionService();
             paymentMethodService = new Stripe.PaymentMethodService();

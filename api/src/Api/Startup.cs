@@ -123,7 +123,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<RefreshSubscriptionPlansStep>();
             services.AddTransient<CreateOrUpdateAdminStep>();
             services.AddTransient<CreateProRoleStep>();
-            services.AddTransient<ValidateSubscriptionConfigStep>();
+            services.AddTransient<ValidateBillingConfigStep>();
 
             services.AddTransient<NewUserSaga>();
             services.AddTransient<CreateUserStep>();
@@ -143,9 +143,9 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IEmailClient, SmtpEmailClient>();
 
             // Billing
-            var stripeConfig = services.AddConfig<ISubscriptionConfig, StripeConfig>(Configuration.GetSection("Stripe"));
+            var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
-            services.AddTransient<SubscriptionConfigValidator>();
+            services.AddTransient<BillingConfigValidator>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ICustomerReader, CustomerReader>();
@@ -153,6 +153,10 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
             services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<ICheckoutSessionGateway, StripeCheckoutSessionGateway>();
+            services.AddTransient<IBillingWebhookParser, StripeWebhookParser>();
+            services.AddTransient<StripeWebhookConverter, CheckoutSessionCompletedConverter>();
+            services.AddTransient<StripeWebhookConverter, CustomerSubscriptionTrialWillEndSoonConverter>();
+            services.AddTransient<StripeWebhookConverter, CustomerSubscriptionInvoiceUpdatedConverter>();
             services.AddTransient<ActionHandler<GetCustomerQuery, CustomerReadModel>, GetCustomerHandler>();
             services.AddTransient<ActionHandler<CancelSubscriptionAtPeriodEndCommand>, CancelSubscriptionAtPeriodEndHandler>();
             services.AddTransient<ActionHandler<UndoCancellingSubscriptionCommand>, UndoCancellingSubscriptionHandler>();

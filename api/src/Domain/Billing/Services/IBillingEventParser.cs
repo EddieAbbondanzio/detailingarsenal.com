@@ -1,16 +1,15 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using System.Linq;
 
 namespace DetailingArsenal.Domain.Billing {
-    public interface IBillingEventParser {
-        /// <summary>
-        /// Check to see if the event can be parsed by this parser. 
-        /// </summary>
-        /// <param name="eventType">The string identifier of the event.</param>
-        /// <returns>True if the event can be parsed.</returns>
-        bool CanParse(string eventType);
-
-        Task<IDomainEvent> Parse(Stream raw);
+    /// <summary>
+    /// Service that supports parsing billing webhook events from their raw streams and
+    /// converting them into the corresponding domain event.
+    /// </summary>
+    public interface IBillingWebhookParser : IService {
+        Task<TDomainEvent?> Parse<TDomainEvent>(Stream stream, string signature) where TDomainEvent : class, IDomainEvent;
     }
 }

@@ -2,11 +2,11 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Billing;
 
 namespace DetailingArsenal.Domain.Common {
-    public class ValidateSubscriptionConfigStep : SagaStep {
-        SubscriptionConfigValidator configValidator;
-        ISubscriptionConfig config;
+    public class ValidateBillingConfigStep : SagaStep {
+        BillingConfigValidator configValidator;
+        IBillingConfig config;
 
-        public ValidateSubscriptionConfigStep(SubscriptionConfigValidator configValidator, ISubscriptionConfig config) {
+        public ValidateBillingConfigStep(BillingConfigValidator configValidator, IBillingConfig config) {
             this.configValidator = configValidator;
             this.config = config;
         }

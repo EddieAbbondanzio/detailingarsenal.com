@@ -2,7 +2,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Billing;
 
 namespace DetailingArsenal.Infrastructure.Billing {
-    public class StripeConfig : ISubscriptionConfig {
+    public class StripeConfig : IBillingConfig {
         /// <summary>
         /// Secret API key for Stripe.
         /// </summary>

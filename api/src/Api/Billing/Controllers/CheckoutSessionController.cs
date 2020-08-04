@@ -15,14 +15,15 @@ namespace DetailingArsenal.Api.Billing {
     [ApiController]
     public class CheckoutSessionController : ControllerBase {
         IMediator mediator;
-        ISubscriptionConfig config;
+        IBillingWebhookParser webhookParser;
         IDomainEventPublisher eventPublisher;
 
-        public CheckoutSessionController(IMediator mediator, ISubscriptionConfig config, IDomainEventPublisher eventPublisher) {
+        public CheckoutSessionController(IMediator mediator, IBillingWebhookParser eventParser, IDomainEventPublisher eventPublisher) {
             this.mediator = mediator;
-            this.config = config;
+            this.webhookParser = eventParser;
             this.eventPublisher = eventPublisher;
         }
+
 
         /// <summary>
         /// Create a new session with Stripe. User wishes to start checkout. Returns sessionId.
@@ -45,27 +46,16 @@ namespace DetailingArsenal.Api.Billing {
         /// </summary>
         [HttpPost("completed")]
         public async Task<IActionResult> CompleteSession() {
-            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+            var successEvent = await webhookParser.Parse<CheckoutSessionCompletedSuccessfully>(
+                Request.Body,
+                Request.Headers[Headers.StripeSignature]
+            );
 
-            try {
-                var stripeEvent = EventUtility.ConstructEvent(json,
-                    Request.Headers["Stripe-Signature"], config.WebhookSecret);
-
-                // Handle the checkout.session.completed event
-                if (stripeEvent.Type == Events.CheckoutSessionCompleted) {
-                    var session = stripeEvent.Data.Object as Stripe.Checkout.Session ?? throw new NullReferenceException();
-
-                    await eventPublisher.Dispatch(new CheckoutSessionCompletedSuccessfully(
-                        session.CustomerId,
-                    ));
-
-                    return Ok(420);
-                } else {
-                    return Ok();
-                }
-            } catch (StripeException) {
-                return BadRequest();
+            if (successEvent != null) {
+                _ = eventPublisher.Dispatch(successEvent);
             }
+
+            return Ok(420);
         }
     }
 }
