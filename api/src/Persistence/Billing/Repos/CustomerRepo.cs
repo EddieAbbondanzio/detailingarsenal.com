@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain.Billing;
 using DetailingArsenal.Domain.Users;
+using Serilog;
 
 namespace DetailingArsenal.Persistence.Billing {
     public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
@@ -112,15 +113,20 @@ namespace DetailingArsenal.Persistence.Billing {
         }
 
         public async Task Update(Customer customer) {
-            using (var t = Connection.BeginTransaction()) {
-                /*
-                * No columns on the customer record to update.
-                */
+            try {
 
-                await InsertPaymentMethods(customer.Id, customer.PaymentMethods, true);
-                await InsertSubscription(customer.Id, customer.Subscription, true);
+                using (var t = Connection.BeginTransaction()) {
+                    /*
+                    * No columns on the customer record to update.
+                    */
 
-                t.Commit();
+                    await InsertPaymentMethods(customer.Id, customer.PaymentMethods, true);
+                    await InsertSubscription(customer.Id, customer.Subscription, true);
+
+                    t.Commit();
+                }
+            } catch (Exception e) {
+                Log.Error(e.ToString());
             }
         }
 
@@ -230,7 +236,7 @@ namespace DetailingArsenal.Persistence.Billing {
                             brand, 
                             last_4, 
                             expiration_month,
-                            expiration_year
+                            expiration_year,
                             billing_reference_id,
                             is_default
                         ) values (

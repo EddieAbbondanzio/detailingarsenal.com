@@ -11,6 +11,7 @@ namespace DetailingArsenal.Domain.Billing {
         Task UndoCancellingSubscription(Customer customer);
         Task DeleteForUser(User user);
         Task Refresh(Customer customer);
+        Task Update(Customer customer);
     }
 
     public class CustomerService : ICustomerService {
@@ -65,6 +66,10 @@ namespace DetailingArsenal.Domain.Billing {
 
         public async Task UndoCancellingSubscription(Customer customer) {
             await customerGateway.UndoCancellingSubscription(customer);
+            await customerRepo.Update(customer);
+        }
+
+        public async Task Update(Customer customer) {
             await customerRepo.Update(customer);
         }
     }
