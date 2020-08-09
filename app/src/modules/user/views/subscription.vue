@@ -156,7 +156,24 @@
                                 </div>
                                 <!-- Cancelling -->
                                 <div v-else-if="state == 'cancelling'">
-                                    <p class="has-text-weight-bold">Cancelling</p>Your membership will end on
+                                    <div class="is-flex is-flex-row is-align-items-center">
+                                        <b-icon
+                                            icon="alert"
+                                            type="is-warning"
+                                            class="has-margin-right-1"
+                                        />
+                                        <p class="has-text-weight-bold">Cancelling</p>
+                                    </div>
+
+                                    <div class="is-flex is-flex-row is-align-items-center">
+                                        Your membership will end on {{ customer.subscription.period.end | date }}
+                                        <b-button
+                                            class="has-padding-y-0 has-margin-y-0"
+                                            type="is-text"
+                                            @click="onUndoCancel"
+                                            title="Update card on file"
+                                        >Undo</b-button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -231,6 +248,12 @@ export default class Subscription extends Vue {
     async onCancel() {
         if (this.customer.subscription != null && !this.customer.subscription.cancellingAtPeriodEnd) {
             await billingStore.cancelSubscriptionAtPeriodEnd();
+        }
+    }
+
+    async onUndoCancel() {
+        if (this.customer.subscription != null && this.customer.subscription.cancellingAtPeriodEnd) {
+            await billingStore.undoCancellingAtPeriodEnd();
         }
     }
 
