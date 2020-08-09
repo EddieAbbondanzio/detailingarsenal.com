@@ -4,6 +4,7 @@ import { traverse } from '@/core/utils/traverse';
 import { SpecificationError } from '@/api/core/errors/specification-error';
 import { ValidationError } from '@/api/core/errors/validation-error';
 import { AuthorizationError } from '@/api/core/errors/authorization-error';
+import router from '@/core/router';
 
 /**
  * Singleton instance for making HTTP requests to backend.
@@ -99,7 +100,13 @@ http.interceptors.response.use(
                 }
             } else if (err.response.status == 401) {
                 if (err.response.data.type == 'authorization') {
-                    return Promise.reject(new AuthorizationError(err.response.data.message));
+                    /*
+                     * Assume (for now) that they tried to use a pro feature.
+                     */
+                    router.push({ name: 'subscription' });
+                    return Promise.reject(
+                        new AuthorizationError('Please upgrade your subscription to use this feature')
+                    );
                 }
             }
         }
