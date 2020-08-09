@@ -25,10 +25,16 @@
 
             <b-table :data="plan.prices">
                 <template slot-scope="props">
-                    <b-table-column label="Price" field="label" sortable>{{
-                        (props.row.price / 100) | currency
-                    }}</b-table-column>
-                    <b-table-column label="Interval" field="action" sortable>{{ props.row.interval }}</b-table-column>
+                    <b-table-column label="Price" field="label" sortable>
+                        {{
+                        (props.row.amount / 100) | currency
+                        }}
+                    </b-table-column>
+                    <b-table-column
+                        label="Interval"
+                        field="action"
+                        sortable
+                    >{{ props.row.interval }}</b-table-column>
                 </template>
 
                 <template slot="empty">
