@@ -154,6 +154,69 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Active -->
+                                <div class="has-margin-bottom-3" v-else-if="state == 'active'">
+                                    <p class="is-size-5 has-text-weight-bold">Payment</p>
+                                    <div>
+                                        <div class="is-flex is-flex-row is-align-items-center">
+                                            <p
+                                                class="is-size-6"
+                                            >Your next bill for {{ (customer.subscription.price.amount / 100) | currency }} will be on {{ customer.subscription.period.end | date }}</p>
+                                            <b-button
+                                                class="has-padding-y-0 has-margin-y-0"
+                                                type="is-text"
+                                                @click="onCancel"
+                                                title="Cancel my subscription"
+                                            >Cancel</b-button>
+                                        </div>
+
+                                        <div class="is-flex is-flex-row is-align-items-center">
+                                            <p
+                                                v-for="paymentMethod in customer.paymentMethods"
+                                                :key="paymentMethod.id"
+                                                class="is-size-6"
+                                            >{{ paymentMethod.brand | uppercaseFirst }} ending in {{ paymentMethod.last4 }}</p>
+                                            <b-button
+                                                class="has-padding-y-0 has-margin-y-0"
+                                                type="is-text"
+                                                @click="onAddCard"
+                                                title="Update card on file"
+                                            >Update</b-button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Issue -->
+                                <div class="has-margin-bottom-3" v-else-if="state == 'issue'">
+                                    <p class="is-size-5 has-text-weight-bold">Payment</p>
+                                    <div>
+                                        <div class="is-flex is-flex-row is-align-items-center">
+                                            <b-icon
+                                                icon="alert-circle"
+                                                type="is-danger"
+                                                class="has-margin-right-1"
+                                            />
+                                            <p
+                                                class="has-text-weight-bold"
+                                            >Error. There was an issue processing your payment.</p>
+                                        </div>
+
+                                        <div class="is-flex is-flex-row is-align-items-center">
+                                            <p
+                                                class="is-size-6 has-margin-bottom-3"
+                                            >Your membership will expire on {{ customer.subscription.period.end | date }}</p>
+                                        </div>
+
+                                        <div class="is-flex is-flex-row is-align-items-center">
+                                            <b-button
+                                                class="has-padding-y-0 has-margin-y-0"
+                                                type="is-primary"
+                                                @click="onAddCard"
+                                                title="Update card on file"
+                                            >Update payment info</b-button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Cancelling -->
                                 <div v-else-if="state == 'cancelling'">
                                     <div class="is-flex is-flex-row is-align-items-center">
@@ -174,6 +237,17 @@
                                             title="Update card on file"
                                         >Undo</b-button>
                                     </div>
+                                </div>
+                                <!-- Inactive -->
+                                <div
+                                    class="is-flex is-flex-row is-align-items-center"
+                                    v-if="state == 'inactive'"
+                                >
+                                    <b-button
+                                        type="is-success"
+                                        size="is-large"
+                                        @click="onSubscribeClick"
+                                    >Subscribe</b-button>
                                 </div>
                             </div>
                         </div>
@@ -222,6 +296,8 @@ export default class Subscription extends Vue {
                 return this.customer.subscription.cancellingAtPeriodEnd ? 'cancelling' : 'active';
             case 'trialing':
                 return this.customer.paymentMethods.length == 0 ? 'trialing' : 'trialing_will_upgrade';
+            case 'incomplete':
+                return 'issue';
             default:
                 return 'inactive';
         }
