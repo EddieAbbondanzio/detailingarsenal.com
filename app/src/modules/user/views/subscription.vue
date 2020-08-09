@@ -313,6 +313,7 @@ export default class Subscription extends Vue {
         this.showYearly = this.customer.subscription?.price.interval == 'year';
     }
 
+    @displayLoading
     async onSubscribeClick() {
         if (this.customer.subscription?.status == 'trialing') {
             const price = billingStore.defaultPlan.prices.find(p => p.interval == (this.showYearly ? 'year' : 'month'));
@@ -321,18 +322,21 @@ export default class Subscription extends Vue {
         }
     }
 
+    @displayLoading
     async onCancel() {
         if (this.customer.subscription != null && !this.customer.subscription.cancellingAtPeriodEnd) {
             await billingStore.cancelSubscriptionAtPeriodEnd();
         }
     }
 
+    @displayLoading
     async onUndoCancel() {
         if (this.customer.subscription != null && this.customer.subscription.cancellingAtPeriodEnd) {
             await billingStore.undoCancellingAtPeriodEnd();
         }
     }
 
+    @displayLoading
     async onAddCard() {
         if (this.state != 'active' && this.state != 'trialing_will_upgrade') {
             return;
