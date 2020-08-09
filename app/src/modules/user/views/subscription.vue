@@ -99,7 +99,7 @@
                             </ul>
 
                             <div class="is-flex is-flex-row is-align-items-center">
-                                <!-- Subscribe button -->
+                                <!-- Trialing -->
                                 <div
                                     class="is-flex is-flex-row is-align-items-center"
                                     v-if="state == 'trialing'"
@@ -136,12 +136,11 @@
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
                                                 @click="onCancel"
+                                                title="Cancel my subscription"
                                             >Cancel</b-button>
                                         </div>
 
-                                        <div class="is-flex is-flex-column">
-                                            <p class="is-size-6 has-text-weight-bold">Cards</p>
-
+                                        <div class="is-flex is-flex-row is-align-items-center">
                                             <p
                                                 v-for="paymentMethod in customer.paymentMethods"
                                                 :key="paymentMethod.id"
@@ -151,9 +150,15 @@
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
                                                 @click="onAddCard"
-                                            >Add card</b-button>
+                                                title="Update card on file"
+                                            >Update</b-button>
                                         </div>
                                     </div>
+                                </div>
+                                <!-- Cancelling -->
+                                <div>
+                                    <p class="has-text-weight-bold">Cancelling</p>
+                                    Your membership will end on 
                                 </div>
                             </div>
                         </div>
@@ -191,7 +196,13 @@ export default class Subscription extends Vue {
      * The current state of the page and what should be displayed.
      */
     get state(): 'trialing' | 'trialing_will_upgrade' | 'active' | 'cancelling' | 'inactive' | 'issue' {
-        switch (this.customer.subscription?.status) {
+        if (this.customer.subscription == null) {
+            return 'inactive';
+        } else if (this.customer.subscription.cancellingAtPeriodEnd) {
+            return 'cancelling';
+        }
+
+        switch (this.customer.subscription.status) {
             case 'active':
                 return this.customer.subscription.cancellingAtPeriodEnd ? 'cancelling' : 'active';
             case 'trialing':

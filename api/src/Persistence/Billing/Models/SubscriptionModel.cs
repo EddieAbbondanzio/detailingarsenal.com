@@ -9,9 +9,10 @@ namespace DetailingArsenal.Persistence.Billing {
         public string PriceBillingId { get; set; } = null!;
         public Guid BillingReferenceId { get; set; }
         public string Status { get; set; } = null!;
-        public DateTime? NextPayment { get; set; }
         public DateTime TrialStart { get; set; }
         public DateTime TrialEnd { get; set; }
+        public DateTime PeriodStart { get; set; }
+        public DateTime PeriodEnd { get; set; }
         public bool CancellingAtPeriodEnd { get; set; }
     }
 }

@@ -4,6 +4,7 @@ import { SubscriptionPlanPrice } from '@/api/billing/data-transfer-objects/subsc
 import { Customer } from '@/api/billing/data-transfer-objects/customer';
 import { PaymentMethod } from '@/api/billing/data-transfer-objects/payment-method';
 import { ExpirationDate } from '@/api/billing/data-transfer-objects/expiration_date';
+import { Period } from '@/api/billing/data-transfer-objects/period';
 
 export class CustomerService {
     async getCustomer() {
@@ -18,9 +19,8 @@ export class CustomerService {
                     res.data.subscription.price.billingId
                 ),
                 res.data.subscription.status,
-                res.data.subscription.nextPayment,
-                res.data.subscription.trialStart,
-                res.data.subscription.trialEnd,
+                new Period(res.data.subscription.trialPeriod.start, res.data.subscription.trialPeriod.end),
+                new Period(res.data.subscription.period.start, res.data.subscription.period.end),
                 res.data.subscription.cancellingAtPeriodEnd
             )
         );

@@ -5,18 +5,16 @@ namespace DetailingArsenal.Domain.Billing {
         public string PlanName { get; }
         public SubscriptionPlanPriceReadModel Price { get; }
         public string Status { get; }
-        public DateTime? NextPayment { get; }
-        public DateTime TrialStart { get; }
-        public DateTime TrialEnd { get; }
+        public PeriodReadModel TrialPeriod { get; }
+        public PeriodReadModel Period { get; }
         public bool CancellingAtPeriodEnd { get; }
 
-        public SubscriptionReadModel(string planName, SubscriptionPlanPriceReadModel price, string status, DateTime? nextPayment, DateTime trialStart, DateTime trialEnd, bool cancellingAtPeriodEnd) {
+        public SubscriptionReadModel(string planName, SubscriptionPlanPriceReadModel price, string status, PeriodReadModel trialPeriod, PeriodReadModel period, bool cancellingAtPeriodEnd) {
             PlanName = planName;
             Price = price;
             Status = status;
-            NextPayment = nextPayment;
-            TrialStart = trialStart;
-            TrialEnd = trialEnd;
+            TrialPeriod = trialPeriod;
+            Period = period;
             CancellingAtPeriodEnd = cancellingAtPeriodEnd;
         }
     }

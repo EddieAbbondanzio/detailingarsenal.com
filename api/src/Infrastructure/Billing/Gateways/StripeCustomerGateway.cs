@@ -59,9 +59,14 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 new Domain.Billing.Subscription(
                     subId,
                     subscription.Status,
-                    subscription.CurrentPeriodEnd,
-                    subscription.TrialStart ?? throw new NullReferenceException(),
-                    subscription.TrialEnd ?? throw new NullReferenceException(),
+                    new Domain.Billing.Period(
+                        subscription.TrialStart ?? throw new NullReferenceException(),
+                        subscription.TrialEnd ?? throw new NullReferenceException()
+                    ),
+                    new Domain.Billing.Period(
+                        subscription.CurrentPeriodStart,
+                        subscription.CurrentPeriodEnd
+                    ),
                     subscription.CancelAtPeriodEnd,
                     new SubscriptionPlanReference(
                         trialPlan.Id,
@@ -91,9 +96,14 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 customer.Subscription = new Domain.Billing.Subscription(
                     Guid.Parse(stripeSubscription.Metadata["Id"]),
                     stripeSubscription.Status,
-                    stripeSubscription.CurrentPeriodEnd,
+                    new Domain.Billing.Period(
                     stripeSubscription.TrialStart ?? throw new NullReferenceException(),
-                    stripeSubscription.TrialEnd ?? throw new NullReferenceException(),
+                    stripeSubscription.TrialEnd ?? throw new NullReferenceException()
+                    ),
+                    new Domain.Billing.Period(
+                        stripeSubscription.CurrentPeriodStart,
+                        stripeSubscription.CurrentPeriodEnd
+                    ),
                     stripeSubscription.CancelAtPeriodEnd,
                     new SubscriptionPlanReference(
                         Guid.Parse(stripeSubscription.Metadata["PlanId"]),

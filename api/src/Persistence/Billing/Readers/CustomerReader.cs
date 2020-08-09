@@ -13,10 +13,10 @@ namespace DetailingArsenal.Persistence.Billing {
                 @"
                 select sp.name as name, 
                 s.status as status, 
-                s.next_payment as 
-                next_payment, 
                 s.trial_start as trial_start, 
                 s.trial_end as trial_end, 
+                s.period_start,
+                s.period_end,
                 s.cancelling_at_period_end,
                 spp.price as price, 
                 spp.interval as price_interval, 
@@ -48,9 +48,14 @@ namespace DetailingArsenal.Persistence.Billing {
                             rawSubscription.price_billing_id
                         ),
                         rawSubscription.status,
-                        rawSubscription.next_payment,
-                        rawSubscription.trial_start,
-                        rawSubscription.trial_end,
+                        new PeriodReadModel(
+                            rawSubscription.trial_start,
+                            rawSubscription.trial_end
+                        ),
+                        new PeriodReadModel(
+                            rawSubscription.period_start,
+                            rawSubscription.period_end
+                        ),
                         rawSubscription.cancelling_at_period_end
                     );
                 }

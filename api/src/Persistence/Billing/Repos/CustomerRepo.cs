@@ -113,20 +113,15 @@ namespace DetailingArsenal.Persistence.Billing {
         }
 
         public async Task Update(Customer customer) {
-            try {
+            using (var t = Connection.BeginTransaction()) {
+                /*
+                * No columns on the customer record to update.
+                */
 
-                using (var t = Connection.BeginTransaction()) {
-                    /*
-                    * No columns on the customer record to update.
-                    */
+                await InsertPaymentMethods(customer.Id, customer.PaymentMethods, true);
+                await InsertSubscription(customer.Id, customer.Subscription, true);
 
-                    await InsertPaymentMethods(customer.Id, customer.PaymentMethods, true);
-                    await InsertSubscription(customer.Id, customer.Subscription, true);
-
-                    t.Commit();
-                }
-            } catch (Exception e) {
-                Log.Error(e.ToString());
+                t.Commit();
             }
         }
 
@@ -167,9 +162,14 @@ namespace DetailingArsenal.Persistence.Billing {
                 (s, br) => new Subscription(
                     s.Id,
                     s.Status,
-                    s.NextPayment,
-                    s.TrialStart,
-                    s.TrialEnd,
+                    new Period(
+                        s.TrialStart,
+                        s.TrialEnd
+                    ),
+                    new Period(
+                        s.PeriodStart,
+                        s.PeriodEnd
+                    ),
                     s.CancellingAtPeriodEnd,
                     new SubscriptionPlanReference(s.PlanId, s.PriceBillingId),
                     BillingReference.Subscription(br.BillingId)
@@ -282,9 +282,10 @@ namespace DetailingArsenal.Persistence.Billing {
                             customer_id, 
                             billing_reference_id, 
                             status, 
-                            next_payment, 
                             trial_start, 
                             trial_end, 
+                            period_start,
+                            period_end,
                             cancelling_at_period_end
                         ) 
                         values (
@@ -294,9 +295,10 @@ namespace DetailingArsenal.Persistence.Billing {
                             @CustomerId, 
                             @BillingReferenceId, 
                             @Status, 
-                            @NextPayment, 
                             @TrialStart, 
                             @TrialEnd, 
+                            @PeriodStart,
+                            @PeriodEnd,
                             @CancellingAtPeriodEnd
                         );",
                     new SubscriptionModel() {
@@ -306,9 +308,10 @@ namespace DetailingArsenal.Persistence.Billing {
                         CustomerId = customerId,
                         BillingReferenceId = subBillingReference.Id,
                         Status = subscription.Status,
-                        NextPayment = subscription.NextPayment,
-                        TrialStart = subscription.TrialStart,
-                        TrialEnd = subscription.TrialEnd,
+                        PeriodStart = subscription.Period.Start,
+                        PeriodEnd = subscription.Period.End,
+                        TrialStart = subscription.TrialPeriod.Start,
+                        TrialEnd = subscription.TrialPeriod.End,
                         CancellingAtPeriodEnd = subscription.CancellingAtPeriodEnd
                     }
                 );

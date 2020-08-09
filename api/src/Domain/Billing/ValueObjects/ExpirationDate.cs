@@ -1,4 +1,7 @@
 namespace DetailingArsenal.Domain.Billing {
+    /// <summary>
+    /// Payment method expiration date.
+    /// </summary>
     public class ExpirationDate : ValueObject<ExpirationDate> {
         public string Month { get; }
         public string Year { get; }
