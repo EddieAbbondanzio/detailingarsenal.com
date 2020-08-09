@@ -113,7 +113,7 @@
                                     <span
                                         class="has-text-grey has-margin-left-1"
                                         v-if="customer.subscription.status == 'trialing'"
-                                    >Trial ends on {{ customer.subscription.trialEnd | date }}</span>
+                                    >Trial ends on {{ customer.subscription.trialPeriod.end | date }}</span>
 
                                     <b-button
                                         type="is-text"
@@ -123,15 +123,14 @@
                                 <!-- Trialing First Payment -->
                                 <div
                                     class="has-margin-bottom-3"
-                                    v-if="state == 'trialing_will_upgrade'"
+                                    v-else-if="state == 'trialing_will_upgrade'"
                                 >
                                     <p class="is-size-5 has-text-weight-bold">Payment</p>
                                     <div>
                                         <div class="is-flex is-flex-row is-align-items-center">
                                             <p
                                                 class="is-size-6"
-                                                v-if="customer.subscription.nextPayment != null"
-                                            >Your first bill for {{ (customer.subscription.price.amount / 100) | currency }} will be on {{ customer.subscription.nextPayment | date }}</p>
+                                            >Your first bill for {{ (customer.subscription.price.amount / 100) | currency }} will be on {{ customer.subscription.period.end | date }}</p>
                                             <b-button
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
@@ -156,9 +155,8 @@
                                     </div>
                                 </div>
                                 <!-- Cancelling -->
-                                <div>
-                                    <p class="has-text-weight-bold">Cancelling</p>
-                                    Your membership will end on 
+                                <div v-else-if="state == 'cancelling'">
+                                    <p class="has-text-weight-bold">Cancelling</p>Your membership will end on
                                 </div>
                             </div>
                         </div>
