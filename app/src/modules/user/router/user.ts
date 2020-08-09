@@ -20,10 +20,5 @@ export const user = [
         path: 'account/subscription',
         name: 'subscription',
         component: () => import('@/modules/user/views/subscription.vue')
-    },
-    {
-        path: 'account/subscription/success',
-        name: 'subscriptionSuccess',
-        component: () => import('@/modules/user/views/subscription-success.vue')
     }
 ];
