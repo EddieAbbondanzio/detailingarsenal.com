@@ -12,7 +12,8 @@ namespace DetailingArsenal.Domain.Security {
         Task Update(Role role, RoleUpdate update);
         Task Delete(Role role);
 
-        Task AddRoleToUser(Role role, User user);
+        Task<List<Role>> GetByUser(User user);
+        Task AddRoleToUser(Role role, User user, bool deleteExisting = false);
         Task RemoveRoleFromUser(Role role, User user);
     }
 
@@ -61,8 +62,12 @@ namespace DetailingArsenal.Domain.Security {
             await repo.Delete(role);
         }
 
-        public async Task AddRoleToUser(Role role, User user) {
-            await repo.AddToUser(user, role);
+        public async Task<List<Role>> GetByUser(User user) {
+            return await repo.FindForUser(user);
+        }
+
+        public async Task AddRoleToUser(Role role, User user, bool deleteExisting = false) {
+            await repo.AddToUser(user, role, deleteExisting);
         }
 
         public async Task RemoveRoleFromUser(Role role, User user) {

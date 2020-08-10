@@ -298,6 +298,8 @@ export default class Subscription extends Vue {
                 return this.customer.paymentMethods.length == 0 ? 'trialing' : 'trialing_will_upgrade';
             case 'incomplete':
                 return 'issue';
+            case 'unpaid':
+                return 'active';
             default:
                 return 'inactive';
         }

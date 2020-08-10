@@ -1,10 +1,14 @@
+using System;
+
 namespace DetailingArsenal.Domain.Billing {
     public class CustomerSubscriptionInvoiceUpdated : IDomainEvent {
-        public string SubscriptionStatus { get; }
+        public SubscriptionStatus SubscriptionStatus { get; }
+        public Guid PlanId { get; }
         public string CustomerBillingId { get; }
 
-        public CustomerSubscriptionInvoiceUpdated(string subscriptionStatus, string customerBillingId) {
+        public CustomerSubscriptionInvoiceUpdated(SubscriptionStatus subscriptionStatus, Guid planId, string customerBillingId) {
             SubscriptionStatus = subscriptionStatus;
+            PlanId = planId;
             CustomerBillingId = customerBillingId;
         }
     }

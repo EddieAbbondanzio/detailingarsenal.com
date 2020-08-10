@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Billing;
@@ -12,7 +13,8 @@ namespace DetailingArsenal.Infrastructure.Billing {
 
             return Task.FromResult(
                 new CustomerSubscriptionInvoiceUpdated(
-                    subscription.Status,
+                    Domain.Billing.Subscription.ParseStatus(subscription.Status),
+                    Guid.Parse(subscription.Metadata["PlanId"]),
                     subscription.CustomerId
                 ) as IDomainEvent
             );

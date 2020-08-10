@@ -144,16 +144,26 @@ namespace DetailingArsenal.Persistence.Security {
             }
         }
 
-        public async Task AddToUser(User user, Role role) {
-            var userRole = new UserRole() {
-                UserId = user.Id,
-                RoleId = role.Id
-            };
+        public async Task AddToUser(User user, Role role, bool deleteExisting = false) {
+            using (var t = Connection.BeginTransaction()) {
+                if (deleteExisting) {
+                    await Connection.ExecuteAsync(
+                        @"delete from user_roles where user_id = @Id;", user
+                    );
+                }
 
-            await Connection.ExecuteAsync(
-                "insert into user_roles (user_id, role_id) values (@UserId, @RoleId);",
-                userRole
-            );
+                var userRole = new UserRole() {
+                    UserId = user.Id,
+                    RoleId = role.Id
+                };
+
+                await Connection.ExecuteAsync(
+                    "insert into user_roles (user_id, role_id) values (@UserId, @RoleId);",
+                    userRole
+                );
+
+                t.Commit();
+            }
         }
 
         public async Task RemoveFromUser(User user, Role role) {

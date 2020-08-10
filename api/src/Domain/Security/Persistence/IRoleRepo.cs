@@ -7,7 +7,7 @@ namespace DetailingArsenal.Domain.Security {
         Task<List<Role>> FindAll();
         Task<Role?> Find(string name);
         Task<List<Role>> FindForUser(User user);
-        Task AddToUser(User user, Role role);
+        Task AddToUser(User user, Role role, bool deleteExisting = false);
         Task RemoveFromUser(User user, Role role);
     }
 }
