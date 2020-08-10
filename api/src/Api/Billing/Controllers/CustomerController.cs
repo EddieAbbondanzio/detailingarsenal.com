@@ -63,7 +63,7 @@ namespace DetailingArsenal.Api.Billing {
         }
 
         [HttpPost("subscription/invoice/updated")]
-        public async Task<IActionResult> InvoicePaymentSucceeded() {
+        public async Task<IActionResult> InvoicePaymentUpdated() {
             var invoiceUpdatedEvent = await webhookParser.Parse<CustomerSubscriptionInvoiceUpdated>(
                 Request.Body,
                 Request.Headers[Headers.StripeSignature]

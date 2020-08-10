@@ -161,7 +161,7 @@ namespace DetailingArsenal.Persistence.Billing {
             customer.Subscription = reader.Read<SubscriptionModel, BillingReferenceModel, Subscription>(
                 (s, br) => new Subscription(
                     s.Id,
-                    s.Status,
+                    Subscription.ParseStatus(s.Status),
                     new Period(
                         s.TrialStart,
                         s.TrialEnd
@@ -307,7 +307,7 @@ namespace DetailingArsenal.Persistence.Billing {
                         PriceBillingId = subscription.PlanReference.PriceBillingId,
                         CustomerId = customerId,
                         BillingReferenceId = subBillingReference.Id,
-                        Status = subscription.Status,
+                        Status = subscription.Status.ToBillingString(),
                         PeriodStart = subscription.Period.Start,
                         PeriodEnd = subscription.Period.End,
                         TrialStart = subscription.TrialPeriod.Start,

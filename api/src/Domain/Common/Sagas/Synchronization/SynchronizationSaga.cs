@@ -5,7 +5,7 @@ namespace DetailingArsenal.Domain.Common {
             ValidateBillingConfigStep validateSubscriptionConfig,
             RefreshSubscriptionPlansStep refreshSubscriptionPlans,
             CreateOrUpdateAdminStep createOrUpdateAdmin,
-            CreateProRoleStep createProRoleStep
+            CreateRolesStep createProRoleStep
             ) {
             Add(runDatabaseMigrations);
             Add(validateSubscriptionConfig);

@@ -6,9 +6,9 @@ namespace DetailingArsenal.Domain.Security {
         public string Name { get; }
         public List<Guid> PermissionIds { get; }
 
-        public RoleCreate(string name, List<Guid> permissionIds) {
+        public RoleCreate(string name, List<Guid>? permissionIds = null) {
             Name = name;
-            PermissionIds = permissionIds;
+            PermissionIds = permissionIds ?? new List<Guid>();
         }
     }
 }

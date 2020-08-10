@@ -58,7 +58,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
                 BillingReference.Customer(customer.Id),
                 new Domain.Billing.Subscription(
                     subId,
-                    subscription.Status,
+                    Domain.Billing.Subscription.ParseStatus(subscription.Status),
                     new Domain.Billing.Period(
                         subscription.TrialStart ?? throw new NullReferenceException(),
                         subscription.TrialEnd ?? throw new NullReferenceException()
@@ -95,7 +95,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
 
                 customer.Subscription = new Domain.Billing.Subscription(
                     Guid.Parse(stripeSubscription.Metadata["Id"]),
-                    stripeSubscription.Status,
+                    Domain.Billing.Subscription.ParseStatus(stripeSubscription.Status),
                     new Domain.Billing.Period(
                     stripeSubscription.TrialStart ?? throw new NullReferenceException(),
                     stripeSubscription.TrialEnd ?? throw new NullReferenceException()
