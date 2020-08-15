@@ -3,7 +3,7 @@ import { AppointmentCreate } from '@/api/calendar/data-transfer-objects/appointm
 import { AppointmentUpdate } from '@/api/calendar/data-transfer-objects/appointment-update';
 import { AppointmentBlock } from '@/api/calendar/data-transfer-objects/appointment-block';
 import moment from 'moment';
-import { CalendarRange } from '@/modules/calendar/store/calendar-range';
+import { CalendarRange } from '@/modules/scheduling/calendar/store/calendar-range';
 import { http } from '@/api/core/http';
 
 export class AppointmentService {

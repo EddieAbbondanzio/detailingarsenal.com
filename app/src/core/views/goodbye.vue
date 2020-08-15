@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import userStore from '../../modules/user/store/user-store';
+import userStore from '../../modules/scheduling/user/store/user-store';
 
 @Component({
     name: 'goodbye'
