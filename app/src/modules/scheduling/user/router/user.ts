@@ -2,22 +2,22 @@ import { authGuard } from '@/core/router/auth-guard';
 
 export const user = [
     {
-        path: 'account',
+        path: 'scheduling/account',
         name: 'account',
         component: () => import('@/modules/scheduling/user/views/account.vue')
     },
     {
-        path: 'account/profile',
+        path: 'scheduling/account/profile',
         name: 'profile',
         component: () => import('@/modules/scheduling/user/views/profile.vue')
     },
     {
-        path: 'account/profile/edit',
+        path: 'scheduling/account/profile/edit',
         name: 'editProfile',
         component: () => import('@/modules/scheduling/user/views/edit-profile.vue')
     },
     {
-        path: 'account/subscription',
+        path: 'scheduling/account/subscription',
         name: 'subscription',
         component: () => import('@/modules/scheduling/user/views/subscription.vue')
     }

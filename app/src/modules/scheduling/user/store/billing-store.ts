@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
-import { SubscriptionPlan } from '@/api/billing/data-transfer-objects/subscription-plan';
+import { SubscriptionPlan } from '@/api';
 import store from '@/core/store/index';
 import { api } from '@/api/api';
 import { Subscription, Customer } from '@/api';

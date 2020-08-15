@@ -1,14 +1,8 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
-import { Permission } from '@/api/security/data-transfer-objects/permission';
 import { api } from '@/api/api';
-import { PermissionCreate } from '@/api/security/data-transfer-objects/permission-create';
-import { PermissionUpdate } from '@/api/security/data-transfer-objects/permission-update';
 import store from '@/core/store/index';
-import { Role } from '@/api/security/data-transfer-objects/role';
-import { RoleCreate } from '@/api/security/data-transfer-objects/role-create';
-import { RoleUpdate } from '@/api/security/data-transfer-objects/role-update';
-import { SubscriptionPlan } from '@/api/billing/data-transfer-objects/subscription-plan';
+import { Permission, Role, SubscriptionPlan, PermissionCreate, PermissionUpdate, RoleCreate, RoleUpdate } from '@/api';
 
 /**
  * Store for the schedule view.

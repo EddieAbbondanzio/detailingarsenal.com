@@ -7,16 +7,16 @@ import {
     AppointmentBlock,
     BLOCK_PENDING_FLAG,
     BLOCK_MODIFIED,
-    BLOCK_INITIAL_TIME
-} from '@/api/calendar/data-transfer-objects/appointment-block';
+    BLOCK_INITIAL_TIME,
+    Appointment,
+    AppointmentCreate
+} from '@/api';
 import store from '@/core/store/index';
 import { CalendarCreateStep } from '@/modules/scheduling/calendar/store/calendar-create-step';
 import { CalendarRange } from '@/modules/scheduling/calendar/store/calendar-range';
 import { displayError } from '@/core/utils/display-error/display-error';
 import Vue from 'vue';
-import { Appointment } from '@/api/calendar/data-transfer-objects/appointment';
 import { api } from '@/api/api';
-import { AppointmentCreate } from '@/api/calendar/data-transfer-objects/appointment-create';
 
 /**
  * Store for the Calendar view.
