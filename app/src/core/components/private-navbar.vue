@@ -79,12 +79,12 @@ import UserWidget from '@/modules/scheduling/user/components/user-widget.vue';
 import userStore from '@/modules/scheduling/user/store/user-store';
 
 @Component({
-    name: 'app-navbar',
+    name: 'private-navbar',
     components: {
         UserWidget
     }
 })
-export default class AppNavbar extends Vue {
+export default class PrivateNavbar extends Vue {
     get isLoading() {
         return userStore.isLoading;
     }

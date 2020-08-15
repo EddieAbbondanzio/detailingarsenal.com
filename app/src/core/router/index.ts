@@ -12,14 +12,14 @@ Vue.use(VueRouter);
 const routes: RouteConfig[] = [
     {
         path: '/scheduling',
-        component: () => import('@/core/views/app.vue'),
+        component: () => import('@/core/views/private.vue'),
         children: [...calendar, ...settings, ...user, ...clients],
         // redirect: 'calendar',
         beforeEnter: authGuard
     },
     {
         path: '/admin',
-        component: () => import('@/core/views/app.vue'),
+        component: () => import('@/core/views/private.vue'),
         children: [...admin],
         beforeEnter: authGuard // TODO: Refactor this. We need both authGuard, and adminGuard else user is never loaded
     },

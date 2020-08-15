@@ -1,7 +1,6 @@
 <template>
     <div id="app" class="is-flex is-flex-column is-flex-grow-1" style="height: 100vh!important;">
-        <router-view v-if="!isLoggingIn" />
-        <loading-splash v-else />
+        <router-view />
     </div>
 </template>
 
@@ -13,24 +12,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
-import LoadingSplash from '@/core/components/loading-splash.vue';
-import userStore from './modules/scheduling/user/store/user-store';
-import { loadStripeJs } from '@/plugins/stripe';
 
 @Component({
-    name: 'app',
-    components: {
-        LoadingSplash
-    }
+    name: 'app'
 })
-export default class App extends Vue {
-    get isLoggingIn() {
-        return userStore.isLoading;
-    }
-
-    async created() {
-        await loadStripeJs();
-        await userStore.init();
-    }
-}
+export default class App extends Vue {}
 </script>

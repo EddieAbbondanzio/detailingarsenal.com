@@ -36,9 +36,9 @@ import { RawLocation } from 'vue-router';
  * Mobile only nav footer that supplements the burger
  */
 @Component({
-    name: 'app-footer'
+    name: 'private-footer'
 })
-export default class AppFooter extends Vue {
+export default class PrivateFooter extends Vue {
     links: { icon: string; title: string; route: RawLocation; exact?: boolean }[] = [
         { icon: 'calendar', title: 'Calendar', route: { name: 'calendar' }, exact: true },
         { icon: 'contacts', title: 'Clients', route: { name: 'clients' }, exact: true },
