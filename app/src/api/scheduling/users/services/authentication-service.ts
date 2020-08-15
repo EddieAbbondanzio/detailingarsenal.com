@@ -11,7 +11,6 @@ export class AuthenticationService {
     private auth0!: Auth0Client;
 
     public async init() {
-        // this.auth0 = await createAuth0Client({
         this.auth0 = new Auth0Client({
             domain: process.env.VUE_APP_AUTH0_DOMAIN!,
             client_id: process.env.VUE_APP_AUTH0_CLIENT_ID!,

@@ -32,6 +32,10 @@ const routes: RouteConfig[] = [
         path: '/product-catalog',
         component: () => import('@/modules/product-catalog/views/pads.vue'),
         children: [...productCatalog]
+    },
+    {
+        path: '*',
+        component: () => import('@/core/views/404.vue')
     }
 ];
 

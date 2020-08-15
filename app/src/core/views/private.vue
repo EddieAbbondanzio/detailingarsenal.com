@@ -44,7 +44,6 @@ export default class Private extends Vue {
 
     async created() {
         await loadStripeJs();
-        await userStore.init();
     }
 }
 </script>
