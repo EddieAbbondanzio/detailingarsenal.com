@@ -91,15 +91,15 @@ class SettingsStore extends InitableModule {
     }
 
     /**
-     * Load the settings from the API.
+     * Load the settings from the api.scheduling.
      */
     @Action({ rawError: true })
     async _init() {
         const [business, vehicleCategories, hoursOfOp, services] = await Promise.all([
-            api.settings.business.getBusiness(),
-            api.settings.vehicleCategory.getVehicleCategories(),
-            api.settings.hoursOfOperation.getHoursOfOperation(),
-            api.settings.service.getServices()
+            api.scheduling.settings.business.getBusiness(),
+            api.scheduling.settings.vehicleCategory.getVehicleCategories(),
+            api.scheduling.settings.hoursOfOperation.getHoursOfOperation(),
+            api.scheduling.settings.service.getServices()
         ]);
 
         this.context.commit('SET_BUSINESS', business);
@@ -110,13 +110,13 @@ class SettingsStore extends InitableModule {
 
     @Action({ rawError: true })
     public async createVehicleCategory(createVehicleCategory: VehicleCategoryCreate) {
-        var vc = await api.settings.vehicleCategory.createVehicleCategory(createVehicleCategory);
+        var vc = await api.scheduling.settings.vehicleCategory.createVehicleCategory(createVehicleCategory);
         this.context.commit('CREATE_VEHICLE_CATEGORY', vc);
     }
 
     @Action({ rawError: true })
     public async updateVehicleCategory(updateVehicleCategory: VehicleCategoryUpdate) {
-        var vc = await api.settings.vehicleCategory.updateVehicleCategory(updateVehicleCategory);
+        var vc = await api.scheduling.settings.vehicleCategory.updateVehicleCategory(updateVehicleCategory);
         this.context.commit('UPDATE_VEHICLE_CATEGORY', vc);
     }
 
@@ -126,13 +126,13 @@ class SettingsStore extends InitableModule {
      */
     @Action({ rawError: true })
     public async deleteVehicleCategory(vehicleCategory: VehicleCategory) {
-        await api.settings.vehicleCategory.deleteVehicleCategory(vehicleCategory);
+        await api.scheduling.settings.vehicleCategory.deleteVehicleCategory(vehicleCategory);
         this.context.commit('DELETE_VEHICLE_CATEGORY', vehicleCategory);
     }
 
     @Action({ rawError: true })
     public async updateBusiness(updateBusiness: BusinessUpdate) {
-        const b = await api.settings.business.updateBusiness(updateBusiness);
+        const b = await api.scheduling.settings.business.updateBusiness(updateBusiness);
         this.context.commit('SET_BUSINESS', b);
     }
 
@@ -143,25 +143,25 @@ class SettingsStore extends InitableModule {
      */
     @Action({ rawError: true })
     public async updateHoursOfOperation(update: HoursOfOperationUpdate) {
-        const hours = await api.settings.hoursOfOperation.updateHoursOfOperation(update);
+        const hours = await api.scheduling.settings.hoursOfOperation.updateHoursOfOperation(update);
         this.context.commit('SET_HOURS_OF_OPERATION', hours);
     }
 
     @Action({ rawError: true })
     public async createService(createService: ServiceCreate) {
-        const service = await api.settings.service.createService(createService);
+        const service = await api.scheduling.settings.service.createService(createService);
         this.context.commit('CREATE_SERVICE', service);
     }
 
     @Action({ rawError: true })
     public async updateService(updateService: ServiceUpdate) {
-        const service = await api.settings.service.updateService(updateService);
+        const service = await api.scheduling.settings.service.updateService(updateService);
         this.context.commit('UPDATE_SERVICE', service);
     }
 
     @Action({ rawError: true })
     public async deleteService(service: Service) {
-        await api.settings.service.deleteService(service.id);
+        await api.scheduling.settings.service.deleteService(service.id);
         this.context.commit('DELETE_SERVICE', service);
     }
 }

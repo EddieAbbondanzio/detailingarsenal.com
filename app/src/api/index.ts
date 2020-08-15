@@ -52,3 +52,8 @@ export * from './scheduling/security/data-transfer-objects/role-update';
 
 //Users
 export * from './scheduling/users/data-transfer-objects/user';
+
+//Product Catalog
+export * from './product-catalog/data-transfer-objects/brand';
+export * from './product-catalog/data-transfer-objects/pad';
+export * from './product-catalog/data-transfer-objects/pad-category';

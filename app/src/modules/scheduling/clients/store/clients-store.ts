@@ -38,27 +38,27 @@ class ClientsStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const clients = await api.client.getClients();
+        const clients = await api.scheduling.client.getClients();
         this.context.commit('SET_CLIENTS', clients);
     }
 
     @Action({ rawError: true })
     public async createClient(create: ClientCreate): Promise<Client> {
-        const c = await api.client.createClient(create);
+        const c = await api.scheduling.client.createClient(create);
         this.context.commit('CREATE_CLIENT', c);
         return c;
     }
 
     @Action({ rawError: true })
     public async updateClient(update: ClientUpdate): Promise<Client> {
-        const c = await api.client.updateClient(update);
+        const c = await api.scheduling.client.updateClient(update);
         this.context.commit('UPDATE_CLIENT', c);
         return c;
     }
 
     @Action({ rawError: true })
     public async deleteClient(client: Client) {
-        await api.client.deleteClient(client);
+        await api.scheduling.client.deleteClient(client);
         this.context.commit('DELETE_CLIENT', client);
     }
 }

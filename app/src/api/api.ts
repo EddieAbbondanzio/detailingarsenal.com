@@ -11,34 +11,40 @@ import { ServiceService } from '@/api/scheduling/settings/services/service-servi
 import { VehicleCategoryService } from '@/api/scheduling/settings/services/vehicle-category-service';
 import { CustomerService } from '@/api/scheduling/billing/services/customer-service';
 import { CheckoutSessionService } from '@/api/scheduling/billing/services/checkout-session-service';
+import { PadService } from '@/api/product-catalog/services/pad-service';
 
 export const api = {
     authentication: new AuthenticationService(),
     user: new UserService(),
-    appointment: new AppointmentService(),
-    client: new ClientService(),
-    /**
-     * User defined settings section.
-     */
-    settings: {
-        business: new BusinessService(),
-        hoursOfOperation: new HoursOfOperationService(),
-        service: new ServiceService(),
-        vehicleCategory: new VehicleCategoryService()
+    scheduling: {
+        appointment: new AppointmentService(),
+        client: new ClientService(),
+        /**
+         * User defined settings section.
+         */
+        settings: {
+            business: new BusinessService(),
+            hoursOfOperation: new HoursOfOperationService(),
+            service: new ServiceService(),
+            vehicleCategory: new VehicleCategoryService()
+        },
+        /**
+         * Role based access control section for all things permssions.
+         */
+        security: {
+            permission: new PermissionService(),
+            role: new RoleService()
+        },
+        /**
+         * Billing section for everything related to subscriptions
+         */
+        billing: {
+            subscriptionPlan: new SubscriptionPlanService(),
+            customer: new CustomerService(),
+            checkoutSession: new CheckoutSessionService()
+        }
     },
-    /**
-     * Role based access control section for all things permssions.
-     */
-    security: {
-        permission: new PermissionService(),
-        role: new RoleService()
-    },
-    /**
-     * Billing section for everything related to subscriptions
-     */
-    billing: {
-        subscriptionPlan: new SubscriptionPlanService(),
-        customer: new CustomerService(),
-        checkoutSession: new CheckoutSessionService()
+    productCatalog: {
+        pad: new PadService()
     }
 };
