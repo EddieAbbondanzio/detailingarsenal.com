@@ -6,6 +6,7 @@ import { user } from '@/modules/scheduling/user/router/user';
 import { clients } from '@/modules/scheduling/clients/router/clients';
 import { authGuard } from '@/core/router/auth-guard';
 import { admin } from '@/modules/admin/router/admin';
+import { productCatalog } from '@/modules/product-catalog/router/product-catalog';
 
 Vue.use(VueRouter);
 
@@ -26,6 +27,11 @@ const routes: RouteConfig[] = [
     {
         path: '/goodbye',
         component: () => import('@/core/views/goodbye.vue')
+    },
+    {
+        path: '/product-catalog',
+        component: () => import('@/modules/product-catalog/views/pads.vue'),
+        children: [...productCatalog]
     }
 ];
 
