@@ -6,6 +6,7 @@ export class Pad {
         public category: PadCategory,
         public brand: string,
         public series: string,
+        public color: string,
         public image?: File
     ) {}
 }

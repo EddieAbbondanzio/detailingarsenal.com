@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="has-padding-all-3 calendar-sidebar has-background-light is-flex is-flex-column is-align-items-center has-h-100"
-    >
+    <page-sidebar>
         <b-button
             class="has-w-100 has-margin-bottom-3"
             type="is-success"
@@ -10,14 +8,8 @@
         >Create appointment</b-button>
 
         <calendar-datepicker class="has-w-100" />
-    </div>
+    </page-sidebar>
 </template>
-
-<style lang="sass" scoped>
-.calendar-sidebar
-    width: 300px
-    border-right: 1px solid $grey-lighter
-</style>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';

@@ -24,6 +24,7 @@ import EditButton from './components/buttons/edit-button.vue';
 import DeleteButton from './components/buttons/delete-button.vue';
 import Page from './components/page/page.vue';
 import PageHeader from './components/page/page-header.vue';
+import PageSidebar from './components/page/page-sidebar.vue';
 import BreadcrumbTrail from './components/page/breadcrumb-trail.vue';
 import Breadcrumb from './components/page/breadcrumb.vue';
 import List from './components/layout/list.vue';
@@ -45,6 +46,7 @@ export default {
         Vue.component('delete-button', DeleteButton);
         Vue.component('page', Page);
         Vue.component('page-header', PageHeader);
+        Vue.component('page-sidebar', PageSidebar);
         Vue.component('breadcrumb-trail', BreadcrumbTrail);
         Vue.component('breadcrumb', Breadcrumb);
         Vue.component('list', List);

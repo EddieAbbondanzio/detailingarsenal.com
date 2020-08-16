@@ -1,15 +1,13 @@
 <template>
-    <div>
-        <b-navbar class="app-navbar" type="is-primary" :mobile-burger="true">
-            <template slot="brand">
-                <b-navbar-item class="is-flex is-flex-row is-align-items-center" exact>
-                    <h1
-                        class="is-size-5-mobile is-size-4-tablet has-font-family-pacifico"
-                    >Detailing Arsenal</h1>
-                </b-navbar-item>
-            </template>
-        </b-navbar>
-    </div>
+    <b-navbar class="app-navbar" type="is-primary" :mobile-burger="true">
+        <template slot="brand">
+            <b-navbar-item class="is-flex is-flex-row is-align-items-center" exact>
+                <h1
+                    class="is-size-5-mobile is-size-4-tablet has-font-family-pacifico"
+                >Detailing Arsenal</h1>
+            </b-navbar-item>
+        </template>
+    </b-navbar>
 </template>
 
 <script lang="ts">
