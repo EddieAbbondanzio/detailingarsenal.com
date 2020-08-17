@@ -3,9 +3,9 @@
         class="has-h-100"
         type="is-light"
         :fullheight="true"
-        :overlay="false"
-        :open="true"
-        position="static"
+        :overlay="overlay"
+        :open.sync="isOpen"
+        :position="!overlay ? 'static' : 'fixed'"
     >
         <div class="has-padding-all-3">
             <slot></slot>
@@ -23,5 +23,14 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({})
-export default class PageSidebar extends Vue {}
+export default class PageSidebar extends Vue {
+    @Prop({ default: false })
+    overlay!: boolean;
+
+    isOpen: boolean = !this.overlay;
+
+    open() {
+        this.isOpen = true;
+    }
+}
 </script>

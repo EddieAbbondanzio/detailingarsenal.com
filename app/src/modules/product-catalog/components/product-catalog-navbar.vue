@@ -1,5 +1,5 @@
 <template>
-    <b-navbar class="app-navbar" type="is-primary" :mobile-burger="true">
+    <b-navbar class="app-navbar" type="is-primary" :mobile-burger="false">
         <template slot="brand">
             <b-navbar-item class="is-flex is-flex-row is-align-items-center" exact>
                 <h1

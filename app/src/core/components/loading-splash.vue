@@ -12,6 +12,7 @@
         </div>
 
         <b-button
+            class="is-hidden"
             style="position: absolute; bottom: 12.5%; z-index: 9001"
             type="is-white"
             outlined

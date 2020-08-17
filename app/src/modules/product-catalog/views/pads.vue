@@ -9,11 +9,15 @@
                         title="Pad Compare Tool"
                         :description="`Compare buffing pads of multiple brands based on cut level`"
                         :backButton="false"
-                    />
+                    >
+                        <template v-slot:action>
+                            <b-button type="is-primary" outlined @click="onFiltersClick">Filters</b-button>
+                        </template>
+                    </page-header>
                 </template>
 
                 <template v-slot:sidebar>
-                    <page-sidebar>
+                    <page-sidebar ref="sidebar" :overlay="true">
                         <pad-filter-control />
                     </page-sidebar>
                 </template>
@@ -133,6 +137,10 @@ export default class Pads extends Vue {
         }
 
         return columns;
+    }
+
+    onFiltersClick() {
+        this.$refs.sidebar.open();
     }
 }
 

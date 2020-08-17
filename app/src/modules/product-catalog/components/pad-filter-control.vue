@@ -49,6 +49,8 @@ import padStore from '../store/pad-store';
 import { padCategory } from '@/modules/product-catalog/filters/pad-category';
 import { FilterType } from '../store/filter-type';
 import { Filter } from '../store/filter';
+import store from '@/core/store';
+import { MutationPayload } from 'vuex';
 
 @Component({
     name: 'pad-filter-control',
@@ -78,9 +80,20 @@ export default class PadFilterControl extends Vue {
     selectedBrands: string[] = [];
     selectedSeries: string[] = [];
     selectedCategories: string[] = [];
+    unSub!: () => void;
 
     created() {
         this.onReset();
+
+        this.unSub = store.subscribe((mut: MutationPayload, state: any) => {
+            if (mut.type == 'pad/SET_PADS') {
+                this.onReset();
+            }
+        });
+    }
+
+    destroyed() {
+        this?.unSub();
     }
 
     onInput() {

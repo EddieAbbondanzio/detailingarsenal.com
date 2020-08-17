@@ -29,7 +29,7 @@
 
         <!-- Sidebar View -->
         <div class="is-flex is-flex-row is-flex-grow-1 has-overflow-y-hidden" v-else>
-            <div class="is-hidden-touch">
+            <div class>
                 <slot name="sidebar"></slot>
             </div>
 
