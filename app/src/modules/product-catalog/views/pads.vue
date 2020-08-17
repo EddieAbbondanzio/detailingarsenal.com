@@ -8,20 +8,20 @@
                     <page-header
                         title="Pad Compare Tool"
                         :description="`Compare buffing pads of multiple brands based on cut level`"
+                        :backButton="false"
                     />
                 </template>
 
                 <template v-slot:sidebar>
                     <page-sidebar>
-                        <p class="is-size-5 has-text-weight-bold">Filter</p>Brand
-                        Series
-                        Category
-                        Reset Button
+                        <pad-filter-control />
                     </page-sidebar>
                 </template>
 
                 <!-- Cut-o-Meter -->
-                <div class="is-flex is-flex-column is-align-items-center has-margin-bottom-3">
+                <div
+                    class="is-flex is-flex-column is-align-items-center has-margin-bottom-3 is-hidden-mobile"
+                >
                     <p class="title">Cut Level</p>
                     <div class="gradient-bar has-w-100">&nbsp;</div>
                     <div class="level has-w-100 is-mobile">
@@ -71,7 +71,8 @@
 .gradient-bar 
     background: rgb(2,0,36)
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,0,0,1) 0%, rgba(255,246,0,1) 50%, rgba(0,212,255,1) 100%)
-    height: 40px
+    height: 20px
+
 </style>
 
 <script lang="ts">
@@ -80,19 +81,35 @@ import ProductCatalogNavbar from '@/modules/product-catalog/components/product-c
 import padStore from '@/modules/product-catalog/store/pad-store';
 import { api, Pad, PadCategory } from '@/api';
 import { displayLoading } from '@/core';
+import PadFilterControl from '@/modules/product-catalog/components/pad-filter-control.vue';
+import store from '@/core/store';
+import { MutationPayload } from 'vuex';
 
 @Component({
     components: {
-        ProductCatalogNavbar
+        ProductCatalogNavbar,
+        PadFilterControl
     }
 })
 export default class Pads extends Vue {
     columns: Column[] = [];
 
+    unSub!: () => void;
+
     @displayLoading
     async created() {
         await padStore.init();
         this.columns = this.generateColumns();
+
+        this.unSub = store.subscribe((mut: MutationPayload, state: any) => {
+            if (mut.type == 'pad/SET_FILTER') {
+                this.columns = this.generateColumns();
+            }
+        });
+    }
+
+    destroyed() {
+        this?.unSub();
     }
 
     generateColumns(): Column[] {
@@ -105,14 +122,14 @@ export default class Pads extends Vue {
             { title: 'Finishing', category: 'finishing', pads: [] }
         ];
 
-        for (let i = 0; i < padStore.pads.length; i++) {
-            const column = columns.find(c => c.category == padStore.pads[i].category);
+        for (let i = 0; i < padStore.filtered.length; i++) {
+            const column = columns.find(c => c.category == padStore.filtered[i].category);
 
             if (column == null) {
                 continue;
             }
 
-            column.pads.push(padStore.pads[i]);
+            column.pads.push(padStore.filtered[i]);
         }
 
         return columns;

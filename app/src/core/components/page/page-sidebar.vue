@@ -1,7 +1,16 @@
 <template>
-    <div class="has-padding-all-3 sidebar has-background-light is-flex is-flex-column has-h-100">
-        <slot></slot>
-    </div>
+    <b-sidebar
+        class="has-h-100"
+        type="is-light"
+        :fullheight="true"
+        :overlay="false"
+        :open="true"
+        position="static"
+    >
+        <div class="has-padding-all-3">
+            <slot></slot>
+        </div>
+    </b-sidebar>
 </template>
 
 <style lang="sass" scoped>
