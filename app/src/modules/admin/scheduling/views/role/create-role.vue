@@ -1,22 +1,19 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header title="Edit role" :description="`Edit new role`">
+            <page-header title="Create role" :description="`Create new role`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
                         <breadcrumb name="Roles" :to="{name: 'roles'}" />
-                        <breadcrumb
-                            :name="name"
-                            :to="{name: 'role', params: {id: $route.params }}"
-                        />
-                        <breadcrumb name="Edit" :to="{name: 'editRole'}" active="true" />
+                        <breadcrumb name="Create" :to="{name: 'createRole'}" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" submitText="Save changes">
+        <input-form @submit="onSubmit" submitText="Create">
             <input-text-field
                 label="Name"
                 rules="required|max:32"
@@ -26,12 +23,7 @@
             />
 
             <input-group-header text="Permissions" />
-            <b-table
-                :data="permissions"
-                checkable
-                :checked-rows.sync="enabledPermissions"
-                :custom-is-checked="(a, b) => { return a.id === b.id }"
-            >
+            <b-table :data="permissions" checkable :checked-rows.sync="enabledPermissions">
                 <template slot-scope="props">
                     <b-table-column label="Permission" field="label" sortable>{{ props.row.label }}</b-table-column>
                     <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
@@ -48,17 +40,16 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import adminStore from '../../store/admin-store';
 import { Permission, SpecificationError } from '@/api';
-import { displayLoading } from '../../../../core/utils/display-loading';
-import { displayError, toast } from '@/core';
+import { displayError, toast, displayLoading } from '@/core';
+import accessControlStore from '../../store/access-control-store';
 
 @Component({
-    name: 'edit-role'
+    name: 'create-role'
 })
-export default class EditRole extends Vue {
+export default class CreateRole extends Vue {
     get permissions() {
-        return adminStore.permissions;
+        return accessControlStore.permissions;
     }
 
     name = '';
@@ -66,26 +57,20 @@ export default class EditRole extends Vue {
 
     @displayLoading
     async created() {
-        await adminStore.init();
-
-        const role = adminStore.roles.find(r => r.id == this.$route.params.id);
-
-        this.name = role!.name;
-        this.enabledPermissions = role!.permissionIds.map(id => adminStore.permissions.find(p => p.id == id)!);
+        await accessControlStore.init();
     }
 
     @displayLoading
     async onSubmit() {
-        const edit = {
-            id: this.$route.params.id,
+        const create = {
             name: this.name,
             permissionIds: this.enabledPermissions.map(p => p.id)
         };
 
         try {
-            const role = await adminStore.updateRole(edit);
+            const role = await accessControlStore.createRole(create);
 
-            toast(`Updated role ${role.name}`);
+            toast(`Created new role ${role.name}`);
             this.$router.push({ name: 'roles' });
         } catch (err) {
             if (err instanceof SpecificationError) {

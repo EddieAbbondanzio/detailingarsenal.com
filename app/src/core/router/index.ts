@@ -5,8 +5,10 @@ import { settings } from '@/modules/scheduling/settings/router/settings';
 import { user } from '@/modules/scheduling/user/router/user';
 import { clients } from '@/modules/scheduling/clients/router/clients';
 import { authGuard } from '@/core/router/auth-guard';
-import { admin } from '@/modules/admin/router/admin';
 import { productCatalog } from '@/modules/product-catalog/router/product-catalog';
+import { admin } from '@/modules/admin/core/router/admin';
+import { schedulingAdmin } from '@/modules/admin/scheduling/router/scheduling-admin';
+import { productCatalogAdmin } from '@/modules/admin/product-catalog/router/product-catalog-admin';
 
 Vue.use(VueRouter);
 
@@ -21,7 +23,7 @@ const routes: RouteConfig[] = [
     {
         path: '/admin',
         component: () => import('@/core/views/private.vue'),
-        children: [...admin],
+        children: [...admin, ...productCatalogAdmin, ...schedulingAdmin],
         beforeEnter: authGuard // TODO: Refactor this. We need both authGuard, and adminGuard else user is never loaded
     },
     {

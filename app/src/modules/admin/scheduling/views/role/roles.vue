@@ -10,6 +10,7 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
                         <breadcrumb name="Roles" :to="{name: 'roles'}" :active="true" />
                     </breadcrumb-trail>
                 </template>
@@ -37,22 +38,22 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import adminStore from '../../store/admin-store';
 import { displayLoading } from '@/core/utils/display-loading';
-import { confirmDelete, toast, displayError } from '../../../../core';
+import { confirmDelete, toast, displayError } from '@/core';
 import { Role } from '@/api';
+import accessControlStore from '@/modules/admin/scheduling/store/access-control-store';
 
 @Component({
     name: 'roles'
 })
 export default class Roles extends Vue {
     get roles() {
-        return adminStore.roles;
+        return accessControlStore.roles;
     }
 
     @displayLoading
     async created() {
-        await adminStore.init();
+        await accessControlStore.init();
     }
 
     async onEdit(r: Role) {
@@ -65,7 +66,7 @@ export default class Roles extends Vue {
 
         if (del) {
             try {
-                await adminStore.deleteRole(r);
+                await accessControlStore.deleteRole(r);
                 toast(`Deleted role ${r.name}`);
             } catch (err) {
                 displayError(err);

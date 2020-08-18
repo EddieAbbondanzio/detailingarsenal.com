@@ -262,7 +262,6 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import billingStore from '../store/billing-store';
 import { Subscription as SubscriptionObj, Customer } from '../../../../api';
-import { adminGuard } from '../../../admin/router/admin-guard';
 import moment from 'moment';
 import { displayLoading } from '../../../../core';
 

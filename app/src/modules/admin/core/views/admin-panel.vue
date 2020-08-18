@@ -41,22 +41,16 @@ import { RawLocation } from 'vue-router';
 export default class AdminPanel extends Vue {
     entries: { title: string; description: string; icon: string; to: RawLocation }[] = [
         {
-            title: 'Permissions',
-            description: 'Access control',
-            icon: 'lock',
-            to: { name: 'permissions' }
+            title: 'Scheduling Panel',
+            description: 'Scheduling specific controls',
+            icon: 'calendar',
+            to: { name: 'schedulingPanel' }
         },
         {
-            title: 'Roles',
-            description: 'Collection of roles',
-            icon: 'account',
-            to: { name: 'roles' }
-        },
-        {
-            title: 'Subscription Plans',
-            description: 'Plans for customers',
-            icon: 'ferry',
-            to: { name: 'subscriptionPlans' }
+            title: 'Product Catalog Panel',
+            description: 'Product catalog specific controls',
+            icon: 'book-open',
+            to: { name: 'productCatalogPanel' }
         }
     ];
 }

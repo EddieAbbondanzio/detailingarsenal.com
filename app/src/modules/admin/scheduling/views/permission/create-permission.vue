@@ -1,22 +1,19 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
-            <page-header title="Edit permission" :description="`Edit an existing permission`">
+            <page-header title="Create permission" :description="`Create new permission`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
                         <breadcrumb name="Permissions" :to="{name: 'permissions'}" />
-                        <breadcrumb
-                            name="Edit"
-                            :to="{name: 'editPermission', params: $route.params}"
-                            active="true"
-                        />
+                        <breadcrumb name="Create" :to="{name: 'createPermission'}" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" :loading="loading" submitText="Save changes">
+        <input-form @submit="onSubmit" submitText="Create">
             <input-text-field
                 label="Action"
                 rules="required|max:32"
@@ -38,39 +35,25 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { toast, displayError } from '../../../../core';
-import { Permission, SpecificationError } from '@/api';
-import adminStore from '../../store/admin-store';
+import { toast, displayError } from '@/core';
+import appStore from '@/core/store/app-store';
+import { displayLoading } from '@/core/utils/display-loading';
+import { SpecificationError } from '@/api';
+import accessControlStore from '../../store/access-control-store';
 
 @Component({
-    name: 'edit-permission'
+    name: 'create-permission'
 })
-export default class EditPermission extends Vue {
-    loading = false;
+export default class CreatePermission extends Vue {
     action: string = '';
     scope: string = '';
 
-    async created() {
-        const id = this.$route.params.id;
-        await adminStore.init();
-
-        const perm = adminStore.permissions.find(p => p.id == id);
-
-        if (perm == null) {
-            throw new Error(`Permission with id ${id} does not exist.`);
-        }
-
-        this.action = perm.action;
-        this.scope = perm.scope;
-        this.loading = false;
-    }
-
+    @displayLoading
     async onSubmit() {
-        this.loading = true;
-        const edit = { id: this.$route.params.id, action: this.action, scope: this.scope };
+        const create = { action: this.action, scope: this.scope };
 
         try {
-            await adminStore.updatePermission(edit);
+            await accessControlStore.createPermission(create);
 
             toast(`Created new permission`);
             this.$router.push({ name: 'permissions' });
@@ -80,8 +63,6 @@ export default class EditPermission extends Vue {
             } else {
                 throw err;
             }
-        } finally {
-            this.loading = false;
         }
     }
 }

@@ -10,6 +10,7 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
                         <breadcrumb name="Permissions" :to="{name: 'permissions'}" :active="true" />
                     </breadcrumb-trail>
                 </template>
@@ -44,21 +45,20 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Permission } from '@/api';
-import { confirmDelete, toast, displayError } from '@/core';
-import adminStore from '../../store/admin-store';
-import { displayLoading } from '../../../../core/utils/display-loading';
+import { confirmDelete, toast, displayError, displayLoading } from '@/core';
+import accessControlStore from '../../store/access-control-store';
 
 @Component({
     name: 'permissions'
 })
 export default class Permissions extends Vue {
     get permissions(): Permission[] {
-        return adminStore.permissions;
+        return accessControlStore.permissions;
     }
 
     @displayLoading
     async created() {
-        await adminStore.init();
+        await accessControlStore.init();
     }
 
     async onEdit(p: Permission) {
@@ -71,7 +71,7 @@ export default class Permissions extends Vue {
 
         if (del) {
             try {
-                await adminStore.deletePermission(p);
+                await accessControlStore.deletePermission(p);
                 toast(`Deleted permission ${p.toString()}`);
             } catch (err) {
                 displayError(err);

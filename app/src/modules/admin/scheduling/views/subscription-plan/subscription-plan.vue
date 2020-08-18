@@ -5,6 +5,7 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
                         <breadcrumb name="Subscription Plans" :to="{ name: 'subscriptionPlans' }" />
                         <breadcrumb
                             :name="plan != null ? plan.name : ''"
@@ -47,9 +48,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import adminStore from '../../store/admin-store';
-import { displayLoading } from '../../../../core';
 import { SubscriptionPlan } from '@/api';
+import { displayLoading } from '@/core';
+import subscriptionPlanStore from '../../store/subscription-plan-store';
 
 @Component({})
 export default class SubscriptionPlanView extends Vue {
@@ -57,8 +58,8 @@ export default class SubscriptionPlanView extends Vue {
 
     @displayLoading
     async created() {
-        await adminStore.init();
-        this.plan = adminStore.subscriptionPlans.find(p => p.id == this.$route.params.id)!;
+        await subscriptionPlanStore.init();
+        this.plan = subscriptionPlanStore.subscriptionPlans.find(p => p.id == this.$route.params.id)!;
     }
 }
 </script>

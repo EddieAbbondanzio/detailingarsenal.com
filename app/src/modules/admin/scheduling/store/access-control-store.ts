@@ -7,11 +7,10 @@ import { Permission, Role, SubscriptionPlan, PermissionCreate, PermissionUpdate,
 /**
  * Store for the schedule view.
  */
-@Module({ namespaced: true, name: 'admin', dynamic: true, store })
-class AdminStore extends InitableModule {
+@Module({ namespaced: true, name: 'access-control', dynamic: true, store })
+class AccessControlStore extends InitableModule {
     permissions: Permission[] = [];
     roles: Role[] = [];
-    subscriptionPlans: SubscriptionPlan[] = [];
 
     @Mutation
     SET_PERMISSIONS(permissions: Permission[]) {
@@ -64,22 +63,15 @@ class AdminStore extends InitableModule {
         }
     }
 
-    @Mutation
-    SET_SUBSCRIPTION_PLANS(plans: SubscriptionPlan[]) {
-        this.subscriptionPlans = plans;
-    }
-
     @Action({ rawError: true })
     async _init() {
-        const [perms, roles, plans] = await Promise.all([
+        const [perms, roles] = await Promise.all([
             api.scheduling.security.permission.getPermissions(),
-            api.scheduling.security.role.getRoles(),
-            api.scheduling.billing.subscriptionPlan.getPlans()
+            api.scheduling.security.role.getRoles()
         ]);
 
         this.context.commit('SET_PERMISSIONS', perms);
         this.context.commit('SET_ROLES', roles);
-        this.context.commit('SET_SUBSCRIPTION_PLANS', plans);
     }
 
     @Action({ rawError: true })
@@ -125,13 +117,6 @@ class AdminStore extends InitableModule {
         await api.scheduling.security.role.deleteRole(role);
         this.context.commit('DELETE_ROLE', role);
     }
-
-    @Action({ rawError: true })
-    async refreshSubscriptionPlans() {
-        const plans = await api.scheduling.billing.subscriptionPlan.refreshPlans();
-        this.context.commit('SET_SUBSCRIPTION_PLANS', plans);
-        return plans;
-    }
 }
 
-export default getModule(AdminStore);
+export default getModule(AccessControlStore);

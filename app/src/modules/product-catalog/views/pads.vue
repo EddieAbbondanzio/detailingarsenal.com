@@ -88,6 +88,7 @@ import { displayLoading } from '@/core';
 import PadFilterControl from '@/modules/product-catalog/components/pad-filter-control.vue';
 import store from '@/core/store';
 import { MutationPayload } from 'vuex';
+import PageSidebar from '@/core/components/page/page-sidebar.vue';
 
 @Component({
     components: {
@@ -140,7 +141,7 @@ export default class Pads extends Vue {
     }
 
     onFiltersClick() {
-        this.$refs.sidebar.open();
+        (this.$refs.sidebar as PageSidebar).open();
     }
 }
 

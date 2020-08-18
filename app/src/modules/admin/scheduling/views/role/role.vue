@@ -5,6 +5,7 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
                         <breadcrumb name="Roles" :to="{name: 'roles'}" />
                         <breadcrumb
                             :name="role != null ? role.name : ''"
@@ -50,17 +51,17 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import adminStore from '../../store/admin-store';
-import { displayLoading } from '../../../../core/utils/display-loading';
-import appStore from '../../../../core/store/app-store';
+import appStore from '@/core/store/app-store';
 import { Permission, Role } from '@/api';
+import accessControlStore from '../../store/access-control-store';
+import { displayLoading } from '@/core';
 
 @Component({
     name: 'role'
 })
 export default class RoleView extends Vue {
     get permissions() {
-        return adminStore.permissions;
+        return accessControlStore.permissions;
     }
 
     role: Role | null = null;
@@ -68,15 +69,17 @@ export default class RoleView extends Vue {
 
     @displayLoading
     async created() {
-        await adminStore.init();
+        await accessControlStore.init();
 
-        this.role = adminStore.roles.find(r => r.id == this.$route.params.id)!;
+        this.role = accessControlStore.roles.find(r => r.id == this.$route.params.id)!;
 
         if (this.role == null) {
             throw new Error('Role not found');
         }
 
-        this.enabledPermissions = this.role.permissionIds.map(id => adminStore.permissions.find(p => p.id == id)!);
+        this.enabledPermissions = this.role.permissionIds.map(
+            id => accessControlStore.permissions.find(p => p.id == id)!
+        );
     }
 }
 </script>

@@ -10,6 +10,7 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
+                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
                         <breadcrumb
                             name="Subscription Plans"
                             :to="{name: 'subscriptionPlans'}"
@@ -42,25 +43,25 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import adminStore from '../../store/admin-store';
-import { displayLoading } from '../../../../core';
+import { displayLoading } from '@/core';
+import subscriptionPlanStore from '@/modules/admin/scheduling/store/subscription-plan-store';
 
 @Component({
     name: 'subscription-plans'
 })
 export default class SubscriptionPlans extends Vue {
     get plans() {
-        return adminStore.subscriptionPlans;
+        return subscriptionPlanStore.subscriptionPlans;
     }
 
     @displayLoading
     async created() {
-        await adminStore.init();
+        await subscriptionPlanStore.init();
     }
 
     @displayLoading
     async onRefreshClick() {
-        await adminStore.refreshSubscriptionPlans();
+        await subscriptionPlanStore.refreshSubscriptionPlans();
     }
 }
 </script>
