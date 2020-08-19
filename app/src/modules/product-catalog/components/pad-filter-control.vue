@@ -63,7 +63,7 @@ export default class PadFilterControl extends Vue {
      * Unique list of pad brands
      */
     get brands() {
-        return [...new Set(padStore.pads.map(p => p.brand))];
+        return [...new Set(padStore.pads.map(p => p.series.brand.name))];
     }
 
     /**
@@ -104,7 +104,7 @@ export default class PadFilterControl extends Vue {
 
     onReset() {
         this.selectedBrands = [...this.brands];
-        this.selectedSeries = [...this.series];
+        this.selectedSeries = [...this.series.map(s => s.name)];
         this.selectedCategories = [...this.categories];
 
         padStore.SET_FILTER(

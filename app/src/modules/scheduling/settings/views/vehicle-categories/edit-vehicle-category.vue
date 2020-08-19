@@ -69,8 +69,6 @@ export default class EditVehicleCategory extends Vue {
         this.description = vc.description;
     }
 
-    async mounted() {}
-
     @displayLoading
     async onSubmit() {
         const update = {

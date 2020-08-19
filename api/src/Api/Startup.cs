@@ -45,6 +45,9 @@ using DetailingArsenal.Persistence.Calendar;
 using DetailingArsenal.Domain.Billing;
 using DetailingArsenal.Application.Billing;
 using DetailingArsenal.Infrastructure.Billing;
+using DetailingArsenal.Domain.ProductCatalog;
+using DetailingArsenal.Application.ProductCatalog;
+using DetailingArsenal.Persistence.ProductCatalog;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -113,6 +116,8 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<SubscriptionPlan, SubscriptionPlanView>();
                 config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceView>()
                     .ForMember(v => v.BillingId, p => p.MapFrom(p => p.BillingReference.BillingId));
+
+                config.CreateMap<Brand, BrandReadModel>();
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
@@ -141,6 +146,18 @@ namespace DetailingArsenal.Api {
             // Email
             services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
             services.AddTransient<IEmailClient, SmtpEmailClient>();
+
+            // Product Catalog
+            services.AddTransient<ActionHandler<GetBrandsQuery, List<BrandReadModel>>, GetBrandsHandler>();
+            services.AddTransient<ActionHandler<CreateBrandCommand, BrandReadModel>, CreateBrandHandler>();
+            services.AddTransient<ActionHandler<UpdateBrandCommand, BrandReadModel>, UpdateBrandHandler>();
+            services.AddTransient<ActionHandler<DeleteBrandCommand>, DeleteBrandHandler>();
+            services.AddTransient<CreateBrandValidator>();
+            services.AddTransient<UpdateBrandValidator>();
+            services.AddTransient<IBrandReader, BrandReader>();
+            services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<BrandNameUniqueSpecification>();
+            services.AddTransient<IBrandRepo, BrandRepo>();
 
             // Billing
             var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));

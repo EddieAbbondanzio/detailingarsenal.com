@@ -58,8 +58,9 @@
                                 </div>
 
                                 <div class="card-content">
-                                    <p>{{ pad.brand }}</p>
-                                    <p>{{ pad.series }}</p>
+                                    <p>{{ pad.series.brand.name }}</p>
+                                    <p>{{ pad.series.name }}</p>
+                                    <p>{{ pad.name }}</p>
                                     <p>{{ pad.color }}</p>
                                 </div>
                             </div>

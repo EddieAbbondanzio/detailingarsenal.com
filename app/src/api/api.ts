@@ -12,6 +12,7 @@ import { VehicleCategoryService } from '@/api/scheduling/settings/services/vehic
 import { CustomerService } from '@/api/scheduling/billing/services/customer-service';
 import { CheckoutSessionService } from '@/api/scheduling/billing/services/checkout-session-service';
 import { PadService } from '@/api/product-catalog/services/pad-service';
+import { BrandService } from '@/api/product-catalog/services/brand-service';
 
 export const api = {
     authentication: new AuthenticationService(),
@@ -45,6 +46,7 @@ export const api = {
         }
     },
     productCatalog: {
-        pad: new PadService()
+        pad: new PadService(),
+        brand: new BrandService()
     }
 };

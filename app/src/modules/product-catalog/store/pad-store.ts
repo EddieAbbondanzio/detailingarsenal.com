@@ -17,8 +17,8 @@ class PadStore extends InitableModule {
 
         return this.pads.filter(
             p =>
-                this.filter.brands.indexOf(p.brand) != -1 &&
-                this.filter.series.indexOf(p.series) != -1 &&
+                this.filter.brands.indexOf(p.series.brand.name) != -1 &&
+                this.filter.series.indexOf(p.series.name) != -1 &&
                 this.filter.category.indexOf(p.category) != -1
         );
     }

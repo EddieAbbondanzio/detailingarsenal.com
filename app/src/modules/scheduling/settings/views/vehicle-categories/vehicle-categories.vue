@@ -81,7 +81,7 @@ export default class VehicleCategories extends Vue {
             try {
                 await settingsStore.deleteVehicleCategory(vc);
 
-                toast(`Delete vehicle category ${vc.name}`);
+                toast(`Deleted vehicle category ${vc.name}`);
             } catch (err) {
                 displayError(err);
             }
