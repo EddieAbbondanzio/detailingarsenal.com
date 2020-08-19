@@ -8,19 +8,27 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public BrandRepo(IDatabase database) : base(database) { }
 
         public async Task<Brand?> FindById(Guid id) {
-            var brandModel = await Connection.QueryFirstOrDefaultAsync(
+            var brandModel = await Connection.QueryFirstOrDefaultAsync<BrandModel>(
                 @"select * from brands where id = @Id;",
                 new { Id = id }
             );
 
+            if (brandModel == null) {
+                return null;
+            }
+
             return new Brand(brandModel.Id, brandModel.Name);
         }
 
-        public async Task<Brand> FindByName(string name) {
-            var brandModel = await Connection.QueryFirstOrDefaultAsync(
+        public async Task<Brand?> FindByName(string name) {
+            var brandModel = await Connection.QueryFirstOrDefaultAsync<BrandModel>(
                 @"select * from brands where name = @Name;",
                 new { Name = name }
             );
+
+            if (brandModel == null) {
+                return null;
+            }
 
             return new Brand(brandModel.Id, brandModel.Name);
         }
