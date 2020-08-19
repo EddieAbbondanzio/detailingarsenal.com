@@ -41,19 +41,19 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading } from '@/core/utils/display-loading';
 import { confirmDelete, toast, displayError } from '@/core';
 import { Role } from '@/api';
-import accessControlStore from '@/modules/admin/scheduling/store/access-control-store';
+import securityStore from '../../store/security-store';
 
 @Component({
     name: 'roles'
 })
 export default class Roles extends Vue {
     get roles() {
-        return accessControlStore.roles;
+        return securityStore.roles;
     }
 
     @displayLoading
     async created() {
-        await accessControlStore.init();
+        await securityStore.init();
     }
 
     async onEdit(r: Role) {
@@ -66,7 +66,7 @@ export default class Roles extends Vue {
 
         if (del) {
             try {
-                await accessControlStore.deleteRole(r);
+                await securityStore.deleteRole(r);
                 toast(`Deleted role ${r.name}`);
             } catch (err) {
                 displayError(err);

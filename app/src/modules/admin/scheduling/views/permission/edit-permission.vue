@@ -41,7 +41,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { toast, displayError } from '@/core';
 import { Permission, SpecificationError } from '@/api';
-import accessControlStore from '../../store/access-control-store';
+import securityStore from '../../store/security-store';
 
 @Component({
     name: 'edit-permission'
@@ -53,9 +53,9 @@ export default class EditPermission extends Vue {
 
     async created() {
         const id = this.$route.params.id;
-        await accessControlStore.init();
+        await securityStore.init();
 
-        const perm = accessControlStore.permissions.find(p => p.id == id);
+        const perm = securityStore.permissions.find(p => p.id == id);
 
         if (perm == null) {
             throw new Error(`Permission with id ${id} does not exist.`);
@@ -71,7 +71,7 @@ export default class EditPermission extends Vue {
         const edit = { id: this.$route.params.id, action: this.action, scope: this.scope };
 
         try {
-            await accessControlStore.updatePermission(edit);
+            await securityStore.updatePermission(edit);
 
             toast(`Created new permission`);
             this.$router.push({ name: 'permissions' });

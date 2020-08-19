@@ -51,14 +51,14 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Permission, SpecificationError } from '@/api';
 import { displayError, toast, displayLoading } from '@/core';
-import accessControlStore from '../../store/access-control-store';
+import securityStore from '../../store/security-store';
 
 @Component({
     name: 'edit-role'
 })
 export default class EditRole extends Vue {
     get permissions() {
-        return accessControlStore.permissions;
+        return securityStore.permissions;
     }
 
     name = '';
@@ -66,12 +66,12 @@ export default class EditRole extends Vue {
 
     @displayLoading
     async created() {
-        await accessControlStore.init();
+        await securityStore.init();
 
-        const role = accessControlStore.roles.find(r => r.id == this.$route.params.id);
+        const role = securityStore.roles.find(r => r.id == this.$route.params.id);
 
         this.name = role!.name;
-        this.enabledPermissions = role!.permissionIds.map(id => accessControlStore.permissions.find(p => p.id == id)!);
+        this.enabledPermissions = role!.permissionIds.map(id => securityStore.permissions.find(p => p.id == id)!);
     }
 
     @displayLoading
@@ -83,7 +83,7 @@ export default class EditRole extends Vue {
         };
 
         try {
-            const role = await accessControlStore.updateRole(edit);
+            const role = await securityStore.updateRole(edit);
 
             toast(`Updated role ${role.name}`);
             this.$router.push({ name: 'roles' });

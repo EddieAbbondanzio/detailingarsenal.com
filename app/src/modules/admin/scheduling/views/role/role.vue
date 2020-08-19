@@ -53,7 +53,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import appStore from '@/core/store/app-store';
 import { Permission, Role } from '@/api';
-import accessControlStore from '../../store/access-control-store';
+import securityStore from '../../store/security-store';
 import { displayLoading } from '@/core';
 
 @Component({
@@ -61,7 +61,7 @@ import { displayLoading } from '@/core';
 })
 export default class RoleView extends Vue {
     get permissions() {
-        return accessControlStore.permissions;
+        return securityStore.permissions;
     }
 
     role: Role | null = null;
@@ -69,17 +69,15 @@ export default class RoleView extends Vue {
 
     @displayLoading
     async created() {
-        await accessControlStore.init();
+        await securityStore.init();
 
-        this.role = accessControlStore.roles.find(r => r.id == this.$route.params.id)!;
+        this.role = securityStore.roles.find(r => r.id == this.$route.params.id)!;
 
         if (this.role == null) {
             throw new Error('Role not found');
         }
 
-        this.enabledPermissions = this.role.permissionIds.map(
-            id => accessControlStore.permissions.find(p => p.id == id)!
-        );
+        this.enabledPermissions = this.role.permissionIds.map(id => securityStore.permissions.find(p => p.id == id)!);
     }
 }
 </script>

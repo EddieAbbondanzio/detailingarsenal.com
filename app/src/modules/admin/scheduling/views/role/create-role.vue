@@ -42,14 +42,14 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Permission, SpecificationError } from '@/api';
 import { displayError, toast, displayLoading } from '@/core';
-import accessControlStore from '../../store/access-control-store';
+import securityStore from '../../store/security-store';
 
 @Component({
     name: 'create-role'
 })
 export default class CreateRole extends Vue {
     get permissions() {
-        return accessControlStore.permissions;
+        return securityStore.permissions;
     }
 
     name = '';
@@ -57,7 +57,7 @@ export default class CreateRole extends Vue {
 
     @displayLoading
     async created() {
-        await accessControlStore.init();
+        await securityStore.init();
     }
 
     @displayLoading
@@ -68,7 +68,7 @@ export default class CreateRole extends Vue {
         };
 
         try {
-            const role = await accessControlStore.createRole(create);
+            const role = await securityStore.createRole(create);
 
             toast(`Created new role ${role.name}`);
             this.$router.push({ name: 'roles' });

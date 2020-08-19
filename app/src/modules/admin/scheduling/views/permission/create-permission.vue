@@ -39,7 +39,7 @@ import { toast, displayError } from '@/core';
 import appStore from '@/core/store/app-store';
 import { displayLoading } from '@/core/utils/display-loading';
 import { SpecificationError } from '@/api';
-import accessControlStore from '../../store/access-control-store';
+import securityStore from '../../store/security-store';
 
 @Component({
     name: 'create-permission'
@@ -53,7 +53,7 @@ export default class CreatePermission extends Vue {
         const create = { action: this.action, scope: this.scope };
 
         try {
-            await accessControlStore.createPermission(create);
+            await securityStore.createPermission(create);
 
             toast(`Created new permission`);
             this.$router.push({ name: 'permissions' });

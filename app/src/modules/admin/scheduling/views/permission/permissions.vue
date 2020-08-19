@@ -46,19 +46,19 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Permission } from '@/api';
 import { confirmDelete, toast, displayError, displayLoading } from '@/core';
-import accessControlStore from '../../store/access-control-store';
+import securityStore from '../../store/security-store';
 
 @Component({
     name: 'permissions'
 })
 export default class Permissions extends Vue {
     get permissions(): Permission[] {
-        return accessControlStore.permissions;
+        return securityStore.permissions;
     }
 
     @displayLoading
     async created() {
-        await accessControlStore.init();
+        await securityStore.init();
     }
 
     async onEdit(p: Permission) {
@@ -71,7 +71,7 @@ export default class Permissions extends Vue {
 
         if (del) {
             try {
-                await accessControlStore.deletePermission(p);
+                await securityStore.deletePermission(p);
                 toast(`Deleted permission ${p.toString()}`);
             } catch (err) {
                 displayError(err);

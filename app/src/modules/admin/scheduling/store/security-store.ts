@@ -7,8 +7,8 @@ import { Permission, Role, SubscriptionPlan, PermissionCreate, PermissionUpdate,
 /**
  * Store for the schedule view.
  */
-@Module({ namespaced: true, name: 'access-control', dynamic: true, store })
-class AccessControlStore extends InitableModule {
+@Module({ namespaced: true, name: 'security', dynamic: true, store })
+class SecurityStore extends InitableModule {
     permissions: Permission[] = [];
     roles: Role[] = [];
 
@@ -119,4 +119,4 @@ class AccessControlStore extends InitableModule {
     }
 }
 
-export default getModule(AccessControlStore);
+export default getModule(SecurityStore);
