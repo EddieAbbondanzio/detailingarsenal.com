@@ -8,7 +8,6 @@ export class Pad {
         public category: PadCategory,
         public series: PadSeries,
         public name: string,
-        public color: string,
         public image?: File
     ) {}
 }

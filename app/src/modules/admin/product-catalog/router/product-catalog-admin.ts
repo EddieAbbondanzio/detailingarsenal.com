@@ -22,6 +22,11 @@ const productCatalogAdminRoutes: RouteConfig[] = [
         path: '/product-catalog/brands/:id/edit',
         name: 'editBrand',
         component: () => import('@/modules/admin/product-catalog/views/brand/edit-brand.vue')
+    },
+    {
+        path: '/product-catalog/pads',
+        name: 'pads',
+        component: () => import('@/modules/admin/product-catalog/views/pad/pads.vue')
     }
 ];
 

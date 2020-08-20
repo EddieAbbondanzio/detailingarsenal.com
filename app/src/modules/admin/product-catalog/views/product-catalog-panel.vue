@@ -44,12 +44,18 @@ import { RawLocation } from 'vue-router';
     name: 'admin-panel'
 })
 export default class ProductCatalogPanel extends Vue {
-    entries: { title: string; description: string; icon: string; to: RawLocation }[] = [
+    entries: { title: string; description: string; icon?: string; to: RawLocation }[] = [
         {
             title: 'Brands',
             description: 'Product brands',
             icon: 'watermark',
             to: { name: 'brands' }
+        },
+        {
+            title: 'Pads',
+            description: 'Pad series by manufacturers',
+            icon: 'checkbox-blank-circle',
+            to: { name: 'pads ' }
         }
     ];
 }

@@ -57,3 +57,4 @@ export * from './scheduling/users/data-transfer-objects/user';
 export * from './product-catalog/data-transfer-objects/brand';
 export * from './product-catalog/data-transfer-objects/pad';
 export * from './product-catalog/data-transfer-objects/pad-category';
+export * from './product-catalog/data-transfer-objects/pad-series';
