@@ -25,7 +25,7 @@ const productCatalogAdminRoutes: RouteConfig[] = [
     },
     {
         path: '/product-catalog/pads',
-        name: 'pads',
+        name: 'padSeries',
         component: () => import('@/modules/admin/product-catalog/views/pad/pads.vue')
     },
     {

@@ -55,7 +55,7 @@ export default class ProductCatalogPanel extends Vue {
             title: 'Pads',
             description: 'Pad series by manufacturers',
             icon: 'checkbox-blank-circle',
-            to: { name: 'pads' }
+            to: { name: 'padSeries' }
         }
     ];
 }

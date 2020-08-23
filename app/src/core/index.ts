@@ -13,5 +13,6 @@ export * from './utils/traverse';
 export * from './utils/confirm-delete/confirm-delete';
 export * from './utils/display-error/display-error';
 export * from './utils/display-loading';
+export * from './utils/to-base-64';
 
 export * from './directives/mouse/mouse';

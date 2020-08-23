@@ -32,7 +32,7 @@
 
             <input-array
                 title="Pads"
-                :factory="() => ({ name: '', category: null })"
+                :factory="() => ({ name: '', category: null, image: null })"
                 v-slot="{value}"
                 v-model="pads"
             >
@@ -57,6 +57,8 @@
                         :value="category"
                     >{{ category }}</option>
                 </input-select>
+
+                <input-image-upload v-model="value.image" />
             </input-array>
         </input-form>
     </page>
@@ -71,7 +73,7 @@ import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
 import { ValidationError, SpecificationError, Brand, PadCreate, PadCategory } from '@/api';
 import brandStore from '../../store/brand-store';
-
+import { Image } from '@/api';
 @Component
 export default class CreatePadSeries extends Vue {
     get brands() {
