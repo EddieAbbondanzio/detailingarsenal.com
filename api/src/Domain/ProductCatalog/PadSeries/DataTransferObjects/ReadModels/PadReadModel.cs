@@ -5,9 +5,9 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public Guid Id { get; }
         public PadCategory Category { get; }
         public string Name { get; }
-        public byte[]? Image { get; }
+        public string? Image { get; }
 
-        public PadReadModel(Guid id, PadCategory category, string name, byte[]? image = null) {
+        public PadReadModel(Guid id, PadCategory category, string name, string? image = null) {
             Id = id;
             Category = category;
             Name = name;

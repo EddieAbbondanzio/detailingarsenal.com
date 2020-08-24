@@ -118,6 +118,8 @@ namespace DetailingArsenal.Api {
                     .ForMember(v => v.BillingId, p => p.MapFrom(p => p.BillingReference.BillingId));
 
                 config.CreateMap<Brand, BrandReadModel>();
+                config.CreateMap<Pad, PadReadModel>();
+                config.CreateMap<PadSeries, PadSeriesReadModel>();
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
@@ -158,6 +160,13 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<BrandNameUniqueSpecification>();
             services.AddTransient<IBrandRepo, BrandRepo>();
+            services.AddTransient<IPadSeriesRepo, PadSeriesRepo>();
+            services.AddTransient<IPadSeriesReader, PadSeriesReader>();
+            services.AddTransient<IPadSeriesService, PadSeriesService>();
+            services.AddTransient<ActionHandler<GetAllPadSeriesQuery, List<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
+            services.AddTransient<ActionHandler<CreatePadSeriesCommand, PadSeriesReadModel>, CreatePadSeriesHandler>();
+            services.AddTransient<ActionHandler<UpdatePadSeriesCommand, PadSeriesReadModel>, UpdatePadSeriesHandler>();
+            services.AddTransient<ActionHandler<DeletePadSeriesCommand>, DeletePadSeriesHandler>();
 
             // Billing
             var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));

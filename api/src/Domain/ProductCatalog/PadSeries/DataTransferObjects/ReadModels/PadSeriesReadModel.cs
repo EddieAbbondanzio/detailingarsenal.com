@@ -8,11 +8,11 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public BrandReadModel Brand { get; }
         public List<PadReadModel> Pads { get; }
 
-        public PadSeriesReadModel(Guid id, string name, BrandReadModel brand, List<PadReadModel> pads) {
+        public PadSeriesReadModel(Guid id, string name, BrandReadModel brand, List<PadReadModel>? pads = null) {
             Id = id;
             Name = name;
             Brand = brand;
-            Pads = pads;
+            Pads = pads ?? new List<PadReadModel>();
         }
     }
 }

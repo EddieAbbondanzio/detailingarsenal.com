@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             var brand = await service.GetById(input.Id);
 
             await service.Delete(
-                brand
+                brand, user!
             );
         }
     }

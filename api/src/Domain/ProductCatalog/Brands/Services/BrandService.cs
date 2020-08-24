@@ -8,7 +8,7 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         Task<Brand> GetById(Guid id);
         Task<Brand> Create(BrandCreate create, User user);
         Task<Brand> Update(Brand brand, BrandUpdate update, User user);
-        Task Delete(Brand brand);
+        Task Delete(Brand brand, User user);
     }
 
     public class BrandService : IBrandService {
@@ -42,7 +42,7 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             return brand;
         }
 
-        public async Task Delete(Brand brand) {
+        public async Task Delete(Brand brand, User user) {
             await repo.Delete(brand);
         }
     }
