@@ -24,14 +24,14 @@ const productCatalogAdminRoutes: RouteConfig[] = [
         component: () => import('@/modules/admin/product-catalog/views/brand/edit-brand.vue')
     },
     {
-        path: '/product-catalog/pads',
+        path: '/product-catalog/pad-series',
         name: 'padSeries',
-        component: () => import('@/modules/admin/product-catalog/views/pad/pads.vue')
+        component: () => import('@/modules/admin/product-catalog/views/pad-series/pad-series.vue')
     },
     {
-        path: '/product-catalog/pads/create',
-        name: 'createPad',
-        component: () => import('@/modules/admin/product-catalog/views/pad/create-pad.vue')
+        path: '/product-catalog/pads-series/create',
+        name: 'createPadSeries',
+        component: () => import('@/modules/admin/product-catalog/views/pad-series/create-pad-series.vue')
     }
 ];
 

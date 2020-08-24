@@ -37,18 +37,18 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading, confirmDelete, toast, displayError } from '@/core';
-import padStore from '@/modules/admin/product-catalog/store/pad-store';
+import padSeriesStore from '@/modules/admin/product-catalog/store/pad-series-store';
 import { Pad, PadSeries } from '@/api';
 
 @Component
 export default class Pads extends Vue {
     get series() {
-        return padStore.series;
+        return padSeriesStore.series;
     }
 
     @displayLoading
     async created() {
-        await padStore.init();
+        await padSeriesStore.init();
     }
 
     async onEdit(pad: Pad) {
@@ -65,7 +65,7 @@ export default class Pads extends Vue {
 
         if (del) {
             try {
-                await padStore.delete(pad);
+                await padSeriesStore.delete(pad);
                 toast(`Deleted pad ${pad.name}`);
             } catch (err) {
                 displayError(err);

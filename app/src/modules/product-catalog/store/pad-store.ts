@@ -38,7 +38,7 @@ class PadStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const [pads] = await Promise.all([api.productCatalog.pad.getPads()]);
+        const [pads] = await Promise.all([api.productCatalog.padSeries.get()]);
         this.context.commit('SET_PADS', pads);
     }
 }

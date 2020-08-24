@@ -11,7 +11,7 @@ import { ServiceService } from '@/api/scheduling/settings/services/service-servi
 import { VehicleCategoryService } from '@/api/scheduling/settings/services/vehicle-category-service';
 import { CustomerService } from '@/api/scheduling/billing/services/customer-service';
 import { CheckoutSessionService } from '@/api/scheduling/billing/services/checkout-session-service';
-import { PadService } from '@/api/product-catalog/services/pad-service';
+import { PadSeriesService } from '@/api/product-catalog/services/pad-series-service';
 import { BrandService } from '@/api/product-catalog/services/brand-service';
 
 export const api = {
@@ -46,7 +46,7 @@ export const api = {
         }
     },
     productCatalog: {
-        pad: new PadService(),
+        padSeries: new PadSeriesService(),
         brand: new BrandService()
     }
 };

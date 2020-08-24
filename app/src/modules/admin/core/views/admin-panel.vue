@@ -2,14 +2,14 @@
     <page background="is-light">
         <template v-slot:header>
             <page-header
-                title="Admin Panel"
-                description="Admin control panel"
+                title="Admin panel"
+                description="Top secret shit"
                 icon="cogs"
                 :backButton="false"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" :active="true" />
+                        <breadcrumb name="Admin panel" :to="{name: 'adminPanel'}" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -41,14 +41,14 @@ import { RawLocation } from 'vue-router';
 export default class AdminPanel extends Vue {
     entries: { title: string; description: string; icon: string; to: RawLocation }[] = [
         {
-            title: 'Scheduling Panel',
+            title: 'Scheduling',
             description: 'Scheduling specific controls',
             icon: 'calendar',
             to: { name: 'schedulingPanel' }
         },
         {
-            title: 'Product Catalog Panel',
-            description: 'Product catalog specific controls',
+            title: 'Product catalog',
+            description: 'Product catalog management',
             icon: 'book-open',
             to: { name: 'productCatalogPanel' }
         }

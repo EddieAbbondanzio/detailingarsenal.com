@@ -9,7 +9,7 @@
                             name="Product Catalog Panel"
                             :to="{name: 'productCatalogPanel'}"
                         />
-                        <breadcrumb name="Pads" :to="{name: 'pads'}" />
+                        <breadcrumb name="Pads" :to="{name: 'padSeries'}" />
                         <breadcrumb name="Create" :to="{name: 'createPad'}" :active="true" />
                     </breadcrumb-trail>
                 </template>
@@ -58,7 +58,7 @@
                     >{{ category }}</option>
                 </input-select>
 
-                <input-image-upload v-model="value.image" />
+                <input-image-upload label="Image" v-model="value.image" />
             </input-array>
         </input-form>
     </page>
@@ -73,7 +73,9 @@ import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
 import { ValidationError, SpecificationError, Brand, PadCreate, PadCategory } from '@/api';
 import brandStore from '../../store/brand-store';
+import padSeriesStore from '../../store/pad-series-store';
 import { Image } from '@/api';
+
 @Component
 export default class CreatePadSeries extends Vue {
     get brands() {
@@ -94,16 +96,13 @@ export default class CreatePadSeries extends Vue {
 
     @displayLoading
     public async onSubmit() {
-        const create = { name: this.name, brand: this.brand, pads: this.pads };
+        const create = { name: this.name, brandId: this.brand!.id, pads: this.pads };
 
         try {
-            console.log(create);
-            // await brandStore.create({
-            //     name: this.name
-            // });
+            await padSeriesStore.create(create);
 
             toast(`Created new pad series ${create.name}`);
-            this.$router.push({ name: 'pads' });
+            this.$router.push({ name: 'padSeries' });
         } catch (err) {
             if (err instanceof SpecificationError) {
                 displayError(err);
