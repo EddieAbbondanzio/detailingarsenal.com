@@ -36,13 +36,23 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public async Task Add(PadSeries entity) {
             using (var t = Connection.BeginTransaction()) {
                 await Connection.ExecuteAsync(
-                    @"insert into pads (id, brand_id, pad_series_id, name) values (@Id, @BrandId, @PadSeriesId, @Name);",
-                    entity.Pads
+                    @"insert into pad_series (id, brand_id, name) values (@Id, @BrandId, @Name);", entity
                 );
 
+                var pads = entity.Pads.Select(p => new PadModel() {
+                    Id = p.Id,
+                    Category = p.Category,
+                    Name = p.Name,
+                    PadSeriesId = entity.Id,
+                    Image = p.Image
+                }).ToList();
+
                 await Connection.ExecuteAsync(
-                    @"insert into pad_series (id, brand_id, name) value (@Id, @BrandId, @Name);", entity
+                    @"insert into pads (id, pad_series_id, category, name, image) values (@Id, @PadSeriesId, @Category, @Name, @Image);",
+                    pads
                 );
+
+
 
                 t.Commit();
             }
@@ -50,16 +60,26 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
         public async Task Update(PadSeries entity) {
             using (var t = Connection.BeginTransaction()) {
-                await Connection.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", entity.Id);
-
-                await Connection.ExecuteAsync(
-                    @"insert into pads (id, brand_id, pad_series_id, name) values (@Id, @BrandId, @PadSeriesId, @Name);",
-                    entity.Pads
-                );
-
                 await Connection.ExecuteAsync(
                     @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;", entity
                 );
+
+                await Connection.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", entity.Id);
+
+                var pads = entity.Pads.Select(p => new PadModel() {
+                    Id = p.Id,
+                    Category = p.Category,
+                    Name = p.Name,
+                    PadSeriesId = entity.Id,
+                    Image = p.Image
+                }).ToList();
+
+                await Connection.ExecuteAsync(
+                    @"insert into pads (id, pad_series_id, category, name, image) values (@Id, @PadSeriesId, @Category, @Name, @Image);",
+                    pads
+                );
+
+
 
                 t.Commit();
             }

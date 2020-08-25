@@ -19,7 +19,7 @@
                 </template>
 
                 <template v-slot:action>
-                    <create-button :to="{name: 'createPad' }" text="Create pad" />
+                    <create-button :to="{name: 'createPadSeries' }" text="Create pad" />
                 </template>
             </page-header>
         </template>

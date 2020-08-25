@@ -28,7 +28,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 }
 
                 pads.Add(new PadCreate(
-                        pad.Name, pad.Category, image
+                        pad.Name, PadCategoryUtils.Parse(pad.Category), image
                     )
                 );
             }

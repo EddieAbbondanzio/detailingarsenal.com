@@ -10,7 +10,7 @@
                             :to="{name: 'productCatalogPanel'}"
                         />
                         <breadcrumb name="Pads" :to="{name: 'padSeries'}" />
-                        <breadcrumb name="Create" :to="{name: 'createPad'}" :active="true" />
+                        <breadcrumb name="Create" :to="{name: 'createPadSeries'}" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>

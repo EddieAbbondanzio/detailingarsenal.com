@@ -30,7 +30,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 }
 
                 pads.Add(new PadUpdate(
-                        pad.Name, pad.Category, image
+                        pad.Name, PadCategoryUtils.Parse(pad.Category), image
                     )
                 );
             }

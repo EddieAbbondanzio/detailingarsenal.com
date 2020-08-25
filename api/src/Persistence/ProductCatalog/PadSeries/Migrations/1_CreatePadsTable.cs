@@ -9,7 +9,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
                 .WithColumn("pad_series_id").AsGuid().ForeignKey("pad_series", "id")
                 .WithColumn("category").AsInt16()
                 .WithColumn("name").AsString(32)
-                .WithColumn("image").AsBinary().Nullable();
+                .WithColumn("image").AsBinary().Nullable(); // AsBinary() uses BYTEA in Postgres
         }
 
         public override void Down() {

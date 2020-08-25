@@ -4,9 +4,13 @@ using System.Collections.Generic;
 namespace DetailingArsenal.Domain.ProductCatalog {
     public class PadSeriesReadModel : IDataTransferObject {
         public Guid Id { get; }
-        public string Name { get; }
-        public BrandReadModel Brand { get; }
-        public List<PadReadModel> Pads { get; }
+        public string Name { get; } = null!;
+        public BrandReadModel Brand { get; } = null!;
+        public List<PadReadModel> Pads { get; } = new List<PadReadModel>();
+
+        public PadSeriesReadModel() {
+            // Needed for AutoMapper
+        }
 
         public PadSeriesReadModel(Guid id, string name, BrandReadModel brand, List<PadReadModel>? pads = null) {
             Id = id;

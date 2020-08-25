@@ -6,7 +6,8 @@ import { http } from '@/api/core/http';
 
 export class PadSeriesService {
     async get(): Promise<PadSeries[]> {
-        return [];
+        const res = await http.get('product-catalog/pad-series');
+        return (res.data as any[]).map(d => this._map(d));
     }
 
     async create(create: PadSeriesCreate) {
