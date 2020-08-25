@@ -25,7 +25,13 @@
         </template>
 
         <list>
-            <list-item v-for="s in series" :key="s.id" :title="s.name" :description="s.brand.name">
+            <list-item
+                v-for="s in series"
+                :key="s.id"
+                :title="s.name"
+                :description="s.brand.name"
+                :to="{name: 'padSeriesDetails', params: {id: s.id}}"
+            >
                 <template v-slot:actions>
                     <edit-delete-dropdown @edit="onEdit(s)" @delete="onDelete(s)" />
                 </template>
