@@ -1,0 +1,42 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "api:build",
+      "command": "dotnet build /property:GenerateFullPaths=true",
+      "type": "shell",
+      "group": "build",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "api:build:prod",
+      "command": "dotnet publish --configuration Release",
+      "type": "shell",
+      "group": "build",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "api:run",
+      "command": "dotnet run -p ./src/Api/Api.csproj",
+      "type": "shell",
+      "group": "none",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "api:test",
+      "command": "dotnet test ./Backend.sln",
+      "type": "shell",
+      "group": "test",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "api:forward-stripe",
+      "command": "stripe listen --load-from-webhooks-api --forward-to https://localhost:5001 --skip-verify",
+      "type": "shell",
+      "group": "none",
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
