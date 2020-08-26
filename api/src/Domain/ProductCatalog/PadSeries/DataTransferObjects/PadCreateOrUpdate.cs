@@ -1,10 +1,10 @@
 namespace DetailingArsenal.Domain.ProductCatalog {
-    public class PadCreate : IDataTransferObject {
+    public class PadCreateOrUpdate : IDataTransferObject {
         public string Name { get; }
         public PadCategory Category { get; }
-        public byte[]? Image { get; }
+        public Base64Image? Image { get; }
 
-        public PadCreate(string name, PadCategory category, byte[]? image) {
+        public PadCreateOrUpdate(string name, PadCategory category, Base64Image? image) {
             Name = name;
             Category = category;
             Image = image;

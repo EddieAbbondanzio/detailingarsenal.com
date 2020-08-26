@@ -29,7 +29,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     PadSeriesReadModel? s = null;
 
                     if (lookup.TryGetValue(pad.PadSeriesId, out s)) {
-                        var image = pad.Image != null ? Convert.ToBase64String(pad.Image) : null;
+                        var image = pad.ImageName != null ? new Base64Image(pad.ImageName, pad.ImageData!) : null;
                         s.Pads.Add(new PadReadModel(pad.Id, pad.Category, pad.Name, image));
                     }
                 }

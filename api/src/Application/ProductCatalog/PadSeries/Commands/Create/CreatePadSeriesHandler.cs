@@ -18,17 +18,11 @@ namespace DetailingArsenal.Application.ProductCatalog {
         }
 
         public async override Task<PadSeriesReadModel> Execute(CreatePadSeriesCommand input, User? user) {
-            var pads = new List<PadCreate>();
+            var pads = new List<PadCreateOrUpdate>();
 
             foreach (var pad in input.Pads) {
-                byte[]? image = null;
-
-                if (pad.Image != null) {
-                    image = Convert.FromBase64String(pad.Image);
-                }
-
-                pads.Add(new PadCreate(
-                        pad.Name, PadCategoryUtils.Parse(pad.Category), image
+                pads.Add(new PadCreateOrUpdate(
+                        pad.Name, PadCategoryUtils.Parse(pad.Category), pad.Image
                     )
                 );
             }

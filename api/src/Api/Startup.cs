@@ -118,8 +118,7 @@ namespace DetailingArsenal.Api {
                     .ForMember(v => v.BillingId, p => p.MapFrom(p => p.BillingReference.BillingId));
 
                 config.CreateMap<Brand, BrandReadModel>();
-                config.CreateMap<Pad, PadReadModel>()
-                    .ForMember(p => p.Image, p => p.MapFrom(p => p.Image != null ? Convert.ToBase64String(p.Image) : null));
+                config.CreateMap<Pad, PadReadModel>();
                 config.CreateMap<PadSeries, PadSeriesReadModel>();
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
