@@ -6,7 +6,15 @@
     {
         "label": "database:start",
         "type": "shell",
-        "command": "docker-compose up -d --build",
+        "command": "sudo docker-compose up -d --build",
+        "problemMatcher": [
+            "$msCompile"
+        ]
+    },
+    {
+        "label": "database:stop",
+        "type": "shell",
+        "command": "sudo docker-compose down",
         "problemMatcher": [
             "$msCompile"
         ]

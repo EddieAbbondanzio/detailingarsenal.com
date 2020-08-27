@@ -1,24 +1,19 @@
-This is a development set up to run a local Postgres database in docker.
+For simplicity sake it's best to run Postgres in a Docker container on the dev workstation. This opens up the possibility for multiple versions of databases on the laptop without conflict. 
 
-# Start
-
+# Start / Stop
 ```
 docker-compose up -d --build
-```
-
-# Stop
-
-```
 docker-compose down
 ```
 
-# Connect
 
-## Dev
-
+## Connect
 ```
 psql -h localhost -U postgres -d detailingarsenal
 ```
+
+Having trouble connecting? The database may not be running. If you didn't set the POSTGRES_PASSWORD environment variable the contaienr will fail to start.
+https://hub.docker.com/_/postgres
 
 ## Prod
 
