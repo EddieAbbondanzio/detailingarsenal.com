@@ -268,9 +268,9 @@ __pycache__/
 # Cake - Uncomment if you are using it
 # tools/
 
-appsettings.Development.json
+# appsettings.Development.json
 #appsettings.Production.json
-appsettings.json
+# appsettings.json
 
 # omnisharp.json
 
