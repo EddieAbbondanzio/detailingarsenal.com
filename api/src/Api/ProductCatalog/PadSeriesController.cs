@@ -21,12 +21,12 @@ namespace DetailingArsenal.Api.Settings {
             this.mediator = mediator;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             List<PadSeriesReadModel> PadSeriess = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>(
-                new GetAllPadSeriesQuery(),
-                User.GetUserId()
-                );
+                new GetAllPadSeriesQuery()
+            );
 
             return Ok(PadSeriess);
         }
