@@ -10,6 +10,13 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public string Name { get; set; } = null!;
         public string Data { get; set; } = null!;
 
+        public DataUrlImage() { }
+
+        public DataUrlImage(string name, byte[] data) {
+            Name = name;
+            Data = $"data:image/;base64,{System.Convert.ToBase64String(data)}";
+        }
+
         public BinaryImage ToBinaryImage() {
             // https://stackoverflow.com/questions/5714281/regex-to-parse-image-data-uri
             // can also access mime, or encoding data.
