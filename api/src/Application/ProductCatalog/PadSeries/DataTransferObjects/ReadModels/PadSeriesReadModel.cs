@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public class PadSeriesReadModel : IDataTransferObject {
         public Guid Id { get; }
         public string Name { get; } = null!;

@@ -5,6 +5,6 @@ namespace DetailingArsenal.Application.ProductCatalog {
     public class PadInfo {
         public string Name { get; set; } = null!;
         public string Category { get; set; } = null!;
-        public Base64Image Image { get; set; } = null!;
+        public DataUrlImage? Image { get; set; }
     }
 }

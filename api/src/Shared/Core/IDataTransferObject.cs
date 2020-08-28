@@ -1,3 +1,3 @@
-namespace DetailingArsenal.Domain {
+namespace DetailingArsenal {
     public interface IDataTransferObject { }
 }

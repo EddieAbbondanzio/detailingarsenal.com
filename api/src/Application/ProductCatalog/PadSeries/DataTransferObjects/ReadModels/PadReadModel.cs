@@ -1,13 +1,15 @@
 using System;
+using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.ProductCatalog;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public class PadReadModel : IDataTransferObject {
         public Guid Id { get; }
         public PadCategory Category { get; }
         public string Name { get; }
-        public Base64Image? Image { get; }
+        public DataUrlImage? Image { get; }
 
-        public PadReadModel(Guid id, PadCategory category, string name, Base64Image? image = null) {
+        public PadReadModel(Guid id, PadCategory category, string name, DataUrlImage? image = null) {
             Id = id;
             Category = category;
             Name = name;

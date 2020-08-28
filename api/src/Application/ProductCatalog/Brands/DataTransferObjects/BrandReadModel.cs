@@ -1,6 +1,7 @@
 using System;
+using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public class BrandReadModel : IDataTransferObject {
         public Guid Id { get; }
         public string Name { get; }

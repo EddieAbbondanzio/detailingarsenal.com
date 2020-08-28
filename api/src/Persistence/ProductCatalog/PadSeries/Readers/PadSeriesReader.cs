@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using DetailingArsenal.Application.ProductCatalog;
 using DetailingArsenal.Domain.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
@@ -29,7 +30,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     PadSeriesReadModel? s = null;
 
                     if (lookup.TryGetValue(pad.PadSeriesId, out s)) {
-                        var image = pad.ImageName != null ? new Base64Image(pad.ImageName, pad.ImageData!) : null;
+                        var image = pad.ImageName != null ? new BinaryImage(pad.ImageName, pad.ImageData!) : null;
                         s.Pads.Add(new PadReadModel(pad.Id, pad.Category, pad.Name, image));
                     }
                 }

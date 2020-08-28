@@ -26,7 +26,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 var padModels = reader.Read<PadModel>();
 
                 var pads = padModels.Select(p => new Pad(
-                    p.Id, p.Category, p.Name, p.ImageName != null ? new Base64Image(p.ImageName, p.ImageData!) : null
+                    p.Id, p.Category, p.Name, p.ImageName != null ? new BinaryImage(p.ImageName, p.ImageData!) : null
                 )).ToList();
 
                 return new PadSeries(seriesModel.Id, seriesModel.Name, seriesModel.BrandId, pads);
@@ -49,7 +49,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 }).ToList();
 
                 await Connection.ExecuteAsync(
-                    @"insert into pads (id, pad_series_id, category, name, image) values (@Id, @PadSeriesId, @Category, @Name, @Image);",
+                    @"insert into pads (id, pad_series_id, category, name, image_name, image_data) values (@Id, @PadSeriesId, @Category, @Name, @ImageName, @ImageData);",
                     pads
                 );
 
@@ -77,7 +77,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 }).ToList();
 
                 await Connection.ExecuteAsync(
-                    @"insert into pads (id, pad_series_id, category, name, image) values (@Id, @PadSeriesId, @Category, @Name, @Image);",
+                    @"insert into pads (id, pad_series_id, category, name, image_name, image_data) values (@Id, @PadSeriesId, @Category, @Name, @ImageName, @ImageData);",
                     pads
                 );
 

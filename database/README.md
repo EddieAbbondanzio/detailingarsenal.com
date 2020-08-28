@@ -5,15 +5,21 @@ For simplicity sake it's best to run Postgres in a Docker container on the dev w
 docker-compose up -d --build
 docker-compose down
 ```
-
-
 ## Connect
 ```
 psql -h localhost -U postgres -d detailingarsenal
 ```
 
-Having trouble connecting? The database may not be running. If you didn't set the POSTGRES_PASSWORD environment variable the contaienr will fail to start.
+## Initialization
+To get the development database functional we'll need to set up the password for the postgres user, and create a new database.
+
+To set the password set the POSTGRES_PASSWORD environment variable in the docker-compose.yml file. This will only be loaded on the very first start.
 https://hub.docker.com/_/postgres
+
+After that we'll need to create our new database. 
+```
+CREATE DATABASE detailingarsenal
+```
 
 ## Prod
 

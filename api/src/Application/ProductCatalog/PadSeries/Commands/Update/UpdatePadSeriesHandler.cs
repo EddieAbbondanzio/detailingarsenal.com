@@ -24,7 +24,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
             foreach (var pad in input.Pads) {
                 pads.Add(new PadCreateOrUpdate(
-                        pad.Name, PadCategoryUtils.Parse(pad.Category), pad.Image
+                        pad.Name, PadCategoryUtils.Parse(pad.Category), pad.Image?.ToBinaryImage()
                     )
                 );
             }
