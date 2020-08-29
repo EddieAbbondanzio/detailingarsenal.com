@@ -10,6 +10,30 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
     public class PadSeriesReader : DatabaseInteractor, IPadSeriesReader {
         public PadSeriesReader(IDatabase database) : base(database) { }
 
+
+        public async Task<PadSeriesReadModel?> ReadById(Guid id) {
+            using (var reader = await Connection.QueryMultipleAsync(
+                @"select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id; 
+                    select * from pads p where p.pad_series_id = @Id;"
+            , new { Id = id })) {
+                var series = reader.Read<PadSeriesModel, BrandModel, PadSeriesReadModel>(
+                    (ps, b) => new PadSeriesReadModel(
+                        ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
+                    )
+                ).ElementAt(0);
+
+                if (series == null) {
+                    return null;
+                }
+
+                series.Pads = reader.Read<PadModel>().Select(p => new PadReadModel(
+                    p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
+                )).ToList();
+
+                return series;
+            }
+        }
+
         public async Task<List<PadSeriesReadModel>> ReadAll() {
             using (var reader = await Connection.QueryMultipleAsync(
                 @"select * from pad_series ps join brands b on ps.brand_id = b.id; 

@@ -7,7 +7,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public Guid Id { get; }
         public string Name { get; } = null!;
         public BrandReadModel Brand { get; } = null!;
-        public List<PadReadModel> Pads { get; } = new List<PadReadModel>();
+        public List<PadReadModel> Pads { get; set; } = new List<PadReadModel>();
 
         public PadSeriesReadModel() {
             // Needed for AutoMapper

@@ -33,11 +33,13 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
+            var pads = create.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.Parse(p.Category), p.Image)).ToList();
+
             var res = await mediator.Dispatch<PadSeriesCreateCommand, CommandResult>(
                 new PadSeriesCreateCommand(
                     create.Name,
                     create.BrandId,
-                    create.Pads
+                    pads
                 ),
                 User.GetUserId()
             );
@@ -51,12 +53,14 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateRequest update) {
+            var pads = update.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.Parse(p.Category), p.Image)).ToList();
+
             var res = await mediator.Dispatch<PadSeriesUpdateCommand, CommandResult>(
                 new PadSeriesUpdateCommand(
                     id,
                     update.Name,
                     update.BrandId,
-                    update.Pads
+                    pads
                 ),
                 User.GetUserId()
             );
