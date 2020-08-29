@@ -3,17 +3,11 @@ using System.Runtime.Serialization;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
     public enum PadCategory {
-        [EnumMember(Value = "heavy_cut")]
         HeavyCut = 0,
-        [EnumMember(Value = "medium_cut")]
         MediumCut = 1,
-        [EnumMember(Value = "heavy_polish")]
         HeavyPolish = 2,
-        [EnumMember(Value = "medium_polish")]
         MediumPolish = 3,
-        [EnumMember(Value = "soft_polish")]
         SoftPolish = 4,
-        [EnumMember(Value = "finishing")]
         Finishing = 5
     }
 
@@ -26,6 +20,17 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             "medium_polish" => PadCategory.MediumPolish,
             "soft_polish" => PadCategory.SoftPolish,
             "finishing" => PadCategory.Finishing,
+            _ => throw new NotSupportedException()
+        };
+
+        public static string Serialize(this PadCategory category) => category switch
+        {
+            PadCategory.HeavyCut => "heavy_cut",
+            PadCategory.MediumCut => "medium_cut",
+            PadCategory.HeavyPolish => "heavy_polish",
+            PadCategory.MediumPolish => "medium_polish",
+            PadCategory.SoftPolish => "soft_polish",
+            PadCategory.Finishing => "finishing",
             _ => throw new NotSupportedException()
         };
     }
