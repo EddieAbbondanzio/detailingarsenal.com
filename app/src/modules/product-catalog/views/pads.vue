@@ -51,7 +51,7 @@
                                 <div class="card-image">
                                     <figure class="image is-4by3">
                                         <img
-                                            src="https://bulma.io/images/placeholders/1280x960.png"
+                                            :src="pad.image != null ? pad.image.data : 'https://bulma.io/images/placeholders/1280x960.png'"
                                             alt="Placeholder image"
                                         />
                                     </figure>
@@ -73,11 +73,10 @@
 </template>
 
 <style lang="sass" scoped>
-.gradient-bar 
+.gradient-bar
     background: rgb(2,0,36)
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,0,0,1) 0%, rgba(255,246,0,1) 50%, rgba(0,212,255,1) 100%)
     height: 20px
-
 </style>
 
 <script lang="ts">

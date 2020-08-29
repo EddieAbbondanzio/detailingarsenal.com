@@ -10,7 +10,7 @@
                 <b-checkbox
                     :native-value="brand"
                     v-model="selectedBrands"
-                    @input="onInput"
+                    @input.prevent="onInput()"
                 >{{ brand }}</b-checkbox>
             </div>
         </div>
@@ -67,10 +67,10 @@ export default class PadFilterControl extends Vue {
     }
 
     /**
-     * Unique list of pad series
+     * Unique list of pad series names
      */
     get series() {
-        return [...new Set(padStore.pads.map(p => p.series))];
+        return [...new Set(padStore.pads.map(p => p.series.name))];
     }
 
     get categories(): PadCategory[] {
@@ -104,7 +104,7 @@ export default class PadFilterControl extends Vue {
 
     onReset() {
         this.selectedBrands = [...this.brands];
-        this.selectedSeries = [...this.series.map(s => s.name)];
+        this.selectedSeries = [...this.series];
         this.selectedCategories = [...this.categories];
 
         padStore.SET_FILTER(
