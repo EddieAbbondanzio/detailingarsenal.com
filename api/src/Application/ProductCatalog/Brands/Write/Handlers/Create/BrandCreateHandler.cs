@@ -1,3 +1,4 @@
+using System.Dynamic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
@@ -21,11 +22,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             await unique.CheckAndThrow(brand);
             await repo.Add(brand);
 
-            var res = CommandResult.Success(new {
-                Id = brand.Id
-            });
-
-            return res;
+            return CommandResult.Insert(brand.Id);
         }
     }
 }

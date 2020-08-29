@@ -53,7 +53,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
             );
 
             var brand = await mediator.Dispatch<GetBrandByIdQuery, BrandReadModel>(
-                new GetBrandByIdQuery(result.Data.Id)
+                new GetBrandByIdQuery(id)
             );
 
             return Ok(brand);

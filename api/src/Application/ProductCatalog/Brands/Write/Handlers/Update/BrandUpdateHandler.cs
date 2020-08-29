@@ -21,9 +21,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             await unique.CheckAndThrow(brand);
             await repo.Update(brand);
 
-            return CommandResult.Success(new {
-                Id = brand.Id
-            });
+            return CommandResult.Success();
         }
     }
 }

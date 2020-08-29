@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
@@ -9,17 +10,25 @@ namespace DetailingArsenal.Application {
         public dynamic Data { get; }
         public bool WasSuccessful { get; }
 
-        public CommandResult(bool wasSuccessful, dynamic? data = null) {
+        public CommandResult(bool wasSuccessful, ExpandoObject? data = null) {
             WasSuccessful = wasSuccessful;
             Data = data ?? new ExpandoObject();
-
         }
 
-        public static CommandResult Success(dynamic? d = null) {
+        public static CommandResult Insert(Guid id) {
+            var data = new ExpandoObject();
+
+            var dynamo = (dynamic)data;
+            dynamo.Id = id;
+
+            return Success(data);
+        }
+
+        public static CommandResult Success(ExpandoObject? d = null) {
             return new CommandResult(true, d);
         }
 
-        public static CommandResult Failure(dynamic? d = null) {
+        public static CommandResult Failure(ExpandoObject? d = null) {
             return new CommandResult(false, d);
         }
     }

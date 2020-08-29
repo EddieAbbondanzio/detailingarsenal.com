@@ -62,7 +62,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
             );
 
             var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(
-                new GetPadSeriesByIdQuery(res.Data.Id)
+                new GetPadSeriesByIdQuery(id)
             );
 
             return Ok(ps);

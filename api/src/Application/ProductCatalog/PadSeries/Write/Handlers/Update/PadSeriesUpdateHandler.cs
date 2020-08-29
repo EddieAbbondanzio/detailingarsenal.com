@@ -24,9 +24,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
             await repo.Update(series);
 
-            return CommandResult.Success(new {
-                Id = series.Id
-            });
+            return CommandResult.Success();
         }
     }
 }
