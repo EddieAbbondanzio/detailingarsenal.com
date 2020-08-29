@@ -11,8 +11,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public BrandReader(IDatabase database) : base(database) { }
 
         public async Task<BrandReadModel?> ReadById(Guid id) {
-            var brand = await Connection.QueryFirstOrDefaultAsync(
-                @"select id, name from brand where id = @Id;",
+            var brand = await Connection.QueryFirstOrDefaultAsync<BrandReadModel>(
+                @"select id, name from brands where id = @Id;",
                 new { Id = id }
             );
 
