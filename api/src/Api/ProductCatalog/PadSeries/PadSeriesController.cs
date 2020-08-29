@@ -33,27 +33,44 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
-            PadSeriesReadModel PadSeries = await mediator.Dispatch<PadSeriesCreateCommand, PadSeriesReadModel>(
-                create,
+            var res = await mediator.Dispatch<PadSeriesCreateCommand, CommandResult>(
+                new PadSeriesCreateCommand(
+                    create.Name,
+                    create.BrandId,
+                    create.Pads
+                ),
                 User.GetUserId()
             );
 
-            return Ok(PadSeries);
+            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(
+                new GetPadSeriesByIdQuery(res.Data.Id)
+            );
+
+            return Ok(ps);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateRequest update) {
-            PadSeriesReadModel PadSeries = await mediator.Dispatch<PadSeriesUpdateCommand, PadSeriesReadModel>(
-                update,
+            var res = await mediator.Dispatch<PadSeriesUpdateCommand, CommandResult>(
+                new PadSeriesUpdateCommand(
+                    id,
+                    update.Name,
+                    update.BrandId,
+                    update.Pads
+                ),
                 User.GetUserId()
             );
 
-            return Ok(PadSeries);
+            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(
+                new GetPadSeriesByIdQuery(res.Data.Id)
+            );
+
+            return Ok(ps);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleCategory(Guid id) {
-            await mediator.Dispatch<PadSeriesDeleteCommand>(
+            var res = await mediator.Dispatch<PadSeriesDeleteCommand, CommandResult>(
                 new PadSeriesDeleteCommand(id),
                 User.GetUserId()
             );

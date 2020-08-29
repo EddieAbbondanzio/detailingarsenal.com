@@ -5,21 +5,21 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "delete", Scope = "pad-series")]
-    public class PadSeriesDeleteHandler : ActionHandler<PadSeriesDeleteCommand> {
-        IPadSeriesService service;
-        IMapper mapper;
+    public class PadSeriesDeleteHandler : ActionHandler<PadSeriesDeleteCommand, CommandResult> {
+        IPadSeriesRepo repo;
 
-        public PadSeriesDeleteHandler(IPadSeriesService service, IMapper mapper) {
-            this.service = service;
-            this.mapper = mapper;
+        public PadSeriesDeleteHandler(IPadSeriesRepo repo) {
+            this.repo = repo;
         }
 
-        public async override Task Execute(PadSeriesDeleteCommand input, User? user) {
-            var ps = await service.GetById(input.Id);
+        public async override Task<CommandResult> Execute(PadSeriesDeleteCommand input, User? user) {
+            var ps = await repo.FindById(input.Id) ?? throw new EntityNotFoundException();
 
-            await service.Delete(
-                ps, user!
+            await repo.Delete(
+                ps
             );
+
+            return CommandResult.Success();
         }
     }
 }

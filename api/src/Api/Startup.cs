@@ -151,7 +151,7 @@ namespace DetailingArsenal.Api {
 
             // Product Catalog
             services.AddTransient<ActionHandler<GetAllBrandsQuery, List<BrandReadModel>>, GetAllBrandsHandler>();
-            services.AddTransient<ActionHandler<GetBrandByIdQuery, BrandReadModel>, GetBrandByIdHandler>();
+            services.AddTransient<ActionHandler<GetBrandByIdQuery, BrandReadModel?>, GetBrandByIdHandler>();
             services.AddTransient<ActionHandler<BrandCreateCommand, CommandResult>, BrandCreateHandler>();
             services.AddTransient<ActionHandler<BrandUpdateCommand, CommandResult>, UpdateBrandHandler>();
             services.AddTransient<ActionHandler<BrandDeleteCommand, CommandResult>, BrandDeleteHandler>();
@@ -162,11 +162,10 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IBrandRepo, BrandRepo>();
             services.AddTransient<IPadSeriesRepo, PadSeriesRepo>();
             services.AddTransient<IPadSeriesReader, PadSeriesReader>();
-            services.AddTransient<IPadSeriesService, PadSeriesService>();
             services.AddTransient<ActionHandler<GetAllPadSeriesQuery, List<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
-            services.AddTransient<ActionHandler<PadSeriesCreateCommand, PadSeriesReadModel>, PadSeriesCreateHandler>();
-            services.AddTransient<ActionHandler<PadSeriesUpdateCommand, PadSeriesReadModel>, PadSeriesUpdateHandler>();
-            services.AddTransient<ActionHandler<PadSeriesDeleteCommand>, PadSeriesDeleteHandler>();
+            services.AddTransient<ActionHandler<PadSeriesCreateCommand, CommandResult>, PadSeriesCreateHandler>();
+            services.AddTransient<ActionHandler<PadSeriesUpdateCommand, CommandResult>, PadSeriesUpdateHandler>();
+            services.AddTransient<ActionHandler<PadSeriesDeleteCommand, CommandResult>, PadSeriesDeleteHandler>();
 
             // Billing
             var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));

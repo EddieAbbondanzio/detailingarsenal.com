@@ -8,33 +8,27 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "create", Scope = "pad-series")]
-    public class PadSeriesCreateHandler : ActionHandler<PadSeriesCreateCommand, PadSeriesReadModel> {
-        IPadSeriesService service;
-        IMapper mapper;
+    public class PadSeriesCreateHandler : ActionHandler<PadSeriesCreateCommand, CommandResult> {
+        IPadSeriesRepo repo;
 
-        public PadSeriesCreateHandler(IPadSeriesService service, IMapper mapper) {
-            this.service = service;
-            this.mapper = mapper;
+        public PadSeriesCreateHandler(IPadSeriesRepo repo) {
+            this.repo = repo;
         }
 
-        public async override Task<PadSeriesReadModel> Execute(PadSeriesCreateCommand input, User? user) {
-            var pads = new List<PadCreateOrUpdate>();
+        public async override Task<CommandResult> Execute(PadSeriesCreateCommand command, User? user) {
+            var pads = command.Pads.Select(p => new Pad(p.Category, p.Name, p.Image)).ToList();
 
-            foreach (var pad in input.Pads) {
-                pads.Add(new PadCreateOrUpdate(
-                        pad.Name, PadCategoryUtils.Parse(pad.Category), pad.Image?.ToBinaryImage()
-                    )
-                );
-            }
-
-
-            var series = await service.Create(
-                new PadSeriesCreate(
-                    input.Name, input.BrandId, pads
-                ), user!
+            var series = new PadSeries(
+                command.Name,
+                command.BrandId,
+                pads
             );
 
-            return mapper.Map<PadSeries, PadSeriesReadModel>(series);
+            await repo.Add(series);
+
+            return CommandResult.Success(new {
+                Id = series.Id
+            });
         }
     }
 }

@@ -26,7 +26,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 var padModels = reader.Read<PadModel>();
 
                 var pads = padModels.Select(p => new Pad(
-                    p.Id, p.Category, p.Name, p.ImageName != null ? new BinaryImage(p.ImageName, p.ImageData!) : null
+                    p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
                 )).ToList();
 
                 return new PadSeries(seriesModel.Id, seriesModel.Name, seriesModel.BrandId, pads);
@@ -45,7 +45,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     Name = p.Name,
                     PadSeriesId = entity.Id,
                     ImageName = p.Image?.Name,
-                    ImageData = p.Image?.Data
+                    ImageData = p.Image?.ToBinary()
                 }).ToList();
 
                 await Connection.ExecuteAsync(
@@ -73,7 +73,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     Name = p.Name,
                     PadSeriesId = entity.Id,
                     ImageName = p.Image?.Name,
-                    ImageData = p.Image?.Data
+                    ImageData = p.Image?.ToBinary()
                 }).ToList();
 
                 await Connection.ExecuteAsync(

@@ -8,39 +8,25 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "update", Scope = "pad-series")]
-    public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand, PadSeriesReadModel> {
-        IPadSeriesService service;
-        IMapper mapper;
+    public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand, CommandResult> {
+        IPadSeriesRepo repo;
 
-        public PadSeriesUpdateHandler(IPadSeriesService service, IMapper mapper) {
-            this.service = service;
-            this.mapper = mapper;
+        public PadSeriesUpdateHandler(IPadSeriesRepo repo) {
+            this.repo = repo;
         }
 
-        public async override Task<PadSeriesReadModel> Execute(PadSeriesUpdateCommand input, User? user) {
-            var existing = await service.GetById(input.Id);
+        public async override Task<CommandResult> Execute(PadSeriesUpdateCommand command, User? user) {
+            var series = await repo.FindById(command.Id) ?? throw new EntityNotFoundException();
 
-            var pads = new List<PadCreateOrUpdate>();
+            series.Name = command.Name;
+            series.BrandId = command.BrandId;
+            series.Pads = command.Pads.Select(p => new Pad(p.Category, p.Name, p.Image)).ToList();
 
-            foreach (var pad in input.Pads) {
-                pads.Add(new PadCreateOrUpdate(
-                        pad.Name, PadCategoryUtils.Parse(pad.Category), pad.Image?.ToBinaryImage()
-                    )
-                );
-            }
+            await repo.Update(series);
 
-
-            var series = await service.Update(
-                existing,
-                new PadSeriesUpdate(
-                    input.Id,
-                    input.Name,
-                     input.BrandId,
-                     pads
-                ), user!
-            );
-
-            return mapper.Map<PadSeries, PadSeriesReadModel>(series);
+            return CommandResult.Success(new {
+                Id = series.Id
+            });
         }
     }
 }

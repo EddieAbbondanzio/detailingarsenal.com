@@ -6,6 +6,6 @@ using DetailingArsenal.Domain;
 namespace DetailingArsenal.Application.ProductCatalog {
     public interface IBrandReader : IReader {
         Task<List<BrandReadModel>> ReadAll();
-        Task<BrandReadModel> ReadById(Guid id);
+        Task<BrandReadModel?> ReadById(Guid id);
     }
 }
