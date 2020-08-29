@@ -7,17 +7,19 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    [Authorization(Action = "create", Scope = "pad-series")]
-    public class CreatePadSeriesHandler : ActionHandler<CreatePadSeriesCommand, PadSeriesReadModel> {
+    [Authorization(Action = "update", Scope = "pad-series")]
+    public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand, PadSeriesReadModel> {
         IPadSeriesService service;
         IMapper mapper;
 
-        public CreatePadSeriesHandler(IPadSeriesService service, IMapper mapper) {
+        public PadSeriesUpdateHandler(IPadSeriesService service, IMapper mapper) {
             this.service = service;
             this.mapper = mapper;
         }
 
-        public async override Task<PadSeriesReadModel> Execute(CreatePadSeriesCommand input, User? user) {
+        public async override Task<PadSeriesReadModel> Execute(PadSeriesUpdateCommand input, User? user) {
+            var existing = await service.GetById(input.Id);
+
             var pads = new List<PadCreateOrUpdate>();
 
             foreach (var pad in input.Pads) {
@@ -28,9 +30,13 @@ namespace DetailingArsenal.Application.ProductCatalog {
             }
 
 
-            var series = await service.Create(
-                new PadSeriesCreate(
-                    input.Name, input.BrandId, pads
+            var series = await service.Update(
+                existing,
+                new PadSeriesUpdate(
+                    input.Id,
+                    input.Name,
+                     input.BrandId,
+                     pads
                 ), user!
             );
 

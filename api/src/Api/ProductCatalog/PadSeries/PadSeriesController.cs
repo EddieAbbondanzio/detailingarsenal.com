@@ -10,7 +10,7 @@ using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Application.ProductCatalog;
 
-namespace DetailingArsenal.Api.Settings {
+namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
     [ApiController]
     [Route("product-catalog/pad-series")]
@@ -32,8 +32,8 @@ namespace DetailingArsenal.Api.Settings {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreatePadSeriesCommand create) {
-            PadSeriesReadModel PadSeries = await mediator.Dispatch<CreatePadSeriesCommand, PadSeriesReadModel>(
+        public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
+            PadSeriesReadModel PadSeries = await mediator.Dispatch<PadSeriesCreateCommand, PadSeriesReadModel>(
                 create,
                 User.GetUserId()
             );
@@ -42,10 +42,10 @@ namespace DetailingArsenal.Api.Settings {
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePadSeriesCommand update) {
-            PadSeriesReadModel PadSeries = await mediator.Dispatch<UpdatePadSeriesCommand, PadSeriesReadModel>(
+        public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateRequest update) {
+            PadSeriesReadModel PadSeries = await mediator.Dispatch<PadSeriesUpdateCommand, PadSeriesReadModel>(
                 update,
-                User!.GetUserId()
+                User.GetUserId()
             );
 
             return Ok(PadSeries);
@@ -53,9 +53,8 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleCategory(Guid id) {
-            await mediator.Dispatch<DeletePadSeriesCommand>(new DeletePadSeriesCommand() {
-                Id = id
-            },
+            await mediator.Dispatch<PadSeriesDeleteCommand>(
+                new PadSeriesDeleteCommand(id),
                 User.GetUserId()
             );
 

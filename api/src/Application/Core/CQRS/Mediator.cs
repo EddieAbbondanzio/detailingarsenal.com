@@ -5,6 +5,7 @@ using DetailingArsenal.Application.Users;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
+using DetailingArsenal;
 
 namespace DetailingArsenal.Application {
     public interface IMediator {

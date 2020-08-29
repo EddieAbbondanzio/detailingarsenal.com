@@ -150,23 +150,23 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IEmailClient, SmtpEmailClient>();
 
             // Product Catalog
-            services.AddTransient<ActionHandler<GetBrandsQuery, List<BrandReadModel>>, GetBrandsHandler>();
-            services.AddTransient<ActionHandler<CreateBrandCommand, BrandReadModel>, CreateBrandHandler>();
-            services.AddTransient<ActionHandler<UpdateBrandCommand, BrandReadModel>, UpdateBrandHandler>();
-            services.AddTransient<ActionHandler<DeleteBrandCommand>, DeleteBrandHandler>();
-            services.AddTransient<CreateBrandValidator>();
-            services.AddTransient<UpdateBrandValidator>();
+            services.AddTransient<ActionHandler<GetAllBrandsQuery, List<BrandReadModel>>, GetAllBrandsHandler>();
+            services.AddTransient<ActionHandler<GetBrandByIdQuery, BrandReadModel>, GetBrandByIdHandler>();
+            services.AddTransient<ActionHandler<BrandCreateCommand, CommandResult>, BrandCreateHandler>();
+            services.AddTransient<ActionHandler<BrandUpdateCommand, CommandResult>, UpdateBrandHandler>();
+            services.AddTransient<ActionHandler<BrandDeleteCommand, CommandResult>, BrandDeleteHandler>();
+            services.AddTransient<BrandCreateValidator>();
+            services.AddTransient<BrandUpdateValidator>();
             services.AddTransient<IBrandReader, BrandReader>();
-            services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<BrandNameUniqueSpecification>();
             services.AddTransient<IBrandRepo, BrandRepo>();
             services.AddTransient<IPadSeriesRepo, PadSeriesRepo>();
             services.AddTransient<IPadSeriesReader, PadSeriesReader>();
             services.AddTransient<IPadSeriesService, PadSeriesService>();
             services.AddTransient<ActionHandler<GetAllPadSeriesQuery, List<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
-            services.AddTransient<ActionHandler<CreatePadSeriesCommand, PadSeriesReadModel>, CreatePadSeriesHandler>();
-            services.AddTransient<ActionHandler<UpdatePadSeriesCommand, PadSeriesReadModel>, UpdatePadSeriesHandler>();
-            services.AddTransient<ActionHandler<DeletePadSeriesCommand>, DeletePadSeriesHandler>();
+            services.AddTransient<ActionHandler<PadSeriesCreateCommand, PadSeriesReadModel>, PadSeriesCreateHandler>();
+            services.AddTransient<ActionHandler<PadSeriesUpdateCommand, PadSeriesReadModel>, PadSeriesUpdateHandler>();
+            services.AddTransient<ActionHandler<PadSeriesDeleteCommand>, PadSeriesDeleteHandler>();
 
             // Billing
             var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));

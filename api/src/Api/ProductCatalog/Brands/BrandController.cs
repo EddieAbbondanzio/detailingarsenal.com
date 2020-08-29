@@ -10,7 +10,7 @@ using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Application.ProductCatalog;
 
-namespace DetailingArsenal.Api.Settings {
+namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
     [ApiController]
     [Route("product-catalog/brand")]
@@ -23,8 +23,8 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            List<BrandReadModel> brands = await mediator.Dispatch<GetBrandsQuery, List<BrandReadModel>>(
-                new GetBrandsQuery(),
+            List<BrandReadModel> brands = await mediator.Dispatch<GetAllBrandsQuery, List<BrandReadModel>>(
+                new GetAllBrandsQuery(),
                 User.GetUserId()
                 );
 
@@ -32,20 +32,28 @@ namespace DetailingArsenal.Api.Settings {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateBrandCommand create) {
-            BrandReadModel brand = await mediator.Dispatch<CreateBrandCommand, BrandReadModel>(
-                create,
+        public async Task<IActionResult> Create(BrandCreateRequest create) {
+            var result = await mediator.Dispatch<BrandCreateCommand, CommandResult>(
+                new BrandCreateCommand(create.Name),
                 User.GetUserId()
+            );
+
+            var brand = await mediator.Dispatch<GetBrandByIdQuery, BrandReadModel>(
+                new GetBrandByIdQuery(result.Data.Id)
             );
 
             return Ok(brand);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateBrandCommand update) {
-            BrandReadModel brand = await mediator.Dispatch<UpdateBrandCommand, BrandReadModel>(
-                update,
+        public async Task<IActionResult> Update(Guid id, [FromBody] BrandUpdateRequest update) {
+            var result = await mediator.Dispatch<BrandUpdateCommand, CommandResult>(
+                new BrandUpdateCommand(id, update.Name),
                 User!.GetUserId()
+            );
+
+            var brand = await mediator.Dispatch<GetBrandByIdQuery, BrandReadModel>(
+                new GetBrandByIdQuery(result.Data.Id)
             );
 
             return Ok(brand);
@@ -53,9 +61,8 @@ namespace DetailingArsenal.Api.Settings {
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleCategory(Guid id) {
-            await mediator.Dispatch<DeleteBrandCommand>(new DeleteBrandCommand() {
-                Id = id
-            },
+            var result = await mediator.Dispatch<BrandDeleteCommand, CommandResult>(
+                new BrandDeleteCommand(id),
                 User.GetUserId()
             );
 

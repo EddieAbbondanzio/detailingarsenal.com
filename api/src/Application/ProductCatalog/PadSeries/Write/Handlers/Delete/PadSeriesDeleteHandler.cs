@@ -5,16 +5,16 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "delete", Scope = "pad-series")]
-    public class DeletePadSeriesHandler : ActionHandler<DeletePadSeriesCommand> {
+    public class PadSeriesDeleteHandler : ActionHandler<PadSeriesDeleteCommand> {
         IPadSeriesService service;
         IMapper mapper;
 
-        public DeletePadSeriesHandler(IPadSeriesService service, IMapper mapper) {
+        public PadSeriesDeleteHandler(IPadSeriesService service, IMapper mapper) {
             this.service = service;
             this.mapper = mapper;
         }
 
-        public async override Task Execute(DeletePadSeriesCommand input, User? user) {
+        public async override Task Execute(PadSeriesDeleteCommand input, User? user) {
             var ps = await service.GetById(input.Id);
 
             await service.Delete(

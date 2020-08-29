@@ -6,8 +6,8 @@ using DetailingArsenal.Domain.Settings;
 using FluentValidation;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    public class UpdateBrandValidator : FluentValidatorAdapter<UpdateBrandCommand> {
-        public UpdateBrandValidator() {
+    public class BrandUpdateValidator : FluentValidatorAdapter<BrandUpdateCommand> {
+        public BrandUpdateValidator() {
             RuleFor(cmd => cmd.Name).NotNull().WithMessage("Name is required.");
             RuleFor(cmd => cmd.Name).NotEmpty().WithMessage("Name is required.");
             RuleFor(cmd => cmd.Name).MaximumLength(Brand.NameMaxLength).WithMessage($"Name must be {Brand.NameMaxLength} characters or less.");
