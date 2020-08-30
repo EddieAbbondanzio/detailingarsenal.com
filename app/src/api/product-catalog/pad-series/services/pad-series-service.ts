@@ -1,6 +1,6 @@
 import { Pad } from '@/api/product-catalog/pad-series/data-transfer-objects/pad';
-import { PadSeriesCreate } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-series-create';
-import { PadSeriesUpdate } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-series-update';
+import { PadSeriesCreateRequest } from '@/api/product-catalog/pad-series/data-transfer-objects/requests/pad-series-create-request';
+import { PadSeriesUpdateRequest } from '@/api/product-catalog/pad-series/data-transfer-objects/requests/pad-series-update-request';
 import { PadSeries, Brand } from '@/api';
 import { http } from '@/api/core/http';
 
@@ -10,14 +10,14 @@ export class PadSeriesService {
         return (res.data as any[]).map(d => this._map(d));
     }
 
-    async create(create: PadSeriesCreate) {
+    async create(create: PadSeriesCreateRequest) {
         console.log(create);
         const res = await http.post('product-catalog/pad-series', create);
         const ps = this._map(res.data);
         return ps;
     }
 
-    async update(update: PadSeriesUpdate) {
+    async update(update: PadSeriesUpdateRequest) {
         const res = await http.put(`product-catalog/pad-series/${update.id}`, update);
         const ps = this._map(res.data);
         return ps;

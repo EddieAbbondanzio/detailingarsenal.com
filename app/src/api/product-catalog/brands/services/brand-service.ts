@@ -1,7 +1,7 @@
 import { Brand } from '@/api';
 import { http } from '@/api/core/http';
-import { BrandCreate } from '../data-transfer-objects/brand-create';
-import { BrandUpdate } from '../data-transfer-objects/brand-update';
+import { BrandCreateRequest } from '../data-transfer-objects/requests/brand-create-request';
+import { BrandUpdateRequest } from '../data-transfer-objects/requests/brand-update-request';
 
 export class BrandService {
     async get() {
@@ -22,13 +22,13 @@ export class BrandService {
         }
     }
 
-    async create(create: BrandCreate) {
+    async create(create: BrandCreateRequest) {
         const res = await http.post('product-catalog/brand', create);
         const b = this._map(res.data);
         return b;
     }
 
-    async update(update: BrandUpdate) {
+    async update(update: BrandUpdateRequest) {
         const res = await http.put(`product-catalog/brand/${update.id}`, update);
         const b = this._map(res.data);
         return b;

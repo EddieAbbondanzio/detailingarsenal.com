@@ -59,7 +59,7 @@ export * from './product-catalog/pad-series/data-transfer-objects/pad';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-category';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-series';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-create';
-export * from './product-catalog/pad-series/data-transfer-objects/pad-update';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-update-request';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-series-create';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-series-update';
 export * from './product-catalog/common/data-transfer-objects/image';
