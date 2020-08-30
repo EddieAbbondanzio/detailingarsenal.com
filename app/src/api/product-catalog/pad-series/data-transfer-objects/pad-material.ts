@@ -1,1 +1,5 @@
-export type PadMaterial = 'Foam' | 'Wool' | 'Microfiber';
+export enum PadMaterial {
+    Foam = 'foam',
+    Wool = 'wool',
+    Microfiber = 'microfiber'
+}

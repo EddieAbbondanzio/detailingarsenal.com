@@ -1,3 +1,3 @@
 import { PadCategory } from '@/api';
 
-export type PadCreate = { name: string; category: PadCategory; image?: File };
+export type PadCreateRequest = { name: string; category: PadCategory; image?: File };

@@ -2,7 +2,7 @@ import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-dec
 import { InitableModule } from '@/core/store/initable-module';
 import { api } from '@/api/api';
 import store from '@/core/store/index';
-import { Pad, Brand, PadSeriesCreate, PadSeriesUpdate } from '@/api';
+import { Pad, Brand, PadSeriesCreate, PadSeriesUpdateRequest } from '@/api';
 import { PadSeries } from '@/api';
 import { PadSeriesService } from '@/api/product-catalog/pad-series/services/pad-series-service';
 
@@ -47,7 +47,7 @@ class PadSeriesStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async update(update: PadSeriesUpdate) {
+    async update(update: PadSeriesUpdateRequest) {
         const series = await api.productCatalog.padSeries.update(update);
         this.context.commit('UPDATE_SERIES', series);
     }

@@ -1,1 +1,1 @@
-export type BrandCreate = { name: string };
+export type BrandCreateRequest = { name: string };
