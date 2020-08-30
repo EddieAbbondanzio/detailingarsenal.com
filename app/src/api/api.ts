@@ -11,8 +11,8 @@ import { ServiceService } from '@/api/scheduling/settings/services/service-servi
 import { VehicleCategoryService } from '@/api/scheduling/settings/services/vehicle-category-service';
 import { CustomerService } from '@/api/scheduling/billing/services/customer-service';
 import { CheckoutSessionService } from '@/api/scheduling/billing/services/checkout-session-service';
-import { PadSeriesService } from '@/api/product-catalog/services/pad-series-service';
-import { BrandService } from '@/api/product-catalog/services/brand-service';
+import { PadSeriesService } from '@/api/product-catalog/pad-series/services/pad-series-service';
+import { BrandService } from '@/api/product-catalog/brands/services/brand-service';
 
 export const api = {
     authentication: new AuthenticationService(),

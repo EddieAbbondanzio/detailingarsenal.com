@@ -1,7 +1,7 @@
 import { Brand } from '@/api';
-import { BrandCreate } from '@/api/product-catalog/data-transfer-objects/brand-create';
-import { BrandUpdate } from '@/api/product-catalog/data-transfer-objects/brand-update';
 import { http } from '@/api/core/http';
+import { BrandCreate } from '../data-transfer-objects/brand-create';
+import { BrandUpdate } from '../data-transfer-objects/brand-update';
 
 export class BrandService {
     async get() {

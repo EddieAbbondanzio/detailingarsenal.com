@@ -1,0 +1,1 @@
+export type PolisherType = 'Dual Action' | 'Long Throw' | 'Forced Rotation' | 'Rotary' | 'Micro'

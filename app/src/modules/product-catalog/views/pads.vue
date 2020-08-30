@@ -22,61 +22,86 @@
                     </page-sidebar>
                 </template>
 
-                <!-- Cut-o-Meter -->
-                <div
-                    class="is-flex is-flex-column is-align-items-center has-margin-bottom-3 is-hidden-mobile"
-                >
-                    <p class="title">Cut Level</p>
-                    <div class="gradient-bar has-w-100">&nbsp;</div>
-                    <div class="level has-w-100 is-mobile">
-                        <div class="level-left is-size-5">Most</div>
-                        <div class="level-right is-size-5">Least</div>
-                    </div>
-                </div>
-
-                <!-- Categories -->
-                <div class="columns">
-                    <div class="column" v-for="column in columns" :key="column.category">
-                        <p
-                            class="is-size-5 has-text-centered has-margin-bottom-3"
-                        >{{ column.title }}</p>
-
-                        <!-- Pads -->
-                        <div>
-                            <div
-                                class="card has-margin-bottom-2"
-                                v-for="pad in column.pads"
-                                :key="pad.id"
-                            >
-                                <div class="card-image">
-                                    <figure class="image is-4by3">
-                                        <img
-                                            :src="pad.image != null ? pad.image.data : 'https://bulma.io/images/placeholders/1280x960.png'"
-                                            alt="Placeholder image"
-                                        />
-                                    </figure>
-                                </div>
-
-                                <div class="card-content">
-                                    <p>{{ pad.series.brand.name }}</p>
-                                    <p>{{ pad.series.name }}</p>
-                                    <p>{{ pad.name }}</p>
-                                    <p>{{ pad.color }}</p>
-                                </div>
-                            </div>
+                <b-table class="pads-table" :data="summaries">
+                    <b-table-column
+                        v-slot="props"
+                    >{{ props.row.image != null ? props.row.image.name : '' }}</b-table-column>
+                    <b-table-column
+                        v-slot="props"
+                        label="Size"
+                        field="diameter"
+                        sortable
+                    >{{ props.row.diameter}}</b-table-column>
+                    <b-table-column
+                        v-slot="props"
+                        label="Brand"
+                        field="brand"
+                        sortable
+                    >{{ props.row.brand }}</b-table-column>
+                    <b-table-column
+                        v-slot="props"
+                        label="Series"
+                        field="series"
+                        sortable
+                    >{{ props.row.series }}</b-table-column>
+                    <b-table-column
+                        v-slot="props"
+                        label="Name"
+                        field="name"
+                        sortable
+                    >{{ props.row.name }}</b-table-column>
+                    <b-table-column
+                        v-slot="props"
+                        label="Category"
+                        field="category"
+                        sortable
+                    >{{ props.row.category |uppercaseFirst }}</b-table-column>
+                    <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
+                        <pad-cut-bar :value="props.row.cut" />
+                    </b-table-column>
+                    <b-table-column
+                        v-slot="props"
+                        label="Finish"
+                        field="finish"
+                        width="120px"
+                        sortable
+                    >
+                        <pad-finish-bar :value="props.row.finish" />
+                    </b-table-column>
+                    <b-table-column
+                        v-slot="props"
+                        label="Material"
+                        field="material"
+                        sortable
+                    >{{ props.row.material}}</b-table-column>
+                    <b-table-column
+                        v-slot="props"
+                        label="Polisher Type(s)"
+                        field="recommendedFor"
+                        sortable
+                    >
+                        <div class="tags">
+                            <span
+                                class="tag"
+                                v-for="rec in props.row.recommendedFor"
+                                :key="rec"
+                            >{{ rec }}</span>
                         </div>
-                    </div>
-                </div>
+                    </b-table-column>
+
+                    <template slot="empty">
+                        <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                    </template>
+                </b-table>
             </page>
         </div>
     </div>
 </template>
 
-<style lang="sass" scoped>
-.gradient-bar
-    background: rgb(2,0,36)
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,0,0,1) 0%, rgba(255,246,0,1) 50%, rgba(0,212,255,1) 100%)
-    height: 20px
+<style lang="sass">
+.pads-table
+    td
+        margin: auto!important
 </style>
 
 <script lang="ts">
@@ -89,11 +114,15 @@ import PadFilterControl from '@/modules/product-catalog/components/pad-filter-co
 import store from '@/core/store';
 import { MutationPayload } from 'vuex';
 import PageSidebar from '@/core/components/page/page-sidebar.vue';
+import PadCutBar from '@/modules/product-catalog/components/pad-cut-bar.vue';
+import PadFinishBar from '@/modules/product-catalog/components/pad-finish-bar.vue';
 
 @Component({
     components: {
         ProductCatalogNavbar,
-        PadFilterControl
+        PadFilterControl,
+        PadCutBar,
+        PadFinishBar
     }
 })
 export default class Pads extends Vue {
@@ -101,16 +130,42 @@ export default class Pads extends Vue {
 
     unSub!: () => void;
 
+    summaries: PadSummary[] = [
+        {
+            id: '1',
+            name: 'White Polishing',
+            brand: 'Lake Country',
+            series: 'CCS',
+            category: 'polish',
+            cut: 5,
+            finish: 7,
+            diameter: '5"',
+            material: 'Foam',
+            recommendedFor: ['DA', 'Long Throw']
+        },
+        {
+            id: '2',
+            name: 'Orange Light Cutting',
+            brand: 'Lake Country',
+            series: 'ThinPro',
+            category: 'cut',
+            cut: 8,
+            finish: 7,
+            diameter: '5"',
+            material: 'Foam',
+            recommendedFor: ['DA', 'Long Throw']
+        }
+    ];
+
     @displayLoading
     async created() {
-        await padStore.init();
-        this.columns = this.generateColumns();
-
-        this.unSub = store.subscribe((mut: MutationPayload, state: any) => {
-            if (mut.type == 'pad/SET_FILTER') {
-                this.columns = this.generateColumns();
-            }
-        });
+        // await padStore.init();
+        // this.columns = this.generateColumns();
+        // this.unSub = store.subscribe((mut: MutationPayload, state: any) => {
+        //     if (mut.type == 'pad/SET_FILTER') {
+        //         this.columns = this.generateColumns();
+        //     }
+        // });
     }
 
     destroyed() {
@@ -146,4 +201,17 @@ export default class Pads extends Vue {
 }
 
 type Column = { title: string; category: PadCategory; pads: Pad[] };
+type PadSummary = {
+    id: string;
+    image?: { name: string; data: string };
+    brand: string;
+    name: string;
+    series: string;
+    category: PadCategory;
+    cut: number;
+    finish: number;
+    diameter: string;
+    material: string;
+    recommendedFor: string[];
+};
 </script>

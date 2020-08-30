@@ -4,7 +4,7 @@ import { api } from '@/api/api';
 import store from '@/core/store/index';
 import { Pad, Brand, PadSeriesCreate, PadSeriesUpdate } from '@/api';
 import { PadSeries } from '@/api';
-import { PadSeriesService } from '@/api/product-catalog/services/pad-series-service';
+import { PadSeriesService } from '@/api/product-catalog/pad-series/services/pad-series-service';
 
 @Module({ namespaced: true, name: 'pad-series', dynamic: true, store })
 class PadSeriesStore extends InitableModule {

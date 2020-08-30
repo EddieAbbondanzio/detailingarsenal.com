@@ -1,0 +1,1 @@
+export type PadTexture = 'Flat' | 'Grooved' | 'Dimpled';

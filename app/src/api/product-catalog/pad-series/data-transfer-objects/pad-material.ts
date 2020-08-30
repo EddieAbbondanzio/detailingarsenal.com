@@ -1,0 +1,1 @@
+export type PadMaterial = 'Foam' | 'Wool' | 'Microfiber';

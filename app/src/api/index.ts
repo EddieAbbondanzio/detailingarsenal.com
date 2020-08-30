@@ -54,12 +54,14 @@ export * from './scheduling/security/data-transfer-objects/role-update';
 export * from './scheduling/users/data-transfer-objects/user';
 
 //Product Catalog
-export * from './product-catalog/data-transfer-objects/brand';
-export * from './product-catalog/data-transfer-objects/pad';
-export * from './product-catalog/data-transfer-objects/pad-category';
-export * from './product-catalog/data-transfer-objects/pad-series';
-export * from './product-catalog/data-transfer-objects/pad-create';
-export * from './product-catalog/data-transfer-objects/pad-update';
-export * from './product-catalog/data-transfer-objects/pad-series-create';
-export * from './product-catalog/data-transfer-objects/pad-series-update';
-export * from './product-catalog/data-transfer-objects/image';
+export * from './product-catalog/brands/data-transfer-objects/brand';
+export * from './product-catalog/pad-series/data-transfer-objects/pad';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-category';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-series';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-create';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-update';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-series-create';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-series-update';
+export * from './product-catalog/common/data-transfer-objects/image';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-cut';
+export * from './product-catalog/pad-series/data-transfer-objects/pad-finish';

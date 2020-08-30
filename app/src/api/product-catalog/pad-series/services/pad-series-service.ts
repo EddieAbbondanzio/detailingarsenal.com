@@ -1,6 +1,6 @@
-import { Pad } from '@/api/product-catalog/data-transfer-objects/pad';
-import { PadSeriesCreate } from '@/api/product-catalog/data-transfer-objects/pad-series-create';
-import { PadSeriesUpdate } from '@/api/product-catalog/data-transfer-objects/pad-series-update';
+import { Pad } from '@/api/product-catalog/pad-series/data-transfer-objects/pad';
+import { PadSeriesCreate } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-series-create';
+import { PadSeriesUpdate } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-series-update';
 import { PadSeries, Brand } from '@/api';
 import { http } from '@/api/core/http';
 
