@@ -5,7 +5,9 @@
         :value="value"
         :min="0"
         :max="10"
+        v-if="value != null"
     ></progress>
+    <span v-else>N/A</span>
 </template>
 
 <script lang="ts">

@@ -45,7 +45,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { PadCategory, Pad } from '@/api';
-import padStore from '../store/pad-store';
 import { padCategory } from '@/modules/product-catalog/filters/pad-category';
 import { FilterType } from '../store/filter-type';
 import { Filter } from '../store/filter';
@@ -59,57 +58,48 @@ import { MutationPayload } from 'vuex';
     }
 })
 export default class PadFilterControl extends Vue {
-    /**
-     * Unique list of pad brands
-     */
-    get brands() {
-        return [...new Set(padStore.pads.map(p => p.series.brand.name))];
-    }
-
-    /**
-     * Unique list of pad series names
-     */
-    get series() {
-        return [...new Set(padStore.pads.map(p => p.series.name))];
-    }
-
-    get categories(): PadCategory[] {
-        return [PadCategory.Cut, PadCategory.Polish, PadCategory.Finishing];
-    }
-
-    selectedBrands: string[] = [];
-    selectedSeries: string[] = [];
-    selectedCategories: string[] = [];
-    unSub!: () => void;
-
-    created() {
-        this.onReset();
-
-        this.unSub = store.subscribe((mut: MutationPayload, state: any) => {
-            if (mut.type == 'pad/SET_PADS') {
-                this.onReset();
-            }
-        });
-    }
-
-    destroyed() {
-        this?.unSub();
-    }
-
-    onInput() {
-        padStore.SET_FILTER(
-            new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
-        );
-    }
-
-    onReset() {
-        this.selectedBrands = [...this.brands];
-        this.selectedSeries = [...this.series];
-        this.selectedCategories = [...this.categories];
-
-        padStore.SET_FILTER(
-            new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
-        );
-    }
+    // /**
+    //  * Unique list of pad brands
+    //  */
+    // get brands() {
+    //     return [...new Set(padStore.pads.map(p => p.series.brand.name))];
+    // }
+    // /**
+    //  * Unique list of pad series names
+    //  */
+    // get series() {
+    //     return [...new Set(padStore.pads.map(p => p.series.name))];
+    // }
+    // get categories(): PadCategory[] {
+    //     return [PadCategory.Cut, PadCategory.Polish, PadCategory.Finishing];
+    // }
+    // selectedBrands: string[] = [];
+    // selectedSeries: string[] = [];
+    // selectedCategories: string[] = [];
+    // unSub!: () => void;
+    // created() {
+    //     this.onReset();
+    //     this.unSub = store.subscribe((mut: MutationPayload, state: any) => {
+    //         if (mut.type == 'pad/SET_PADS') {
+    //             this.onReset();
+    //         }
+    //     });
+    // }
+    // destroyed() {
+    //     this?.unSub();
+    // }
+    // onInput() {
+    //     padStore.SET_FILTER(
+    //         new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
+    //     );
+    // }
+    // onReset() {
+    //     this.selectedBrands = [...this.brands];
+    //     this.selectedSeries = [...this.series];
+    //     this.selectedCategories = [...this.categories];
+    //     padStore.SET_FILTER(
+    //         new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
+    //     );
+    // }
 }
 </script>

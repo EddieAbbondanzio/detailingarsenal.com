@@ -11,78 +11,55 @@
                 </template>-->
             </page-header>
         </template>
-        Pads
-        <!-- <b-table class="pads-table" :data="summaries">
-                    <b-table-column
-                        v-slot="props"
-                    >{{ props.row.image != null ? props.row.image.name : '' }}</b-table-column>
-                    <b-table-column
-                        v-slot="props"
-                        label="Size"
-                        field="diameter"
-                        sortable
-                    >{{ props.row.diameter}}</b-table-column>
-                    <b-table-column
-                        v-slot="props"
-                        label="Brand"
-                        field="brand"
-                        sortable
-                    >{{ props.row.brand }}</b-table-column>
-                    <b-table-column
-                        v-slot="props"
-                        label="Series"
-                        field="series"
-                        sortable
-                    >{{ props.row.series }}</b-table-column>
-                    <b-table-column
-                        v-slot="props"
-                        label="Name"
-                        field="name"
-                        sortable
-                    >{{ props.row.name }}</b-table-column>
-                    <b-table-column
-                        v-slot="props"
-                        label="Category"
-                        field="category"
-                        sortable
-                    >{{ props.row.category |uppercaseFirst }}</b-table-column>
-                    <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
-                        <pad-cut-bar :value="props.row.cut" />
-                    </b-table-column>
-                    <b-table-column
-                        v-slot="props"
-                        label="Finish"
-                        field="finish"
-                        width="120px"
-                        sortable
-                    >
-                        <pad-finish-bar :value="props.row.finish" />
-                    </b-table-column>
-                    <b-table-column
-                        v-slot="props"
-                        label="Material"
-                        field="material"
-                        sortable
-                    >{{ props.row.material}}</b-table-column>
-                    <b-table-column
-                        v-slot="props"
-                        label="Polisher Type(s)"
-                        field="recommendedFor"
-                        sortable
-                    >
-                        <div class="tags">
-                            <span
-                                class="tag"
-                                v-for="rec in props.row.recommendedFor"
-                                :key="rec"
-                            >{{ rec }}</span>
-                        </div>
-                    </b-table-column>
+        <b-table class="pads-table" :data="summaries">
+            <b-table-column v-slot="props">{{ props.row.image != null ? props.row.image.name : '' }}</b-table-column>
+            <b-table-column
+                v-slot="props"
+                label="Size"
+                field="diameter"
+                sortable
+            >{{ props.row.diameter}}</b-table-column>
+            <b-table-column
+                v-slot="props"
+                label="Brand"
+                field="brand"
+                sortable
+            >{{ props.row.brand }}</b-table-column>
+            <b-table-column
+                v-slot="props"
+                label="Series"
+                field="series"
+                sortable
+            >{{ props.row.series }}</b-table-column>
+            <b-table-column v-slot="props" label="Name" field="name" sortable>{{ props.row.name }}</b-table-column>
+            <b-table-column
+                v-slot="props"
+                label="Category"
+                field="category"
+                sortable
+            >{{ props.row.category |uppercaseFirst }}</b-table-column>
+            <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
+                <pad-cut-bar :value="props.row.cut" />
+            </b-table-column>
+            <b-table-column v-slot="props" label="Finish" field="finish" width="120px" sortable>
+                <pad-finish-bar :value="props.row.finish" />
+            </b-table-column>
+            <b-table-column
+                v-slot="props"
+                label="Material"
+                field="material"
+                sortable
+            >{{ props.row.material}}</b-table-column>
+            <b-table-column v-slot="props" label="Polisher Type(s)" field="recommendedFor" sortable>
+                <div class="tags">
+                    <span class="tag" v-for="rec in props.row.recommendedFor" :key="rec">{{ rec }}</span>
+                </div>
+            </b-table-column>
 
-                    <template slot="empty">
-                        <div class="is-flex is-justify-content-center">There's nothing here!</div>
-                    </template>
-        </b-table>-->
+            <template slot="empty">
+                <div class="is-flex is-justify-content-center">There's nothing here!</div>
+            </template>
+        </b-table>
     </page>
 </template>
 
@@ -95,7 +72,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import ProductCatalogNavbar from '@/modules/product-catalog/components/product-catalog-navbar.vue';
-import padStore from '@/modules/product-catalog/store/pad-store';
 import { api, Pad, PadCategory } from '@/api';
 import { displayLoading } from '@/core';
 import PadFilterControl from '@/modules/product-catalog/components/pad-filter-control.vue';
@@ -104,7 +80,7 @@ import { MutationPayload } from 'vuex';
 import PageSidebar from '@/core/components/page/page-sidebar.vue';
 import PadCutBar from '@/modules/product-catalog/components/pad-cut-bar.vue';
 import PadFinishBar from '@/modules/product-catalog/components/pad-finish-bar.vue';
-
+import padSummaryStore from '@/modules/product-catalog/store/pad-summary/pad-summary-store';
 @Component({
     components: {
         ProductCatalogNavbar,
@@ -114,22 +90,8 @@ import PadFinishBar from '@/modules/product-catalog/components/pad-finish-bar.vu
     }
 })
 export default class Pads extends Vue {
-    created() {
-        // this.$router.push({ name: 'pad' });
+    get summaries() {
+        return padSummaryStore.summaries;
     }
 }
-
-type PadSummary = {
-    id: string;
-    image?: { name: string; data: string };
-    brand: string;
-    name: string;
-    series: string;
-    category: PadCategory;
-    cut: number;
-    finish: number;
-    diameter: string;
-    material: string;
-    recommendedFor: string[];
-};
 </script>
