@@ -3,8 +3,8 @@ import { InitableModule } from '@/core/store/initable-module';
 import { api } from '@/api/api';
 import store from '@/core/store/index';
 import { SubscriptionPlan, Brand } from '@/api';
-import { BrandCreate } from '@/api/product-catalog/data-transfer-objects/brand-create';
-import { BrandUpdate } from '@/api/product-catalog/data-transfer-objects/brand-update';
+import { BrandCreateRequest } from '@/api/product-catalog/brands/data-transfer-objects/requests/brand-create-request';
+import { BrandUpdateRequest } from '@/api/product-catalog/brands/data-transfer-objects/requests/brand-update-request';
 
 @Module({ namespaced: true, name: 'brand', dynamic: true, store })
 class BrandStore extends InitableModule {
@@ -42,13 +42,13 @@ class BrandStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async create(create: BrandCreate) {
+    async create(create: BrandCreateRequest) {
         const brand = await api.productCatalog.brand.create(create);
         this.context.commit('CREATE_BRAND', brand);
     }
 
     @Action({ rawError: true })
-    async update(update: BrandUpdate) {
+    async update(update: BrandUpdateRequest) {
         const brand = await api.productCatalog.brand.update(update);
         this.context.commit('UPDATE_BRAND', brand);
     }

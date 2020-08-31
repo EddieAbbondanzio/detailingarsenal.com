@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { PadCategory } from '@/api';
+import { PadCategory, Pad } from '@/api';
 import padStore from '../store/pad-store';
 import { padCategory } from '@/modules/product-catalog/filters/pad-category';
 import { FilterType } from '../store/filter-type';
@@ -74,7 +74,7 @@ export default class PadFilterControl extends Vue {
     }
 
     get categories(): PadCategory[] {
-        return ['heavy_cut', 'medium_cut', 'heavy_polish', 'medium_polish', 'soft_polish', 'finishing'];
+        return [PadCategory.Cut, PadCategory.Polish, PadCategory.Finishing];
     }
 
     selectedBrands: string[] = [];

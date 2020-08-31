@@ -30,7 +30,7 @@ export class PadSeriesService {
     _map(ps: any): PadSeries {
         const series = new PadSeries(ps.id, ps.name, new Brand(ps.brand.id, ps.brand.name));
 
-        series.pads = (ps.pads as any[]).map(p => new Pad(p.id, p.category, series, p.name, p.image));
+        // series.pads = (ps.pads as any[]).map(p => new Pad(p.id, p.category, series, p.name, p.image));
 
         return series;
     }

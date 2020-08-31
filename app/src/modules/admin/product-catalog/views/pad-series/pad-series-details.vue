@@ -66,9 +66,9 @@ import padSeriesStore from '../../store/pad-series-store';
     name: 'role'
 })
 export default class PadSeriesDetails extends Vue {
-    get value() {
-        return padSeriesStore.series.find(s => s.id == this.$route.params.id);
-    }
+    // get value() {
+    //     return padSeriesStore.series.find(s => s.id == this.$route.params.id);
+    // }
 
     @displayLoading
     async created() {

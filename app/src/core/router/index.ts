@@ -32,7 +32,7 @@ const routes: RouteConfig[] = [
     },
     {
         path: '/product-catalog',
-        component: () => import('@/modules/product-catalog/views/pads.vue'),
+        component: () => import('@/modules/product-catalog/views/core/product-catalog.vue'),
         children: [...productCatalog]
     },
     {

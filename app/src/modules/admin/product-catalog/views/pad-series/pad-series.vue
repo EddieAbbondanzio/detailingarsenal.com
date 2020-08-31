@@ -48,9 +48,9 @@ import { Pad, PadSeries } from '@/api';
 
 @Component
 export default class Pads extends Vue {
-    get series() {
-        return padSeriesStore.series;
-    }
+    // get series() {
+    //     return padSeriesStore.series;
+    // }
 
     @displayLoading
     async created() {
@@ -71,7 +71,7 @@ export default class Pads extends Vue {
 
         if (del) {
             try {
-                await padSeriesStore.delete(pad);
+                // await padSeriesStore.delete(pad);
                 toast(`Deleted pad ${pad.name}`);
             } catch (err) {
                 displayError(err);

@@ -71,45 +71,38 @@ import ErrorMessage from '@/components/common/input/error-message.vue';
 import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
-import { ValidationError, SpecificationError, Brand, PadCreate, PadCategory } from '@/api';
 import brandStore from '../../store/brand-store';
 import padSeriesStore from '../../store/pad-series-store';
 import { Image } from '@/api';
 
 @Component
 export default class CreatePadSeries extends Vue {
-    get brands() {
-        return brandStore.brands;
-    }
-
-    get categories(): PadCategory[] {
-        return ['heavy_cut', 'medium_cut', 'heavy_polish', 'medium_polish', 'soft_polish', 'finishing'];
-    }
-
-    name: string = '';
-    brand: Brand | null = null;
-    pads: PadCreate[] = [];
-
-    async created() {
-        await brandStore.init();
-    }
-
-    @displayLoading
-    public async onSubmit() {
-        const create = { name: this.name, brandId: this.brand!.id, pads: this.pads };
-
-        try {
-            await padSeriesStore.create(create);
-
-            toast(`Created new pad series ${create.name}`);
-            this.$router.push({ name: 'padSeries' });
-        } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
-        }
-    }
+    // get brands() {
+    //     return brandStore.brands;
+    // }
+    // get categories(): PadCategory[] {
+    //     return ['heavy_cut', 'medium_cut', 'heavy_polish', 'medium_polish', 'soft_polish', 'finishing'];
+    // }
+    // name: string = '';
+    // brand: Brand | null = null;
+    // pads: PadCreate[] = [];
+    // async created() {
+    //     await brandStore.init();
+    // }
+    // @displayLoading
+    // public async onSubmit() {
+    //     // const create = { name: this.name, brandId: this.brand!.id, pads: this.pads };
+    //     try {
+    //         await padSeriesStore.create(create);
+    //         toast(`Created new pad series ${create.name}`);
+    //         this.$router.push({ name: 'padSeries' });
+    //     } catch (err) {
+    //         if (err instanceof SpecificationError) {
+    //             displayError(err);
+    //         } else {
+    //             throw err;
+    //         }
+    //     }
+    // }
 }
 </script>

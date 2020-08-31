@@ -1,28 +1,18 @@
 <template>
-    <div class="is-flex is-flex-column is-flex-grow-1 has-overflow-y-hidden">
-        <product-catalog-navbar />
-
-        <div class="app-content has-overflow-y-hidden is-flex is-flex-column is-flex-grow-1">
-            <page>
-                <template v-slot:header>
-                    <page-header
-                        title="Pad Compare Tool"
-                        :description="`Compare buffing pads of multiple brands based on cut level`"
-                        :backButton="false"
-                    >
-                        <template v-slot:action>
+    <page>
+        <template v-slot:header>
+            <page-header
+                title="Pad Compare Tool"
+                :description="`Compare buffing pads of multiple brands based on cut level`"
+                :backButton="false"
+            >
+                <!-- <template v-slot:action>
                             <b-button type="is-primary" outlined @click="onFiltersClick">Filters</b-button>
-                        </template>
-                    </page-header>
-                </template>
-
-                <template v-slot:sidebar>
-                    <page-sidebar ref="sidebar" :overlay="true">
-                        <pad-filter-control />
-                    </page-sidebar>
-                </template>
-
-                <b-table class="pads-table" :data="summaries">
+                </template>-->
+            </page-header>
+        </template>
+        Pads
+        <!-- <b-table class="pads-table" :data="summaries">
                     <b-table-column
                         v-slot="props"
                     >{{ props.row.image != null ? props.row.image.name : '' }}</b-table-column>
@@ -92,10 +82,8 @@
                     <template slot="empty">
                         <div class="is-flex is-justify-content-center">There's nothing here!</div>
                     </template>
-                </b-table>
-            </page>
-        </div>
-    </div>
+        </b-table>-->
+    </page>
 </template>
 
 <style lang="sass">
@@ -126,81 +114,11 @@ import PadFinishBar from '@/modules/product-catalog/components/pad-finish-bar.vu
     }
 })
 export default class Pads extends Vue {
-    columns: Column[] = [];
-
-    unSub!: () => void;
-
-    summaries: PadSummary[] = [
-        {
-            id: '1',
-            name: 'White Polishing',
-            brand: 'Lake Country',
-            series: 'CCS',
-            category: 'polish',
-            cut: 5,
-            finish: 7,
-            diameter: '5"',
-            material: 'Foam',
-            recommendedFor: ['DA', 'Long Throw']
-        },
-        {
-            id: '2',
-            name: 'Orange Light Cutting',
-            brand: 'Lake Country',
-            series: 'ThinPro',
-            category: 'cut',
-            cut: 8,
-            finish: 7,
-            diameter: '5"',
-            material: 'Foam',
-            recommendedFor: ['DA', 'Long Throw']
-        }
-    ];
-
-    @displayLoading
-    async created() {
-        // await padStore.init();
-        // this.columns = this.generateColumns();
-        // this.unSub = store.subscribe((mut: MutationPayload, state: any) => {
-        //     if (mut.type == 'pad/SET_FILTER') {
-        //         this.columns = this.generateColumns();
-        //     }
-        // });
-    }
-
-    destroyed() {
-        this?.unSub();
-    }
-
-    generateColumns(): Column[] {
-        const columns: Column[] = [
-            { title: 'Heavy Cut', category: 'heavy_cut', pads: [] },
-            { title: 'Medium Cut', category: 'medium_cut', pads: [] },
-            { title: 'Heavy Polish', category: 'heavy_polish', pads: [] },
-            { title: 'Medium Polish', category: 'medium_polish', pads: [] },
-            { title: 'Soft Polish', category: 'soft_polish', pads: [] },
-            { title: 'Finishing', category: 'finishing', pads: [] }
-        ];
-
-        for (let i = 0; i < padStore.filtered.length; i++) {
-            const column = columns.find(c => c.category == padStore.filtered[i].category);
-
-            if (column == null) {
-                continue;
-            }
-
-            column.pads.push(padStore.filtered[i]);
-        }
-
-        return columns;
-    }
-
-    onFiltersClick() {
-        (this.$refs.sidebar as PageSidebar).open();
+    created() {
+        // this.$router.push({ name: 'pad' });
     }
 }
 
-type Column = { title: string; category: PadCategory; pads: Pad[] };
 type PadSummary = {
     id: string;
     image?: { name: string; data: string };
