@@ -13,7 +13,7 @@ class PadSummaryStore extends InitableModule {
             category: PadCategory.Polish,
             thickness: 11 / 16,
             material: PadMaterial.Foam,
-            stars: 3,
+            stars: 3.5,
             recommendedFor: [PolisherType.DualAction]
         }
     ];

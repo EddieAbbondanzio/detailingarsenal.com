@@ -43,7 +43,9 @@
             <b-table-column v-slot="props" label="Finish" field="finish" width="120px" sortable>
                 <pad-finish-bar :value="props.row.finish" />
             </b-table-column>
-            <b-table-column v-slot="props" label="Rating" field="stars" sortable>{{props.row.stars}}</b-table-column>
+            <b-table-column v-slot="props" label="Rating" field="stars" sortable>
+                <stars :value="props.row.stars" />
+            </b-table-column>
             <b-table-column v-slot="props" label="Polisher Type(s)" field="recommendedFor" sortable>
                 <div class="tags">
                     <span class="tag" v-for="rec in props.row.recommendedFor" :key="rec">{{ rec }}</span>
@@ -71,7 +73,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import ProductCatalogNavbar from '@/modules/product-catalog/components/product-catalog-navbar.vue';
 import { api, Pad, PadCategory } from '@/api';
 import { displayLoading } from '@/core';
 import PadFilterControl from '@/modules/product-catalog/components/pad-filter-control.vue';
@@ -81,13 +82,14 @@ import PageSidebar from '@/core/components/page/page-sidebar.vue';
 import PadCutBar from '@/modules/product-catalog/components/pad-cut-bar.vue';
 import PadFinishBar from '@/modules/product-catalog/components/pad-finish-bar.vue';
 import padSummaryStore from '@/modules/product-catalog/store/pad-summary/pad-summary-store';
+import Stars from '@/modules/product-catalog/components/stars.vue';
 
 @Component({
     components: {
-        ProductCatalogNavbar,
         PadFilterControl,
         PadCutBar,
-        PadFinishBar
+        PadFinishBar,
+        Stars
     }
 })
 export default class Pads extends Vue {
