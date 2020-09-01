@@ -25,18 +25,25 @@
                 field="category"
                 sortable
             >{{ props.row.category |uppercaseFirst }}</b-table-column>
-            <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
-                <pad-cut-bar :value="props.row.cut" />
-            </b-table-column>
-            <b-table-column v-slot="props" label="Finish" field="finish" width="120px" sortable>
-                <pad-finish-bar :value="props.row.finish" />
-            </b-table-column>
             <b-table-column
                 v-slot="props"
                 label="Material"
                 field="material"
                 sortable
             >{{ props.row.material}}</b-table-column>
+            <b-table-column
+                v-slot="props"
+                label="Thickness"
+                field="thickness"
+                sortable
+            >{{props.row.thickness}}</b-table-column>
+            <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
+                <pad-cut-bar :value="props.row.cut" />
+            </b-table-column>
+            <b-table-column v-slot="props" label="Finish" field="finish" width="120px" sortable>
+                <pad-finish-bar :value="props.row.finish" />
+            </b-table-column>
+            <b-table-column v-slot="props" label="Rating" field="stars" sortable>{{props.row.stars}}</b-table-column>
             <b-table-column v-slot="props" label="Polisher Type(s)" field="recommendedFor" sortable>
                 <div class="tags">
                     <span class="tag" v-for="rec in props.row.recommendedFor" :key="rec">{{ rec }}</span>

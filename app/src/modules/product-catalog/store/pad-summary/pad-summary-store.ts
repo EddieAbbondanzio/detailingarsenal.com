@@ -2,7 +2,7 @@ import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-dec
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
 import { PadSummary } from './pad-summary';
-import { PadCategory, PadMaterial, PolisherType } from '@/api';
+import { PadCategory, PadMaterial, PolisherType, Stars } from '@/api';
 
 @Module({ namespaced: true, name: 'pad-summary-store', dynamic: true, store })
 class PadSummaryStore extends InitableModule {
@@ -11,8 +11,9 @@ class PadSummaryStore extends InitableModule {
             id: '1',
             label: '5.5 Inch Lake Country CCS White Polishing',
             category: PadCategory.Polish,
-            thickness: '1 1/4 inch',
+            thickness: 11 / 16,
             material: PadMaterial.Foam,
+            stars: 3,
             recommendedFor: [PolisherType.DualAction]
         }
     ];

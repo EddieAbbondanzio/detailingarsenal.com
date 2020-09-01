@@ -54,6 +54,8 @@ export * from './scheduling/security/data-transfer-objects/role-update';
 export * from './scheduling/users/data-transfer-objects/user';
 
 //Product Catalog
+export * from './product-catalog/common/data-transfer-objects/image';
+export * from './product-catalog/common/data-transfer-objects/stars';
 export * from './product-catalog/brands/data-transfer-objects/brand';
 export * from './product-catalog/pad-series/data-transfer-objects/pad';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-category';
@@ -63,7 +65,6 @@ export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-c
 export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-create-or-update';
 export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-series-create-request';
 export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-series-update-request';
-export * from './product-catalog/common/data-transfer-objects/image';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-cut';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-finish';
 export * from './product-catalog/pad-series/data-transfer-objects/polisher-type';
