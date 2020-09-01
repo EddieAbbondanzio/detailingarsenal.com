@@ -13,25 +13,12 @@
         </template>
         <b-table class="pads-table" :data="summaries">
             <b-table-column v-slot="props">{{ props.row.image != null ? props.row.image.name : '' }}</b-table-column>
-            <b-table-column
-                v-slot="props"
-                label="Size"
-                field="diameter"
-                sortable
-            >{{ props.row.diameter}}</b-table-column>
-            <b-table-column
-                v-slot="props"
-                label="Brand"
-                field="brand"
-                sortable
-            >{{ props.row.brand }}</b-table-column>
-            <b-table-column
-                v-slot="props"
-                label="Series"
-                field="series"
-                sortable
-            >{{ props.row.series }}</b-table-column>
-            <b-table-column v-slot="props" label="Name" field="name" sortable>{{ props.row.name }}</b-table-column>
+            <b-table-column v-slot="props" label="Name" field="label">
+                <router-link
+                    class="label-link has-text-weight-bold"
+                    :to="{name: 'pad', params: {id: props.row.id}}"
+                >{{ props.row.label }}</router-link>
+            </b-table-column>
             <b-table-column
                 v-slot="props"
                 label="Category"
@@ -64,6 +51,12 @@
 </template>
 
 <style lang="sass">
+.label-link
+    color: $dark!important
+
+    &:hover
+        color: $primary!important
+
 .pads-table
     td
         margin: auto!important
@@ -81,6 +74,7 @@ import PageSidebar from '@/core/components/page/page-sidebar.vue';
 import PadCutBar from '@/modules/product-catalog/components/pad-cut-bar.vue';
 import PadFinishBar from '@/modules/product-catalog/components/pad-finish-bar.vue';
 import padSummaryStore from '@/modules/product-catalog/store/pad-summary/pad-summary-store';
+
 @Component({
     components: {
         ProductCatalogNavbar,

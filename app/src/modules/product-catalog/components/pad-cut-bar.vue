@@ -7,7 +7,7 @@
         :max="10"
         v-if="value != null"
     ></progress>
-    <span v-else>N/A</span>
+    <span class="has-text-grey" v-else>N/A</span>
 </template>
 
 <script lang="ts">

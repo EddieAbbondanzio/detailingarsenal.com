@@ -9,11 +9,9 @@ class PadSummaryStore extends InitableModule {
     summaries: PadSummary[] = [
         {
             id: '1',
-            name: 'White Polishing',
-            brandName: 'Lake Country',
-            seriesName: 'CCS',
+            label: '5.5 Inch Lake Country CCS White Polishing',
             category: PadCategory.Polish,
-            diameter: '5.5 inch',
+            thickness: '1 1/4 inch',
             material: PadMaterial.Foam,
             recommendedFor: [PolisherType.DualAction]
         }

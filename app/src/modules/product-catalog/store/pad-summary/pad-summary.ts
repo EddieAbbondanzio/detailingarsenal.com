@@ -6,13 +6,11 @@ import { PadCategory } from '@/api';
 export interface PadSummary {
     id: string;
     image?: { name: string; data: string };
-    brandName: string;
-    name: string;
-    seriesName: string;
+    label: string; // SIZE BRAND SERIES NAME
     category: PadCategory;
     cut?: number;
     finish?: number;
-    diameter: string;
     material: string;
+    thickness: string,
     recommendedFor: string[];
 };
