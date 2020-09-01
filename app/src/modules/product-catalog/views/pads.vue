@@ -36,7 +36,7 @@
                 label="Thickness"
                 field="thickness"
                 sortable
-            >{{props.row.thickness}}</b-table-column>
+            >{{props.row.thickness | inchify}}</b-table-column>
             <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
                 <pad-cut-bar :value="props.row.cut" />
             </b-table-column>
