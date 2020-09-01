@@ -11,6 +11,7 @@ export interface PadSummary {
     cut?: number;
     finish?: number;
     stars?: Stars;
+    reviewCount: number;
     material: string;
     thickness: number,
     recommendedFor: string[];

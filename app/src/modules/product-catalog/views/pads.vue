@@ -30,13 +30,14 @@
                 label="Material"
                 field="material"
                 sortable
-            >{{ props.row.material}}</b-table-column>
-            <b-table-column
-                v-slot="props"
-                label="Thickness"
-                field="thickness"
-                sortable
-            >{{props.row.thickness | inchify}}</b-table-column>
+            >{{ props.row.material |uppercaseFirst }}</b-table-column>
+            <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
+                {{props.row.thickness | inchify}}
+                <span
+                    class="tag is-info has-margin-left-1"
+                    v-if="isThin(props.row.thickness)"
+                >Thin</span>
+            </b-table-column>
             <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
                 <pad-cut-bar :value="props.row.cut" />
             </b-table-column>
@@ -44,7 +45,7 @@
                 <pad-finish-bar :value="props.row.finish" />
             </b-table-column>
             <b-table-column v-slot="props" label="Rating" field="stars" sortable>
-                <stars :value="props.row.stars" />
+                <stars :value="props.row.stars" :count="props.row.reviewCount" />
             </b-table-column>
             <b-table-column v-slot="props" label="Polisher Type(s)" field="recommendedFor" sortable>
                 <div class="tags">
@@ -95,6 +96,10 @@ import Stars from '@/modules/product-catalog/components/stars.vue';
 export default class Pads extends Vue {
     get summaries() {
         return padSummaryStore.summaries;
+    }
+
+    isThin(thickness: number) {
+        return thickness < 0.75;
     }
 }
 </script>
