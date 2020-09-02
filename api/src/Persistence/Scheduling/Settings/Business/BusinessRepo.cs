@@ -10,32 +10,42 @@ namespace DetailingArsenal.Persistence.Settings {
         public BusinessRepo(IDatabase database) : base(database) { }
 
         public async Task<Business?> FindById(Guid id) {
-            return await Connection.QueryFirstOrDefaultAsync<Business>(@"select * from businesses where id = @Id;", new { Id = id });
+            using (var conn = OpenConnection()) {
+                return await conn.QueryFirstOrDefaultAsync<Business>(@"select * from businesses where id = @Id;", new { Id = id });
+            }
         }
 
         public async Task<Business?> FindByUser(User user) {
-            return await Connection.QueryFirstOrDefaultAsync<Business>(@"select * from businesses where user_id = @Id;", user);
+            using (var conn = OpenConnection()) {
+                return await conn.QueryFirstOrDefaultAsync<Business>(@"select * from businesses where user_id = @Id;", user);
+            }
         }
 
         public async Task Add(Business entity) {
-            await Connection.ExecuteAsync(
-                @"insert into businesses (id, user_id, name, address, phone) VALUES (@Id, @UserId, @Name, @Address, @Phone);",
-                entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"insert into businesses (id, user_id, name, address, phone) VALUES (@Id, @UserId, @Name, @Address, @Phone);",
+                    entity
+                );
+            }
         }
 
         public async Task Update(Business entity) {
-            await Connection.ExecuteAsync(
-                @"update businesses set name = @Name, address = @Address, phone = @Phone where id = @Id;",
-                entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"update businesses set name = @Name, address = @Address, phone = @Phone where id = @Id;",
+                    entity
+                );
+            }
         }
 
         public async Task Delete(Business entity) {
-            await Connection.ExecuteAsync(
-                @"delete from businesses where id = @Id;",
-                entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"delete from businesses where id = @Id;",
+                    entity
+                );
+            }
         }
     }
 }

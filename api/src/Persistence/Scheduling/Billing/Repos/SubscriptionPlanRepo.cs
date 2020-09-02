@@ -11,50 +11,53 @@ namespace DetailingArsenal.Persistence.Billing {
         public SubscriptionPlanRepo(IDatabase database) : base(database) { }
 
         public async Task<SubscriptionPlan?> FindById(Guid id) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select sp.*, br.* from subscription_plans sp
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select sp.*, br.* from subscription_plans sp
                     left join billing_references br on sp.billing_reference_id = br.id
                     where sp.id = @Id;
                     
                   select spp.*, br.* from subscription_plan_prices spp
                     left join billing_references br on spp.billing_reference_id = br.id
                     where spp.plan_id = @Id;",
-                new {
-                    Id = id
-                }
-            )) {
+                    new {
+                        Id = id
+                    }
+                )) {
 
-                var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
-                (sp, br) => new SubscriptionPlan(
-                    sp.Id,
-                    sp.Name,
-                    sp.Description,
-                    BillingReference.Product(br.BillingId)
-                )).SingleOrDefault();
+                    var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                    (sp, br) => new SubscriptionPlan(
+                        sp.Id,
+                        sp.Name,
+                        sp.Description,
+                        BillingReference.Product(br.BillingId)
+                    )).SingleOrDefault();
 
-                if (sp == null) {
-                    return null;
-                }
+                    if (sp == null) {
+                        return null;
+                    }
 
-                sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
-                    (spp, br) => new SubscriptionPlanPrice(
-                            spp.Price,
-                            spp.Interval,
-                            new BillingReference(
-                                br.BillingId,
-                                br.Type
+                    sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                        (spp, br) => new SubscriptionPlanPrice(
+                                spp.Price,
+                                spp.Interval,
+                                new BillingReference(
+                                    br.BillingId,
+                                    br.Type
+                                )
                             )
-                        )
-                ).ToList();
+                    ).ToList();
 
-                return sp;
+                    return sp;
+                }
             }
         }
 
 
         public async Task<SubscriptionPlan?> FindByName(string name) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select sp.*, br.* from subscription_plans sp
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select sp.*, br.* from subscription_plans sp
                     left join billing_references br on sp.billing_reference_id = br.id
                     where sp.name = @Name;
                     
@@ -62,41 +65,43 @@ namespace DetailingArsenal.Persistence.Billing {
                     left join billing_references br on spp.billing_reference_id = br.id
                     left join subscription_plan sp on spp.plan_id = sp.id
                     where sp.name = @Name",
-                new {
-                    Name = name
-                }
-            )) {
+                    new {
+                        Name = name
+                    }
+                )) {
 
-                var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
-                (sp, br) => new SubscriptionPlan(
-                    sp.Id,
-                    sp.Name,
-                    sp.Description,
-                    BillingReference.Product(br.BillingId)
-                )).SingleOrDefault();
+                    var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                    (sp, br) => new SubscriptionPlan(
+                        sp.Id,
+                        sp.Name,
+                        sp.Description,
+                        BillingReference.Product(br.BillingId)
+                    )).SingleOrDefault();
 
-                if (sp == null) {
-                    return null;
-                }
+                    if (sp == null) {
+                        return null;
+                    }
 
-                sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
-                    (spp, br) => new SubscriptionPlanPrice(
-                            spp.Price,
-                            spp.Interval,
-                            new BillingReference(
-                                br.BillingId,
-                                br.Type
+                    sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                        (spp, br) => new SubscriptionPlanPrice(
+                                spp.Price,
+                                spp.Interval,
+                                new BillingReference(
+                                    br.BillingId,
+                                    br.Type
+                                )
                             )
-                        )
-                ).ToList();
+                    ).ToList();
 
-                return sp;
+                    return sp;
+                }
             }
         }
 
         public async Task<SubscriptionPlan?> FindByBillingReference(BillingReference reference) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select sp.*, br.* from subscription_plans sp
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select sp.*, br.* from subscription_plans sp
                     join billing_references br on sp.billing_reference_id = br.id
                     where br.billing_id = @BillingId;
 
@@ -106,212 +111,223 @@ namespace DetailingArsenal.Persistence.Billing {
                     join billing_references br2 on sp.billing_reference_id = br2.id
                     where br2.billing_id = @BillingId;        
                 ",
-                reference)
-            ) {
+                    reference)
+                ) {
 
-                var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
-                (sp, br) => new SubscriptionPlan(
-                    sp.Id,
-                    sp.Name,
-                    sp.Description,
-                    BillingReference.Product(br.BillingId)
-                )).SingleOrDefault();
+                    var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                    (sp, br) => new SubscriptionPlan(
+                        sp.Id,
+                        sp.Name,
+                        sp.Description,
+                        BillingReference.Product(br.BillingId)
+                    )).SingleOrDefault();
 
-                if (sp == null) {
-                    return null;
-                }
+                    if (sp == null) {
+                        return null;
+                    }
 
-                sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
-                    (spp, br) => new SubscriptionPlanPrice(
-                            spp.Price,
-                            spp.Interval,
-                            new BillingReference(
-                                br.BillingId,
-                                br.Type
+                    sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                        (spp, br) => new SubscriptionPlanPrice(
+                                spp.Price,
+                                spp.Interval,
+                                new BillingReference(
+                                    br.BillingId,
+                                    br.Type
+                                )
                             )
-                        )
-                ).ToList();
+                    ).ToList();
 
-                return sp;
+                    return sp;
+                }
             }
         }
 
         public async Task<List<SubscriptionPlan>> FindAll() {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select sp.*, br.* from subscription_plans sp
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select sp.*, br.* from subscription_plans sp
                     join billing_references br on sp.billing_reference_id = br.id;
 
                   select spp.*, br2.* from subscription_plan_prices spp
                     join subscription_plans sp on spp.plan_id = sp.id
                     join billing_references br2 on sp.billing_reference_id = br2.id;
                 ")
-            ) {
+                ) {
 
-                var plans = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
-                    (sp, br) => new SubscriptionPlan(
-                        sp.Id,
-                        sp.Name,
-                        sp.Description,
-                        BillingReference.Product(br.BillingId)
-                    )
-                );
+                    var plans = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                        (sp, br) => new SubscriptionPlan(
+                            sp.Id,
+                            sp.Name,
+                            sp.Description,
+                            BillingReference.Product(br.BillingId)
+                        )
+                    );
 
-                var planDict = new Dictionary<Guid, SubscriptionPlan>(plans.Select(p => KeyValuePair.Create(p.Id, p)));
+                    var planDict = new Dictionary<Guid, SubscriptionPlan>(plans.Select(p => KeyValuePair.Create(p.Id, p)));
 
-                var prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
-                    (spp, br) => {
-                        var price = new SubscriptionPlanPrice(
-                            spp.Price,
-                            spp.Interval,
-                            new BillingReference(
-                                br.BillingId,
-                                br.Type
-                            )
-                        );
+                    var prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                        (spp, br) => {
+                            var price = new SubscriptionPlanPrice(
+                                spp.Price,
+                                spp.Interval,
+                                new BillingReference(
+                                    br.BillingId,
+                                    br.Type
+                                )
+                            );
 
-                        planDict[spp.PlanId].Prices.Add(price);
+                            planDict[spp.PlanId].Prices.Add(price);
 
-                        return price;
-                    }
-                );
+                            return price;
+                        }
+                    );
 
-                return plans.ToList();
+                    return plans.ToList();
+                }
             }
         }
 
         public async Task Add(SubscriptionPlan entity) {
-            using (var t = Connection.BeginTransaction()) {
-                // insert plan billing ref first
-                var planBillingRef = new BillingReferenceModel() {
-                    Id = Guid.NewGuid(),
-                    BillingId = entity.BillingReference.BillingId,
-                    Type = entity.BillingReference.Type
-                };
-
-                await Connection.ExecuteAsync(
-                    @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                    planBillingRef,
-                    t
-                );
-
-                // insert plan
-                await Connection.ExecuteAsync(
-                    @"insert into subscription_plans (id, name, billing_reference_id) values (@Id, @Name, @BillingReferenceId);",
-                    new SubscriptionPlanModel() {
-                        Id = entity.Id,
-                        Name = entity.Name,
-                        Description = entity.Description,
-                        BillingReferenceId = planBillingRef.Id
-                    },
-                    t
-                );
-
-                var prices = new List<SubscriptionPlanPriceModel>();
-                var billingReferences = new List<BillingReferenceModel>();
-
-                foreach (var p in entity.Prices) {
-                    var billingRefModel = new BillingReferenceModel() {
+            using (var conn = OpenConnection()) {
+                using (var t = conn.BeginTransaction()) {
+                    // insert plan billing ref first
+                    var planBillingRef = new BillingReferenceModel() {
                         Id = Guid.NewGuid(),
-                        BillingId = p.BillingReference.BillingId,
-                        Type = p.BillingReference.Type
+                        BillingId = entity.BillingReference.BillingId,
+                        Type = entity.BillingReference.Type
                     };
 
-                    var priceModel = new SubscriptionPlanPriceModel() {
-                        Id = Guid.NewGuid(),
-                        Interval = p.Interval,
-                        Price = p.Amount,
-                        PlanId = entity.Id,
-                        BillingReferenceId = billingRefModel.Id
-                    };
+                    await conn.ExecuteAsync(
+                        @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
+                        planBillingRef,
+                        t
+                    );
 
-                    prices.Add(priceModel);
-                    billingReferences.Add(billingRefModel);
+                    // insert plan
+                    await conn.ExecuteAsync(
+                        @"insert into subscription_plans (id, name, billing_reference_id) values (@Id, @Name, @BillingReferenceId);",
+                        new SubscriptionPlanModel() {
+                            Id = entity.Id,
+                            Name = entity.Name,
+                            Description = entity.Description,
+                            BillingReferenceId = planBillingRef.Id
+                        },
+                        t
+                    );
+
+                    var prices = new List<SubscriptionPlanPriceModel>();
+                    var billingReferences = new List<BillingReferenceModel>();
+
+                    foreach (var p in entity.Prices) {
+                        var billingRefModel = new BillingReferenceModel() {
+                            Id = Guid.NewGuid(),
+                            BillingId = p.BillingReference.BillingId,
+                            Type = p.BillingReference.Type
+                        };
+
+                        var priceModel = new SubscriptionPlanPriceModel() {
+                            Id = Guid.NewGuid(),
+                            Interval = p.Interval,
+                            Price = p.Amount,
+                            PlanId = entity.Id,
+                            BillingReferenceId = billingRefModel.Id
+                        };
+
+                        prices.Add(priceModel);
+                        billingReferences.Add(billingRefModel);
+                    }
+
+
+                    await conn.ExecuteAsync(
+                        @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
+                        billingReferences,
+                        t
+                    );
+
+                    // insert price s
+                    await conn.ExecuteAsync(
+                        @"insert into subscription_plan_prices (id, plan_id, billing_reference_id, interval, price) values (@Id, @PlanId, @BillingReferenceId, @Interval, @Price);",
+                        prices,
+                        t
+                    );
+
+                    t.Commit();
                 }
-
-
-                await Connection.ExecuteAsync(
-                    @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                    billingReferences,
-                    t
-                );
-
-                // insert price s
-                await Connection.ExecuteAsync(
-                    @"insert into subscription_plan_prices (id, plan_id, billing_reference_id, interval, price) values (@Id, @PlanId, @BillingReferenceId, @Interval, @Price);",
-                    prices,
-                    t
-                );
-
-                t.Commit();
             }
         }
 
         public async Task Update(SubscriptionPlan entity) {
-            using (var t = Connection.BeginTransaction()) {
-                await Connection.ExecuteAsync(
-                    @"update subscription_plans set name = @Name where id = @Id;",
-                    new SubscriptionPlanModel {
-                        Id = entity.Id,
-                        Name = entity.Name,
-                        Description = entity.Description
-                    }
-                );
+            using (var conn = OpenConnection()) {
+                using (var t = conn.BeginTransaction()) {
+                    await conn.ExecuteAsync(
+                        @"update subscription_plans set name = @Name where id = @Id;",
+                        new SubscriptionPlanModel {
+                            Id = entity.Id,
+                            Name = entity.Name,
+                            Description = entity.Description
+                        }
+                    );
 
-                // TODO: Implement update for prices
-                Console.WriteLine("SubscriptionPlanRepo.Update(): Hey bud, you never finished implementing this function.");
+                    // TODO: Implement update for prices
+                    Console.WriteLine("SubscriptionPlanRepo.Update(): Hey bud, you never finished implementing this function.");
 
-                t.Commit();
+                    t.Commit();
+                }
             }
         }
 
         public async Task Delete(SubscriptionPlan entity) {
-            using (var t = Connection.BeginTransaction()) {
-                await Connection.ExecuteAsync(
-                    @"delete from subscription_plan_prices where plan_id = @Id;",
-                    entity,
-                    t
-                );
+            using (var conn = OpenConnection()) {
+                using (var t = conn.BeginTransaction()) {
+                    await conn.ExecuteAsync(
+                        @"delete from subscription_plan_prices where plan_id = @Id;",
+                        entity,
+                        t
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"delete from subscription_plans where id = @Id;",
-                    entity,
-                    t
-                );
+                    await conn.ExecuteAsync(
+                        @"delete from subscription_plans where id = @Id;",
+                        entity,
+                        t
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"delete from billing_references where billing_id = @BillingId;",
-                    entity.BillingReference,
-                    t
-                );
+                    await conn.ExecuteAsync(
+                        @"delete from billing_references where billing_id = @BillingId;",
+                        entity.BillingReference,
+                        t
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"delete from billing_references where billing_id = @BillingId;",
-                    entity.Prices.Select(p => p.BillingReference).ToList(),
-                    t
-                );
-                t.Commit();
+                    await conn.ExecuteAsync(
+                        @"delete from billing_references where billing_id = @BillingId;",
+                        entity.Prices.Select(p => p.BillingReference).ToList(),
+                        t
+                    );
+                    t.Commit();
+                }
             }
         }
 
         public async Task DeleteAll() {
-            using (var t = Connection.BeginTransaction()) {
-                await Connection.ExecuteAsync(
-                    @"delete from subscription_plan_prices;"
-                );
+            using (var conn = OpenConnection()) {
+                using (var t = conn.BeginTransaction()) {
+                    await conn.ExecuteAsync(
+                        @"delete from subscription_plan_prices;"
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"delete from subscription_plans;"
-                );
+                    await conn.ExecuteAsync(
+                        @"delete from subscription_plans;"
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"delete from billing_references where type in (0, 1);"
-                );
+                    await conn.ExecuteAsync(
+                        @"delete from billing_references where type in (0, 1);"
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"delete from billing_references;"
-                );
+                    await conn.ExecuteAsync(
+                        @"delete from billing_references;"
+                    );
 
-                t.Commit();
+                    t.Commit();
+                }
             }
         }
     }

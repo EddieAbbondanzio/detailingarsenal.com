@@ -7,10 +7,6 @@ namespace DetailingArsenal.Persistence {
     /// Database for data persistence.
     /// </summary>
     public interface IDatabase {
-        /// <summary>
-        /// Get a new context with the database.
-        /// </summary>
-        /// <returns>The new active database context.</returns>
-        DatabaseContext GetContext();
+        DbConnection OpenConnection();
     }
 }

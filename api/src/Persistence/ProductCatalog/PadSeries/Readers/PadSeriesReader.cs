@@ -12,54 +12,58 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
 
         public async Task<PadSeriesReadModel?> ReadById(Guid id) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id; 
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id; 
                     select * from pads p where p.pad_series_id = @Id;"
-            , new { Id = id })) {
-                var series = reader.Read<PadSeriesModel, BrandModel, PadSeriesReadModel>(
-                    (ps, b) => new PadSeriesReadModel(
-                        ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
-                    )
-                ).ElementAt(0);
+                , new { Id = id })) {
+                    var series = reader.Read<PadSeriesModel, BrandModel, PadSeriesReadModel>(
+                        (ps, b) => new PadSeriesReadModel(
+                            ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
+                        )
+                    ).ElementAt(0);
 
-                if (series == null) {
-                    return null;
+                    if (series == null) {
+                        return null;
+                    }
+
+                    series.Pads = reader.Read<PadModel>().Select(p => new PadReadModel(
+                        p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
+                    )).ToList();
+
+                    return series;
                 }
-
-                series.Pads = reader.Read<PadModel>().Select(p => new PadReadModel(
-                    p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
-                )).ToList();
-
-                return series;
             }
         }
 
         public async Task<List<PadSeriesReadModel>> ReadAll() {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select * from pad_series ps join brands b on ps.brand_id = b.id; 
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select * from pad_series ps join brands b on ps.brand_id = b.id; 
                     select * from pads;"
-            )) {
-                var series = reader.Read<PadSeriesModel, BrandModel, PadSeriesReadModel>(
-                    (ps, b) => new PadSeriesReadModel(
-                        ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
-                    )
-                );
+                )) {
+                    var series = reader.Read<PadSeriesModel, BrandModel, PadSeriesReadModel>(
+                        (ps, b) => new PadSeriesReadModel(
+                            ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
+                        )
+                    );
 
-                var pads = reader.Read<PadModel>();
+                    var pads = reader.Read<PadModel>();
 
-                // Gotta get that O(1) lookup time.
-                var lookup = new Dictionary<Guid, PadSeriesReadModel>(series.Select(s => new KeyValuePair<Guid, PadSeriesReadModel>(s.Id, s)));
+                    // Gotta get that O(1) lookup time.
+                    var lookup = new Dictionary<Guid, PadSeriesReadModel>(series.Select(s => new KeyValuePair<Guid, PadSeriesReadModel>(s.Id, s)));
 
-                foreach (PadModel pad in pads) {
-                    PadSeriesReadModel? s = null;
+                    foreach (PadModel pad in pads) {
+                        PadSeriesReadModel? s = null;
 
-                    if (lookup.TryGetValue(pad.PadSeriesId, out s)) {
-                        var image = pad.ImageName != null ? new DataUrlImage(pad.ImageName, pad.ImageData!) : null;
-                        s.Pads.Add(new PadReadModel(pad.Id, pad.Category, pad.Name, image));
+                        if (lookup.TryGetValue(pad.PadSeriesId, out s)) {
+                            var image = pad.ImageName != null ? new DataUrlImage(pad.ImageName, pad.ImageData!) : null;
+                            s.Pads.Add(new PadReadModel(pad.Id, pad.Category, pad.Name, image));
+                        }
                     }
-                }
 
-                return series.ToList();
+                    return series.ToList();
+                }
             }
         }
     }

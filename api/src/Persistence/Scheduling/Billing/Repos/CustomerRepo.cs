@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -12,8 +13,9 @@ namespace DetailingArsenal.Persistence.Billing {
         public CustomerRepo(IDatabase database) : base(database) { }
 
         public async Task<Customer?> FindById(Guid id) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select c.*, br.* from customers c
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select c.*, br.* from customers c
                     join billing_references br on c.billing_reference_id = br.id
                     where c.id = @Id;
                 
@@ -27,17 +29,19 @@ namespace DetailingArsenal.Persistence.Billing {
                     join billing_references br on pm.billing_reference_id = br.id
                     where c.id = @Id;
                   ",
-                  new {
-                      Id = id
-                  }
-            )) {
-                return Read(reader);
+                      new {
+                          Id = id
+                      }
+                )) {
+                    return Read(reader);
+                }
             }
         }
 
         public async Task<Customer?> FindByBillingId(string billingId) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select c.*, br.* from customers c
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select c.*, br.* from customers c
                     join billing_references br on c.billing_reference_id = br.id
                     where br.billing_id = @BillingId;
                 
@@ -52,17 +56,19 @@ namespace DetailingArsenal.Persistence.Billing {
                     join billing_references br on pm.billing_reference_id = br.id
                     where br.billing_id = @BillingId;
                   ",
-                  new {
-                      BillingId = billingId
-                  }
-            )) {
-                return Read(reader);
+                      new {
+                          BillingId = billingId
+                      }
+                )) {
+                    return Read(reader);
+                }
             }
         }
 
         public async Task<Customer?> FindByUser(User user) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select c.*, br.* from customers c
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select c.*, br.* from customers c
                     join billing_references br on c.billing_reference_id = br.id
                     where c.user_id = @Id;
                   
@@ -76,72 +82,79 @@ namespace DetailingArsenal.Persistence.Billing {
                     join billing_references br on pm.billing_reference_id = br.id
                     where c.user_id = @Id; 
                   ",
-                user
-            )) {
-                return Read(reader);
+                    user
+                )) {
+                    return Read(reader);
+                }
             }
         }
 
         public async Task Add(Customer customer) {
-            using (var t = Connection.BeginTransaction()) {
-                // Insert customer parent record
-                var customerBillingReference = new BillingReferenceModel() {
-                    Id = Guid.NewGuid(),
-                    BillingId = customer.BillingReference.BillingId,
-                    Type = BillingReferenceType.Customer
-                };
+            using (var conn = OpenConnection()) {
+                using (var t = conn.BeginTransaction()) {
+                    // Insert customer parent record
+                    var customerBillingReference = new BillingReferenceModel() {
+                        Id = Guid.NewGuid(),
+                        BillingId = customer.BillingReference.BillingId,
+                        Type = BillingReferenceType.Customer
+                    };
 
-                await Connection.ExecuteAsync(
-                    @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
-                    customerBillingReference
-                );
+                    await conn.ExecuteAsync(
+                        @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
+                        customerBillingReference
+                    );
 
-                await Connection.ExecuteAsync(
-                    @"insert into customers (id, user_id, billing_reference_id) values (@Id, @UserId, @BillingReferenceId);",
-                    new CustomerModel() {
-                        Id = customer.Id,
-                        UserId = customer.UserId,
-                        BillingReferenceId = customerBillingReference.Id
-                    }
-                );
+                    await conn.ExecuteAsync(
+                        @"insert into customers (id, user_id, billing_reference_id) values (@Id, @UserId, @BillingReferenceId);",
+                        new CustomerModel() {
+                            Id = customer.Id,
+                            UserId = customer.UserId,
+                            BillingReferenceId = customerBillingReference.Id
+                        }
+                    );
 
-                await InsertPaymentMethods(customer.Id, customer.PaymentMethods);
-                await InsertSubscription(customer.Id, customer.Subscription);
+                    await InsertPaymentMethods(conn, customer.Id, customer.PaymentMethods);
+                    await InsertSubscription(conn, customer.Id, customer.Subscription);
 
-                t.Commit();
+                    t.Commit();
+                }
             }
         }
 
         public async Task Update(Customer customer) {
-            using (var t = Connection.BeginTransaction()) {
-                /*
-                * No columns on the customer record to update.
-                */
+            using (var conn = OpenConnection()) {
+                using (var t = conn.BeginTransaction()) {
+                    /*
+                    * No columns on the customer record to update.
+                    */
 
-                await InsertPaymentMethods(customer.Id, customer.PaymentMethods, true);
-                await InsertSubscription(customer.Id, customer.Subscription, true);
+                    await InsertPaymentMethods(conn, customer.Id, customer.PaymentMethods, true);
+                    await InsertSubscription(conn, customer.Id, customer.Subscription, true);
 
-                t.Commit();
+                    t.Commit();
+                }
             }
         }
 
         public async Task Delete(Customer customer) {
-            using (var t = Connection.BeginTransaction()) {
-                // Delete subscription
-                var oldSubscription = await Connection.QueryFirstOrDefaultAsync<SubscriptionModel>("select * from subscriptions where customer_id = @Id;", customer);
-                await Connection.ExecuteAsync(@"delete from subscriptions where id = @Id;", oldSubscription);
-                await Connection.ExecuteAsync(@"delete from billing_references where id = @BillingReferenceId;", oldSubscription);
+            using (var conn = OpenConnection()) {
+                using (var t = conn.BeginTransaction()) {
+                    // Delete subscription
+                    var oldSubscription = await conn.QueryFirstOrDefaultAsync<SubscriptionModel>("select * from subscriptions where customer_id = @Id;", customer);
+                    await conn.ExecuteAsync(@"delete from subscriptions where id = @Id;", oldSubscription);
+                    await conn.ExecuteAsync(@"delete from billing_references where id = @BillingReferenceId;", oldSubscription);
 
-                // Delete any payment methods
-                var oldPaymentMethods = await Connection.QueryAsync<PaymentMethodModel>("select * from payment_methods where customer_id = @Id;", customer);
-                await Connection.ExecuteAsync("delete from payment_methods where customer_id = @Id", customer);
-                await Connection.ExecuteAsync("delete from billing_references where id = @BillingReferenceId;", oldPaymentMethods.ToList());
+                    // Delete any payment methods
+                    var oldPaymentMethods = await conn.QueryAsync<PaymentMethodModel>("select * from payment_methods where customer_id = @Id;", customer);
+                    await conn.ExecuteAsync("delete from payment_methods where customer_id = @Id", customer);
+                    await conn.ExecuteAsync("delete from billing_references where id = @BillingReferenceId;", oldPaymentMethods.ToList());
 
-                // Delete customer (parent) last
-                await Connection.ExecuteAsync(@"delete from customers where id = @Id", customer);
-                await Connection.ExecuteAsync(@"delete from billing_references where billing_id = @BillingId", customer.BillingReference);
+                    // Delete customer (parent) last
+                    await conn.ExecuteAsync(@"delete from customers where id = @Id", customer);
+                    await conn.ExecuteAsync(@"delete from billing_references where billing_id = @BillingId", customer.BillingReference);
 
-                t.Commit();
+                    t.Commit();
+                }
             }
         }
 
@@ -190,12 +203,12 @@ namespace DetailingArsenal.Persistence.Billing {
             return customer;
         }
 
-        async Task InsertPaymentMethods(Guid customerId, List<PaymentMethod> paymentMethods, bool deleteExisting = false) {
+        async Task InsertPaymentMethods(DbConnection conn, Guid customerId, List<PaymentMethod> paymentMethods, bool deleteExisting = false) {
             if (deleteExisting) {
-                var oldPaymentMethods = await Connection.QueryAsync<PaymentMethodModel>("select * from payment_methods where customer_id = @Id;", new { Id = customerId });
+                var oldPaymentMethods = await conn.QueryAsync<PaymentMethodModel>("select * from payment_methods where customer_id = @Id;", new { Id = customerId });
 
-                await Connection.ExecuteAsync("delete from payment_methods where customer_id = @Id", new { Id = customerId });
-                await Connection.ExecuteAsync("delete from billing_references where id = @BillingReferenceId;", oldPaymentMethods.ToList());
+                await conn.ExecuteAsync("delete from payment_methods where customer_id = @Id", new { Id = customerId });
+                await conn.ExecuteAsync("delete from billing_references where id = @BillingReferenceId;", oldPaymentMethods.ToList());
             }
 
             if (paymentMethods.Count > 0) {
@@ -224,12 +237,12 @@ namespace DetailingArsenal.Persistence.Billing {
                     pms.Add(pModel);
                 }
 
-                await Connection.ExecuteAsync(
+                await conn.ExecuteAsync(
                     @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
                     pmbrs
                 );
 
-                await Connection.ExecuteAsync(
+                await conn.ExecuteAsync(
                     @"insert into payment_methods (
                             id, 
                             customer_id, 
@@ -254,11 +267,11 @@ namespace DetailingArsenal.Persistence.Billing {
             }
         }
 
-        async Task InsertSubscription(Guid customerId, Subscription? subscription, bool deleteExisting = false) {
+        async Task InsertSubscription(DbConnection conn, Guid customerId, Subscription? subscription, bool deleteExisting = false) {
             if (deleteExisting) {
-                var oldSubscription = await Connection.QueryFirstOrDefaultAsync<SubscriptionModel>("select * from subscriptions where customer_id = @Id;", new { Id = customerId });
-                await Connection.ExecuteAsync(@"delete from subscriptions where id = @Id;", oldSubscription);
-                await Connection.ExecuteAsync(@"delete from billing_references where id = @BillingReferenceId;", oldSubscription);
+                var oldSubscription = await conn.QueryFirstOrDefaultAsync<SubscriptionModel>("select * from subscriptions where customer_id = @Id;", new { Id = customerId });
+                await conn.ExecuteAsync(@"delete from subscriptions where id = @Id;", oldSubscription);
+                await conn.ExecuteAsync(@"delete from billing_references where id = @BillingReferenceId;", oldSubscription);
             }
 
             // Insert subscription (if applicable)
@@ -269,12 +282,12 @@ namespace DetailingArsenal.Persistence.Billing {
                     Type = BillingReferenceType.Subscription
                 };
 
-                await Connection.ExecuteAsync(
+                await conn.ExecuteAsync(
                     @"insert into billing_references (id, billing_id, type) values (@Id, @BillingId, @Type);",
                     subBillingReference
                 );
 
-                await Connection.ExecuteAsync(
+                await conn.ExecuteAsync(
                     @"insert into subscriptions (
                             id, 
                             plan_id, 

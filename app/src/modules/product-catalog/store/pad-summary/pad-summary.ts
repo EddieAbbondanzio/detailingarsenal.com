@@ -13,6 +13,7 @@ export interface PadSummary {
     stars?: Stars;
     reviewCount: number;
     material: string;
-    thickness: number,
+    diameter: number;
+    thickness: number;
     recommendedFor: string[];
 };

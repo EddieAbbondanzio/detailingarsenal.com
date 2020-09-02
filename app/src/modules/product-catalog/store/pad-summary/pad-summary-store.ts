@@ -11,6 +11,7 @@ class PadSummaryStore extends InitableModule {
             id: '1',
             label: '5.5 Inch Lake Country CCS White Polishing',
             category: PadCategory.Polish,
+            diameter: 5,
             thickness: 11 / 16,
             material: PadMaterial.Foam,
             stars: 3,

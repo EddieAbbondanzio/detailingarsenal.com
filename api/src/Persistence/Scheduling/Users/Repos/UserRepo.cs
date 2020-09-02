@@ -9,42 +9,54 @@ namespace DetailingArsenal.Persistence.Users {
         public UserRepo(IDatabase database) : base(database) { }
 
         public async Task<User?> FindById(Guid id) {
-            return await Connection.QueryFirstOrDefaultAsync<User>(
-                @"select * from users where id = @Id", new { Id = id }
-            );
+            using (var conn = OpenConnection()) {
+                return await conn.QueryFirstOrDefaultAsync<User>(
+                    @"select * from users where id = @Id", new { Id = id }
+                );
+            }
         }
 
         public async Task<User?> FindByAuth0Id(string id) {
-            return await Connection.QueryFirstOrDefaultAsync<User>(
-                @"select * from users where auth_0_id = @Id", new { Id = id }
-            );
+            using (var conn = OpenConnection()) {
+                return await conn.QueryFirstOrDefaultAsync<User>(
+                    @"select * from users where auth_0_id = @Id", new { Id = id }
+                );
+            }
         }
 
         public async Task<User?> FindByEmail(string email) {
-            return await Connection.QueryFirstOrDefaultAsync<User>(
-                @"select * from users where email = @Email", new { Email = email }
-            );
+            using (var conn = OpenConnection()) {
+                return await conn.QueryFirstOrDefaultAsync<User>(
+                    @"select * from users where email = @Email", new { Email = email }
+                );
+            }
         }
 
         public async Task Add(User entity) {
-            await Connection.ExecuteAsync(
-                @"insert into users (id, auth_0_id, name, email, joined_date) VALUES (@Id, @Auth0Id, @Name, @Email, @JoinedDate);",
-                entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"insert into users (id, auth_0_id, name, email, joined_date) VALUES (@Id, @Auth0Id, @Name, @Email, @JoinedDate);",
+                    entity
+                );
+            }
         }
 
         public async Task Update(User entity) {
-            await Connection.ExecuteAsync(
-                @"update users set auth_0_id = @Auth0Id, name = @Name, email = @Email, joined_date = @JoinedDate where id = @Id;",
-                entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"update users set auth_0_id = @Auth0Id, name = @Name, email = @Email, joined_date = @JoinedDate where id = @Id;",
+                    entity
+                );
+            }
         }
 
         public async Task Delete(User entity) {
-            await Connection.ExecuteAsync(
-                @"delete from users where id = @Id;",
-                entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"delete from users where id = @Id;",
+                    entity
+                );
+            }
         }
     }
 }

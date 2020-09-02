@@ -16,7 +16,7 @@
             <b-table-column v-slot="props" label="Name" field="label">
                 <router-link
                     class="label-link has-text-weight-bold"
-                    :to="{name: 'pad', params: {id: props.row.id}}"
+                    :to="{name: 'pad', params: {id: props.row.id}, query: {size: props.row.size }}"
                 >{{ props.row.label }}</router-link>
             </b-table-column>
             <b-table-column

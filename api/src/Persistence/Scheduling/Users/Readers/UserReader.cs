@@ -9,8 +9,9 @@ namespace DetailingArsenal.Persistence.Users {
         public UserReader(IDatabase database) : base(database) { }
 
         public async Task<UserReadModel> ReadById(Guid id) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"select * from users where id = @Id;
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"select * from users where id = @Id;
                   
                   select count(*) from users u 
                     join user_roles ur on u.id = ur.user_id
@@ -24,13 +25,14 @@ namespace DetailingArsenal.Persistence.Users {
                     join permissions p on rp.permission_id = p.id 
                     where u.id = @Id;
                 ",
-                new { Id = id }
-            )) {
-                var user = reader.ReadFirst();
-                var isAdmin = reader.ReadFirst<bool>();
-                var permissions = reader.Read().Select(r => new UserPermissionReadModel(r.action, r.scope));
+                    new { Id = id }
+                )) {
+                    var user = reader.ReadFirst();
+                    var isAdmin = reader.ReadFirst<bool>();
+                    var permissions = reader.Read().Select(r => new UserPermissionReadModel(r.action, r.scope));
 
-                return new UserReadModel(user.email, user.name, user.joined_date, isAdmin, permissions.ToList());
+                    return new UserReadModel(user.email, user.name, user.joined_date, isAdmin, permissions.ToList());
+                }
             }
         }
     }

@@ -12,33 +12,43 @@ namespace DetailingArsenal.Persistence.Clients {
         public ClientRepo(IDatabase database) : base(database) { }
 
         public async Task<Client?> FindById(Guid id) {
-            return await Connection.QueryFirstOrDefaultAsync<Client>(
-                @"select * from clients where id = @Id", new { Id = id }
-            );
+            using (var conn = OpenConnection()) {
+                return await conn.QueryFirstOrDefaultAsync<Client>(
+                    @"select * from clients where id = @Id", new { Id = id }
+                );
+            }
         }
 
         public async Task<List<Client>> FindByUser(User user) {
-            return (await Connection.QueryAsync<Client>(
-                @"select * from clients where user_id = @Id;", user
-            )).ToList();
+            using (var conn = OpenConnection()) {
+                return (await conn.QueryAsync<Client>(
+                    @"select * from clients where user_id = @Id;", user
+                )).ToList();
+            }
         }
 
         public async Task Add(Client entity) {
-            await Connection.ExecuteAsync(
-                @"insert into clients (id, user_id, name, phone, email) values (@Id, @UserId, @Name, @Phone, @Email);", entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"insert into clients (id, user_id, name, phone, email) values (@Id, @UserId, @Name, @Phone, @Email);", entity
+                );
+            }
         }
 
         public async Task Update(Client entity) {
-            await Connection.ExecuteAsync(
-                @"update clients set name = @Name, phone = @Phone, email = @Email where id = @Id;", entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"update clients set name = @Name, phone = @Phone, email = @Email where id = @Id;", entity
+                );
+            }
         }
 
         public async Task Delete(Client entity) {
-            await Connection.ExecuteAsync(
-                @"delete from clients where id = @Id", entity
-            );
+            using (var conn = OpenConnection()) {
+                await conn.ExecuteAsync(
+                    @"delete from clients where id = @Id", entity
+                );
+            }
         }
     }
 }

@@ -9,8 +9,9 @@ namespace DetailingArsenal.Persistence.Billing {
         public CustomerReader(IDatabase database) : base(database) { }
 
         public async Task<CustomerReadModel> ReadForUser(User user) {
-            using (var reader = await Connection.QueryMultipleAsync(
-                @"
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"
                 select sp.name as name, 
                 s.status as status, 
                 s.trial_start as trial_start, 
@@ -32,52 +33,53 @@ namespace DetailingArsenal.Persistence.Billing {
                 join customers c on c.id = pm.customer_id
                 where c.user_id = @Id;
                 ",
-                user
-            )) {
+                    user
+                )) {
 
-                // Attempt to parse in susbcription
-                var rawSubscription = reader.ReadFirstOrDefault();
-                SubscriptionReadModel? subscription = null;
+                    // Attempt to parse in susbcription
+                    var rawSubscription = reader.ReadFirstOrDefault();
+                    SubscriptionReadModel? subscription = null;
 
-                if (rawSubscription != null) {
-                    subscription = new SubscriptionReadModel(
-                        rawSubscription.name,
-                        new SubscriptionPlanPriceReadModel(
-                            rawSubscription.price,
-                            rawSubscription.price_interval,
-                            rawSubscription.price_billing_id
-                        ),
-                        rawSubscription.status,
-                        new PeriodReadModel(
-                            rawSubscription.trial_start,
-                            rawSubscription.trial_end
-                        ),
-                        new PeriodReadModel(
-                            rawSubscription.period_start,
-                            rawSubscription.period_end
-                        ),
-                        rawSubscription.cancelling_at_period_end
+                    if (rawSubscription != null) {
+                        subscription = new SubscriptionReadModel(
+                            rawSubscription.name,
+                            new SubscriptionPlanPriceReadModel(
+                                rawSubscription.price,
+                                rawSubscription.price_interval,
+                                rawSubscription.price_billing_id
+                            ),
+                            rawSubscription.status,
+                            new PeriodReadModel(
+                                rawSubscription.trial_start,
+                                rawSubscription.trial_end
+                            ),
+                            new PeriodReadModel(
+                                rawSubscription.period_start,
+                                rawSubscription.period_end
+                            ),
+                            rawSubscription.cancelling_at_period_end
+                        );
+                    }
+
+                    // Attempt to parse in payment methods
+                    var rawPaymentMethods = reader.Read();
+                    List<PaymentMethodReadModel> paymentMethods = new List<PaymentMethodReadModel>();
+
+                    foreach (var raw in rawPaymentMethods) {
+                        paymentMethods.Add(new PaymentMethodReadModel(
+                            raw.brand,
+                            raw.last_4,
+                            raw.is_default,
+                            raw.expiration_month,
+                            raw.expiration_year
+                        ));
+                    }
+
+                    return new CustomerReadModel(
+                        subscription,
+                        paymentMethods
                     );
                 }
-
-                // Attempt to parse in payment methods
-                var rawPaymentMethods = reader.Read();
-                List<PaymentMethodReadModel> paymentMethods = new List<PaymentMethodReadModel>();
-
-                foreach (var raw in rawPaymentMethods) {
-                    paymentMethods.Add(new PaymentMethodReadModel(
-                        raw.brand,
-                        raw.last_4,
-                        raw.is_default,
-                        raw.expiration_month,
-                        raw.expiration_year
-                    ));
-                }
-
-                return new CustomerReadModel(
-                    subscription,
-                    paymentMethods
-                );
             }
         }
     }

@@ -11,20 +11,24 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public BrandReader(IDatabase database) : base(database) { }
 
         public async Task<BrandReadModel?> ReadById(Guid id) {
-            var brand = await Connection.QueryFirstOrDefaultAsync<BrandReadModel>(
-                @"select id, name from brands where id = @Id;",
-                new { Id = id }
-            );
+            using (var conn = OpenConnection()) {
+                var brand = await conn.QueryFirstOrDefaultAsync<BrandReadModel>(
+                    @"select id, name from brands where id = @Id;",
+                    new { Id = id }
+                );
 
-            return brand;
+                return brand;
+            }
         }
 
         public async Task<List<BrandReadModel>> ReadAll() {
-            var brands = await Connection.QueryAsync<BrandReadModel>(
-                @"select id, name from brands;"
-            );
+            using (var conn = OpenConnection()) {
+                var brands = await conn.QueryAsync<BrandReadModel>(
+                    @"select id, name from brands;"
+                );
 
-            return brands.ToList();
+                return brands.ToList();
+            }
         }
     }
 }
