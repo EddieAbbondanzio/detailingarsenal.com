@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import ProductCatalogNavbar from '@/modules/product-catalog/components/product-catalog-navbar.vue';
+import ProductCatalogNavbar from '@/modules/product-catalog/core/components/product-catalog-navbar.vue';
 
 @Component({
     components: {

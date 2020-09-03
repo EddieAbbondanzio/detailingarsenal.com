@@ -120,9 +120,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Pad, PadSeries } from '@/api';
 import padStore from '../store/pad/pad-store';
-import Stars from '@/modules/product-catalog/components/stars.vue';
-import PadCutBar from '@/modules/product-catalog/components/pad-cut-bar.vue';
-import PadFinishBar from '@/modules/product-catalog/components/pad-finish-bar.vue';
+import Stars from '@/modules/product-catalog/core/components/stars.vue';
+import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
+import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
 
 @Component({
     components: {

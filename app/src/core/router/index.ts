@@ -5,7 +5,7 @@ import { settings } from '@/modules/scheduling/settings/router/settings';
 import { user } from '@/modules/scheduling/user/router/user';
 import { clients } from '@/modules/scheduling/clients/router/clients';
 import { authGuard } from '@/core/router/auth-guard';
-import { productCatalog } from '@/modules/product-catalog/router/product-catalog';
+import { productCatalog } from '@/modules/product-catalog/pads/router/product-catalog';
 import { admin } from '@/modules/admin/core/router/admin';
 import { schedulingAdmin } from '@/modules/admin/scheduling/router/scheduling-admin';
 import { productCatalogAdmin } from '@/modules/admin/product-catalog/router/product-catalog-admin';
@@ -32,7 +32,7 @@ const routes: RouteConfig[] = [
     },
     {
         path: '/product-catalog',
-        component: () => import('@/modules/product-catalog/views/core/product-catalog.vue'),
+        component: () => import('@/modules/product-catalog/core/views/product-catalog.vue'),
         children: [...productCatalog]
     },
     {

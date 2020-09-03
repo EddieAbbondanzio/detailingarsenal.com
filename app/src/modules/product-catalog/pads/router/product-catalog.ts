@@ -4,12 +4,12 @@ export const productCatalog = [
     {
         path: 'pads/:id',
         name: 'pad',
-        component: () => import('@/modules/product-catalog/views/pad.vue')
+        component: () => import('@/modules/product-catalog/pads/views/pad.vue')
     },
     {
         path: 'pads',
         name: 'pads',
-        component: () => import('@/modules/product-catalog/views/pads.vue')
+        component: () => import('@/modules/product-catalog/pads/views/pads.vue')
     },
 
 ];

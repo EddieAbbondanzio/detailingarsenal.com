@@ -76,14 +76,14 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { api, Pad, PadCategory } from '@/api';
 import { displayLoading } from '@/core';
-import PadFilterControl from '@/modules/product-catalog/components/pad-filter-control.vue';
+import PadFilterControl from '@/modules/product-catalog/pads/components/pad-filter-control.vue';
 import store from '@/core/store';
 import { MutationPayload } from 'vuex';
 import PageSidebar from '@/core/components/page/page-sidebar.vue';
-import PadCutBar from '@/modules/product-catalog/components/pad-cut-bar.vue';
-import PadFinishBar from '@/modules/product-catalog/components/pad-finish-bar.vue';
-import padSummaryStore from '@/modules/product-catalog/store/pad-summary/pad-summary-store';
-import Stars from '@/modules/product-catalog/components/stars.vue';
+import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
+import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
+import padSummaryStore from '@/modules/product-catalog/pads/store/pad-summary/pad-summary-store';
+import Stars from '@/modules/product-catalog/core/components/stars.vue';
 
 @Component({
     components: {

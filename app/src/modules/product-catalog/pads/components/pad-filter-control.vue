@@ -45,7 +45,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { PadCategory, Pad } from '@/api';
-import { padCategory } from '@/modules/product-catalog/filters/pad-category';
+import { padCategory } from '@/modules/product-catalog/pads/filters/pad-category';
 import { FilterType } from '../store/filter-type';
 import { Filter } from '../store/filter';
 import store from '@/core/store';
