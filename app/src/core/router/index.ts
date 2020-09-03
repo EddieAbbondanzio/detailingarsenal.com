@@ -31,14 +31,10 @@ const routes: RouteConfig[] = [
         component: () => import('@/core/views/goodbye.vue')
     },
     {
-        path: '/product-catalog',
-        component: () => import('@/modules/product-catalog/core/views/product-catalog.vue'),
-        children: [...productCatalog]
-    },
-    {
         path: '*',
         component: () => import('@/core/views/404.vue')
-    }
+    },
+    ...productCatalog
 ];
 
 const router = new VueRouter({
