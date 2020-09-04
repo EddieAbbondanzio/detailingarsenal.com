@@ -11,6 +11,7 @@ export const adminGuard: NavigationGuard = async (to, from, next) => {
             if (userStore.user.isAdmin) {
                 return next();
             } else {
+                // Redirect to root if user is not an admin
                 return next('/');
             }
         } else {

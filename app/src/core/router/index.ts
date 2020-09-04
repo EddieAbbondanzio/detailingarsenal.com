@@ -7,8 +7,6 @@ import { clients } from '@/modules/scheduling/clients/router/clients';
 import { authGuard } from '@/core/router/auth-guard';
 import { productCatalog } from '@/modules/product-catalog/pads/router/product-catalog';
 import { admin } from '@/modules/admin/core/router/admin';
-import { schedulingAdmin } from '@/modules/admin/scheduling/router/scheduling-admin';
-import { productCatalogAdmin } from '@/modules/admin/product-catalog/router/product-catalog-admin';
 
 Vue.use(VueRouter);
 
@@ -21,20 +19,16 @@ const routes: RouteConfig[] = [
         beforeEnter: authGuard
     },
     {
-        path: '/admin',
-        component: () => import('@/core/views/private.vue'),
-        children: [...admin, ...productCatalogAdmin, ...schedulingAdmin],
-        // beforeEnter: authGuard // TODO: Refactor this. We need both authGuard, and adminGuard else user is never loaded
-    },
-    {
         path: '/goodbye',
         component: () => import('@/core/views/goodbye.vue')
     },
+    ...admin,
+    ...productCatalog,
     {
+        // Wild card always has to go last.
         path: '*',
         component: () => import('@/core/views/404.vue')
     },
-    ...productCatalog
 ];
 
 const router = new VueRouter({
