@@ -5,7 +5,7 @@ import { settings } from '@/modules/scheduling/settings/router/settings';
 import { user } from '@/modules/user/router/user';
 import { clients } from '@/modules/scheduling/clients/router/clients';
 import { authGuard } from '@/core/router/auth-guard';
-import { productCatalog } from '@/modules/product-catalog/pads/router/product-catalog';
+import { productCatalogRoutes } from '@/modules/product-catalog/core/router/product-catalog-routes';
 import { admin } from '@/modules/admin/core/router/admin';
 
 Vue.use(VueRouter);
@@ -23,7 +23,7 @@ const routes: RouteConfig[] = [
         component: () => import('@/core/views/goodbye.vue')
     },
     ...admin,
-    ...productCatalog,
+    ...productCatalogRoutes,
     {
         // Wild card always has to go last.
         path: '*',
