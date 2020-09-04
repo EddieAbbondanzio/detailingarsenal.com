@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import { calendar } from '@/modules/scheduling/calendar/router/calendar';
 import { settings } from '@/modules/scheduling/settings/router/settings';
-import { user } from '@/modules/scheduling/user/router/user';
+import { user } from '@/modules/user/router/user';
 import { clients } from '@/modules/scheduling/clients/router/clients';
 import { authGuard } from '@/core/router/auth-guard';
 import { productCatalog } from '@/modules/product-catalog/pads/router/product-catalog';

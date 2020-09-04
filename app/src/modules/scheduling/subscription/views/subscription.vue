@@ -260,10 +260,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import billingStore from '../store/billing-store';
 import { Subscription as SubscriptionObj, Customer } from '../../../../api';
 import moment from 'moment';
 import { displayLoading } from '../../../../core';
+import billingStore from '@/modules/user/store/billing-store';
 
 @Component
 export default class Subscription extends Vue {

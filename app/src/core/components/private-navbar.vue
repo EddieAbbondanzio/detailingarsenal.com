@@ -75,8 +75,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import UserWidget from '@/modules/scheduling/user/components/user-widget.vue';
-import userStore from '@/modules/scheduling/user/store/user-store';
+import UserWidget from '@/modules/user/components/user-widget.vue';
+import userStore from '@/modules/user/store/user-store';
 
 @Component({
     name: 'private-navbar',

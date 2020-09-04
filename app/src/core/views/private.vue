@@ -23,7 +23,7 @@ import PrivateNavbar from '@/core/components/private-navbar.vue';
 import PrivateFooter from '@/core/components/private-footer.vue';
 import { getModule } from 'vuex-module-decorators';
 import LoadingSplash from '@/core/components/loading-splash.vue';
-import userStore from '@/modules/scheduling/user/store/user-store';
+import userStore from '@/modules/user/store/user-store';
 import { loadStripeJs } from '@/plugins/stripe';
 
 /**
