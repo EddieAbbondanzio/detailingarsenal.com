@@ -24,7 +24,7 @@ const routes: RouteConfig[] = [
         path: '/admin',
         component: () => import('@/core/views/private.vue'),
         children: [...admin, ...productCatalogAdmin, ...schedulingAdmin],
-        beforeEnter: authGuard // TODO: Refactor this. We need both authGuard, and adminGuard else user is never loaded
+        // beforeEnter: authGuard // TODO: Refactor this. We need both authGuard, and adminGuard else user is never loaded
     },
     {
         path: '/goodbye',
