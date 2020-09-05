@@ -1,10 +1,10 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header title="Profile" description="Personal information">
+            <page-header title="User " description="Personal information">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Account" :to="{ name: 'account' }" />
+                        <breadcrumb name="User" :to="{ name: 'user' }" />
                         <breadcrumb name="Profile" :to="{ name: 'profile'}" active="true" />
                     </breadcrumb-trail>
                 </template>
@@ -37,8 +37,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import userStore from '../store/user-store';
 import { displayLoading } from '@/core';
+import userStore from '../../store/user-store';
 
 @Component
 export default class Profile extends Vue {

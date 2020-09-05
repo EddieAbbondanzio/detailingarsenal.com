@@ -34,6 +34,8 @@ import ListItem from './components/layout/list-item.vue';
 import Phone from './components/elements/phone.vue';
 import Email from './components/elements/email.vue';
 import EditDeleteDropdown from './components/dropdowns/edit-delete-dropdown.vue';
+import Navbar from '@/core/components/navigation/navbar.vue';
+import NavbarItem from '@/core/components/navigation/navbar-item.vue';
 
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { disableAll } from '@/core/directives/disable-all';
@@ -72,6 +74,8 @@ export default {
         Vue.component('edit-delete-dropdown', EditDeleteDropdown);
         Vue.component(Phone.name, Phone);
         Vue.component(Email.name, Email);
+        Vue.component(Navbar.name, Navbar);
+        Vue.component(NavbarItem.name, NavbarItem);
 
         Vue.filter('currency', currency);
         Vue.filter('duration', duration);

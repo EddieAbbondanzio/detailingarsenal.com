@@ -2,27 +2,22 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import { calendar } from '@/modules/scheduling/calendar/router/calendar';
 import { settings } from '@/modules/scheduling/settings/router/settings';
-import { user } from '@/modules/user/router/user';
 import { clients } from '@/modules/scheduling/clients/router/clients';
 import { authGuard } from '@/core/router/auth-guard';
 import { productCatalogRoutes } from '@/modules/product-catalog/core/router/product-catalog-routes';
-import { admin } from '@/modules/admin/core/router/admin';
+import { adminRoutes } from '@/modules/admin/core/router/admin-routes';
+import { profileRoutes } from '@/modules/user/profile/router/profile-routes';
+import { schedulingRoutes } from '@/modules/scheduling/core/router/scheduling-routes';
 
 Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
-    {
-        path: '/scheduling',
-        component: () => import('@/core/views/private.vue'),
-        children: [...calendar, ...settings, ...user, ...clients],
-        // redirect: 'calendar',
-        beforeEnter: authGuard
-    },
+    ...schedulingRoutes,
     {
         path: '/goodbye',
         component: () => import('@/core/views/goodbye.vue')
     },
-    ...admin,
+    ...adminRoutes,
     ...productCatalogRoutes,
     {
         // Wild card always has to go last.

@@ -6,7 +6,7 @@
                     class="is-flex is-flex-row is-align-items-center"
                     exact
                     tag="a"
-                    @click="onBrandClick"
+                    :to="brandTo"
                 >
                     <h1
                         class="is-size-5-mobile is-size-4-tablet has-font-family-pacifico"
@@ -16,31 +16,7 @@
 
             <!-- Only shows on desktop and bigger -->
             <template slot="start">
-                <b-navbar-item
-                    class="is-flex-tablet is-hidden-mobile"
-                    exact
-                    tag="router-link"
-                    :to="{ name: 'calendar' }"
-                >Calendar</b-navbar-item>
-                <b-navbar-item
-                    class="is-flex-tablet is-hidden-mobile"
-                    exact
-                    tag="router-link"
-                    :to="{ name: 'clients' }"
-                >Clients</b-navbar-item>
-                <b-navbar-item
-                    class="is-flex-tablet is-hidden-mobile"
-                    exact
-                    tag="router-link"
-                    :to="{ name: 'settings' }"
-                >Settings</b-navbar-item>
-                <b-navbar-item
-                    class="is-flex-tablet is-hidden-mobile"
-                    exact
-                    tag="router-link"
-                    :to="{ name: 'adminPanel' }"
-                    v-if="isAdmin"
-                >Admin</b-navbar-item>
+                <slot></slot>
             </template>
 
             <template slot="end">
@@ -75,16 +51,16 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import UserWidget from '@/modules/user/components/user-widget.vue';
+import UserWidget from '@/modules/user/core/components/user-widget.vue';
 import userStore from '@/modules/user/store/user-store';
 
 @Component({
-    name: 'private-navbar',
+    name: 'navbar',
     components: {
         UserWidget
     }
 })
-export default class PrivateNavbar extends Vue {
+export default class Navbar extends Vue {
     get isLoading() {
         return userStore.isLoading;
     }
@@ -97,14 +73,11 @@ export default class PrivateNavbar extends Vue {
         return userStore.user.isAdmin;
     }
 
+    @Prop({ default: '/' })
+    brandTo!: Location;
+
     public async onLoginClick() {
         await userStore.login();
-    }
-
-    public async onBrandClick() {
-        if (this.$route.name != 'calendar') {
-            await this.$router.push({ name: 'calendar' });
-        }
     }
 }
 </script>

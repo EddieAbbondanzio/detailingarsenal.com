@@ -4,10 +4,10 @@ import { adminGuard } from '@/modules/admin/core/router/admin-guard';
 import { schedulingAdmin } from '../../scheduling/router/scheduling-admin';
 import { productCatalogAdmin } from '../../product-catalog/router/product-catalog-admin';
 
-const adminRoutes: RouteConfig[] = [
+const a: RouteConfig[] = [
     {
         path: '/admin',
-        component: () => import('@/core/views/private.vue'),
+        component: () => import('@/modules/admin/core/views/admin-parent-view.vue'),
         children: [
             {
                 path: '',
@@ -19,7 +19,7 @@ const adminRoutes: RouteConfig[] = [
     },
 ];
 
-export const admin = adminRoutes.map(a => {
+export const adminRoutes = a.map(a => {
     a.beforeEnter = adminGuard;
     return a;
 });

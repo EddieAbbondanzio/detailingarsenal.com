@@ -4,7 +4,7 @@
             <page-header title="Profile" description="Edit personal information">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Account" :to="{ name: 'account' }" />
+                        <breadcrumb name="User" :to="{ name: 'user' }" />
                         <breadcrumb name="Profile" :to="{ name: 'profile' }" />
                         <breadcrumb name="Edit" :to="{ name: 'editProfile' }" :active="true" />
                     </breadcrumb-trail>
@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { toast, displayLoading } from '@/core';
-import userStore from '../store/user-store';
+import userStore from '../../store/user-store';
 
 @Component
 export default class EditProfile extends Vue {

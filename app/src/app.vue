@@ -6,6 +6,16 @@
 </template>
 
 <style lang="sass">
+.app-content
+    overflow-y: hidden
+    display: flex
+    flex-direction: column
+    flex-grow: 1
+
++touch
+    .app-content
+        margin-bottom: 50px
+
 // Shift toasts above footer nav bar on mobile
 .notices.is-bottom
     padding-bottom: 64px
