@@ -8,6 +8,7 @@ import { productCatalogRoutes } from '@/modules/product-catalog/core/router/prod
 import { adminRoutes } from '@/modules/admin/core/router/admin-routes';
 import { profileRoutes } from '@/modules/user/profile/router/profile-routes';
 import { schedulingRoutes } from '@/modules/scheduling/core/router/scheduling-routes';
+import { userRoutes } from '@/modules/user/core/router/user-routes';
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,7 @@ const routes: RouteConfig[] = [
         path: '/goodbye',
         component: () => import('@/core/views/goodbye.vue')
     },
+    ...userRoutes,
     ...adminRoutes,
     ...productCatalogRoutes,
     {

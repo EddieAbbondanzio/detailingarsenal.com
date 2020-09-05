@@ -4,6 +4,7 @@
             <navbar-item :to="{ name: 'calendar' }">Calendar</navbar-item>
             <navbar-item :to="{ name: 'clients' }">Clients</navbar-item>
             <navbar-item :to="{ name: 'settings' }">Settings</navbar-item>
+            <navbar-item :to="{ name: 'subscription' }">Subscription</navbar-item>
         </navbar>
         <div class="app-content">
             <router-view></router-view>
