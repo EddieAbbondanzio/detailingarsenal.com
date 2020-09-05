@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="isAuthenticated">
         <b-dropdown aria-role="list" position="is-bottom-left">
             <button class="button is-primary" slot="trigger">
                 <b-icon icon="account" size="is-medium" type="is-light" class="has-padding-all-3"></b-icon>
@@ -40,6 +40,15 @@
             </b-dropdown-item>
         </b-dropdown>
     </div>
+    <div class="has-margin-right-2-mobile" v-else>
+        <b-button
+            type="is-success"
+            class="has-margin-right-2"
+            :to="{name: 'signUp'}"
+            tag="router-link"
+        >Sign up</b-button>
+        <b-button type="is-info" tag="router-link" :to="{name: 'login'}">Login</b-button>
+    </div>
 </template>
 
 <script lang="ts">
@@ -50,12 +59,20 @@ import userStore from '../../store/user-store';
     name: 'user-widget'
 })
 export default class UserWidget extends Vue {
+    get isAuthenticated() {
+        return userStore.isAuthenticated;
+    }
+
     get email() {
         if (userStore.user == null) {
             return '';
         }
 
         return userStore.user.email;
+    }
+
+    created() {
+        console.log(this.isAuthenticated);
     }
 
     public async onLogoutClick() {

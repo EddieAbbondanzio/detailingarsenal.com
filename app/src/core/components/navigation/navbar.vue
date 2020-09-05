@@ -52,7 +52,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import UserWidget from '@/modules/user/core/components/user-widget.vue';
-import userStore from '@/modules/user/store/user-store';
 
 @Component({
     name: 'navbar',
@@ -61,23 +60,7 @@ import userStore from '@/modules/user/store/user-store';
     }
 })
 export default class Navbar extends Vue {
-    get isLoading() {
-        return userStore.isLoading;
-    }
-
-    get isAuthenticated() {
-        return userStore.isAuthenticated;
-    }
-
-    get isAdmin() {
-        return userStore.user.isAdmin;
-    }
-
     @Prop({ default: '/' })
     brandTo!: Location;
-
-    public async onLoginClick() {
-        await userStore.login();
-    }
 }
 </script>
