@@ -10,7 +10,7 @@ export class AuthenticationService {
     private isAuthed: boolean = true;
     private auth0!: Auth0Client;
 
-    public async init() {
+    async init() {
         this.auth0 = new Auth0Client({
             domain: process.env.VUE_APP_AUTH0_DOMAIN!,
             client_id: process.env.VUE_APP_AUTH0_CLIENT_ID!,
@@ -33,21 +33,31 @@ export class AuthenticationService {
         this.isAuthed = user != null;
     }
 
-    public async login(route: Route) {
+    async login(route: Route) {
         await this.auth0!.loginWithRedirect({
             redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI,
             appState: {
                 route
-            }
+            },
         });
     }
 
-    public async logout() {
+    async signUp(route: Route) {
+        await this.auth0!.loginWithRedirect({
+            redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI,
+            appState: {
+                route
+            },
+            screen_hint: 'signup'
+        });
+    }
+
+    async logout() {
         this.auth0.logout();
         this.isAuthed = false;
     }
 
-    public async getToken(): Promise<string> {
+    async getToken(): Promise<string> {
         return this.auth0.getTokenSilently();
     }
 }
