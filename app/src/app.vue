@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import LoadingSplash from '@/core/components/loading-splash.vue';
-import userStore from './modules/user/store/user-store';
+import userStore from './modules/user/core/store/user-store';
 import { loadStripeJs } from '@/plugins/stripe';
 
 @Component({

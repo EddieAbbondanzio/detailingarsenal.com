@@ -263,7 +263,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Subscription as SubscriptionObj, Customer } from '../../../../api';
 import moment from 'moment';
 import { displayLoading } from '../../../../core';
-import billingStore from '@/modules/user/store/billing-store';
+import billingStore from '@/modules/scheduling/subscription/store/billing-store';
 
 @Component
 export default class Subscription extends Vue {

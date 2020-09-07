@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { toast, displayLoading } from '@/core';
-import userStore from '../../store/user-store';
+import userStore from '../../core/store/user-store';
 
 @Component
 export default class EditProfile extends Vue {

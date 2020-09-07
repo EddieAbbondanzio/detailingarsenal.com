@@ -38,7 +38,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import { displayLoading } from '@/core';
-import userStore from '../../store/user-store';
+import userStore from '@/modules/user/core/store/user-store';
 
 @Component
 export default class Profile extends Vue {
