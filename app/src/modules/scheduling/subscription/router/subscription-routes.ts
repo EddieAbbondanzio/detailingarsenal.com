@@ -1,6 +1,6 @@
 export const subscriptionRoutes = [
     {
-        path: 'account/subscription',
+        path: 'subscription',
         name: 'subscription',
         component: () => import('@/modules/scheduling/subscription/views/subscription.vue'),
     }

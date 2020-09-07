@@ -1,5 +1,5 @@
 export enum PadCategory {
-    Cut = 'cut',
-    Polish = 'polish',
+    Cutting = 'cutting',
+    Polishing = 'polishing',
     Finishing = 'finishing'
 }

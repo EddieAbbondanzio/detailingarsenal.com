@@ -14,7 +14,7 @@ class PadStore extends InitableModule {
             '1',
             new PadSeries('2', 'CCS', new Brand('3', 'Lake Country')),
             'White Polishing',
-            PadCategory.Polish,
+            PadCategory.Polishing,
             3,
             7,
             PadMaterial.Foam,

@@ -7,7 +7,7 @@
 
             <b-dropdown-item aria-role="listitem" custom>
                 <router-link
-                    :to="{name: 'account' }"
+                    :to="{name: 'user' }"
                     class="is-flex is-flex-column is-align-items-center has-text-dark has-padding-y-3"
                 >
                     <b-icon
@@ -69,10 +69,6 @@ export default class UserWidget extends Vue {
         }
 
         return userStore.user.email;
-    }
-
-    created() {
-        console.log(this.isAuthenticated);
     }
 
     public async onLogoutClick() {
