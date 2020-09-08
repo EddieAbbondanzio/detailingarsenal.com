@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="is-flex is-flex-column is-flex-grow-1">
         <navbar>
             <navbar-item :to="{name: 'schedulingPanel'}">Scheduling</navbar-item>
             <navbar-item :to="{name: 'productCatalogPanel'}">Product Catalog</navbar-item>
