@@ -1,6 +1,6 @@
 import { http } from '@/api/core/http';
-import { User } from '@/api/scheduling/users/data-transfer-objects/user';
-import { UserPermission } from '@/api/scheduling/users/data-transfer-objects/user-permission';
+import { User } from '@/api/user/data-transfer-objects/user';
+import { UserPermission } from '@/api/user/data-transfer-objects/user-permission';
 
 export class UserService {
     async getUser(): Promise<User> {

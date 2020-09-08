@@ -2,8 +2,8 @@ import { AppointmentService } from '@/api/scheduling/calendar/services/appointme
 import { PermissionService } from '@/api/scheduling/security/services/permission-service';
 import { RoleService } from '@/api/scheduling/security/services/role-service';
 import { SubscriptionPlanService } from '@/api/scheduling/billing/services/subscription-plan-service';
-import { AuthenticationService } from '@/api/scheduling/users/services/authentication-service';
-import { UserService } from '@/api/scheduling/users/services/user-service';
+import { AuthenticationService } from '@/api/user/services/authentication-service';
+import { UserService } from '@/api/user/services/user-service';
 import { ClientService } from '@/api/scheduling/clients/services/client-service';
 import { BusinessService } from '@/api/scheduling/settings/services/business-service';
 import { HoursOfOperationService } from '@/api/scheduling/settings/services/hours-of-operation-service';

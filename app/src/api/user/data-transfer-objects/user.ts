@@ -1,4 +1,4 @@
-import { UserPermission } from '@/api/scheduling/users/data-transfer-objects/user-permission';
+import { UserPermission } from '@/api/user/data-transfer-objects/user-permission';
 
 export class User {
     constructor(

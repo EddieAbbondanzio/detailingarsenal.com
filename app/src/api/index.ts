@@ -51,7 +51,7 @@ export * from './scheduling/security/data-transfer-objects/role-create';
 export * from './scheduling/security/data-transfer-objects/role-update';
 
 //Users
-export * from './scheduling/users/data-transfer-objects/user';
+export * from './user/data-transfer-objects/user';
 
 //Product Catalog
 export * from './product-catalog/common/data-transfer-objects/image';
