@@ -3,6 +3,7 @@ import { UserPermission } from '@/api/user/data-transfer-objects/user-permission
 export class User {
     constructor(
         public id: string,
+        public username: string,
         public email: string,
         public name: string | null,
         public joinedDate: Date,

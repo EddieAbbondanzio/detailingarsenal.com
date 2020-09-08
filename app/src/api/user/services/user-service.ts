@@ -10,7 +10,15 @@ export class UserService {
             ? (res.data.permissions as any[]).map(p => new UserPermission(p.action, p.scope))
             : [];
 
-        return new User(res.data.id, res.data.email, res.data.name, res.data.joinedDate, res.data.isAdmin, perms);
+        return new User(
+            res.data.id,
+            res.data.username,
+            res.data.email,
+            res.data.name,
+            res.data.joinedDate,
+            res.data.isAdmin,
+            perms
+        );
     }
 
     async updateUser(update: { name: string }) {
