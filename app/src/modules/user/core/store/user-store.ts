@@ -2,28 +2,28 @@ import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-dec
 import { api } from '@/api/api';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { Route } from 'vue-router';
+import { Route, RawLocation } from 'vue-router';
 import router from '@/core/router';
 import { User } from '@/api';
 
 @Module({ namespaced: true, name: 'user', dynamic: true, store })
 class UserStore extends InitableModule {
-    public isAuthenticated: boolean = false;
-    public isLoading: boolean = true; // Used to show loading screen
-    public user: User = null!;
+    isAuthenticated: boolean = false;
+    isLoading: boolean = true; // Used to show loading screen
+    user: User = null!;
 
     @Mutation
-    public SET_IS_AUTHENTICATED(isAuthenticated: boolean) {
+    SET_IS_AUTHENTICATED(isAuthenticated: boolean) {
         this.isAuthenticated = isAuthenticated;
     }
 
     @Mutation
-    public SET_IS_LOADING(isLoading: boolean) {
+    SET_IS_LOADING(isLoading: boolean) {
         this.isLoading = isLoading;
     }
 
     @Mutation
-    public SET_USER(user: User) {
+    SET_USER(user: User) {
         this.user = user;
     }
 
@@ -41,21 +41,22 @@ class UserStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    public async login(route: Route | null = null) {
-        if (route == null) {
-            route = router.resolve('/calendar').route;
-        }
-
+    async login(route: RawLocation | null = null) {
         await api.authentication.login(route);
     }
 
     @Action({ rawError: true })
-    public async logout() {
+    async signUp(route: RawLocation | null = null) {
+        await api.authentication.signUp(route);
+    }
+
+    @Action({ rawError: true })
+    async logout() {
         await api.authentication.logout();
     }
 
     @Action({ rawError: true })
-    public async updateUser(update: { name: string }) {
+    async updateUser(update: { name: string }) {
         const u = await api.user.updateUser(update);
         this.context.commit('SET_USER', u);
     }

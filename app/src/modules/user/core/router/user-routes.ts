@@ -12,6 +12,7 @@ export const userRoutes: RouteConfig[] = [
                 name: 'user',
                 component: () => import('@/modules/user/core/views/user.vue')
             },
+
             ...profileRoutes
         ],
         beforeEnter: authGuard

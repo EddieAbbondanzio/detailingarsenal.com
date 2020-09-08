@@ -1,6 +1,6 @@
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import router from '@/core/router';
-import { Route } from 'vue-router';
+import { Route, RawLocation } from 'vue-router';
 
 export class AuthenticationService {
     get isAuthenticated() {
@@ -33,7 +33,11 @@ export class AuthenticationService {
         this.isAuthed = user != null;
     }
 
-    async login(route: Route) {
+    /**
+     * Redirect to the hosted login page.
+     * @param route The route to return to.
+     */
+    async login(route: RawLocation | null) {
         await this.auth0!.loginWithRedirect({
             redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI,
             appState: {
@@ -42,7 +46,11 @@ export class AuthenticationService {
         });
     }
 
-    async signUp(route: Route) {
+    /**
+     * Redirect to the hosted sign up page.
+     * @param route The route to return to.
+     */
+    async signUp(route: RawLocation | null) {
         await this.auth0!.loginWithRedirect({
             redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI,
             appState: {

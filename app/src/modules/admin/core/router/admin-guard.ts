@@ -15,7 +15,7 @@ export const adminGuard: NavigationGuard = async (to, from, next) => {
                 return next('/');
             }
         } else {
-            userStore.login(to);
+            userStore.login(to.path);
         }
     };
 

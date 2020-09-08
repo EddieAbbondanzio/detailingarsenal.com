@@ -41,13 +41,8 @@
         </b-dropdown>
     </div>
     <div class="has-margin-right-2-mobile" v-else>
-        <b-button
-            type="is-success"
-            class="has-margin-right-2"
-            :to="{name: 'signUp'}"
-            tag="router-link"
-        >Sign up</b-button>
-        <b-button type="is-info" tag="router-link" :to="{name: 'login'}">Login</b-button>
+        <b-button type="is-success" class="has-margin-right-2" @click="signUp()">Sign up</b-button>
+        <b-button type="is-info" @click="login()">Login</b-button>
     </div>
 </template>
 
@@ -71,7 +66,15 @@ export default class UserWidget extends Vue {
         return userStore.user.email;
     }
 
-    public async onLogoutClick() {
+    async login() {
+        userStore.login(this.$route.path);
+    }
+
+    async signUp() {
+        userStore.signUp(this.$route.path);
+    }
+
+    async onLogoutClick() {
         await userStore.logout();
     }
 }

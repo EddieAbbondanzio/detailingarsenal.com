@@ -10,7 +10,7 @@ export const authGuard: NavigationGuard = async (to, from, next) => {
         if (userStore.isAuthenticated) {
             return next();
         } else {
-            userStore.login(to);
+            userStore.login(to.path);
         }
     };
 
