@@ -27,8 +27,8 @@ using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Infrastructure.Users;
 using DetailingArsenal.Domain.Clients;
-using DetailingArsenal.Domain.Security;
-using DetailingArsenal.Application.Security;
+using DetailingArsenal.Domain.Users.Security;
+using DetailingArsenal.Application.Users.Security;
 using DetailingArsenal.Application.Clients;
 using DetailingArsenal.Application.Calendar;
 using DetailingArsenal.Application.Users;
@@ -48,6 +48,7 @@ using DetailingArsenal.Infrastructure.Billing;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Application.ProductCatalog;
 using DetailingArsenal.Persistence.ProductCatalog;
+using DetailingArsenal.Persistence.Users.Security;
 
 namespace DetailingArsenal.Api {
     public class Startup {

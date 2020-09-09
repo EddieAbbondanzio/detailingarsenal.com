@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Billing;
-using DetailingArsenal.Domain.Security;
 using DetailingArsenal.Domain.Users;
+using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Domain.Common {
     public class AddRoleToNewUserStep : SagaStep<string> {

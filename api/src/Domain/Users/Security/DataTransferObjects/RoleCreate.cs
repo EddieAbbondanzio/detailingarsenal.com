@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Domain.Security {
+namespace DetailingArsenal.Domain.Users.Security {
     public class RoleCreate : IDataTransferObject {
         public string Name { get; }
         public List<Guid> PermissionIds { get; }

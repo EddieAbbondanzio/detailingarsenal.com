@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Domain.Security {
+namespace DetailingArsenal.Domain.Users.Security {
     public interface IRoleService : IService {
         Task<Role> GetById(Guid id);
         Task<Role?> TryGetByName(string name);

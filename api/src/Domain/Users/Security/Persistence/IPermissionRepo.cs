@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain.Security {
+namespace DetailingArsenal.Domain.Users.Security {
     public interface IPermissionRepo : IRepo<Permission> {
         Task<List<Permission>> FindAll();
         Task<Permission?> Find(string action, string scope);

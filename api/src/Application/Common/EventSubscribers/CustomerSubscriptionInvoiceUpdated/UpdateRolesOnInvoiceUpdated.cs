@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Billing;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
 using Serilog;
 

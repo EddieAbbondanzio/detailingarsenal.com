@@ -1,7 +1,7 @@
 using System;
 using Dapper;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Security.Migrations {

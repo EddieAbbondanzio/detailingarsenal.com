@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain.Security {
+namespace DetailingArsenal.Domain.Users.Security {
     public class RoleNameUniqueSpecification : Specification<Role> {
         private IRoleRepo repo;
 

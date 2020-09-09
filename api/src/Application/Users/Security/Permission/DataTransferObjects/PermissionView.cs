@@ -1,7 +1,6 @@
 using System;
-using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application.Security {
+namespace DetailingArsenal.Application.Users.Security {
     public class PermissionView : IDataTransferObject {
         public Guid Id { get; set; }
         public string Action { get; set; } = null!;

@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application.Security {
+namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "delete", Scope = "roles")]
     public class DeleteRoleHandler : ActionHandler<DeleteRoleCommand> {
         IRoleService service;

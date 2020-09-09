@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
-using DetailingArsenal.Application.Security;
+using DetailingArsenal.Application.Users.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DetailingArsenal.Api.Security {
+namespace DetailingArsenal.Api.Users.Security {
     [Authorize]
     [Route("/security/role")]
     [ApiController]

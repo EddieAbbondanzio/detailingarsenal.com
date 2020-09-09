@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Security {
+namespace DetailingArsenal.Domain.Users.Security {
     public class PermissionUpdate : IDataTransferObject {
         public string Action { get; }
         public string Scope { get; }

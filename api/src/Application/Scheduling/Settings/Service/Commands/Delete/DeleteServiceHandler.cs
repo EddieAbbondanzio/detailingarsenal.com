@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 

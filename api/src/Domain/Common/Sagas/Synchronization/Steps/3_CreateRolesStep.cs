@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Domain.Common {
     public class CreateRolesStep : SagaStep {

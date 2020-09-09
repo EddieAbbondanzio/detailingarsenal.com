@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application.Security {
+namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(UpdateRoleValidator))]
     [Authorization(Action = "update", Scope = "roles")]
     public class UpdateRoleHandler : ActionHandler<UpdateRoleCommand, RoleView> {

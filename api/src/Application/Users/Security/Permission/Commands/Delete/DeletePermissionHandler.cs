@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application.Security {
+namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "delete", Scope = "permissions")]
     public class DeletePermissionHandler : ActionHandler<DeletePermissionCommand> {
         IPermissionService service;

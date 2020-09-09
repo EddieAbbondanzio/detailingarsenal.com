@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DetailingArsenal.Domain.Security {
+namespace DetailingArsenal.Domain.Users.Security {
     public class PermissionSet : ValueObject<PermissionSet> {
         IEnumerable<Permission> permissions;
 

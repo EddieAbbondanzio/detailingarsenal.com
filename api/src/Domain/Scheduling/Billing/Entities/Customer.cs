@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Billing {
     public class Customer : Aggregate<Customer>, IUserEntity, IBillingEntity {

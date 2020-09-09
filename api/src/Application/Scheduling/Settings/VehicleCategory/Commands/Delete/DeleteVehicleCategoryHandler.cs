@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Security;
 using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
+using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(DeleteVehicleCategoryValidator))]

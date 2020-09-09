@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Calendar {
     public class Appointment : Aggregate<Appointment>, IUserEntity {

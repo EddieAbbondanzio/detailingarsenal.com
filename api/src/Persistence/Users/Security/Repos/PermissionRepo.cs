@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 
-namespace DetailingArsenal.Persistence.Security {
+namespace DetailingArsenal.Persistence.Users.Security {
     public class PermissionRepo : DatabaseInteractor, IPermissionRepo {
         public PermissionRepo(IDatabase database) : base(database) { }
 

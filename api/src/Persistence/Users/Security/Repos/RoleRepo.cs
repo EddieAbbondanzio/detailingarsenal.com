@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Security;
+using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Persistence.Security {
+namespace DetailingArsenal.Persistence.Users.Security {
     public class RoleRepo : DatabaseInteractor, IRoleRepo {
         public RoleRepo(IDatabase database) : base(database) { }
 

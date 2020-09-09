@@ -1,4 +1,5 @@
 using System;
+using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Clients {
     public sealed class Client : Aggregate<Client>, IUserEntity {

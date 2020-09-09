@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Domain.Security {
+namespace DetailingArsenal.Domain.Users.Security {
     public interface IPermissionService : IService {
         Task<List<Permission>> GetAll();
         Task<Permission> GetById(Guid id);

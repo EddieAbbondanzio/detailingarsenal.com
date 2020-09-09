@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Application.Security {
+namespace DetailingArsenal.Application.Users.Security {
     public class UpdateRoleCommand : IAction {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
