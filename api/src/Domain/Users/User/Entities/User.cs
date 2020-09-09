@@ -8,6 +8,7 @@ namespace DetailingArsenal.Domain.Users {
 
         public string Auth0Id { get; set; } = null!;
         public string Email { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         public string? Name {
             get => name;

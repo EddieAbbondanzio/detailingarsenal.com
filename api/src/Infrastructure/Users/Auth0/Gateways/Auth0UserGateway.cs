@@ -25,6 +25,7 @@ namespace DetailingArsenal.Infrastructure.Users {
             );
 
             user.JoinedDate = auth0User.CreatedAt ?? throw new NullReferenceException();
+            user.Username = auth0User.UserName;
             return user;
         }
 
@@ -43,6 +44,7 @@ namespace DetailingArsenal.Infrastructure.Users {
             );
 
             user.JoinedDate = auth0User.CreatedAt ?? throw new NullReferenceException();
+            user.Username = auth0User.UserName;
 
             return user;
         }
