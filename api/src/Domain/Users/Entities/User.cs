@@ -3,6 +3,8 @@ using System;
 namespace DetailingArsenal.Domain.Users {
     public class User : Aggregate<User> {
         public const int NameMaxLength = 64;
+        public const int UsernameMinLength = 4;
+        public const int UsernameMaxLength = 24;
 
         public string Auth0Id { get; set; } = null!;
         public string Email { get; set; } = null!;
@@ -18,7 +20,7 @@ namespace DetailingArsenal.Domain.Users {
             }
         }
 
-        public DateTime JoinedDate {get;set;}
+        public DateTime JoinedDate { get; set; }
 
         private string? name;
 
