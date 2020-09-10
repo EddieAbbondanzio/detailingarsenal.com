@@ -6,16 +6,16 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "remove-role", Scope = "users")]
     public class RemoveRoleFromUserHandler : ActionHandler<RemoveRoleFromUserCommand> {
-        IUserService userService;
+        IUserRepo userRepo;
         IRoleService roleService;
 
-        public RemoveRoleFromUserHandler(IUserService userService, IRoleService roleService) {
-            this.userService = userService;
+        public RemoveRoleFromUserHandler(IUserRepo userRepo, IRoleService roleService) {
+            this.userRepo = userRepo;
             this.roleService = roleService;
         }
 
         public async override Task Execute(RemoveRoleFromUserCommand input, User? user) {
-            var userToAddTo = await userService.GetUserById(input.UserId);
+            var userToAddTo = await userRepo.FindById(input.UserId) ?? throw new EntityNotFoundException();
             var role = await roleService.GetById(input.RoleId);
 
             await roleService.AddRoleToUser(role, userToAddTo);

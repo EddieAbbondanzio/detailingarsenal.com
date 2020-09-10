@@ -6,23 +6,26 @@ using Serilog;
 namespace DetailingArsenal.Domain.Common {
     public class CreateOrUpdateAdminStep : SagaStep {
         AdminConfig config;
-        IUserService userService;
         IRoleRepo roleRepo;
+        IUserGateway userGateway;
+        IUserRepo userRepo;
 
-        public CreateOrUpdateAdminStep(AdminConfig config, IUserService userService, IRoleRepo roleRepo) {
+        public CreateOrUpdateAdminStep(AdminConfig config, IRoleRepo roleRepo, IUserGateway userGateway, IUserRepo userRepo) {
             this.config = config;
-            this.userService = userService;
             this.roleRepo = roleRepo;
+            this.userGateway = userGateway;
+            this.userRepo = userRepo;
         }
 
         public async override Task Execute(SagaContext context) {
-            var user = await userService.TryGetUserByEmail(config.Email);
+            var user = await userRepo.FindByAuth0Id(config.Email);
 
             if (user != null) {
-                await userService.UpdatePassword(user, config.Password);
+                await userGateway.UpdatePassword(user, config.Password);
                 Log.Information("Updated admin password");
             } else {
-                user = await userService.CreateAdminUser(config.Email, config.Password);
+                user = await userGateway.CreateUser(config.Email, config.Password);
+                await userRepo.Add(user);
 
                 var adminRole = await roleRepo.Find("Admin");
                 await roleRepo.AddToUser(user, adminRole!);

@@ -9,17 +9,17 @@ namespace DetailingArsenal.Application.Billing {
     public class EmailCustomerOnInvoicePaymentFailure : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
         IEmailClient emailClient;
         ICustomerService customerService;
-        IUserService userService;
+        IUserRepo userRepo;
 
-        public EmailCustomerOnInvoicePaymentFailure(IEmailClient emailClient, ICustomerService customerService, IUserService userService) {
+        public EmailCustomerOnInvoicePaymentFailure(IEmailClient emailClient, ICustomerService customerService, IUserRepo userRepo) {
             this.emailClient = emailClient;
             this.customerService = customerService;
-            this.userService = userService;
+            this.userRepo = userRepo;
         }
 
         public async Task Notify(CustomerSubscriptionInvoiceUpdated busEvent) {
             var customer = await customerService.GetByBillingId(busEvent.CustomerBillingId);
-            var user = await userService.GetUserById(customer.UserId);
+            var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
 
             MailMessage message = new MailMessage();
             message.To.Add(user.Email);

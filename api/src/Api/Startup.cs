@@ -231,7 +231,6 @@ namespace DetailingArsenal.Api {
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IUserReader, UserReader>();
-            services.AddTransient<IUserService, UserService>();
             services.AddTransient<ActionHandler<UpdateUserCommand, CommandResult>, UpdateUserHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserReadModel>, GetUserByAuth0IdHandler>();
 

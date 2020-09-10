@@ -11,17 +11,17 @@ namespace DetailingArsenal.Application.Billing {
     public class EmailEdOnCustomerTrialWillEnd : IDomainEventSubscriber<CustomerTrialWillEndSoon> {
         IEmailClient emailClient;
         ICustomerService customerService;
-        IUserService userService;
+        IUserRepo userRepo;
 
-        public EmailEdOnCustomerTrialWillEnd(IEmailClient emailClient, ICustomerService customerService, IUserService userService) {
+        public EmailEdOnCustomerTrialWillEnd(IEmailClient emailClient, ICustomerService customerService, IUserRepo userRepo) {
             this.emailClient = emailClient;
             this.customerService = customerService;
-            this.userService = userService;
+            this.userRepo = userRepo;
         }
 
         public async Task Notify(CustomerTrialWillEndSoon busEvent) {
             var customer = await customerService.GetByBillingId(busEvent.CustomerBillingId);
-            var user = await userService.GetUserById(customer.UserId);
+            var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
 
             try {
                 MailMessage message = new MailMessage();

@@ -13,19 +13,19 @@ namespace DetailingArsenal.Application.Common {
     public class UpdateRolesOnInvoiceUpdated : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
         ICustomerService customerService;
         IRoleService roleService;
-        IUserService userService;
+        IUserRepo userRepo;
         ISubscriptionPlanService planService;
 
-        public UpdateRolesOnInvoiceUpdated(ICustomerService customerService, IRoleService roleService, IUserService userService, ISubscriptionPlanService planService) {
+        public UpdateRolesOnInvoiceUpdated(ICustomerService customerService, IRoleService roleService, IUserRepo userRepo, ISubscriptionPlanService planService) {
             this.customerService = customerService;
             this.roleService = roleService;
-            this.userService = userService;
+            this.userRepo = userRepo;
             this.planService = planService;
         }
 
         public async Task Notify(CustomerSubscriptionInvoiceUpdated busEvent) {
             var customer = await customerService.GetByBillingId(busEvent.CustomerBillingId);
-            var user = await userService.GetUserById(customer.UserId);
+            var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
             var plan = await planService.GetById(busEvent.PlanId);
 
             var userRoles = await roleService.GetByUser(user);

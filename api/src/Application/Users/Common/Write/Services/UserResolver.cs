@@ -9,20 +9,20 @@ namespace DetailingArsenal.Application.Users {
     }
 
     public class UserResolver : IUserResolver {
-        IUserService userService;
+        IUserRepo userRepo;
         NewUserSaga newUserSaga;
 
-        public UserResolver(IUserService userService, NewUserSaga newUserSaga) {
-            this.userService = userService;
+        public UserResolver(IUserRepo userRepo, NewUserSaga newUserSaga) {
+            this.userRepo = userRepo;
             this.newUserSaga = newUserSaga;
         }
 
         public async Task<User> Resolve(string auth0Id) {
-            var user = await userService.TryGetUserByAuth0Id(auth0Id);
+            var user = await userRepo.FindByAuth0Id(auth0Id);
 
             if (user == null) {
                 await newUserSaga.Execute(auth0Id);
-                user = (await (userService.TryGetUserByAuth0Id(auth0Id)))!;
+                user = (await (userRepo.FindByAuth0Id(auth0Id)))!;
             }
 
             return user!;
