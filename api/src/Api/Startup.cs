@@ -232,7 +232,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IUserReader, UserReader>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ActionHandler<UpdateUserCommand>, UpdateUserHandler>();
+            services.AddTransient<ActionHandler<UpdateUserCommand, CommandResult>, UpdateUserHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserReadModel>, GetUserByAuth0IdHandler>();
 
             // Vehicle Categories

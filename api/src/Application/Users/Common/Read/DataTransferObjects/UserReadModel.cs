@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Domain.Users {
+namespace DetailingArsenal.Application.Users {
     public class UserReadModel : IDataTransferObject {
         public string Email { get; }
         public string? Name { get; }
-        public DateTime JoinedDate {get;}
+        public DateTime JoinedDate { get; }
         public bool IsAdmin { get; }
         public List<UserPermissionReadModel> Permissions { get; }
 

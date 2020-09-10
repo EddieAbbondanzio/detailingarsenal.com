@@ -27,7 +27,7 @@ namespace DetailingArsenal.Api.Users {
 
         [HttpPut]
         public async Task<IActionResult> Update(UpdateUserCommand command) {
-            await mediator.Dispatch<UpdateUserCommand>(command, User.GetUserId());
+            await mediator.Dispatch<UpdateUserCommand, CommandResult>(command, User.GetUserId());
             return Ok();
         }
     }

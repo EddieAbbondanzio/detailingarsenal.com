@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Users {
+namespace DetailingArsenal.Application.Users {
     public class UserPermissionReadModel : IDataTransferObject {
         public string Action { get; }
         public string Scope { get; }
