@@ -8,6 +8,9 @@ namespace DetailingArsenal.Application.Users {
         Task<User> Resolve(string auth0Id);
     }
 
+    /// <summary>
+    /// Application service to create, or resolve users.
+    /// </summary>
     public class UserResolver : IUserResolver {
         IUserRepo userRepo;
         NewUserSaga newUserSaga;
@@ -20,6 +23,7 @@ namespace DetailingArsenal.Application.Users {
         public async Task<User> Resolve(string auth0Id) {
             var user = await userRepo.FindByAuth0Id(auth0Id);
 
+            // If no user found, sync with Auth0 and save it.
             if (user == null) {
                 await newUserSaga.Execute(auth0Id);
                 user = (await (userRepo.FindByAuth0Id(auth0Id)))!;
