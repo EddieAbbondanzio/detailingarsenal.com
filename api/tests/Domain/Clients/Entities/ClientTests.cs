@@ -11,9 +11,7 @@ namespace DetailingArsenal.Tests.Domain.Clients {
     public class ClientTests {
         [TestMethod]
         public void CreateSetsUserId() {
-            User u = new User() {
-                Id = Guid.NewGuid()
-            };
+            User u = new User("auth0", "email@fake.com", "username");
 
             var c = Client.Create(u.Id, "Bert", null, null);
             Assert.AreNotEqual(c.UserId, Guid.Empty);

@@ -18,9 +18,8 @@ namespace DetailingArsenal.Tests.Domain.Settings {
                 repo
             );
 
-            var user = new User() {
-                Id = Guid.NewGuid()
-            };
+            var user = new User("auth0", "email@fake.com", "username");
+
 
             var cat = await service.Create(
                 new VehicleCategoryCreate(
@@ -46,9 +45,8 @@ namespace DetailingArsenal.Tests.Domain.Settings {
                 repo
             );
 
-            var user = new User() {
-                Id = Guid.NewGuid()
-            };
+            var user = new User("auth0", "email@fake.com", "username");
+
 
             await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => await service.Create(
@@ -71,9 +69,8 @@ namespace DetailingArsenal.Tests.Domain.Settings {
                 repo
             );
 
-            var user = new User() {
-                Id = Guid.NewGuid()
-            };
+            var user = new User("auth0", "email@fake.com", "username");
+
 
             var cat = new VehicleCategory() {
                 Name = "old",
@@ -104,9 +101,8 @@ namespace DetailingArsenal.Tests.Domain.Settings {
                 repo
             );
 
-            var user = new User() {
-                Id = Guid.NewGuid()
-            };
+            var user = new User("auth0", "email@fake.com", "username");
+
 
             var updatingCat = new VehicleCategory() {
                 Id = Guid.NewGuid(),
@@ -139,9 +135,8 @@ namespace DetailingArsenal.Tests.Domain.Settings {
                 Name = "cat"
             };
 
-            var user = new User() {
-                Id = Guid.NewGuid(),
-            };
+            var user = new User("auth0", "email@fake.com", "username");
+
 
             await Assert.ThrowsExceptionAsync<SpecificationException>(
                 async () => {

@@ -19,13 +19,14 @@ namespace DetailingArsenal.Infrastructure.Users {
             var managementApiClient = await tokenGenerator.GetManagementApiClient();
             var auth0User = await managementApiClient.Users.GetAsync(auth0Id) ?? throw new EntityNotFoundException();
 
-            var user = Domain.Users.User.Create(
-                auth0Id,
-                auth0User.Email
+            var user = new Domain.Users.User(
+                auth0User.UserId,
+                auth0User.Email,
+                auth0User.UserName
             );
 
+            // Joined date may not be today since they could sign up with Auth0 prior to using our app
             user.JoinedDate = auth0User.CreatedAt ?? throw new NullReferenceException();
-            user.Username = auth0User.UserName;
             return user;
         }
 
@@ -38,13 +39,13 @@ namespace DetailingArsenal.Infrastructure.Users {
                 Connection = "email-pass-auth"
             });
 
-            var user = Domain.Users.User.Create(
+            var user = new Domain.Users.User(
                 auth0User.UserId,
-                auth0User.Email
+                auth0User.Email,
+                auth0User.UserName
             );
 
             user.JoinedDate = auth0User.CreatedAt ?? throw new NullReferenceException();
-            user.Username = auth0User.UserName;
 
             return user;
         }

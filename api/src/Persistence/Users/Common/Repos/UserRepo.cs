@@ -10,42 +10,52 @@ namespace DetailingArsenal.Persistence.Users {
 
         public async Task<User?> FindById(Guid id) {
             using (var conn = OpenConnection()) {
-                return await conn.QueryFirstOrDefaultAsync<User>(
+                var model = await conn.QueryFirstOrDefaultAsync<UserModel>(
                     @"select * from users where id = @Id", new { Id = id }
                 );
+
+                return Rebuild(model);
             }
         }
 
         public async Task<User?> FindByAuth0Id(string id) {
             using (var conn = OpenConnection()) {
-                return await conn.QueryFirstOrDefaultAsync<User>(
+                var model = await conn.QueryFirstOrDefaultAsync<UserModel>(
                     @"select * from users where auth_0_id = @Id", new { Id = id }
                 );
+
+                return Rebuild(model);
             }
         }
 
         public async Task<User?> FindByEmail(string email) {
             using (var conn = OpenConnection()) {
-                return await conn.QueryFirstOrDefaultAsync<User>(
+                var model = await conn.QueryFirstOrDefaultAsync<UserModel>(
                     @"select * from users where email = @Email", new { Email = email }
                 );
+
+                return Rebuild(model);
             }
         }
 
         public async Task Add(User entity) {
             using (var conn = OpenConnection()) {
+                var model = Map(entity);
+
                 await conn.ExecuteAsync(
                     @"insert into users (id, auth_0_id, name, email, joined_date) VALUES (@Id, @Auth0Id, @Name, @Email, @JoinedDate);",
-                    entity
+                    model
                 );
             }
         }
 
         public async Task Update(User entity) {
             using (var conn = OpenConnection()) {
+                var model = Map(entity);
+
                 await conn.ExecuteAsync(
                     @"update users set auth_0_id = @Auth0Id, name = @Name, email = @Email, joined_date = @JoinedDate where id = @Id;",
-                    entity
+                    model
                 );
             }
         }
@@ -58,5 +68,15 @@ namespace DetailingArsenal.Persistence.Users {
                 );
             }
         }
+
+        User? Rebuild(UserModel? model) => model == null ? null : new User(model.Id, model.Auth0Id, model.Email, model.Username, model.JoinedDate, model.Name);
+        UserModel Map(User entity) => new UserModel() {
+            Id = entity.Id,
+            Auth0Id = entity.Auth0Id,
+            Email = entity.Email,
+            Username = entity.Username,
+            JoinedDate = entity.JoinedDate,
+            Name = entity.Name
+        };
     }
 }
