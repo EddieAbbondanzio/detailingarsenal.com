@@ -22,11 +22,10 @@ namespace DetailingArsenal.Infrastructure.Users {
             var user = new Domain.Users.User(
                 auth0User.UserId,
                 auth0User.Email,
-                auth0User.UserName
+                auth0User.UserName,
+                auth0User.CreatedAt ?? throw new NullReferenceException()
             );
 
-            // Joined date may not be today since they could sign up with Auth0 prior to using our app
-            user.JoinedDate = auth0User.CreatedAt ?? throw new NullReferenceException();
             return user;
         }
 
@@ -42,10 +41,9 @@ namespace DetailingArsenal.Infrastructure.Users {
             var user = new Domain.Users.User(
                 auth0User.UserId,
                 auth0User.Email,
-                auth0User.UserName
+                auth0User.UserName,
+                auth0User.CreatedAt ?? throw new NullReferenceException()
             );
-
-            user.JoinedDate = auth0User.CreatedAt ?? throw new NullReferenceException();
 
             return user;
         }

@@ -18,12 +18,13 @@ namespace DetailingArsenal.Domain.Users {
         /// <param name="auth0Id">External Auth0 id</param>
         /// <param name="email">Account / contact email</param>
         /// <param name="username">Unique username</param>
-        public User(string auth0Id, string email, string username) {
+        /// <param name="joinedDate">Date the user first joined</param>
+        public User(string auth0Id, string email, string username, DateTime? joinedDate = null) {
             Id = Guid.NewGuid();
             Auth0Id = auth0Id;
             Email = email;
             Username = username;
-            JoinedDate = new DateTime();
+            JoinedDate = joinedDate ?? new DateTime();
         }
 
         /// <summary>
