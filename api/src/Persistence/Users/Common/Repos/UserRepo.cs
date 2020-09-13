@@ -43,7 +43,7 @@ namespace DetailingArsenal.Persistence.Users {
                 var model = Map(entity);
 
                 await conn.ExecuteAsync(
-                    @"insert into users (id, auth_0_id, name, email, joined_date) VALUES (@Id, @Auth0Id, @Name, @Email, @JoinedDate);",
+                    @"insert into users (id, auth_0_id, name, email, username, joined_date) VALUES (@Id, @Auth0Id, @Name, @Email, @Username, @JoinedDate);",
                     model
                 );
             }
@@ -54,7 +54,7 @@ namespace DetailingArsenal.Persistence.Users {
                 var model = Map(entity);
 
                 await conn.ExecuteAsync(
-                    @"update users set auth_0_id = @Auth0Id, name = @Name, email = @Email, joined_date = @JoinedDate where id = @Id;",
+                    @"update users set auth_0_id = @Auth0Id, name = @Name, email = @Email, username = @Username, joined_date = @JoinedDate where id = @Id;",
                     model
                 );
             }

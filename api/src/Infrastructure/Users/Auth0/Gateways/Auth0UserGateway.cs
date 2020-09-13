@@ -33,6 +33,7 @@ namespace DetailingArsenal.Infrastructure.Users {
             var managementApiClient = await tokenGenerator.GetManagementApiClient();
 
             var auth0User = await managementApiClient.Users.CreateAsync(new UserCreateRequest() {
+                UserName = "Admin",
                 Email = email,
                 Password = password,
                 Connection = "email-pass-auth"

@@ -25,6 +25,7 @@ CREATE DATABASE detailingarsenal
 
 ```
 psql -h detailingarsenal-db-do-user-4028496-0.a.db.ondigitalocean.com -U detailingarsenal -d detailingarsenal-prod -p 25060
+psql -h detailingarsenal-db-do-user-4028496-0.a.db.ondigitalocean.com -U detailingarsenal -d detailingarsenal-dev -p 25060
 ```
 
 ## Delete Databse
