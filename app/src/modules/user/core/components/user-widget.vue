@@ -16,7 +16,7 @@
                         type="is-dark"
                         class="has-padding-bottom-3"
                     ></b-icon>
-                    {{ email }}
+                    {{ username }}
                 </router-link>
             </b-dropdown-item>
             <b-dropdown-item aria-role="listitem" has-link>
@@ -58,12 +58,12 @@ export default class UserWidget extends Vue {
         return userStore.isAuthenticated;
     }
 
-    get email() {
+    get username() {
         if (userStore.user == null) {
             return '';
         }
 
-        return userStore.user.email;
+        return userStore.user.username;
     }
 
     async login() {
