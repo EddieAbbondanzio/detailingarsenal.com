@@ -6,6 +6,10 @@
         <div class="app-content">
             <router-view></router-view>
         </div>
+
+        <!-- <nav-footer>
+            <nav-footer-item :to="{name: 'pads'}" icon="checkbox-blank-circle" text="Pads" />
+        </nav-footer>-->
     </div>
 </template>
 

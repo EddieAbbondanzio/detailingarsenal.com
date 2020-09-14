@@ -16,6 +16,13 @@
     .app-content
         margin-bottom: 50px
 
+    // nav footer
+    .app-footer
+        position: absolute
+        left: 0
+        right: 0
+        bottom: 0
+
 // Shift toasts above footer nav bar on mobile
 .notices.is-bottom
     padding-bottom: 64px

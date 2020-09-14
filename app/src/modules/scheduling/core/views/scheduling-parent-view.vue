@@ -9,6 +9,13 @@
         <div class="app-content">
             <router-view></router-view>
         </div>
+
+        <nav-footer>
+            <nav-footer-item :to="{name: 'calendar'}" icon="calendar" text="Calendar" />
+            <nav-footer-item :to="{name: 'clients'}" icon="contacts" text="Clients" />
+            <nav-footer-item :to="{name: 'settings'}" icon="cogs" text="Settings" />
+];
+        </nav-footer>
     </div>
 </template>
 

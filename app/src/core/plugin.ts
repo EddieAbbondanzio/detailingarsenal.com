@@ -36,6 +36,8 @@ import Email from './components/elements/email.vue';
 import EditDeleteDropdown from './components/dropdowns/edit-delete-dropdown.vue';
 import Navbar from '@/core/components/navigation/navbar.vue';
 import NavbarItem from '@/core/components/navigation/navbar-item.vue';
+import NavFooter from '@/core/components/navigation/nav-footer.vue';
+import NavFooterItem from '@/core/components/navigation/nav-footer-item.vue';
 
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { disableAll } from '@/core/directives/disable-all';
@@ -76,6 +78,8 @@ export default {
         Vue.component(Email.name, Email);
         Vue.component(Navbar.name, Navbar);
         Vue.component(NavbarItem.name, NavbarItem);
+        Vue.component(NavFooter.name, NavFooter);
+        Vue.component(NavFooterItem.name, NavFooterItem);
 
         Vue.filter('currency', currency);
         Vue.filter('duration', duration);

@@ -7,6 +7,15 @@
         <div class="app-content">
             <router-view></router-view>
         </div>
+
+        <nav-footer>
+            <nav-footer-item :to="{name: 'schedulingPanel'}" text="Scheduling" icon="calendar" />
+            <nav-footer-item
+                :to="{name: 'productCatalogPanel'}"
+                text="Product Catalog"
+                icon="book-open"
+            />
+        </nav-footer>
     </div>
 </template>
 
