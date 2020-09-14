@@ -18,7 +18,7 @@ namespace DetailingArsenal.Domain.Common {
         }
 
         public async override Task Execute(SagaContext context) {
-            var user = await userRepo.FindByAuth0Id(config.Email);
+            var user = await userRepo.FindByEmail(config.Email);
 
             if (user != null) {
                 await userGateway.UpdatePassword(user, config.Password);
