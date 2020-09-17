@@ -112,6 +112,10 @@
                     </div>
                 </div>
             </div>
+
+            <div class>
+                <p class="is-size-5 title has-margin-bottom-1">Reviews</p>
+            </div>
         </div>
     </page>
 </template>
