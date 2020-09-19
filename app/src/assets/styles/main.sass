@@ -11,18 +11,15 @@
 
 @import 'calendar.sass'
 
-
 // Content div has the scroll bar    
-html, body
-    overflow: hidden!important
-
+// html, body
+    // overflow: hidden!important
 
 @each $name, $color in $colors
     .is-hoverable-#{$name}
         &:hover
             background-color: lighten(nth($color, 1), 2%)!important
             cursor: pointer
-
 
 .has-border-bottom-1-light
     border-bottom: 1px solid $light
@@ -36,16 +33,14 @@ html, body
 .has-overflow-y-hidden
     overflow-y: hidden!important
 
-
 .modal
     z-index: 9000
 
-
-a[disabled] 
+a[disabled]
     pointer-events: none
 
 .has-font-family-pacifico
-    font-family: 'Pacifico', cursive;
+    font-family: 'Pacifico', cursive
 
 .is-inline-block
     display: inline-block!important

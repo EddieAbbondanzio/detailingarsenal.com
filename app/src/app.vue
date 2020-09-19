@@ -7,7 +7,7 @@
 
 <style lang="sass">
 .app-content
-    overflow-y: hidden
+    // overflow-y: hidden
     display: flex
     flex-direction: column
     flex-grow: 1
