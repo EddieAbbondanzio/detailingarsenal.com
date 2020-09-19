@@ -9,6 +9,7 @@ export class Review {
         public stars: Stars,
         public cut: PadCut | null,
         public finish: PadFinish | null,
-        public comment: string
+        public title: string,
+        public body: string
     ) { }
 }

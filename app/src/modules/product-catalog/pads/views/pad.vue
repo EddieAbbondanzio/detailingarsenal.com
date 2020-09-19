@@ -124,10 +124,16 @@
                         >{{review.date | date }}</span>
                     </p>
 
-                    <div class="is-flex is-flex-row is-size-6">
+                    <div class="is-flex is-flex-row">
                         <stars :value="review.stars" :hideCount="true" />
 
-                        <div class="has-margin-left-1">
+                        <p class="has-text-weight-bold has-margin-left-1">{{review.title }}</p>
+                    </div>
+
+                    <p>{{review.body }}</p>
+
+                    <div class="is-flex is-flex-row">
+                        <div class>
                             <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
                             <span v-if="review.cut">{{review.cut }} / 10</span>
                             <span v-else>N/A</span>
@@ -139,8 +145,6 @@
                             <span v-else>N/A</span>
                         </div>
                     </div>
-
-                    <p class="has-margin-top-1">{{review.comment }}</p>
                 </div>
             </div>
         </div>
