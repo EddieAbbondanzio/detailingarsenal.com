@@ -13,6 +13,7 @@ class ReviewStore extends InitableModule {
         new Review('Test User', new Date(), 1, 4, 7, 'Sucks'),
         new Review('admin', new Date(), 5, 10, 10, 'The bees knees'),
         new Review('okjoe', new Date(), 3, 5, 10, 'It ight'),
+        new Review('okjoe', new Date(), 3, null, null, 'It ight'),
     ];
 
     @Action({ rawError: true })

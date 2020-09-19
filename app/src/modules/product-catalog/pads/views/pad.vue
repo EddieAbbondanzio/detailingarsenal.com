@@ -129,12 +129,14 @@
 
                         <div class="has-margin-left-1">
                             <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
-                            <span>{{review.cut }} / 10</span>
+                            <span v-if="review.cut">{{review.cut }} / 10</span>
+                            <span v-else>N/A</span>
                         </div>
 
                         <div class="has-margin-left-1">
                             <span class="has-margin-right-1 has-text-weight-bold">Finish:</span>
-                            <span>{{review.finish }} / 10</span>
+                            <span v-if="review.finish">{{review.finish }} / 10</span>
+                            <span v-else>N/A</span>
                         </div>
                     </div>
 

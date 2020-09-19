@@ -7,8 +7,8 @@ export class Review {
         public username: string,
         public date: Date,
         public stars: Stars,
-        public cut: PadCut,
-        public finish: PadFinish,
+        public cut: PadCut | null,
+        public finish: PadFinish | null,
         public comment: string
     ) { }
 }
