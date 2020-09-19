@@ -3,7 +3,7 @@ import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
 import { Review } from '@/api/product-catalog/pad-series/data-transfer-objects/review';
 
-@Module({ namespaced: true, name: '', dynamic: true, store })
+@Module({ namespaced: true, name: 'review', dynamic: true, store })
 class ReviewStore extends InitableModule {
     get stats() {
         return 1;
@@ -14,6 +14,11 @@ class ReviewStore extends InitableModule {
         new Review('admin', new Date(), 5, 10, 10, 'The bees knees'),
         new Review('okjoe', new Date(), 3, 5, 10, 'It ight'),
     ];
+
+    @Action({ rawError: true })
+    loadReviews(padId: string) {
+        console.log('loading!');
+    }
 }
 
 export default getModule(ReviewStore);

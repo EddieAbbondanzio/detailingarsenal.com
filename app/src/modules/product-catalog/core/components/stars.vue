@@ -1,7 +1,7 @@
 <template>
     <div class="is-flex is-flex-row is-align-items-center">
         <b-icon v-for="i in 5" :key="i" :icon="getIcon(i)" size="is-small" :type="getColor(i)" />
-        <span class="has-margin-left-1">({{ count }})</span>
+        <span class="has-margin-left-1" v-if="!hideCount">({{ count }})</span>
     </div>
 </template>
 
@@ -16,6 +16,9 @@ export default class StarsComponent extends Vue {
 
     @Prop({ default: 0 })
     count!: number;
+
+    @Prop({ default: false })
+    hideCount!: boolean;
 
     getIcon(i: number) {
         return this.value == null || i > this.value ? 'star-outline' : 'star';

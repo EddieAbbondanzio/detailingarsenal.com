@@ -113,8 +113,33 @@
                 </div>
             </div>
 
-            <div class>
+            <div>
                 <p class="is-size-5 title has-margin-bottom-1">Reviews</p>
+
+                <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
+                    <p class="has-text-weight-bold">
+                        {{ review.username }}
+                        <span
+                            class="is-size-7 has-text-weight-normal"
+                        >{{review.date | date }}</span>
+                    </p>
+
+                    <div class="is-flex is-flex-row is-size-6">
+                        <stars :value="review.stars" :hideCount="true" />
+
+                        <div class="has-margin-left-1">
+                            <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
+                            <span>{{review.cut }} / 10</span>
+                        </div>
+
+                        <div class="has-margin-left-1">
+                            <span class="has-margin-right-1 has-text-weight-bold">Finish:</span>
+                            <span>{{review.finish }} / 10</span>
+                        </div>
+                    </div>
+
+                    <p class="has-margin-top-1">{{review.comment }}</p>
+                </div>
             </div>
         </div>
     </page>
@@ -127,6 +152,7 @@ import padStore from '../store/pad/pad-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
 import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
+import reviewStore from '../store/review/review-store';
 
 @Component({
     components: {
@@ -148,10 +174,15 @@ export default class PadView extends Vue {
         return Number.parseFloat(this.$route.query.size as string);
     }
 
+    get reviews() {
+        return reviewStore.reviews;
+    }
+
     value: Pad | null = null;
 
     async created() {
         this.value = await padStore.getPadById(this.id);
+        reviewStore.loadReviews(this.id);
     }
 
     // size is a query string param.
