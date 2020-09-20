@@ -11,14 +11,21 @@
             v-slot="{ errors, classes }"
             ref="validator"
         >
-            <b-select
+            <b-slider
+                :type="type"
+                :class="classes"
                 :value="value"
-                @input="onInput"
-                :class="{...classes, 'is-fullwidth': true }"
                 :disabled="disabled"
+                :min="min"
+                :max="max"
+                @input="onInput"
             >
-                <slot></slot>
-            </b-select>
+                <b-slider-tick
+                    v-for="tick in ticks"
+                    :key="tick.value"
+                    :value="tick.value"
+                >{{tick.label}}</b-slider-tick>
+            </b-slider>
             <input-error-message v-if="!hideErrors" :text="errors[0]" />
         </validation-provider>
     </b-field>
@@ -27,13 +34,10 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-/**
- * Dropdown input that uses the vanilla HTML <select> element.
- */
 @Component({
-    name: 'input-select'
+    name: 'input-slider'
 })
-export default class InputSelect extends Vue {
+export default class InputSlider extends Vue {
     @Prop({ default: null })
     id!: string | null;
 
@@ -47,7 +51,13 @@ export default class InputSelect extends Vue {
     rules!: string;
 
     @Prop()
-    value!: any;
+    value!: number;
+
+    @Prop({ default: 0 })
+    min!: number;
+
+    @Prop({ default: 100 })
+    max!: number;
 
     @Prop({ default: false })
     disabled!: boolean;
@@ -57,6 +67,12 @@ export default class InputSelect extends Vue {
 
     @Prop({ default: false })
     hideLabel!: boolean;
+
+    @Prop({ default: 'is-primary' })
+    type!: string;
+
+    @Prop()
+    ticks!: InputSliderTick[];
 
     get vid() {
         if (this.id != null) {
@@ -70,4 +86,6 @@ export default class InputSelect extends Vue {
         this.$emit('input', val);
     }
 }
+
+export type InputSliderTick = { value: any; label: string };
 </script>

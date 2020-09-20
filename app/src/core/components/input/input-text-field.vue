@@ -4,7 +4,13 @@
             <slot name="label"></slot>
         </template>
 
-        <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
+        <validation-provider
+            :vid="vid"
+            :name="label"
+            :rules="rules"
+            v-slot="{ errors, classes }"
+            ref="validator"
+        >
             <b-input
                 :icon="iconLeft"
                 :type="type"
@@ -56,6 +62,9 @@ export default class InputTextField extends Vue {
     @Prop({ default: false })
     hideLabel!: boolean;
 
+    /**
+     * Native type. Use 'textarea' for large inputs
+     */
     @Prop({ default: 'text' })
     type!: string;
 
