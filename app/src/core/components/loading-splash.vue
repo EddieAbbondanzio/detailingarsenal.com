@@ -1,6 +1,6 @@
 <template>
     <div
-        class="loading-splash is-flex is-flex-column is-flex-grow-1 has-background-primary is-align-items-center is-justify-content-center has-h-50"
+        class="loading-splash is-flex is-flex-column is-flex-grow-1 has-background-primary is-align-items-center is-justify-content-center"
     >
         <div class="is-flex is-flex-column is-align-items-center">
             <h1
@@ -23,6 +23,12 @@
 
 <style lang="sass">
 .loading-splash
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+
     .loading-background
         background-color: transparent!important
 </style>
