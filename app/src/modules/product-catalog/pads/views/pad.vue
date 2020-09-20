@@ -114,7 +114,16 @@
             </div>
 
             <div>
-                <p class="is-size-5 title has-margin-bottom-1">Reviews</p>
+                <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-2">
+                    <p class="is-size-5 title has-margin-bottom-0">Reviews</p>
+                    <b-button
+                        class="has-margin-left-1"
+                        type="is-success"
+                        size="is-small"
+                        tag="router-link"
+                        :to="{name: 'writeReview'}"
+                    >Write a review</b-button>
+                </div>
 
                 <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
                     <p class="has-text-weight-bold">
