@@ -1,11 +1,14 @@
 <template>
-    <div id="app" class="is-flex is-flex-column is-flex-grow-1" style="height: 100vh!important;">
+    <div id="app" class="is-flex is-flex-column is-flex-grow-1">
         <router-view v-if="!isLoggingIn" />
         <loading-splash v-else />
     </div>
 </template>
 
 <style lang="sass">
+#app
+    height: calc(100vh - 56px)
+
 .app-content
     // overflow-y: hidden
     display: flex
