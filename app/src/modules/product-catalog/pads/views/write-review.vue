@@ -17,26 +17,8 @@
             <b-slider>
                 <b-slider-tick :value="2">REEE</b-slider-tick>
             </b-slider>
-            <input-slider
-                label="Cut"
-                v-model="cut"
-                :min="0"
-                :max="10"
-                :ticks="[
-                {value: 0, label: 0},
-                {value: 1, label: 1},
-                {value: 2, label: 2},
-                {value: 3, label: 3},
-                {value: 4, label: 4},
-                {value: 5, label: 5},
-                {value: 6, label: 6},
-                {value: 7, label: 7},
-                {value: 8, label: 8},
-                {value: 9, label: 9},
-                {value: 10, label: 10},
-                ]"
-            />
-            <input-slider label="Finish" v-model="finish" :min="0" :max="10" />
+            <pad-cut-input v-model="cut" />
+            <pad-finish-input v-model="finish" />
 
             <input-text-field
                 label="Title"
@@ -62,8 +44,15 @@ import { Pad, PadCut, PadFinish, Stars } from '@/api';
 import { displayLoading } from '@/core';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import padStore from '../store/pad/pad-store';
+import PadCutInput from '@/modules/product-catalog/pads/components/pad-cut-input.vue';
+import PadFinishInput from '@/modules/product-catalog/pads/components/pad-finish-input.vue';
 
-@Component
+@Component({
+    components: {
+        PadCutInput,
+        PadFinishInput
+    }
+})
 export default class WriteReview extends Vue {
     get description() {
         return this.value?.label ?? '';

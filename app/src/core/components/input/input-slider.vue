@@ -31,6 +31,11 @@
     </b-field>
 </template>
 
+<style lang="sass" scoped>
+.b-slider-tick
+    text-align: center!important
+</style>
+
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
