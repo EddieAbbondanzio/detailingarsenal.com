@@ -100,6 +100,7 @@ export default class Pads extends Vue {
         for(const pad of padStore.pads) {
             for(const size of pad.sizes) {
                 summaries.push({
+                    id: pad.id,
                     name: `${size.diameter} ${pad.label}`,
                     category: pad.category,
                     material: pad.material,
@@ -121,6 +122,7 @@ export default class Pads extends Vue {
 }
 
 interface PadSummary {
+    id: string,
     name: string,
     category: PadCategory,
     material: PadMaterial,
