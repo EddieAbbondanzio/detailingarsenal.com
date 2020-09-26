@@ -1,4 +1,4 @@
-import { Brand, PadCategory } from '@/api';
+import { Brand, PadCategory, Stars } from '@/api';
 import { PadSeries } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-series';
 import { Image } from '@/api/product-catalog/common/data-transfer-objects/image';
 import { PadFinish } from './pad-finish';
@@ -7,6 +7,7 @@ import { PadSize } from './pad-size';
 import { PadMaterial } from './pad-material';
 import { PadTexture } from './pad-texture';
 import { PolisherType } from './polisher-type';
+import { Rating } from './rating';
 
 export class Pad {
     get label() {
@@ -24,6 +25,7 @@ export class Pad {
         public texture: PadTexture,
         public sizes: PadSize[],
         public recommendedFor: PolisherType[],
+        public rating: Rating,
         public image: Image | null = null,
     ) { }
 

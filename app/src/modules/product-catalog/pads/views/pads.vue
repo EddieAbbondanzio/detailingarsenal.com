@@ -17,7 +17,7 @@
                 <router-link
                     class="label-link has-text-weight-bold"
                     :to="{name: 'pad', params: {id: props.row.id}, query: {size: props.row.size }}"
-                >{{ props.row.label }}</router-link>
+                >{{ props.row.name }}</router-link>
             </b-table-column>
             <b-table-column
                 v-slot="props"
@@ -44,12 +44,12 @@
             <b-table-column v-slot="props" label="Finish" field="finish" width="120px" sortable>
                 <pad-finish-bar :value="props.row.finish" />
             </b-table-column>
-            <b-table-column v-slot="props" label="Rating" field="stars" sortable>
-                <stars :value="props.row.stars" :count="props.row.reviewCount" />
+            <b-table-column v-slot="props" label="Rating" field="rating" sortable>
+                <stars :value="props.row.rating.stars" :count="props.row.rating.reviewCount" />
             </b-table-column>
-            <b-table-column v-slot="props" label="Polisher Type(s)" field="recommendedFor" sortable>
+            <b-table-column v-slot="props" label="Polisher Type(s)" field="polisherTypes" sortable>
                 <div class="tags">
-                    <span class="tag" v-for="rec in props.row.recommendedFor" :key="rec">{{ rec }}</span>
+                    <span class="tag" v-for="rec in props.row.polisherTypes" :key="rec">{{ rec }}</span>
                 </div>
             </b-table-column>
 
@@ -74,7 +74,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { api, Pad, PadCategory } from '@/api';
+import { api, Pad, PadCategory, PadCut, PadFinish, PadMaterial, PadSize, PolisherType, Rating } from '@/api';
 import { displayLoading } from '@/core';
 import PadFilterControl from '@/modules/product-catalog/pads/components/pad-filter-control.vue';
 import store from '@/core/store';
@@ -82,8 +82,8 @@ import { MutationPayload } from 'vuex';
 import PageSidebar from '@/core/components/page/page-sidebar.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
 import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
-import padSummaryStore from '@/modules/product-catalog/pads/store/pad-summary/pad-summary-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
+import padStore from '../store/pad/pad-store';
 
 @Component({
     components: {
@@ -94,12 +94,40 @@ import Stars from '@/modules/product-catalog/core/components/stars.vue';
     }
 })
 export default class Pads extends Vue {
-    get summaries() {
-        return padSummaryStore.summaries;
+    get summaries(): PadSummary[] {
+        const summaries: PadSummary[] = [];
+
+        for(const pad of padStore.pads) {
+            for(const size of pad.sizes) {
+                summaries.push({
+                    name: `${size.diameter} ${pad.label}`,
+                    category: pad.category,
+                    material: pad.material,
+                    thickness: size.thickness,
+                    cut: pad.cut,
+                    finish: pad.finish,
+                    rating: pad.rating,
+                    polisherTypes: pad.recommendedFor
+                })
+            }
+        }
+
+        return summaries;
     }
 
     isThin(thickness: number) {
         return thickness < 0.75;
     }
+}
+
+interface PadSummary {
+    name: string,
+    category: PadCategory,
+    material: PadMaterial,
+    thickness: number,
+    cut: PadCut | null,
+    finish: PadFinish | null,
+    rating: Rating,
+    polisherTypes: PolisherType[],
 }
 </script>

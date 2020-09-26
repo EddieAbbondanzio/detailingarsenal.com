@@ -57,6 +57,8 @@ export * from './user/data-transfer-objects/user';
 export * from './product-catalog/common/data-transfer-objects/image';
 export * from './product-catalog/common/data-transfer-objects/stars';
 export * from './product-catalog/brands/data-transfer-objects/brand';
+export * from './product-catalog/pad-series/data-transfer-objects/review';
+export * from './product-catalog/pad-series/data-transfer-objects/rating';
 export * from './product-catalog/pad-series/data-transfer-objects/pad';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-category';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-material';
