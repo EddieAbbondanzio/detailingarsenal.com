@@ -15,14 +15,14 @@ class PadStore extends InitableModule {
         7,
         PadMaterial.Foam,
         PadTexture.Dimpled,
-        [new PadSize(5.5, 1.25)],
+        [new PadSize(5.5, 1.25, 'CCSWP5.5')],
         [PolisherType.DualAction],
         new Rating(5, 420)
     )];
 
     @Action({ rawError: true })
     async getPadById(id: string): Promise<Pad | null> {
-        return null;
+        return this.pads[0]; //TODO: Fix
     }
 }
 

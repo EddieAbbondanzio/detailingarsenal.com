@@ -16,7 +16,7 @@
             <b-table-column v-slot="props" label="Name" field="label">
                 <router-link
                     class="label-link has-text-weight-bold"
-                    :to="{name: 'pad', params: {id: props.row.id}, query: {size: props.row.size }}"
+                    :to="{name: 'pad', params: {id: props.row.id, size: props.row.diameter}, query: {size: props.row.size }}"
                 >{{ props.row.name }}</router-link>
             </b-table-column>
             <b-table-column
@@ -101,9 +101,10 @@ export default class Pads extends Vue {
             for(const size of pad.sizes) {
                 summaries.push({
                     id: pad.id,
-                    name: `${size.diameter} ${pad.label}`,
+                    name: `${size.diameter}" ${pad.label}`,
                     category: pad.category,
                     material: pad.material,
+                    diameter: size.diameter,
                     thickness: size.thickness,
                     cut: pad.cut,
                     finish: pad.finish,
@@ -126,6 +127,7 @@ interface PadSummary {
     name: string,
     category: PadCategory,
     material: PadMaterial,
+    diameter: number,
     thickness: number,
     cut: PadCut | null,
     finish: PadFinish | null,

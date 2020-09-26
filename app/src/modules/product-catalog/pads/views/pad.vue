@@ -1,7 +1,7 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header :title="value != null ? value.label : ``">
+            <page-header :title='value != null ? `${size.diameter}" ${value.label}` : ``'>
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Pads" :to="{name: 'pads'}" />
@@ -28,8 +28,11 @@
 
                 <div class="is-flex-grow-1">
                     <div class="has-margin-bottom-3">
-                        <p class="is-size-4 is-size-3-desktop">{{value.label }}</p>
+                        <p class="is-size-4 is-size-3-desktop">{{`${size.diameter}" ${value.label}` }}</p>
+                        <div class="is-flex is-flex-row">
+                        <p class="has-margin-right-1" v-if="size.partNumber">{{ size.partNumber }}</p>
                         <stars :value="3" :count="20" />
+                        </div>
 
                         <div class="columns">
                             <div class="column is-one-quarter">
@@ -44,38 +47,58 @@
                         </div>
                     </div>
 
-                    <div class="columns has-margin-bottom-3">
-                        <div class="column has-padding-bottom-3-touch">
-                            <div class="has-margin-bottom-3">
+                    <div class="has-margin-bottom-3">
+                        <div class="is-flex is-flex-column is-flex-row-tablet is-justify-content-space-around">
+                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
                                 <p class="is-size-5 title">Brand</p>
                                 <p class="is-size-6 subtitle">{{ value.series.brand.name }}</p>
                             </div>
 
-                            <div class="has-margin-bottom-3">
+                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
                                 <p class="is-size-5 title">Series</p>
                                 <p class="is-size-6 subtitle">{{ value.series.name }}</p>
                             </div>
 
-                            <div class>
+                            <div class="is-flex-grow-1 is-flex-basis-0">
                                 <p class="is-size-5 title">Name</p>
                                 <p class="is-size-6 subtitle">{{ value.name }}</p>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="column has-padding-top-0-touch">
-                            <div class="has-margin-bottom-3">
+                    <div class="has-margin-bottom-3">
+                        <div class="is-flex is-flex-column is-flex-row-tablet is-justify-content-space-around">
+                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
                                 <p class="is-size-5 title">Category</p>
                                 <p class="is-size-6 subtitle">{{ value.category | uppercaseFirst }}</p>
                             </div>
 
-                            <div class="has-margin-bottom-3">
+                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
                                 <p class="is-size-5 title">Material</p>
                                 <p class="is-size-6 subtitle">{{ value.material | uppercaseFirst }}</p>
                             </div>
 
-                            <div class>
+                            <div class="is-flex-grow-1 is-flex-basis-0">
                                 <p class="is-size-5 title">Texture</p>
                                 <p class="is-size-6 subtitle">{{ value.texture | uppercaseFirst }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="has-margin-bottom-3">
+                        <div class="is-flex is-flex-column is-flex-row-tablet is-justify-content-space-around">
+                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
+                                <p class="is-size-5 title">Diameter</p>
+                                <p class="is-size-6 subtitle">{{ size.diameter }}</p>
+                            </div>
+
+                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
+                                <p class="is-size-5 title">Thickness</p>
+                                <p class="is-size-6 subtitle">{{ size.thickness }}</p>
+                            </div>
+
+                            <div class="is-flex-grow-1 is-flex-basis-0">
+                                &nbsp;
                             </div>
                         </div>
                     </div>
@@ -87,28 +110,6 @@
                         <ul>
                             <li v-for="t in value.recommendedFor" :key="t">{{ t }}</li>
                         </ul>
-                    </div>
-
-                    <div class="has-margin-top-3">
-                        <p class="is-size-5 title has-margin-bottom-1">Sizes</p>
-
-                        <b-table :data="value.sizes">
-                            <b-table-column
-                                v-slot="props"
-                                label="Diameter"
-                                field="diameter"
-                            >{{ props.row.diameter }}</b-table-column>
-                            <b-table-column
-                                v-slot="props"
-                                label="Thickness"
-                                field="thickness"
-                            >{{ props.row.thickness }}</b-table-column>
-                            <b-table-column
-                                v-slot="props"
-                                label="Part #"
-                                field="partNumber"
-                            >{{ props.row.partNumber }}</b-table-column>
-                        </b-table>
                     </div>
                 </div>
             </div>
@@ -162,7 +163,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Pad, PadSeries } from '@/api';
+import { Pad, PadSeries, PadSize } from '@/api';
 import padStore from '../store/pad/pad-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
@@ -181,12 +182,8 @@ export default class PadView extends Vue {
         return this.$route.params.id;
     }
 
-    get size() {
-        if (this.$route.query.size == null) {
-            return null;
-        }
-
-        return Number.parseFloat(this.$route.query.size as string);
+    get diameter() {
+        return Number.parseFloat(this.$route.params.size);
     }
 
     get reviews() {
@@ -194,13 +191,18 @@ export default class PadView extends Vue {
     }
 
     value: Pad | null = null;
+    size: PadSize | null = null;
 
     async created() {
         this.value = await padStore.getPadById(this.id);
+
+        if(this.value == null) {
+            return;
+        }
+        
+        this.size = this.value.sizes.find(s => s.diameter == this.diameter)!;
         reviewStore.loadReviews(this.id);
     }
 
-    // size is a query string param.
-    // Lets us mock the page to look like specifically that size
 }
 </script>
