@@ -17,7 +17,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id; 
                     select * from pads p where p.pad_series_id = @Id;"
                 , new { Id = id })) {
-                    var series = reader.Read<PadSeriesModel, BrandModel, PadSeriesReadModel>(
+                    var series = reader.Read<PadSeriesRow, BrandRow, PadSeriesReadModel>(
                         (ps, b) => new PadSeriesReadModel(
                             ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
                         )
@@ -27,7 +27,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         return null;
                     }
 
-                    series.Pads = reader.Read<PadModel>().Select(p => new PadReadModel(
+                    series.Pads = reader.Read<PadRow>().Select(p => new PadReadModel(
                         p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
                     )).ToList();
 
@@ -42,18 +42,18 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"select * from pad_series ps join brands b on ps.brand_id = b.id; 
                     select * from pads;"
                 )) {
-                    var series = reader.Read<PadSeriesModel, BrandModel, PadSeriesReadModel>(
+                    var series = reader.Read<PadSeriesRow, BrandRow, PadSeriesReadModel>(
                         (ps, b) => new PadSeriesReadModel(
                             ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
                         )
                     );
 
-                    var pads = reader.Read<PadModel>();
+                    var pads = reader.Read<PadRow>();
 
                     // Gotta get that O(1) lookup time.
                     var lookup = new Dictionary<Guid, PadSeriesReadModel>(series.Select(s => new KeyValuePair<Guid, PadSeriesReadModel>(s.Id, s)));
 
-                    foreach (PadModel pad in pads) {
+                    foreach (PadRow pad in pads) {
                         PadSeriesReadModel? s = null;
 
                         if (lookup.TryGetValue(pad.PadSeriesId, out s)) {

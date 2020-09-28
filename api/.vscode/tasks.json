@@ -25,6 +25,13 @@
       "problemMatcher": "$msCompile"
     },
     {
+        "label": "api:watch",
+        "command": "dotnet watch -p ./src/Api/Api.csproj run",
+        "type": "shell",
+        "group": "none",
+        "problemMatcher": "$msCompile"
+      },
+    {
       "label": "api:test",
       "command": "dotnet test ./Backend.sln",
       "type": "shell",

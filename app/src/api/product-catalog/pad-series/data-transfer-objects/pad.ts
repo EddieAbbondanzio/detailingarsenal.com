@@ -24,10 +24,8 @@ export class Pad {
         public material: PadMaterial,
         public texture: PadTexture,
         public sizes: PadSize[],
-        public recommendedFor: PolisherType[],
+        public polisherTypes: PolisherType[],
         public rating: Rating,
         public image: Image | null = null,
     ) { }
-
-
 }

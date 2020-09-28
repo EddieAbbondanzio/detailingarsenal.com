@@ -9,7 +9,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
         public async Task<Brand?> FindById(Guid id) {
             using (var conn = OpenConnection()) {
-                var brandModel = await conn.QueryFirstOrDefaultAsync<BrandModel>(
+                var brandModel = await conn.QueryFirstOrDefaultAsync<BrandRow>(
                     @"select * from brands where id = @Id;",
                     new { Id = id }
                 );
@@ -24,7 +24,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
         public async Task<Brand?> FindByName(string name) {
             using (var conn = OpenConnection()) {
-                var brandModel = await conn.QueryFirstOrDefaultAsync<BrandModel>(
+                var brandModel = await conn.QueryFirstOrDefaultAsync<BrandRow>(
                     @"select * from brands where name = @Name;",
                     new { Name = name }
                 );

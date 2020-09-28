@@ -13,7 +13,7 @@ using DetailingArsenal.Application.ProductCatalog;
 namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
     [ApiController]
-    [Route("product-catalog/pad-series")]
+    [Route("product-catalog/pad")]
     public class PadSeriesController : ControllerBase {
         private IMediator mediator;
 
@@ -24,16 +24,16 @@ namespace DetailingArsenal.Api.ProductCatalog {
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            List<PadSeriesReadModel> PadSeriess = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>(
+            List<PadSeriesReadModel> pads = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>(
                 new GetAllPadSeriesQuery()
             );
 
-            return Ok(PadSeriess);
+            return Ok(pads);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
-            var pads = create.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.Parse(p.Category), p.Image)).ToList();
+            var pads = create.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.ParseString(p.Category), p.Image)).ToList();
 
             var res = await mediator.Dispatch<PadSeriesCreateCommand, CommandResult>(
                 new PadSeriesCreateCommand(
@@ -53,7 +53,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateRequest update) {
-            var pads = update.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.Parse(p.Category), p.Image)).ToList();
+            var pads = update.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.ParseString(p.Category), p.Image)).ToList();
 
             var res = await mediator.Dispatch<PadSeriesUpdateCommand, CommandResult>(
                 new PadSeriesUpdateCommand(

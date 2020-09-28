@@ -18,16 +18,16 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         Id = id
                     }
                 )) {
-                    var seriesModel = reader.ReadFirstOrDefault<PadSeriesModel>();
+                    var seriesModel = reader.ReadFirstOrDefault<PadSeriesRow>();
 
                     if (seriesModel == null) {
                         return null;
                     }
 
-                    var padModels = reader.Read<PadModel>();
+                    var padModels = reader.Read<PadRow>();
 
                     var pads = padModels.Select(p => new Pad(
-                        p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
+                        p.Id, PadCategoryUtils.Parse(p.Category), p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
                     )).ToList();
 
                     return new PadSeries(seriesModel.Id, seriesModel.Name, seriesModel.BrandId, pads);
@@ -42,9 +42,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         @"insert into pad_series (id, brand_id, name) values (@Id, @BrandId, @Name);", entity
                     );
 
-                    var pads = entity.Pads.Select(p => new PadModel() {
+                    var pads = entity.Pads.Select(p => new PadRow() {
                         Id = p.Id,
-                        Category = p.Category,
+                        Category = p.Category.Serialize(),
                         Name = p.Name,
                         PadSeriesId = entity.Id,
                         ImageName = p.Image?.Name,
@@ -72,9 +72,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", entity.Id);
 
-                    var pads = entity.Pads.Select(p => new PadModel() {
+                    var pads = entity.Pads.Select(p => new PadRow() {
                         Id = p.Id,
-                        Category = p.Category,
+                        Category = p.Category.Serialize(),
                         Name = p.Name,
                         PadSeriesId = entity.Id,
                         ImageName = p.Image?.Name,
