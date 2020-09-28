@@ -24,13 +24,15 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         return null;
                     }
 
-                    var padModels = reader.Read<PadRow>();
+                    throw new NotImplementedException();
 
-                    var pads = padModels.Select(p => new Pad(
-                        p.Id, PadCategoryUtils.Parse(p.Category), p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
-                    )).ToList();
+                    // var padModels = reader.Read<PadRow>();
 
-                    return new PadSeries(seriesModel.Id, seriesModel.Name, seriesModel.BrandId, pads);
+                    // var pads = padModels.Select(p => new Pad(
+                    //     p.Id, PadCategoryUtils.Parse(p.Category), p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
+                    // )).ToList();
+
+                    // return new PadSeries(seriesModel.Id, seriesModel.Name, seriesModel.BrandId, pads);
                 }
             }
         }

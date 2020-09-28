@@ -27,11 +27,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         return null;
                     }
 
-                    series.Pads = reader.Read<PadRow>().Select(p => new PadReadModel(
-                        p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
-                    )).ToList();
+                    throw new NotImplementedException();
 
-                    return series;
+                    // series.Pads = reader.Read<PadRow>().Select(p =>
+                    //  new PadReadModel(
+                    //     p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
+                    // )).ToList();
+
+                    // return series;
                 }
             }
         }
@@ -53,16 +56,19 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     // Gotta get that O(1) lookup time.
                     var lookup = new Dictionary<Guid, PadSeriesReadModel>(series.Select(s => new KeyValuePair<Guid, PadSeriesReadModel>(s.Id, s)));
 
-                    foreach (PadRow pad in pads) {
-                        PadSeriesReadModel? s = null;
+                    throw new NotImplementedException();
 
-                        if (lookup.TryGetValue(pad.PadSeriesId, out s)) {
-                            var image = pad.ImageName != null ? new DataUrlImage(pad.ImageName, pad.ImageData!) : null;
-                            s.Pads.Add(new PadReadModel(pad.Id, pad.Category, pad.Name, image));
-                        }
-                    }
 
-                    return series.ToList();
+                    // foreach (PadRow pad in pads) {
+                    //     PadSeriesReadModel? s = null;
+
+                    //     if (lookup.TryGetValue(pad.PadSeriesId, out s)) {
+                    //         var image = pad.ImageName != null ? new DataUrlImage(pad.ImageName, pad.ImageData!) : null;
+                    //         s.Pads.Add(new PadReadModel(pad.Id, pad.Category, pad.Name, image));
+                    //     }
+                    // }
+
+                    // return series.ToList();
                 }
             }
         }

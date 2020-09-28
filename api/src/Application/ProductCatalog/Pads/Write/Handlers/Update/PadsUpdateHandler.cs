@@ -7,15 +7,15 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    [Authorization(Action = "update", Scope = "pad-series")]
-    public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand, CommandResult> {
+    [Authorization(Action = "update", Scope = "pads")]
+    public class PadUpdateHandler : ActionHandler<PadUpdateCommand, CommandResult> {
         IPadSeriesRepo repo;
 
-        public PadSeriesUpdateHandler(IPadSeriesRepo repo) {
+        public PadUpdateHandler(IPadSeriesRepo repo) {
             this.repo = repo;
         }
 
-        public async override Task<CommandResult> Execute(PadSeriesUpdateCommand command, User? user) {
+        public async override Task<CommandResult> Execute(PadUpdateCommand command, User? user) {
             var series = await repo.FindById(command.Id) ?? throw new EntityNotFoundException();
 
             series.Name = command.Name;

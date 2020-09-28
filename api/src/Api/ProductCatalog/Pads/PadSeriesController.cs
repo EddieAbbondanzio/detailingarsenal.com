@@ -33,10 +33,10 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
-            var pads = create.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.ParseString(p.Category), p.Image)).ToList();
+            var pads = create.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.Parse(p.Category), p.Image)).ToList();
 
-            var res = await mediator.Dispatch<PadSeriesCreateCommand, CommandResult>(
-                new PadSeriesCreateCommand(
+            var res = await mediator.Dispatch<PadCreateCommand, CommandResult>(
+                new PadCreateCommand(
                     create.Name,
                     create.BrandId,
                     pads
@@ -53,10 +53,10 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateRequest update) {
-            var pads = update.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.ParseString(p.Category), p.Image)).ToList();
+            var pads = update.Pads.Select(p => new PadCreateOrUpdate(p.Name, PadCategoryUtils.Parse(p.Category), p.Image)).ToList();
 
-            var res = await mediator.Dispatch<PadSeriesUpdateCommand, CommandResult>(
-                new PadSeriesUpdateCommand(
+            var res = await mediator.Dispatch<PadUpdateCommand, CommandResult>(
+                new PadUpdateCommand(
                     id,
                     update.Name,
                     update.BrandId,
@@ -74,8 +74,8 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleCategory(Guid id) {
-            var res = await mediator.Dispatch<PadSeriesDeleteCommand, CommandResult>(
-                new PadSeriesDeleteCommand(id),
+            var res = await mediator.Dispatch<PadDeleteCommand, CommandResult>(
+                new PadDeleteCommand(id),
                 User.GetUserId()
             );
 

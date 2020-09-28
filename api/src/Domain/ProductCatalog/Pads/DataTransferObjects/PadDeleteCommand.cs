@@ -1,10 +1,10 @@
 using System;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
-    public class PadSeriesDeleteCommand : IAction {
+    public class PadDeleteCommand : IAction {
         public Guid Id { get; }
 
-        public PadSeriesDeleteCommand(Guid id) {
+        public PadDeleteCommand(Guid id) {
             Id = id;
         }
     }

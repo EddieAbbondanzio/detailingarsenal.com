@@ -165,9 +165,9 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IPadSeriesReader, PadSeriesReader>();
             services.AddTransient<ActionHandler<GetPadSeriesByIdQuery, PadSeriesReadModel?>, GetPadSeriesByIdHandler>();
             services.AddTransient<ActionHandler<GetAllPadSeriesQuery, List<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
-            services.AddTransient<ActionHandler<PadSeriesCreateCommand, CommandResult>, PadSeriesCreateHandler>();
-            services.AddTransient<ActionHandler<PadSeriesUpdateCommand, CommandResult>, PadSeriesUpdateHandler>();
-            services.AddTransient<ActionHandler<PadSeriesDeleteCommand, CommandResult>, PadSeriesDeleteHandler>();
+            services.AddTransient<ActionHandler<PadCreateCommand, CommandResult>, PadSeriesCreateHandler>();
+            services.AddTransient<ActionHandler<PadUpdateCommand, CommandResult>, PadUpdateHandler>();
+            services.AddTransient<ActionHandler<PadDeleteCommand, CommandResult>, PadDeleteHandler>();
 
             // Billing
             var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));
