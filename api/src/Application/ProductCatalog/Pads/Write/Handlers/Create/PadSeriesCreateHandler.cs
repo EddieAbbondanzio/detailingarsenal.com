@@ -7,16 +7,18 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    [Authorization(Action = "create", Scope = "pads")]
-    public class PadSeriesCreateHandler : ActionHandler<PadCreateCommand, CommandResult> {
+    [Authorization(Action = "create", Scope = "pad-series")]
+    public class PadSeriesCreateHandler : ActionHandler<PadSeriesCreateCommand, CommandResult> {
         IPadSeriesRepo repo;
 
         public PadSeriesCreateHandler(IPadSeriesRepo repo) {
             this.repo = repo;
         }
 
-        public async override Task<CommandResult> Execute(PadCreateCommand command, User? user) {
-            var pads = command.Pads.Select(p => new Pad(p.Category, p.Name, p.Image)).ToList();
+        public async override Task<CommandResult> Execute(PadSeriesCreateCommand command, User? user) {
+            var pads = command.Pads.Select(p => new Pad(
+                p.Name, p.Category, p.Material, p.Texture, p.Sizes, p.PolisherTypes
+            )).ToList();
 
             var series = new PadSeries(
                 command.Name,

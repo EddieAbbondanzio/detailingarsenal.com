@@ -8,7 +8,7 @@ using FluentMigrator;
 namespace DetailingArsenal.Persistence.Security.Migrations {
     [Migration(2020_08_24_2, "Insert crud pad series permissions")]
     public class InsertCrudPadSeriesPermissions : Migration {
-        const string Scope = "pads";
+        const string Scope = "pad-series";
 
         public override void Up() {
             Execute.WithConnection((c, t) => {

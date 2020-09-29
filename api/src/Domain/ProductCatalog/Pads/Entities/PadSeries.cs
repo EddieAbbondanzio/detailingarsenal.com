@@ -7,8 +7,6 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public Guid BrandId { get; set; }
         public List<Pad> Pads { get; set; } = new List<Pad>();
 
-        public PadSeries() { }
-
         public PadSeries(Guid id, string name, Guid brandId, List<Pad>? pads = null) {
             Id = id;
             Name = name;

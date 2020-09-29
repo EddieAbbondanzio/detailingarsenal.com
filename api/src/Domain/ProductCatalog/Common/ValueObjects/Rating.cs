@@ -5,6 +5,8 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public int Stars { get; }
         public int ReviewCount { get; }
 
+        public Rating() { }
+
         public Rating(int stars, int reviewCount) {
             Stars = stars;
             ReviewCount = reviewCount;

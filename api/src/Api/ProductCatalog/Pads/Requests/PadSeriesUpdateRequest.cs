@@ -6,6 +6,6 @@ namespace DetailingArsenal.Api.ProductCatalog {
     public class PadSeriesUpdateRequest : IDataTransferObject {
         public string Name { get; set; } = null!;
         public Guid BrandId { get; set; }
-        public List<PadData> Pads { get; set; } = new List<PadData>();
+        public List<PadCreateOrUpdate> Pads { get; set; } = new List<PadCreateOrUpdate>();
     }
 }

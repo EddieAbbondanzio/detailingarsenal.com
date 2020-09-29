@@ -9,10 +9,9 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public PadTexture Texture { get; set; }
         public List<PadSize> Sizes { get; set; }
         public List<PolisherType> PolisherTypes { get; set; }
-        public Rating Rating { get; set; }
         public DataUrlImage? Image { get; set; }
 
-        public Pad(string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSize> sizes, List<PolisherType> polisherTypes, Rating rating, DataUrlImage? image) {
+        public Pad(string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSize> sizes, List<PolisherType> polisherTypes, DataUrlImage? image = null) {
             Id = Guid.NewGuid();
             Name = name;
             Category = category;
@@ -20,11 +19,10 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             Texture = texture;
             Sizes = sizes;
             PolisherTypes = polisherTypes;
-            Rating = rating;
             Image = image;
         }
 
-        public Pad(Guid id, string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSize> sizes, List<PolisherType> polisherTypes, Rating rating, DataUrlImage? image) {
+        public Pad(Guid id, string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSize> sizes, List<PolisherType> polisherTypes, DataUrlImage? image = null) {
             Id = id;
             Name = name;
             Category = category;
@@ -32,7 +30,6 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             Texture = texture;
             Sizes = sizes;
             PolisherTypes = polisherTypes;
-            Rating = rating;
             Image = image;
         }
     }
