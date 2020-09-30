@@ -11,25 +11,25 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public List<PolisherType> PolisherTypes { get; set; }
         public DataUrlImage? Image { get; set; }
 
-        public Pad(string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSize> sizes, List<PolisherType> polisherTypes, DataUrlImage? image = null) {
+        public Pad(string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSize>? sizes = null, List<PolisherType>? polisherTypes = null, DataUrlImage? image = null) {
             Id = Guid.NewGuid();
             Name = name;
             Category = category;
             Material = material;
             Texture = texture;
-            Sizes = sizes;
-            PolisherTypes = polisherTypes;
+            Sizes = sizes ?? new List<PadSize>();
+            PolisherTypes = polisherTypes ?? new List<PolisherType>();
             Image = image;
         }
 
-        public Pad(Guid id, string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSize> sizes, List<PolisherType> polisherTypes, DataUrlImage? image = null) {
+        public Pad(Guid id, string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSize>? sizes = null, List<PolisherType>? polisherTypes = null, DataUrlImage? image = null) {
             Id = id;
             Name = name;
             Category = category;
             Material = material;
             Texture = texture;
-            Sizes = sizes;
-            PolisherTypes = polisherTypes;
+            Sizes = sizes = new List<PadSize>();
+            PolisherTypes = new List<PolisherType>();
             Image = image;
         }
     }

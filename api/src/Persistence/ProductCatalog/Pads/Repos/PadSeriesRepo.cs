@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -11,96 +12,163 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public async Task<PadSeries?> FindById(Guid id) {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
-                    @"select * from pad_series where id = @Id;
-                
-                select * from pads where pad_series_id = @Id;",
-                    new {
-                        Id = id
-                    }
+                    @"
+                        select * from pad_series where id = @Id;
+                        select * from pads where pad_series_id = @Id;
+                        select ppt.* from pad_polisher_types ppt join pads p on ppt.pad_id = p.id where p.pad_series_id = @Id;
+                        select ps.* from pad_sizes ps join pads p on os.pad_id = p.id where p.pad_series_id = @Id;
+                    ",
+                    new { Id = id }
                 )) {
-                    var seriesModel = reader.ReadFirstOrDefault<PadSeriesRow>();
-
-                    if (seriesModel == null) {
+                    // See if we even found a pad series first
+                    var seriesRow = reader.ReadFirstOrDefault<PadSeriesRow>();
+                    if (seriesRow == null) {
                         return null;
                     }
 
-                    throw new NotImplementedException();
+                    var pads = reader.Read<PadRow>().Select(p => new Pad(
+                       p.Id, p.Name, PadCategoryUtils.Parse(p.Category), PadMaterialUtils.Parse(p.Material), PadTextureUtils.Parse(p.Texture)
+                    )).ToList();
 
-                    // var padModels = reader.Read<PadRow>();
+                    var padLookup = pads.ToDictionary(p => p.Id, p => p);
 
-                    // var pads = padModels.Select(p => new Pad(
-                    //     p.Id, PadCategoryUtils.Parse(p.Category), p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
-                    // )).ToList();
+                    // Assign each pad their polisher types
+                    var padPolisherTypes = reader.Read<PadPolisherTypeRow>();
+                    foreach (var padPolisherType in padPolisherTypes) {
+                        Pad? pad;
 
-                    // return new PadSeries(seriesModel.Id, seriesModel.Name, seriesModel.BrandId, pads);
+                        if (padLookup.TryGetValue(padPolisherType.PadId, out pad)) {
+                            pad.PolisherTypes.Add(PolisherTypeUtils.Parse(padPolisherType.PolisherType));
+                        }
+                    }
+
+                    // Properly assign each pad their sizes
+                    var padSizes = reader.Read<PadSizeRow>();
+                    foreach (var padSize in padSizes) {
+                        Pad? pad;
+
+                        if (padLookup.TryGetValue(padSize.PadId, out pad)) {
+                            pad.Sizes.Add(new PadSize(
+                                padSize.Diameter, padSize.Thickness, padSize.PartNumber
+                            ));
+                        }
+                    }
+
+                    return new PadSeries(seriesRow.Id, seriesRow.Name, seriesRow.BrandId, pads);
                 }
             }
         }
 
-        public async Task Add(PadSeries entity) {
+        public async Task Add(PadSeries series) {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
+                    // pads
+                    // pad_polisher_types
+                    // pad_sizes
+
+                    // Insert the parent row for the pad series first
                     await conn.ExecuteAsync(
-                        @"insert into pad_series (id, brand_id, name) values (@Id, @BrandId, @Name);", entity
+                        @"insert into pad_series (id, brand_id, name) values (@Id, @BrandId, @Name);", series
                     );
 
-                    var pads = entity.Pads.Select(p => new PadRow() {
-                        Id = p.Id,
-                        Category = p.Category.Serialize(),
-                        Name = p.Name,
-                        PadSeriesId = entity.Id,
-                        ImageName = p.Image?.Name,
-                        ImageData = p.Image?.ToBinary()
-                    }).ToList();
-
+                    // Then insert the pad row
                     await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, name, image_name, image_data) values (@Id, @PadSeriesId, @Category, @Name, @ImageName, @ImageData);",
-                        pads
+                        @"insert into pads 
+                            (id, pad_series_id, name, category, material, texture, image_name, image_data)
+                            values (@Id, @PadSeriesId, @Name, @Category, @Material, @Texture, @ImageName, @ImageData);",
+                        series.Pads.Select(p => new PadRow() {
+                            Id = p.Id,
+                            PadSeriesId = series.Id,
+                            Name = p.Name,
+                            Category = p.Category.Serialize(),
+                            Material = p.Material.Serialize(),
+                            Texture = p.Texture.Serialize(),
+                            ImageName = p.Image?.Name,
+                            ImageData = p.Image?.ToBinary()
+                        }).ToList()
                     );
 
+                    await conn.ExecuteAsync(
+                        @"insert into pad_polisher_types (pad_id, polisher_type) values (@PadId, @PolisherType);",
+                        series.Pads.SelectMany(
+                            p => p.PolisherTypes.Select(
+                                pt => new PadPolisherTypeRow() { PadId = p.Id, PolisherType = pt.Serialize() }
+                            )
+                        ).ToList()
+                    );
 
+                    await conn.ExecuteAsync(
+                        @"insert into pad_sizes (pad_id, diameter, thickness, part_number) values (@PadId, @Diameter, @Thickness, @PartNumber);",
+                        series.Pads.SelectMany(
+                            p => p.Sizes.Select(
+                                ps => new PadSizeRow() { PadId = p.Id, Diameter = ps.Diameter, Thickness = ps.Thickness, PartNumber = ps.PartNumber }
+                            )
+                        ).ToList()
+                    );
 
                     t.Commit();
                 }
             }
         }
 
-        public async Task Update(PadSeries entity) {
+        public async Task Update(PadSeries series) {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     await conn.ExecuteAsync(
-                        @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;", entity
+                        @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;", series
                     );
 
-                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", entity.Id);
-
-                    var pads = entity.Pads.Select(p => new PadRow() {
-                        Id = p.Id,
-                        Category = p.Category.Serialize(),
-                        Name = p.Name,
-                        PadSeriesId = entity.Id,
-                        ImageName = p.Image?.Name,
-                        ImageData = p.Image?.ToBinary()
-                    }).ToList();
+                    await conn.ExecuteAsync(@"delete from pad_sizes where pad_id = @Id", series.Pads);
+                    await conn.ExecuteAsync(@"delete from pad_polisher_types where pad_id = @Id", series.Pads);
+                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", series);
 
                     await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, name, image_name, image_data) values (@Id, @PadSeriesId, @Category, @Name, @ImageName, @ImageData);",
-                        pads
+                                           @"insert into pads 
+                            (id, pad_series_id, name, category, material, texture, image_name, image_data)
+                            values (@Id, @PadSeriesId, @Name, @Category, @Material, @Texture, @ImageName, @ImageData);",
+                                           series.Pads.Select(p => new PadRow() {
+                                               Id = p.Id,
+                                               PadSeriesId = series.Id,
+                                               Name = p.Name,
+                                               Category = p.Category.Serialize(),
+                                               Material = p.Material.Serialize(),
+                                               Texture = p.Texture.Serialize(),
+                                               ImageName = p.Image?.Name,
+                                               ImageData = p.Image?.ToBinary()
+                                           }).ToList()
+                                       );
+
+                    await conn.ExecuteAsync(
+                        @"insert into pad_polisher_types (pad_id, polisher_type) values (@PadId, @PolisherType);",
+                        series.Pads.SelectMany(
+                            p => p.PolisherTypes.Select(
+                                pt => new PadPolisherTypeRow() { PadId = p.Id, PolisherType = pt.Serialize() }
+                            )
+                        ).ToList()
                     );
 
-
+                    await conn.ExecuteAsync(
+                        @"insert into pad_sizes (pad_id, diameter, thickness, part_number) values (@PadId, @Diameter, @Thickness, @PartNumber);",
+                        series.Pads.SelectMany(
+                            p => p.Sizes.Select(
+                                ps => new PadSizeRow() { PadId = p.Id, Diameter = ps.Diameter, Thickness = ps.Thickness, PartNumber = ps.PartNumber }
+                            )
+                        ).ToList()
+                    );
 
                     t.Commit();
                 }
             }
         }
 
-        public async Task Delete(PadSeries entity) {
+        public async Task Delete(PadSeries series) {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     // Delete out pads first due to foreign key
-                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", entity);
-                    await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", entity);
+                    await conn.ExecuteAsync(@"delete from pad_sizes where pad_id = @Id", series.Pads);
+                    await conn.ExecuteAsync(@"delete from pad_polisher_types where pad_id = @Id", series.Pads);
+                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", series);
+                    await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
 
                     t.Commit();
                 }
