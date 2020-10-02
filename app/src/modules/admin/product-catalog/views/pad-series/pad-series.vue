@@ -5,21 +5,18 @@
                 title="Pads"
                 description="Pad series by manufacturer"
                 icon="checkbox-blank-circle"
-                :backButtonTo="{name: 'productCatalogPanel'}"
+                :backButtonTo="{ name: 'productCatalogPanel' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb
-                            name="Product Catalog Panel"
-                            :to="{name: 'productCatalogPanel'}"
-                        />
-                        <breadcrumb name="Pads" :to="{name: 'pads'}" :active="true" />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product Catalog Panel" :to="{ name: 'productCatalogPanel' }" />
+                        <breadcrumb name="Pads" :to="{ name: 'pads' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <create-button :to="{name: 'createPadSeries' }" text="Create pad" />
+                    <create-button :to="{ name: 'createPadSeries' }" text="Create pad" />
                 </template>
             </page-header>
         </template>
@@ -30,7 +27,7 @@
                 :key="s.id"
                 :title="s.name"
                 :description="s.brand.name"
-                :to="{name: 'padSeriesDetails', params: {id: s.id}}"
+                :to="{ name: 'padSeriesDetails', params: { id: s.id } }"
             >
                 <template v-slot:actions>
                     <edit-delete-dropdown @edit="onEdit(s)" @delete="onDelete(s)" />
@@ -43,8 +40,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading, confirmDelete, toast, displayError } from '@/core';
-import padSeriesStore from '@/modules/admin/product-catalog/store/pad-series-store';
 import { Pad, PadSeries } from '@/api';
+import adminPadStrore from '../../store/admin-pad-strore';
 
 @Component
 export default class Pads extends Vue {
@@ -54,7 +51,7 @@ export default class Pads extends Vue {
 
     @displayLoading
     async created() {
-        await padSeriesStore.init();
+        await adminPadStrore.init();
     }
 
     async onEdit(pad: Pad) {

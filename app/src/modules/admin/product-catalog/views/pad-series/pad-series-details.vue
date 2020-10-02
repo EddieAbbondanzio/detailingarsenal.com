@@ -4,22 +4,19 @@
             <page-header :title="value != null ? value.name : ``">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb
-                            name="Product catalog panel"
-                            :to="{name: 'productCatalogPanel'}"
-                        />
-                        <breadcrumb name="Pad series" :to="{name: 'padSeries'}" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
+                        <breadcrumb name="Pad series" :to="{ name: 'padSeries' }" />
                         <breadcrumb
                             :name="value != null ? value.name : ''"
-                            :to="{name: 'padSeriesDetails', params: $route.params}"
+                            :to="{ name: 'padSeriesDetails', params: $route.params }"
                             :active="true"
                         />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <edit-button :to="{name: 'editPadSeries', params: { id: $route.params.id }}" />
+                    <edit-button :to="{ name: 'editPadSeries', params: { id: $route.params.id } }" />
                 </template>
             </page-header>
         </template>
@@ -35,16 +32,10 @@
             <b-table :data="value.pads">
                 <template slot-scope="props">
                     <b-table-column label="Name" field="label" sortable>{{ props.row.name }}</b-table-column>
-                    <b-table-column
-                        label="Category"
-                        field="action"
-                        sortable
-                    >{{ props.row.category }}</b-table-column>
-                    <b-table-column
-                        label="Image"
-                        field="scope"
-                        sortable
-                    >{{ props.row.image != null ? props.row.image.name : '' }}</b-table-column>
+                    <b-table-column label="Category" field="action" sortable>{{ props.row.category }}</b-table-column>
+                    <b-table-column label="Image" field="scope" sortable>{{
+                        props.row.image != null ? props.row.image.name : ''
+                    }}</b-table-column>
                 </template>
 
                 <template slot="empty">
@@ -60,7 +51,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import appStore from '@/core/store/app-store';
 import { Permission, Role } from '@/api';
 import { displayLoading } from '@/core';
-import padSeriesStore from '../../store/pad-series-store';
+import adminPadStrore from '../../store/admin-pad-strore';
 
 @Component({
     name: 'role'
@@ -72,7 +63,7 @@ export default class PadSeriesDetails extends Vue {
 
     @displayLoading
     async created() {
-        await padSeriesStore.init();
+        await adminPadStrore.init();
     }
 }
 </script>

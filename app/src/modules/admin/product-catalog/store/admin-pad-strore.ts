@@ -3,22 +3,24 @@ import { InitableModule } from '@/core/store/initable-module';
 import { api } from '@/api/api';
 import store from '@/core/store/index';
 // import { Pad, Brand, PadSeriesCreate, PadSeriesUpdateRequest } from '@/api';
-import { PadSeries } from '@/api';
+import { PadSeries, PadSeriesCreateRequest } from '@/api';
 import { PadSeriesService } from '@/api/product-catalog/pad-series/services/pad-series-service';
 
-@Module({ namespaced: true, name: 'pad-series', dynamic: true, store })
-class PadSeriesStore extends InitableModule {
-    // series: PadSeries[] = [];
+@Module({ namespaced: true, name: 'admin-pad', dynamic: true, store })
+class AdminPadStore extends InitableModule {
+    series: PadSeries[] = [];
+
+
 
     // @Mutation
     // SET_SERIES(series: PadSeries[]) {
     //     this.series = series;
     // }
 
-    // @Mutation
-    // CREATE_SERIES(series: PadSeries) {
-    //     this.series.push(series);
-    // }
+    @Mutation
+    ADD_SERIES(series: PadSeries) {
+        this.series.push(series);
+    }
 
     // @Mutation
     // UPDATE_SERIES(series: PadSeries) {
@@ -40,11 +42,11 @@ class PadSeriesStore extends InitableModule {
     //     this.context.commit('SET_SERIES', series);
     // }
 
-    // @Action({ rawError: true })
-    // async create(create: PadSeriesCreate) {
-    //     const series = await api.productCatalog.padSeries.create(create);
-    //     this.context.commit('CREATE_SERIES', series);
-    // }
+    @Action({ rawError: true })
+    async create(create: PadSeriesCreateRequest) {
+        const series = await api.productCatalog.padSeries.create(create);
+        this.context.commit('ADD_SERIES', series);
+    }
 
     // @Action({ rawError: true })
     // async update(update: PadSeriesUpdateRequest) {
@@ -59,4 +61,4 @@ class PadSeriesStore extends InitableModule {
     // }
 }
 
-export default getModule(PadSeriesStore);
+export default getModule(AdminPadStore);

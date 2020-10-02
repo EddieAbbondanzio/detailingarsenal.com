@@ -64,7 +64,6 @@ export * from './product-catalog/pad-series/data-transfer-objects/pad-category';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-material';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-series';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-size';
-export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-create-request';
 export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-create-or-update';
 export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-series-create-request';
 export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-series-update-request';

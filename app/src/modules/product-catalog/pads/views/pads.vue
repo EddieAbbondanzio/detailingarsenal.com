@@ -16,27 +16,23 @@
             <b-table-column v-slot="props" label="Name" field="label">
                 <router-link
                     class="label-link has-text-weight-bold"
-                    :to="{name: 'pad', params: {id: props.row.id, size: props.row.diameter}, query: {size: props.row.size }}"
-                >{{ props.row.name }}</router-link>
+                    :to="{
+                        name: 'pad',
+                        params: { id: props.row.id, size: props.row.diameter },
+                        query: { size: props.row.size }
+                    }"
+                    >{{ props.row.name }}</router-link
+                >
             </b-table-column>
-            <b-table-column
-                v-slot="props"
-                label="Category"
-                field="category"
-                sortable
-            >{{ props.row.category |uppercaseFirst }}</b-table-column>
-            <b-table-column
-                v-slot="props"
-                label="Material"
-                field="material"
-                sortable
-            >{{ props.row.material |uppercaseFirst }}</b-table-column>
+            <b-table-column v-slot="props" label="Category" field="category" sortable>{{
+                props.row.category | uppercaseFirst
+            }}</b-table-column>
+            <b-table-column v-slot="props" label="Material" field="material" sortable>{{
+                props.row.material | uppercaseFirst
+            }}</b-table-column>
             <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
-                {{props.row.thickness | inchify}}
-                <span
-                    class="tag is-info has-margin-left-1"
-                    v-if="isThin(props.row.thickness)"
-                >Thin</span>
+                {{ props.row.thickness | inchify }}
+                <span class="tag is-info has-margin-left-1" v-if="isThin(props.row.thickness)">Thin</span>
             </b-table-column>
             <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
                 <pad-cut-bar :value="props.row.cut" />
@@ -97,8 +93,8 @@ export default class Pads extends Vue {
     get summaries(): PadSummary[] {
         const summaries: PadSummary[] = [];
 
-        for(const pad of padStore.pads) {
-            for(const size of pad.sizes) {
+        for (const pad of padStore.pads) {
+            for (const size of pad.sizes) {
                 summaries.push({
                     id: pad.id,
                     name: `${size.diameter}" ${pad.label}`,
@@ -109,8 +105,8 @@ export default class Pads extends Vue {
                     cut: pad.cut,
                     finish: pad.finish,
                     rating: pad.rating,
-                    polisherTypes: pad.recommendedFor
-                })
+                    polisherTypes: pad.polisherTypes
+                });
             }
         }
 
@@ -123,15 +119,15 @@ export default class Pads extends Vue {
 }
 
 interface PadSummary {
-    id: string,
-    name: string,
-    category: PadCategory,
-    material: PadMaterial,
-    diameter: number,
-    thickness: number,
-    cut: PadCut | null,
-    finish: PadFinish | null,
-    rating: Rating,
-    polisherTypes: PolisherType[],
+    id: string;
+    name: string;
+    category: PadCategory;
+    material: PadMaterial;
+    diameter: number;
+    thickness: number;
+    cut: PadCut | null;
+    finish: PadFinish | null;
+    rating: Rating;
+    polisherTypes: PolisherType[];
 }
 </script>

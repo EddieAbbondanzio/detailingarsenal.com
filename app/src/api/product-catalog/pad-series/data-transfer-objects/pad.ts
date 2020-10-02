@@ -16,7 +16,7 @@ export class Pad {
 
     constructor(
         public id: string,
-        public series: PadSeries,
+        public series: PadSeries, // Used for quick lookup of series info only
         public name: string,
         public category: PadCategory,
         public cut: PadCut | null,

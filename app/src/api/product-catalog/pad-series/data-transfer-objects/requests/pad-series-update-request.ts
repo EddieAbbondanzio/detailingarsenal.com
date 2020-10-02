@@ -1,3 +1,8 @@
-import { PadCreateOrUpdate } from '@/api/product-catalog/pad-series/data-transfer-objects/requests/pad-create-or-update';
+import { PadCreateOrUpdate } from './pad-create-or-update';
 
-export type PadSeriesUpdateRequest = { id: string; name: string; brandId: string; pads: PadCreateOrUpdate[] };
+export interface PadSeriesUpdateRequest {
+    id: string;
+    name: string;
+    brandId: string;
+    pads: PadCreateOrUpdate[];
+}

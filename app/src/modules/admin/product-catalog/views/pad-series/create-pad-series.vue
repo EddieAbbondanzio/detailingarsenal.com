@@ -4,13 +4,10 @@
             <page-header title="Create pad" :description="`Create a new pad series`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb
-                            name="Product Catalog Panel"
-                            :to="{name: 'productCatalogPanel'}"
-                        />
-                        <breadcrumb name="Pads" :to="{name: 'padSeries'}" />
-                        <breadcrumb name="Create" :to="{name: 'createPadSeries'}" :active="true" />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product Catalog Panel" :to="{ name: 'productCatalogPanel' }" />
+                        <breadcrumb name="Pads" :to="{ name: 'padSeries' }" />
+                        <breadcrumb name="Create" :to="{ name: 'createPadSeries' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -33,7 +30,7 @@
             <input-array
                 title="Pads"
                 :factory="() => ({ name: '', category: null, image: null })"
-                v-slot="{value}"
+                v-slot="{ value }"
                 v-model="pads"
             >
                 <input-text-field
@@ -51,11 +48,7 @@
                     v-model="value.category"
                 >
                     <option :value="null">Select a category</option>
-                    <option
-                        v-for="category in categories"
-                        :key="category"
-                        :value="category"
-                    >{{ category }}</option>
+                    <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
                 </input-select>
 
                 <input-image-upload label="Image" v-model="value.image" />
@@ -72,7 +65,6 @@ import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
 import brandStore from '../../store/brand-store';
-import padSeriesStore from '../../store/pad-series-store';
 import { Image } from '@/api';
 
 @Component
