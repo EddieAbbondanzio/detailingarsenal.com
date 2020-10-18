@@ -11,7 +11,6 @@ export class PadSeriesService {
     }
 
     async create(create: PadSeriesCreateRequest) {
-        console.log(create);
         const res = await http.post('product-catalog/pad', create);
         const ps = this._map(res.data);
         return ps;

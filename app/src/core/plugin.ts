@@ -21,6 +21,7 @@ import InputTimepicker from '@/core/components/input/input-timepicker.vue';
 import InputArray from '@/core/components/input/input-array.vue';
 import InputSlider from '@/core/components/input/input-slider.vue';
 import InputImageUpload from '@/core/components/input/input-image-upload.vue';
+import InputTagger from '@/core/components/input/input-tagger.vue';
 import BackButton from './components/buttons/back-button.vue';
 import CreateButton from './components/buttons/create-button.vue';
 import EditButton from './components/buttons/edit-button.vue';
@@ -75,6 +76,7 @@ export default {
         Vue.component(InputDatepicker.name, InputDatepicker);
         Vue.component(InputTimepicker.name, InputTimepicker);
         Vue.component(InputSlider.name, InputSlider);
+        Vue.component(InputTagger.name, InputTagger);
         Vue.component('edit-delete-dropdown', EditDeleteDropdown);
         Vue.component(Phone.name, Phone);
         Vue.component(Email.name, Email);
