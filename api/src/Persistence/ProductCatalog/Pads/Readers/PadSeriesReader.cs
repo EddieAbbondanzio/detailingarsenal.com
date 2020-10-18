@@ -14,9 +14,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public async Task<PadSeriesReadModel?> ReadById(Guid id) {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
-                    @"select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id; 
-                    select * from pads p where p.pad_series_id = @Id;"
-                , new { Id = id })) {
+                    @"
+                        select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id; 
+                        select * from pad_series_sizes where pad_series_id = @Id;
+                        select * from pads p where p.pad_series_id = @Id;
+                        select ppt.* from pad_polisher_types ppt join pads p on ppt.pad_id = p.id where p.pad_series_id = @Id;
+                    ",
+                    new { Id = id }
+                )) {
                     var series = reader.Read<PadSeriesRow, BrandRow, PadSeriesReadModel>(
                         (ps, b) => new PadSeriesReadModel(
                             ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
@@ -27,14 +32,37 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         return null;
                     }
 
-                    throw new NotImplementedException();
+                    var sizes = reader.Read<PadSeriesSizeRow>().Select(pss => new PadSeriesSizeReadModel(
+                        pss.Diameter,
+                        pss.Thickness,
+                        pss.PartNumber
+                    )).ToList();
 
-                    // series.Pads = reader.Read<PadRow>().Select(p =>
-                    //  new PadReadModel(
-                    //     p.Id, p.Category, p.Name, p.ImageName != null ? new DataUrlImage(p.ImageName, p.ImageData!) : null
-                    // )).ToList();
+                    var pads = reader.Read<PadRow>().Select(p => new PadReadModel(
+                       p.Id,
+                       p.Name,
+                       p.Category,
+                       0, // pull from reviews
+                       0, // pull from reviews 
+                       p.Material,
+                       p.Texture
+                    )).ToList();
 
-                    // return series;
+                    var padLookup = pads.ToDictionary(p => p.Id, p => p);
+
+                    // Assign each pad their polisher types
+                    var padPolisherTypes = reader.Read<PadPolisherTypeRow>();
+                    foreach (var padPolisherType in padPolisherTypes) {
+                        PadReadModel? pad;
+
+                        if (padLookup.TryGetValue(padPolisherType.PadId, out pad)) {
+                            pad.PolisherTypes.Add(padPolisherType.PolisherType);
+                        }
+                    }
+
+                    series.Pads = pads;
+                    series.Sizes = sizes;
+                    return series;
                 }
             }
         }

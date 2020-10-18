@@ -37,7 +37,8 @@ namespace DetailingArsenal.Api.ProductCatalog {
                 new PadSeriesCreateCommand(
                     create.Name,
                     create.BrandId,
-                    create.Pads
+                    create.Sizes,
+                    create.Pads.Select(p => p.ToReal()).ToList()
                 ),
                 User.GetUserId()
             );
@@ -56,7 +57,8 @@ namespace DetailingArsenal.Api.ProductCatalog {
                     id,
                     update.Name,
                     update.BrandId,
-                    update.Pads
+                    update.Sizes,
+                    update.Pads.Select(p => p.ToReal()).ToList()
                 ),
                 User.GetUserId()
             );

@@ -6,12 +6,14 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public Guid Id { get; set; }
         public string Name { get; }
         public Guid BrandId { get; }
+        public List<PadSeriesSize> Sizes { get; }
         public List<PadCreateOrUpdate> Pads { get; }
 
-        public PadSeriesUpdateCommand(Guid id, string name, Guid brandId, List<PadCreateOrUpdate> pads) {
+        public PadSeriesUpdateCommand(Guid id, string name, Guid brandId, List<PadSeriesSize> sizes, List<PadCreateOrUpdate> pads) {
             Id = id;
             Name = name;
             BrandId = brandId;
+            Sizes = sizes;
             Pads = pads;
         }
     }

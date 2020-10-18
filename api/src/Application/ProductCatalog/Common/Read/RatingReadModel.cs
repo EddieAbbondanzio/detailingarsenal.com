@@ -7,5 +7,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             Stars = stars;
             ReviewCount = reviewCount;
         }
+
+        public static RatingReadModel Empty() => new RatingReadModel(0, 0);
     }
 }

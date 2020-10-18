@@ -1,10 +1,10 @@
 namespace DetailingArsenal.Application.ProductCatalog {
-    public class PadSizeReadModel : IDataTransferObject {
+    public class PadSeriesSizeReadModel : IDataTransferObject {
         public float Diameter { get; }
         public float Thickness { get; }
         public string PartNumber { get; }
 
-        public PadSizeReadModel(float diameter, float thickness, string partNumber) {
+        public PadSeriesSizeReadModel(float diameter, float thickness, string partNumber) {
             Diameter = diameter;
             Thickness = thickness;
             PartNumber = partNumber;

@@ -5,7 +5,14 @@
         </template>
 
         <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
-            <b-taginput :value="value" @input="onInput" :class="classes" :disabled="disabled">
+            <b-taginput
+                :value="value"
+                @input="onInput"
+                :class="classes"
+                :disabled="disabled"
+                :autocomplete="autocomplete"
+                :data="data"
+            >
                 <slot></slot>
             </b-taginput>
             <input-error-message v-if="!hideErrors" :text="errors[0]" />
@@ -43,6 +50,12 @@ export default class InputTagger extends Vue {
 
     @Prop({ default: false })
     hideLabel!: boolean;
+
+    @Prop({ default: false })
+    autocomplete!: boolean;
+
+    @Prop({ default: () => [] })
+    data!: any[];
 
     get vid() {
         if (this.id != null) {

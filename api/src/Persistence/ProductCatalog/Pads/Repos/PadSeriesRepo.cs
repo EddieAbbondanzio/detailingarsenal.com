@@ -14,9 +14,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 using (var reader = await conn.QueryMultipleAsync(
                     @"
                         select * from pad_series where id = @Id;
+                        select * from pad_series_sizes where pad_series_id = @Id;
                         select * from pads where pad_series_id = @Id;
                         select ppt.* from pad_polisher_types ppt join pads p on ppt.pad_id = p.id where p.pad_series_id = @Id;
-                        select ps.* from pad_sizes ps join pads p on os.pad_id = p.id where p.pad_series_id = @Id;
                     ",
                     new { Id = id }
                 )) {
@@ -25,6 +25,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     if (seriesRow == null) {
                         return null;
                     }
+
+                    var sizes = reader.Read<PadSeriesSizeRow>().Select(pssr => new PadSeriesSize(pssr.Diameter, pssr.Thickness, pssr.PartNumber)).ToList();
 
                     var pads = reader.Read<PadRow>().Select(p => new Pad(
                        p.Id, p.Name, PadCategoryUtils.Parse(p.Category), PadMaterialUtils.Parse(p.Material), PadTextureUtils.Parse(p.Texture)
@@ -42,19 +44,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     }
 
-                    // Properly assign each pad their sizes
-                    var padSizes = reader.Read<PadSizeRow>();
-                    foreach (var padSize in padSizes) {
-                        Pad? pad;
-
-                        if (padLookup.TryGetValue(padSize.PadId, out pad)) {
-                            pad.Sizes.Add(new PadSize(
-                                padSize.Diameter, padSize.Thickness, padSize.PartNumber
-                            ));
-                        }
-                    }
-
-                    return new PadSeries(seriesRow.Id, seriesRow.Name, seriesRow.BrandId, pads);
+                    return new PadSeries(seriesRow.Id, seriesRow.Name, seriesRow.BrandId, sizes, pads);
                 }
             }
         }
@@ -98,11 +88,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     );
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_sizes (pad_id, diameter, thickness, part_number) values (@PadId, @Diameter, @Thickness, @PartNumber);",
-                        series.Pads.SelectMany(
-                            p => p.Sizes.Select(
-                                ps => new PadSizeRow() { PadId = p.Id, Diameter = ps.Diameter, Thickness = ps.Thickness, PartNumber = ps.PartNumber }
-                            )
+                        @"insert into pad_series_sizes (pad_series_id, diameter, thickness, part_number) values (@PadSeriesId, @Diameter, @Thickness, @PartNumber);",
+                        series.Sizes.Select(
+                                ps => new PadSeriesSizeRow() { PadSeriesId = series.Id, Diameter = ps.Diameter, Thickness = ps.Thickness, PartNumber = ps.PartNumber }
                         ).ToList()
                     );
 
@@ -118,8 +106,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;", series
                     );
 
-                    await conn.ExecuteAsync(@"delete from pad_sizes where pad_id = @Id", series.Pads);
                     await conn.ExecuteAsync(@"delete from pad_polisher_types where pad_id = @Id", series.Pads);
+                    await conn.ExecuteAsync(@"delete from pad_series_sizes where pad_series_id = @Id", series);
                     await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", series);
 
                     await conn.ExecuteAsync(
@@ -148,11 +136,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     );
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_sizes (pad_id, diameter, thickness, part_number) values (@PadId, @Diameter, @Thickness, @PartNumber);",
-                        series.Pads.SelectMany(
-                            p => p.Sizes.Select(
-                                ps => new PadSizeRow() { PadId = p.Id, Diameter = ps.Diameter, Thickness = ps.Thickness, PartNumber = ps.PartNumber }
-                            )
+                        @"insert into pad_series_sizes (pad_series_id, diameter, thickness, part_number) values (@PadSeriesId, @Diameter, @Thickness, @PartNumber);",
+                        series.Sizes.Select(
+                                ps => new PadSeriesSizeRow() { PadSeriesId = series.Id, Diameter = ps.Diameter, Thickness = ps.Thickness, PartNumber = ps.PartNumber }
                         ).ToList()
                     );
 
@@ -165,9 +151,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     // Delete out pads first due to foreign key
-                    await conn.ExecuteAsync(@"delete from pad_sizes where pad_id = @Id", series.Pads);
                     await conn.ExecuteAsync(@"delete from pad_polisher_types where pad_id = @Id", series.Pads);
                     await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", series);
+                    await conn.ExecuteAsync(@"delete from pad_series_sizes where pad_series_id = @Id", series);
                     await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
 
                     t.Commit();

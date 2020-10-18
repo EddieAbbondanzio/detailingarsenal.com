@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
 
@@ -11,12 +12,11 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public int Finish { get; }
         public string Material { get; }
         public string Texture { get; }
-        public PadSizeReadModel[] Sizes { get; }
-        public string[] PolisherTypes { get; }
+        public List<string> PolisherTypes { get; }
         public RatingReadModel Rating { get; }
         public DataUrlImage? Image { get; }
 
-        public PadReadModel(Guid id, string name, string category, int cut, int finish, string material, string texture, PadSizeReadModel[] sizes, string[] polisherTypes, RatingReadModel rating, DataUrlImage? image) {
+        public PadReadModel(Guid id, string name, string category, int cut, int finish, string material, string texture, List<string>? polisherTypes = null, RatingReadModel? rating = null, DataUrlImage? image = null) {
             Id = id;
             Name = name;
             Category = category;
@@ -24,9 +24,8 @@ namespace DetailingArsenal.Application.ProductCatalog {
             Finish = finish;
             Material = material;
             Texture = texture;
-            Sizes = sizes;
-            PolisherTypes = polisherTypes;
-            Rating = rating;
+            PolisherTypes = polisherTypes ?? new List<string>();
+            Rating = rating ?? RatingReadModel.Empty();
             Image = image;
         }
     }

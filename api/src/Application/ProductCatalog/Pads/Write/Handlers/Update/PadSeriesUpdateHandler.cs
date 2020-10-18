@@ -20,8 +20,9 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
             series.Name = command.Name;
             series.BrandId = command.BrandId;
+            series.Sizes = command.Sizes;
             series.Pads = command.Pads.Select(p => new Pad(
-                p.Name, p.Category, p.Material, p.Texture, p.Sizes, p.PolisherTypes
+                p.Name, p.Category, p.Material, p.Texture, p.PolisherTypes
             )).ToList();
 
             await repo.Update(series);

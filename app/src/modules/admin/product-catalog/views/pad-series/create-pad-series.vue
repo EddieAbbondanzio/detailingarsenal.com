@@ -77,6 +77,22 @@
                     </option>
                 </input-select>
 
+                <input-tagger
+                    class="has-margin-x-1 has-margin-y-0"
+                    label="Sizes"
+                    rules="required"
+                    v-model="value.sizes"
+                />
+
+                <input-tagger
+                    class="has-margin-x-1 has-margin-y-0"
+                    label="Polisher Type(s)"
+                    rules="required"
+                    v-model="value.polisherTypes"
+                    autocomplete
+                    :data="polisherTypes"
+                />
+
                 <input-image-upload label="Image" v-model="value.image" />
             </input-array>
         </input-form>
@@ -91,8 +107,19 @@ import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
 import brandStore from '../../store/brand-store';
-import { Brand, Image, Pad, PadCategory, PadCreateOrUpdate, PadMaterial } from '@/api';
+import {
+    Brand,
+    Image,
+    Pad,
+    PadCategory,
+    PadCreateOrUpdate,
+    PadMaterial,
+    PolisherType,
+    SpecificationError
+} from '@/api';
 import { PadTexture } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-texture';
+import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
+import adminPadStrore from '../../store/admin-pad-strore';
 
 @Component
 export default class CreatePadSeries extends Vue {
@@ -112,6 +139,10 @@ export default class CreatePadSeries extends Vue {
         return Object.entries(PadTexture);
     }
 
+    get polisherTypes() {
+        return Object.values(PolisherType);
+    }
+
     name: string = '';
     brand: Brand | null = null;
     pads: PadCreateOrUpdate[] = [];
@@ -122,18 +153,18 @@ export default class CreatePadSeries extends Vue {
 
     @displayLoading
     public async onSubmit() {
-        // const create = { name: this.name, brandId: this.brand!.id, pads: this.pads };
-        // try {
-        //     await padSeriesStore.create(create);
-        //     toast(`Created new pad series ${create.name}`);
-        //     this.$router.push({ name: 'padSeries' });
-        // } catch (err) {
-        //     if (err instanceof SpecificationError) {
-        //         displayError(err);
-        //     } else {
-        //         throw err;
-        //     }
-        // }
+        const create = { name: this.name, brandId: this.brand!.id, pads: this.pads };
+        try {
+            await adminPadStrore.create(create);
+            toast(`Created new pad series ${create.name}`);
+            this.$router.push({ name: 'padSeries' });
+        } catch (err) {
+            if (err instanceof SpecificationError) {
+                displayError(err);
+            } else {
+                throw err;
+            }
+        }
     }
 }
 </script>
