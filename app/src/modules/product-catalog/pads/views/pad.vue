@@ -1,13 +1,13 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header :title='value != null ? `${size.diameter}" ${value.label}` : ``'>
+            <page-header :title="value != null ? `${size.diameter}&quot; ${value.label}` : ``">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Pads" :to="{name: 'pads'}" />
+                        <breadcrumb name="Pads" :to="{ name: 'pads' }" />
                         <breadcrumb
                             :name="value != null ? value.label : ''"
-                            :to="{name: 'pad', params: $route.params}"
+                            :to="{ name: 'pad', params: $route.params }"
                             :active="true"
                         />
                     </breadcrumb-trail>
@@ -17,21 +17,16 @@
 
         <div class="box is-shadowless is-flex is-flex-column is-flex-grow-1" v-if="value != null">
             <div class="is-flex is-flex-row-desktop is-flex-column">
-                <div
-                    class="has-margin-right-3-desktop is-align-self-center is-align-self-start-desktop"
-                >
-                    <img
-                        class="img is-square"
-                        src="https://bulma.io/images/placeholders/480x480.png"
-                    />
+                <div class="has-margin-right-3-desktop is-align-self-center is-align-self-start-desktop">
+                    <img class="img is-square" src="https://bulma.io/images/placeholders/480x480.png" />
                 </div>
 
                 <div class="is-flex-grow-1">
                     <div class="has-margin-bottom-3">
-                        <p class="is-size-4 is-size-3-desktop">{{`${size.diameter}" ${value.label}` }}</p>
+                        <p class="is-size-4 is-size-3-desktop">{{ `${size.diameter}" ${value.label}` }}</p>
                         <div class="is-flex is-flex-row">
-                        <p class="has-margin-right-1" v-if="size.partNumber">{{ size.partNumber }}</p>
-                        <stars :value="3" :count="20" />
+                            <p class="has-margin-right-1" v-if="size.partNumber">{{ size.partNumber }}</p>
+                            <stars :value="3" :count="20" />
                         </div>
 
                         <div class="columns">
@@ -104,9 +99,7 @@
                     </div>
 
                     <div class="has-margin-bottom-3">
-                        <p
-                            class="is-size-5 title has-margin-bottom-1"
-                        >Recommended For Polisher Type(s)</p>
+                        <p class="is-size-5 title has-margin-bottom-1">Recommended For Polisher Type(s)</p>
                         <ul>
                             <li v-for="t in value.recommendedFor" :key="t">{{ t }}</li>
                         </ul>
@@ -122,36 +115,35 @@
                         type="is-success"
                         size="is-small"
                         tag="router-link"
-                        :to="{name: 'writeReview'}"
-                    >Write a review</b-button>
+                        :to="{ name: 'writeReview' }"
+                        >Write a review</b-button
+                    >
                 </div>
 
                 <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
                     <p class="has-text-weight-bold">
                         {{ review.username }}
-                        <span
-                            class="is-size-7 has-text-weight-normal"
-                        >{{review.date | date }}</span>
+                        <span class="is-size-7 has-text-weight-normal">{{ review.date | date }}</span>
                     </p>
 
                     <div class="is-flex is-flex-row">
                         <stars :value="review.stars" :hideCount="true" />
 
-                        <p class="has-text-weight-bold has-margin-left-1">{{review.title }}</p>
+                        <p class="has-text-weight-bold has-margin-left-1">{{ review.title }}</p>
                     </div>
 
-                    <p>{{review.body }}</p>
+                    <p>{{ review.body }}</p>
 
                     <div class="is-flex is-flex-row">
                         <div class>
                             <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
-                            <span v-if="review.cut">{{review.cut }} / 10</span>
+                            <span v-if="review.cut">{{ review.cut }} / 10</span>
                             <span v-else>N/A</span>
                         </div>
 
                         <div class="has-margin-left-1">
                             <span class="has-margin-right-1 has-text-weight-bold">Finish:</span>
-                            <span v-if="review.finish">{{review.finish }} / 10</span>
+                            <span v-if="review.finish">{{ review.finish }} / 10</span>
                             <span v-else>N/A</span>
                         </div>
                     </div>
@@ -163,7 +155,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Pad, PadSeries, PadSize } from '@/api';
+import { Pad, PadSeries, PadSeriesSize } from '@/api';
 import padStore from '../store/pad/pad-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
@@ -191,18 +183,17 @@ export default class PadView extends Vue {
     }
 
     value: Pad | null = null;
-    size: PadSize | null = null;
+    size: PadSeriesSize | null = null;
 
     async created() {
         this.value = await padStore.getPadById(this.id);
 
-        if(this.value == null) {
+        if (this.value == null) {
             return;
         }
-        
-        this.size = this.value.sizes.find(s => s.diameter == this.diameter)!;
+
+        this.size = this.value.series.sizes.find(s => s.diameter == this.diameter)!;
         reviewStore.loadReviews(this.id);
     }
-
 }
 </script>

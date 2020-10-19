@@ -79,13 +79,6 @@
 
                 <input-tagger
                     class="has-margin-x-1 has-margin-y-0"
-                    label="Sizes"
-                    rules="required"
-                    v-model="value.sizes"
-                />
-
-                <input-tagger
-                    class="has-margin-x-1 has-margin-y-0"
                     label="Polisher Type(s)"
                     rules="required"
                     v-model="value.polisherTypes"

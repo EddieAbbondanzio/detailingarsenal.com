@@ -70,7 +70,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { api, Pad, PadCategory, PadCut, PadFinish, PadMaterial, PadSize, PolisherType, Rating } from '@/api';
+import { api, Pad, PadCategory, PadCut, PadFinish, PadMaterial, PadSeriesSize, PolisherType, Rating } from '@/api';
 import { displayLoading } from '@/core';
 import PadFilterControl from '@/modules/product-catalog/pads/components/pad-filter-control.vue';
 import store from '@/core/store';
@@ -94,7 +94,7 @@ export default class Pads extends Vue {
         const summaries: PadSummary[] = [];
 
         for (const pad of padStore.pads) {
-            for (const size of pad.sizes) {
+            for (const size of pad.series.sizes) {
                 summaries.push({
                     id: pad.id,
                     name: `${size.diameter}" ${pad.label}`,
