@@ -27,6 +27,26 @@
                 <option v-for="brand in brands" :key="brand.id" :value="brand">{{ brand.name }}</option>
             </input-select>
 
+            <input-array title="Sizes" :factory="() => ({})" v-model="sizes" v-slot="{ value }">
+                <input-text-field
+                    class="has-margin-x-1 has-margin-y-0"
+                    v-model.number="value.diameter"
+                    label="Diameter"
+                    rules="required"
+                />
+
+                <input-text-field
+                    class="has-margin-x-1 has-margin-y-0"
+                    v-model.number="value.thickness"
+                    label="Thickness"
+                />
+                <input-text-field
+                    class="has-margin-x-1 has-margin-y-0"
+                    v-model="value.partNumber"
+                    label="Part Number"
+                />
+            </input-array>
+
             <input-array
                 title="Pads"
                 :factory="() => ({ name: '', category: null, image: null })"
@@ -107,6 +127,7 @@ import {
     PadCategory,
     PadCreateOrUpdate,
     PadMaterial,
+    PadSeriesSize,
     PolisherType,
     SpecificationError
 } from '@/api';
@@ -139,6 +160,7 @@ export default class CreatePadSeries extends Vue {
     name: string = '';
     brand: Brand | null = null;
     pads: PadCreateOrUpdate[] = [];
+    sizes: PadSeriesSize[] = [];
 
     async created() {
         await brandStore.init();
@@ -146,8 +168,9 @@ export default class CreatePadSeries extends Vue {
 
     @displayLoading
     public async onSubmit() {
-        const create = { name: this.name, brandId: this.brand!.id, pads: this.pads };
+        const create = { name: this.name, brandId: this.brand!.id, pads: this.pads, sizes: this.sizes };
         try {
+            console.log(this.sizes);
             await adminPadStrore.create(create);
             toast(`Created new pad series ${create.name}`);
             this.$router.push({ name: 'padSeries' });
