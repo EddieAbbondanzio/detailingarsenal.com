@@ -33,6 +33,7 @@
                     v-model.number="value.diameter"
                     label="Diameter"
                     rules="required"
+                    :required="true"
                 />
 
                 <input-text-field
@@ -133,7 +134,7 @@ import {
 } from '@/api';
 import { PadTexture } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-texture';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
-import adminPadStrore from '../../store/admin-pad-strore';
+import adminPadStrore from '../../store/admin-pad-store';
 
 @Component
 export default class CreatePadSeries extends Vue {

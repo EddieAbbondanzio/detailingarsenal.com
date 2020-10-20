@@ -12,7 +12,6 @@ namespace DetailingArsenal.Api.ProductCatalog {
         public string Category { get; set; } = null!;
         public string Material { get; set; } = null!;
         public string Texture { get; set; } = null!;
-        public List<PadSeriesSize> Sizes { get; set; } = new List<PadSeriesSize>();
         public List<string> PolisherTypes { get; set; } = new List<string>();
         public DataUrlImage? Image { get; set; }
 
@@ -21,7 +20,6 @@ namespace DetailingArsenal.Api.ProductCatalog {
             PadCategoryUtils.Parse(Category),
             PadMaterialUtils.Parse(Material),
             PadTextureUtils.Parse(Texture),
-            Sizes,
             PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
             Image
         );

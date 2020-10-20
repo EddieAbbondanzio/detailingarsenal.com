@@ -51,7 +51,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import appStore from '@/core/store/app-store';
 import { Permission, Role } from '@/api';
 import { displayLoading } from '@/core';
-import adminPadStrore from '../../store/admin-pad-strore';
+import adminPadStrore from '../../store/admin-pad-store';
 
 @Component({
     name: 'role'

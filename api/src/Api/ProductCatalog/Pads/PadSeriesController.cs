@@ -37,7 +37,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
                 new PadSeriesCreateCommand(
                     create.Name,
                     create.BrandId,
-                    create.Sizes,
+                    create.Sizes.Select(s => new PadSeriesSize(s.Diameter, s.Thickness, s.PartNumber)).ToList(),
                     create.Pads.Select(p => p.ToReal()).ToList()
                 ),
                 User.GetUserId()

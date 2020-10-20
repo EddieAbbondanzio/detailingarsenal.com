@@ -11,7 +11,6 @@ class AdminPadStore extends InitableModule {
     series: PadSeries[] = [];
 
 
-
     // @Mutation
     // SET_SERIES(series: PadSeries[]) {
     //     this.series = series;

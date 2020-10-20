@@ -41,7 +41,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading, confirmDelete, toast, displayError } from '@/core';
 import { Pad, PadSeries } from '@/api';
-import adminPadStrore from '../../store/admin-pad-strore';
+import adminPadStrore from '../../store/admin-pad-store';
 
 @Component
 export default class Pads extends Vue {
@@ -51,7 +51,7 @@ export default class Pads extends Vue {
 
     @displayLoading
     async created() {
-        await adminPadStrore.init();
+        // await adminPadStrore.init();
     }
 
     async onEdit(pad: Pad) {

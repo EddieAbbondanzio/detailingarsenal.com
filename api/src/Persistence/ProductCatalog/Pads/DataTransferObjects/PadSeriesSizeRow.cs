@@ -7,7 +7,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
     public class PadSeriesSizeRow : IDataTransferObject {
         public Guid PadSeriesId { get; set; }
         public float Diameter { get; set; }
-        public float Thickness { get; set; }
-        public string PartNumber { get; set; } = null!;
+        public float? Thickness { get; set; }
+        public string? PartNumber { get; set; }
     }
 }

@@ -6,7 +6,6 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public PadCategory Category { get; set; }
         public PadMaterial Material { get; set; }
         public PadTexture Texture { get; set; }
-        public List<PadSeriesSize> Sizes { get; set; }
         public List<PolisherType> PolisherTypes { get; set; }
         public DataUrlImage? Image { get; set; }
 
@@ -14,16 +13,14 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             // Used by API layer
 
             Name = null!;
-            Sizes = new List<PadSeriesSize>();
             PolisherTypes = new List<PolisherType>();
         }
 
-        public PadCreateOrUpdate(string name, PadCategory category, PadMaterial material, PadTexture texture, List<PadSeriesSize> sizes, List<PolisherType> polisherTypes, DataUrlImage? image) {
+        public PadCreateOrUpdate(string name, PadCategory category, PadMaterial material, PadTexture texture, List<PolisherType> polisherTypes, DataUrlImage? image) {
             Name = name;
             Category = category;
             Material = material;
             Texture = texture;
-            Sizes = sizes;
             PolisherTypes = polisherTypes;
             Image = image;
         }
