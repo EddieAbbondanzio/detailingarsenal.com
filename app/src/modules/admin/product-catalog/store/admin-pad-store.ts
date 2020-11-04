@@ -11,10 +11,10 @@ class AdminPadStore extends InitableModule {
     series: PadSeries[] = [];
 
 
-    // @Mutation
-    // SET_SERIES(series: PadSeries[]) {
-    //     this.series = series;
-    // }
+    @Mutation
+    SET_SERIES(series: PadSeries[]) {
+        this.series = series;
+    }
 
     @Mutation
     ADD_SERIES(series: PadSeries) {
@@ -34,12 +34,12 @@ class AdminPadStore extends InitableModule {
     //     }
     // }
 
-    // @Action({ rawError: true })
-    // async _init() {
-    //     const [series] = await Promise.all([api.productCatalog.padSeries.get()]);
+    @Action({ rawError: true })
+    async _init() {
+        const [series] = await Promise.all([api.productCatalog.padSeries.get()]);
 
-    //     this.context.commit('SET_SERIES', series);
-    // }
+        this.context.commit('SET_SERIES', series);
+    }
 
     @Action({ rawError: true })
     async create(create: PadSeriesCreateRequest) {

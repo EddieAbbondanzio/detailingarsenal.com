@@ -30,17 +30,31 @@
             <input-group-header text="Pads" />
 
             <b-table :data="value.pads">
-                <template slot-scope="props">
-                    <b-table-column label="Name" field="label" sortable>{{ props.row.name }}</b-table-column>
-                    <b-table-column label="Category" field="action" sortable>{{ props.row.category }}</b-table-column>
-                    <b-table-column label="Image" field="scope" sortable>{{
-                        props.row.image != null ? props.row.image.name : ''
-                    }}</b-table-column>
-                </template>
+                <b-table-column v-slot="props" label="Name" field="label" sortable>{{ props.row.name }}</b-table-column>
+                <b-table-column v-slot="props" label="Category" field="action" sortable>{{
+                    props.row.category
+                }}</b-table-column>
+                <b-table-column v-slot="props" label="Image" field="scope" sortable>{{
+                    props.row.image != null ? props.row.image.name : ''
+                }}</b-table-column>
 
                 <template slot="empty">
                     <div class="is-flex is-justify-content-center">There's nothing here!</div>
                 </template>
+            </b-table>
+
+            <input-group-header text="Sizes" />
+
+            <b-table :data="value.sizes">
+                <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>{{
+                    props.row.diameter
+                }}</b-table-column>
+                <b-table-column v-slot="props" label="Thickness" field="thickness" sortable
+                    >{{ props.row.thickness }}
+                </b-table-column>
+                <b-table-column v-slot="props" label="Part Number" field="partNumber">
+                    {{ props.row.partNumber }}
+                </b-table-column>
             </b-table>
         </div>
     </page>
@@ -51,19 +65,19 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import appStore from '@/core/store/app-store';
 import { Permission, Role } from '@/api';
 import { displayLoading } from '@/core';
-import adminPadStrore from '../../store/admin-pad-store';
+import adminPadStore from '../../store/admin-pad-store';
 
 @Component({
     name: 'role'
 })
 export default class PadSeriesDetails extends Vue {
-    // get value() {
-    //     return padSeriesStore.series.find(s => s.id == this.$route.params.id);
-    // }
+    get value() {
+        return adminPadStore.series.find(s => s.id == this.$route.params.id);
+    }
 
     @displayLoading
     async created() {
-        await adminPadStrore.init();
+        await adminPadStore.init();
     }
 }
 </script>

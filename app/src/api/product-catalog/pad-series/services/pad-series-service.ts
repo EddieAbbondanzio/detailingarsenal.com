@@ -3,6 +3,7 @@ import { PadSeriesCreateRequest } from '@/api/product-catalog/pad-series/data-tr
 import { PadSeriesUpdateRequest } from '@/api/product-catalog/pad-series/data-transfer-objects/requests/pad-series-update-request';
 import { PadSeries, Brand } from '@/api';
 import { http } from '@/api/core/http';
+import { PadSeriesSize } from '../data-transfer-objects/pad-series-size';
 
 export class PadSeriesService {
     async get(): Promise<PadSeries[]> {
@@ -29,7 +30,8 @@ export class PadSeriesService {
     _map(ps: any): PadSeries {
         const series = new PadSeries(ps.id, ps.name, new Brand(ps.brand.id, ps.brand.name));
 
-        // series.pads = (ps.pads as any[]).map(p => new Pad(p.id, p.category, series, p.name, p.image));
+        series.pads = (ps.pads as any[]).map(p => new Pad(p.id, series, p.name, p.category, p.cut, p.finish, p.material, p.texture, p.polisherTypes, null!, p.image));
+        series.sizes = (ps.sizes as any[]).map(s => new PadSeriesSize(s.diameter, s.thickness, s.partNumber));
 
         return series;
     }

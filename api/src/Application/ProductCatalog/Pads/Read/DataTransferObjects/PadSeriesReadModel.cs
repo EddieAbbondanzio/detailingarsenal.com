@@ -7,8 +7,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public Guid Id { get; }
         public string Name { get; } = null!;
         public BrandReadModel Brand { get; } = null!;
-        public List<PadSeriesSizeReadModel> Sizes { get; set; } =
-        new List<PadSeriesSizeReadModel>();
+        public List<PadSeriesSizeReadModel> Sizes { get; set; } = new List<PadSeriesSizeReadModel>();
         public List<PadReadModel> Pads { get; set; } = new List<PadReadModel>();
 
         public PadSeriesReadModel() {
