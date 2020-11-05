@@ -68,7 +68,7 @@ export default class Pads extends Vue {
 
         if (del) {
             try {
-                // await padSeriesStore.delete(pad);
+                await adminPadStore.delete(pad);
                 toast(`Deleted pad ${pad.name}`);
             } catch (err) {
                 displayError(err);

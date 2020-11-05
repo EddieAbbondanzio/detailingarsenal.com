@@ -26,13 +26,13 @@ class AdminPadStore extends InitableModule {
     //     this.series = [...this.series.filter(ps => ps.id != series.id), series];
     // }
 
-    // @Mutation
-    // DELETE_SERIES(series: PadSeries) {
-    //     const index = this.series.findIndex(ps => ps.id == series.id);
-    //     if (index != -1) {
-    //         this.series.splice(index, 1);
-    //     }
-    // }
+    @Mutation
+    DELETE_SERIES(series: PadSeries) {
+        const index = this.series.findIndex(ps => ps.id == series.id);
+        if (index != -1) {
+            this.series.splice(index, 1);
+        }
+    }
 
     @Action({ rawError: true })
     async _init() {
@@ -53,11 +53,11 @@ class AdminPadStore extends InitableModule {
     //     this.context.commit('UPDATE_SERIES', series);
     // }
 
-    // @Action({ rawError: true })
-    // async delete(padSeries: PadSeries) {
-    //     await api.productCatalog.padSeries.delete(padSeries.id);
-    //     this.context.commit('DELETE_SERIES', padSeries);
-    // }
+    @Action({ rawError: true })
+    async delete(padSeries: PadSeries) {
+        await api.productCatalog.padSeries.delete(padSeries.id);
+        this.context.commit('DELETE_SERIES', padSeries);
+    }
 }
 
 export default getModule(AdminPadStore);
