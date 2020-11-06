@@ -1,3 +1,5 @@
+import { authGuard } from '@/core/router/auth-guard';
+
 /**
  * Pad sub mobule specific routes
  */
@@ -15,6 +17,7 @@ export const padRoutes = [
     {
         path: 'pads/:id/write-review',
         name: 'writeReview',
-        component: () => import('@/modules/product-catalog/pads/views/write-review.vue')
+        component: () => import('@/modules/product-catalog/pads/views/write-review.vue'),
+        beforeEnter: authGuard
     }
 ];

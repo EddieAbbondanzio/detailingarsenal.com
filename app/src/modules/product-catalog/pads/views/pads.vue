@@ -2,8 +2,8 @@
     <page>
         <template v-slot:header>
             <page-header
-                title="Pad Compare Tool"
-                :description="`Compare buffing pads of multiple brands based on cut level`"
+                title="Buffing Pad Catalog"
+                :description="`Compare buffing pads of multiple brands based on cut, finish, size, etc...`"
                 :backButton="false"
             >
                 <!-- <template v-slot:action>
