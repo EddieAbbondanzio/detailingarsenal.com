@@ -10,7 +10,7 @@ export const padRoutes = [
         component: () => import('@/modules/product-catalog/pads/views/pads.vue')
     },
     {
-        path: 'pads/:id/size/:size',
+        path: 'pads/:id',
         name: 'pad',
         component: () => import('@/modules/product-catalog/pads/views/pad.vue')
     },

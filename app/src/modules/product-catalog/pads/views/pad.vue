@@ -1,7 +1,7 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header :title="value != null ? `${size.diameter}&quot; ${value.label}` : ``">
+            <page-header :title="value != null ? value.label : ``">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Pads" :to="{ name: 'pads' }" />
@@ -23,9 +23,8 @@
 
                 <div class="is-flex-grow-1">
                     <div class="has-margin-bottom-3">
-                        <p class="is-size-4 is-size-3-desktop">{{ `${size.diameter}" ${value.label}` }}</p>
+                        <p class="is-size-4 is-size-3-desktop">{{ value.label }}</p>
                         <div class="is-flex is-flex-row">
-                            <p class="has-margin-right-1" v-if="size.partNumber">{{ size.partNumber }}</p>
                             <stars :value="3" :count="20" />
                         </div>
 
@@ -81,28 +80,26 @@
                     </div>
 
                     <div class="has-margin-bottom-3">
-                        <div class="is-flex is-flex-column is-flex-row-tablet is-justify-content-space-around">
-                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
-                                <p class="is-size-5 title">Diameter</p>
-                                <p class="is-size-6 subtitle">{{ size.diameter }}</p>
-                            </div>
-
-                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
-                                <p class="is-size-5 title">Thickness</p>
-                                <p class="is-size-6 subtitle">{{ size.thickness }}</p>
-                            </div>
-
-                            <div class="is-flex-grow-1 is-flex-basis-0">
-                                &nbsp;
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="has-margin-bottom-3">
                         <p class="is-size-5 title has-margin-bottom-1">Recommended For Polisher Type(s)</p>
                         <ul>
                             <li v-for="t in value.recommendedFor" :key="t">{{ t }}</li>
                         </ul>
+                    </div>
+
+                    <div class="has-margin-bottom-3">
+                        <p class="is-size-5 title has-margin-bottom-1">Sizes</p>
+
+                        <b-table :data="sizes">
+                            <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>
+                                {{ props.row.diameter }}
+                            </b-table-column>
+                            <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
+                                {{ props.row.thickness }}
+                            </b-table-column>
+                            <b-table-column v-slot="props" label="Part Number" field="partNumber">
+                                {{ props.row.partNumber }}
+                            </b-table-column>
+                        </b-table>
                     </div>
                 </div>
             </div>
@@ -174,16 +171,12 @@ export default class PadView extends Vue {
         return this.$route.params.id;
     }
 
-    get diameter() {
-        return Number.parseFloat(this.$route.params.size);
-    }
-
     get reviews() {
         return reviewStore.reviews;
     }
 
     value: Pad | null = null;
-    size: PadSeriesSize | null = null;
+    sizes: PadSeriesSize[] = [];
 
     async created() {
         this.value = await padStore.getPadById(this.id);
@@ -192,7 +185,8 @@ export default class PadView extends Vue {
             return;
         }
 
-        this.size = this.value.series.sizes.find(s => s.diameter == this.diameter)!;
+        this.sizes = this.value.series.sizes;
+
         reviewStore.loadReviews(this.id);
     }
 }

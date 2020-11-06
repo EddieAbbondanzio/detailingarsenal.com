@@ -18,8 +18,7 @@
                     class="label-link has-text-weight-bold"
                     :to="{
                         name: 'pad',
-                        params: { id: props.row.id, size: props.row.diameter },
-                        query: { size: props.row.size }
+                        params: { id: props.row.id }
                     }"
                     >{{ props.row.name }}</router-link
                 >
@@ -30,10 +29,6 @@
             <b-table-column v-slot="props" label="Material" field="material" sortable>{{
                 props.row.material | uppercaseFirst
             }}</b-table-column>
-            <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
-                {{ props.row.thickness | inchify }}
-                <span class="tag is-info has-margin-left-1" v-if="isThin(props.row.thickness)">Thin</span>
-            </b-table-column>
             <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
                 <pad-cut-bar :value="props.row.cut" />
             </b-table-column>
@@ -94,20 +89,16 @@ export default class Pads extends Vue {
         const summaries: PadSummary[] = [];
 
         for (const pad of padStore.pads) {
-            for (const size of pad.series.sizes) {
-                summaries.push({
-                    id: pad.id,
-                    name: `${size.diameter}" ${pad.label}`,
-                    category: pad.category,
-                    material: pad.material,
-                    diameter: size.diameter,
-                    thickness: size.thickness,
-                    cut: pad.cut,
-                    finish: pad.finish,
-                    rating: pad.rating,
-                    polisherTypes: pad.polisherTypes
-                });
-            }
+            summaries.push({
+                id: pad.id,
+                name: pad.label,
+                category: pad.category,
+                material: pad.material,
+                cut: pad.cut,
+                finish: pad.finish,
+                rating: pad.rating,
+                polisherTypes: pad.polisherTypes
+            });
         }
 
         return summaries;
@@ -123,8 +114,6 @@ interface PadSummary {
     name: string;
     category: PadCategory;
     material: PadMaterial;
-    diameter: number;
-    thickness: number;
     cut: PadCut | null;
     finish: PadFinish | null;
     rating: Rating;
