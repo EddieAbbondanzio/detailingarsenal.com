@@ -7,24 +7,24 @@ import { PadSeriesSize } from '../data-transfer-objects/pad-series-size';
 
 export class PadSeriesService {
     async get(): Promise<PadSeries[]> {
-        const res = await http.get('product-catalog/pad');
+        const res = await http.get('product-catalog/pad-series');
         return (res.data as any[]).map(d => this._map(d));
     }
 
     async create(create: PadSeriesCreateRequest) {
-        const res = await http.post('product-catalog/pad', create);
+        const res = await http.post('product-catalog/pad-series', create);
         const ps = this._map(res.data);
         return ps;
     }
 
     async update(update: PadSeriesUpdateRequest) {
-        const res = await http.put(`product-catalog/pad/${update.id}`, update);
+        const res = await http.put(`product-catalog/pad-series/${update.id}`, update);
         const ps = this._map(res.data);
         return ps;
     }
 
     async delete(id: string) {
-        await http.delete(`product-catalog/pad/${id}`);
+        await http.delete(`product-catalog/pad-series/${id}`);
     }
 
     _map(ps: any): PadSeries {

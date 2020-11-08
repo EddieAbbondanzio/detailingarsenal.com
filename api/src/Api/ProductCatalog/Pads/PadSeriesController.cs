@@ -13,7 +13,7 @@ using DetailingArsenal.Application.ProductCatalog;
 namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
     [ApiController]
-    [Route("product-catalog/pad")]
+    [Route("product-catalog/pad-series")]
     public class PadSeriesController : ControllerBase {
         private IMediator mediator;
 
