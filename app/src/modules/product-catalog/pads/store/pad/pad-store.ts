@@ -16,14 +16,17 @@ class PadStore extends InitableModule {
     @Action({ rawError: true })
     async _init() {
         const series = await api.productCatalog.padSeries.get();
-
         this.context.commit('SET_PADS', series.flatMap(s => s.pads));
     }
 
     @Action({ rawError: true })
     async getPadById(id: string): Promise<Pad | null> {
-        throw new Error();
-        // return this.pads[0]; //TODO: Fix
+        if (this.pads.length == 0) {
+            const series = await api.productCatalog.padSeries.get();
+            this.context.commit('SET_PADS', series.flatMap(s => s.pads));
+        }
+
+        return this.pads.find(p => p.id == id)!;
     }
 }
 
