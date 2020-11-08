@@ -1,28 +1,29 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { Pad, PadSeries, Brand, PadCategory, PadMaterial, PadSeriesSize, PolisherType, Rating } from '@/api';
+import { Pad, PadSeries, Brand, PadCategory, PadMaterial, PadSeriesSize, PolisherType, Rating, api } from '@/api';
 import { PadTexture } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-texture';
 
 @Module({ namespaced: true, name: 'pad', dynamic: true, store })
 class PadStore extends InitableModule {
-    pads: Pad[] = [new Pad(
-        '1',
+    pads: Pad[] = [];
 
-        new PadSeries('2', 'CCS', new Brand('3', 'Lake Country'), [new PadSeriesSize(5.5, 1.25, 'CCSWP5.5')]),
-        'White Polishing',
-        PadCategory.Polishing,
-        3,
-        7,
-        PadMaterial.Foam,
-        PadTexture.Dimpled,
-        [PolisherType.DualAction],
-        new Rating(5, 420)
-    )];
+    @Mutation
+    SET_PADS(pads: Pad[]) {
+        this.pads = pads;
+    }
+
+    @Action({ rawError: true })
+    async _init() {
+        const series = await api.productCatalog.padSeries.get();
+
+        this.context.commit('SET_PADS', series.flatMap(s => s.pads));
+    }
 
     @Action({ rawError: true })
     async getPadById(id: string): Promise<Pad | null> {
-        return this.pads[0]; //TODO: Fix
+        throw new Error();
+        // return this.pads[0]; //TODO: Fix
     }
 }
 

@@ -36,7 +36,12 @@
                 <pad-finish-bar :value="props.row.finish" />
             </b-table-column>
             <b-table-column v-slot="props" label="Rating" field="rating" sortable>
-                <stars :value="props.row.rating.stars" :count="props.row.rating.reviewCount" />
+                <stars
+                    v-if="props.row.rating != null"
+                    :value="props.row.rating.stars"
+                    :count="props.row.rating.reviewCount"
+                />
+                <span class="has-text-grey" v-else>N/A</span>
             </b-table-column>
             <b-table-column v-slot="props" label="Polisher Type(s)" field="polisherTypes" sortable>
                 <div class="tags">
@@ -102,6 +107,10 @@ export default class Pads extends Vue {
         }
 
         return summaries;
+    }
+
+    async created() {
+        await padStore.init();
     }
 
     isThin(thickness: number) {
