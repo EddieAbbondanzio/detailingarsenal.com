@@ -45,7 +45,11 @@
             </b-table-column>
             <b-table-column v-slot="props" label="Polisher Type(s)" field="polisherTypes" sortable>
                 <div class="tags">
-                    <span class="tag" v-for="rec in props.row.polisherTypes" :key="rec">{{ rec }}</span>
+                    <polisher-type-tag
+                        v-for="rec in props.row.polisherTypes"
+                        :key="rec"
+                        :value="rec"
+                    ></polisher-type-tag>
                 </div>
             </b-table-column>
 
@@ -80,13 +84,15 @@ import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue
 import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import padStore from '../store/pad/pad-store';
+import PolisherTypeTag from '@/modules/product-catalog/pads/components/polisher-type-tag.vue';
 
 @Component({
     components: {
         PadFilterControl,
         PadCutBar,
         PadFinishBar,
-        Stars
+        Stars,
+        PolisherTypeTag
     }
 })
 export default class Pads extends Vue {

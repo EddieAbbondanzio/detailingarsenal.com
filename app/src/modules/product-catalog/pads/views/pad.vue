@@ -82,7 +82,7 @@
                     <div class="has-margin-bottom-3">
                         <p class="is-size-5 title has-margin-bottom-1">Recommended For Polisher Type(s)</p>
                         <ul>
-                            <li v-for="t in value.recommendedFor" :key="t">{{ t }}</li>
+                            <li v-for="t in value.polisherTypes" :key="t"><polisher-type-tag :value="t" /></li>
                         </ul>
                     </div>
 
@@ -158,12 +158,14 @@ import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
 import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
 import reviewStore from '../store/review/review-store';
+import PolisherTypeTag from '@/modules/product-catalog/pads/components/polisher-type-tag.vue';
 
 @Component({
     components: {
         Stars,
         PadCutBar,
-        PadFinishBar
+        PadFinishBar,
+        PolisherTypeTag
     }
 })
 export default class PadView extends Vue {
