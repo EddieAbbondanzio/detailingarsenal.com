@@ -169,6 +169,10 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<PadSeriesUpdateCommand, CommandResult>, PadSeriesUpdateHandler>();
             services.AddTransient<ActionHandler<PadSeriesDeleteCommand, CommandResult>, PadSeriesDeleteHandler>();
             services.AddTransient<ActionHandler<GetAllReviewsForPadQuery, List<ReviewReadModel>>, GetAllReviewsForPadHandler>();
+            services.AddTransient<ReviewCreateValidator>();
+            services.AddTransient<ActionHandler<ReviewCreateCommand, CommandResult>, ReviewCreateHandler>();
+            services.AddTransient<IReviewRepo, ReviewRepo>();
+            services.AddTransient<IReviewReader, ReviewReader>();
 
             // Billing
             var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));
