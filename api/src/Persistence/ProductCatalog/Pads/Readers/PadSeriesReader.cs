@@ -17,7 +17,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"
                         select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id; 
                         select * from pad_series_sizes where pad_series_id = @Id;
-                        select * from pads where pad_series_id = @Id;
+                        select p.*, avg(r.cut) as cut, avg(r.finish) as finish from pads p 
+                            left join reviews r on p.id = r.pad_id 
+                            where pad_series_id = @Id group by p.id;
                         select ppt.* from pad_polisher_types ppt join pads p on ppt.pad_id = p.id where p.pad_series_id = @Id;
                     ",
                     new { Id = id }
@@ -38,14 +40,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         pss.PartNumber
                     )).ToList();
 
-                    var pads = reader.Read<PadRow>().Select(p => new PadReadModel(
-                       p.Id,
-                       p.Name,
-                       p.Category,
-                       0, // TODO: pull from reviews
-                       0, // TODO: pull from reviews 
-                       p.Material,
-                       p.Texture
+                    var pads = reader.Read().Select(p => new PadReadModel(
+                       p.id,
+                       p.name,
+                       p.category,
+                       p.cut,   // THIS MIGHT BREAK!
+                       p.finish,
+                       p.material,
+                       p.texture
                     )).ToList();
 
                     var padLookup = pads.ToDictionary(p => p.Id, p => p);
@@ -73,7 +75,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"
                         select * from pad_series ps join brands b on ps.brand_id = b.id; 
                         select * from pad_series_sizes;
-                        select * from pads;
+                        select p.*, avg(r.cut) as cut, avg(r.finish) as finish from pads p 
+                            left join reviews r on p.id = r.pad_id group by p.id;
                         select * from pad_polisher_types;
                     "
                 )) {
@@ -97,20 +100,33 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     }
 
-                    var pads = reader.Read<PadRow>();
+                    var pads = reader.Read();
                     var padDict = new Dictionary<Guid, PadReadModel>();
                     foreach (var p in pads) {
                         PadSeriesReadModel? ps;
 
-                        if (series.TryGetValue(p.PadSeriesId, out ps)) {
+                        if (series.TryGetValue(p.pad_series_id, out ps)) {
+                            var maybe = (IDictionary<string, object>)p;
+                            int? cut = null;
+                            int? finish = null;
+
+                            if (maybe.ContainsKey("cut")) {
+                                cut = p.cut;
+                            }
+
+                            if (maybe.ContainsKey("finish")) {
+                                finish = p.finish;
+                            }
+
+
                             var pad = new PadReadModel(
-                                p.Id,
-                                p.Name,
-                                p.Category,
-                                0, // TODO: Get from reviews
-                                0, // TODO: Get from reviews
-                                p.Material,
-                                p.Texture
+                                p.id,
+                                p.name,
+                                p.category,
+                                cut,
+                                finish,
+                                p.material,
+                                p.texture
                             );
 
                             padDict.Add(pad.Id, pad);

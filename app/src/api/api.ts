@@ -13,6 +13,7 @@ import { CustomerService } from '@/api/scheduling/billing/services/customer-serv
 import { CheckoutSessionService } from '@/api/scheduling/billing/services/checkout-session-service';
 import { PadSeriesService } from '@/api/product-catalog/pad-series/services/pad-series-service';
 import { BrandService } from '@/api/product-catalog/brands/services/brand-service';
+import { ReviewService } from './product-catalog/reviews/services/review-service';
 
 export const api = {
     authentication: new AuthenticationService(),
@@ -47,6 +48,7 @@ export const api = {
     },
     productCatalog: {
         padSeries: new PadSeriesService(),
-        brand: new BrandService()
+        brand: new BrandService(),
+        review: new ReviewService()
     }
 };

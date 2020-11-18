@@ -169,6 +169,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<PadSeriesUpdateCommand, CommandResult>, PadSeriesUpdateHandler>();
             services.AddTransient<ActionHandler<PadSeriesDeleteCommand, CommandResult>, PadSeriesDeleteHandler>();
             services.AddTransient<ActionHandler<GetAllReviewsForPadQuery, List<ReviewReadModel>>, GetAllReviewsForPadHandler>();
+            services.AddTransient<ActionHandler<GetReviewByIdQuery, ReviewReadModel?>, GetReviewByIdHandler>();
             services.AddTransient<ReviewCreateValidator>();
             services.AddTransient<ActionHandler<ReviewCreateCommand, CommandResult>, ReviewCreateHandler>();
             services.AddTransient<IReviewRepo, ReviewRepo>();

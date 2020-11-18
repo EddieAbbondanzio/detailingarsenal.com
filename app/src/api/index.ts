@@ -57,7 +57,6 @@ export * from './user/data-transfer-objects/user';
 export * from './product-catalog/common/data-transfer-objects/image';
 export * from './product-catalog/common/data-transfer-objects/stars';
 export * from './product-catalog/brands/data-transfer-objects/brand';
-export * from './product-catalog/pad-series/data-transfer-objects/review';
 export * from './product-catalog/pad-series/data-transfer-objects/rating';
 export * from './product-catalog/pad-series/data-transfer-objects/pad';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-category';
@@ -70,3 +69,5 @@ export * from './product-catalog/pad-series/data-transfer-objects/requests/pad-s
 export * from './product-catalog/pad-series/data-transfer-objects/pad-cut';
 export * from './product-catalog/pad-series/data-transfer-objects/pad-finish';
 export * from './product-catalog/pad-series/data-transfer-objects/polisher-type';
+export * from './product-catalog/reviews/data-transfer-objects/review';
+export * from './product-catalog/reviews/data-transfer-objects/review-create-request';

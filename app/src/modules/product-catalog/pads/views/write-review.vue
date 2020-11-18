@@ -14,9 +14,6 @@
                 <option :value="5">5</option>
             </input-select>
 
-            <b-slider>
-                <b-slider-tick :value="2">REEE</b-slider-tick>
-            </b-slider>
             <pad-cut-input v-model="cut" />
             <pad-finish-input v-model="finish" />
 
@@ -24,16 +21,18 @@
                 label="Title"
                 v-model="title"
                 placeholder="Short summary in a few words"
-                rules="required"
+                rules="required|max:64"
                 :required="true"
+                maxLength="64"
             />
             <input-text-field
                 type="textarea"
-                label="Write your review"
+                label="Body"
                 v-model="body"
                 placeholder="Describe the pros, and cons, and all of the vivid details"
-                rules="required"
+                rules="required|max:10000"
                 :required="true"
+                maxLength="10000"
             />
         </input-form>
     </page>
@@ -46,12 +45,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import padStore from '../store/pad/pad-store';
 import PadCutInput from '@/modules/product-catalog/pads/components/pad-cut-input.vue';
 import PadFinishInput from '@/modules/product-catalog/pads/components/pad-finish-input.vue';
+import reviewStore from '../store/review/review-store';
 
 @Component({
     components: {
         PadCutInput,
-        PadFinishInput
-    }
+        PadFinishInput,
+    },
 })
 export default class WriteReview extends Vue {
     get description() {
@@ -73,7 +73,14 @@ export default class WriteReview extends Vue {
 
     @displayLoading
     async onSubmit() {
-        console.log('submitted');
+        await reviewStore.create({
+            padId: this.value!.id,
+            stars: this.stars!,
+            cut: this.cut,
+            finish: this.finish,
+            title: this.title!,
+            body: this.body!,
+        });
     }
 }
 </script>
