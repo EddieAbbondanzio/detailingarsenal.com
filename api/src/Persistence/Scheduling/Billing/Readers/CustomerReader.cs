@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
-using DetailingArsenal.Domain.Scheduling.Billing;
+using DetailingArsenal.Application.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing {

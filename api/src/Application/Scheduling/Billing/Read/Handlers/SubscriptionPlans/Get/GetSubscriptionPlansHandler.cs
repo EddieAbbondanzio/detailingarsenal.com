@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "read", Scope = "subscription-plans")]
-    public class GetSubscriptionPlansHandler : ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanView>> {
+    public class GetSubscriptionPlansHandler : ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>> {
         private ISubscriptionPlanService service;
         private IMapper mapper;
 
@@ -15,9 +15,9 @@ namespace DetailingArsenal.Application.Scheduling.Billing {
             this.mapper = mapper;
         }
 
-        public async override Task<List<SubscriptionPlanView>> Execute(GetSubscriptionPlansQuery input, User? user) {
+        public async override Task<List<SubscriptionPlanReadModel>> Execute(GetSubscriptionPlansQuery input, User? user) {
             var plans = await service.GetAllPlans();
-            return mapper.Map<List<SubscriptionPlan>, List<SubscriptionPlanView>>(plans);
+            return mapper.Map<List<SubscriptionPlan>, List<SubscriptionPlanReadModel>>(plans);
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Scheduling.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     public class PaymentMethodReadModel : IDataTransferObject {
         public string Brand { get; }
         public string Last4 { get; }

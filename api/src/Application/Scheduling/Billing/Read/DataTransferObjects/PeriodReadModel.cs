@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Scheduling.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     public class PeriodReadModel : IDataTransferObject {
         public DateTime Start { get; }
         public DateTime End { get; }

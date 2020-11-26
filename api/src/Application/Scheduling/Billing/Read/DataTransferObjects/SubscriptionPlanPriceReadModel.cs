@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Scheduling.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     public class SubscriptionPlanPriceReadModel : IDataTransferObject {
         public decimal Amount { get; }
         public string Interval { get; }

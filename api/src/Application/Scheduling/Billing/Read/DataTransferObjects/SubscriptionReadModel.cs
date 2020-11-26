@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Scheduling.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     public class SubscriptionReadModel : IDataTransferObject {
         public string PlanName { get; }
         public SubscriptionPlanPriceReadModel Price { get; }

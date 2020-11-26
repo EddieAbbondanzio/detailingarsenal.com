@@ -114,8 +114,8 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<AppointmentBlock, AppointmentBlockView>();
                 config.CreateMap<Permission, PermissionView>();
                 config.CreateMap<Role, RoleView>();
-                config.CreateMap<SubscriptionPlan, SubscriptionPlanView>();
-                config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceView>()
+                config.CreateMap<SubscriptionPlan, SubscriptionPlanReadModel>();
+                config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceReadModel>()
                     .ForMember(v => v.BillingId, p => p.MapFrom(p => p.BillingReference.BillingId));
 
                 config.CreateMap<Brand, BrandReadModel>();
@@ -193,10 +193,10 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetCustomerQuery, CustomerReadModel>, GetCustomerHandler>();
             services.AddTransient<ActionHandler<CancelSubscriptionAtPeriodEndCommand>, CancelSubscriptionAtPeriodEndHandler>();
             services.AddTransient<ActionHandler<UndoCancellingSubscriptionCommand>, UndoCancellingSubscriptionHandler>();
-            services.AddTransient<ActionHandler<GetDefaultSubscriptionPlanQuery, SubscriptionPlanView>, GetDefaultSubscriptionPlanHandler>();
-            services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanView>>, GetSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<GetDefaultSubscriptionPlanQuery, SubscriptionPlanReadModel>, GetDefaultSubscriptionPlanHandler>();
+            services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();
-            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>>, RefreshSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanReadModel>>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
             services.AddTransient<IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully>, RefreshCustomerOnCheckoutSuccess>();
             services.AddTransient<IDomainEventSubscriber<CustomerTrialWillEndSoon>, EmailEdOnCustomerTrialWillEnd>();

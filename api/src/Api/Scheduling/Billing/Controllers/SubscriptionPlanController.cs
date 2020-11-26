@@ -24,7 +24,7 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Get() {
-            var plans = await mediator.Dispatch<GetSubscriptionPlansQuery, List<SubscriptionPlanView>>(
+            var plans = await mediator.Dispatch<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>(
                 new GetSubscriptionPlansQuery(),
                 User.GetUserId()
             );
@@ -34,7 +34,7 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
 
         [HttpGet("default")]
         public async Task<IActionResult> GetDefault() {
-            var plan = await mediator.Dispatch<GetDefaultSubscriptionPlanQuery, SubscriptionPlanView>(
+            var plan = await mediator.Dispatch<GetDefaultSubscriptionPlanQuery, SubscriptionPlanReadModel>(
                 new GetDefaultSubscriptionPlanQuery()
             // Anon is allowed
             );
@@ -48,7 +48,7 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, SubscriptionPlanUpdateRequest body) {
-            var plan = await mediator.Dispatch<SubscriptionPlanUpdateCommand, SubscriptionPlanView>(
+            var plan = await mediator.Dispatch<SubscriptionPlanUpdateCommand, SubscriptionPlanReadModel>(
                 new SubscriptionPlanUpdateCommand(id, body.Description, body.RoleId),
                 User.GetUserId()
             );
@@ -62,7 +62,7 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         [Authorize]
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh() {
-            var plans = await mediator.Dispatch<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>>(
+            var plans = await mediator.Dispatch<RefreshSubscriptionPlansCommand, List<SubscriptionPlanReadModel>>(
                 new RefreshSubscriptionPlansCommand(),
                 User.GetUserId()
             );
