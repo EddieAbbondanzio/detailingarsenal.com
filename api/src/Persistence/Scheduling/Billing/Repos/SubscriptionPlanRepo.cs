@@ -30,7 +30,8 @@ namespace DetailingArsenal.Persistence.Billing {
                         sp.Id,
                         sp.Name,
                         sp.Description,
-                        BillingReference.Product(br.BillingId)
+                        BillingReference.Product(br.BillingId),
+                        roleId: sp.RoleId
                     )).SingleOrDefault();
 
                     if (sp == null) {
@@ -75,7 +76,8 @@ namespace DetailingArsenal.Persistence.Billing {
                         sp.Id,
                         sp.Name,
                         sp.Description,
-                        BillingReference.Product(br.BillingId)
+                        BillingReference.Product(br.BillingId),
+                        roleId: sp.RoleId
                     )).SingleOrDefault();
 
                     if (sp == null) {
@@ -119,7 +121,8 @@ namespace DetailingArsenal.Persistence.Billing {
                         sp.Id,
                         sp.Name,
                         sp.Description,
-                        BillingReference.Product(br.BillingId)
+                        BillingReference.Product(br.BillingId),
+                        roleId: sp.RoleId
                     )).SingleOrDefault();
 
                     if (sp == null) {
@@ -159,7 +162,8 @@ namespace DetailingArsenal.Persistence.Billing {
                             sp.Id,
                             sp.Name,
                             sp.Description,
-                            BillingReference.Product(br.BillingId)
+                            BillingReference.Product(br.BillingId),
+                            roleId: sp.RoleId
                         )
                     );
 
@@ -210,7 +214,8 @@ namespace DetailingArsenal.Persistence.Billing {
                             Id = entity.Id,
                             Name = entity.Name,
                             Description = entity.Description,
-                            BillingReferenceId = planBillingRef.Id
+                            BillingReferenceId = planBillingRef.Id,
+                            RoleId = entity.RoleId
                         },
                         t
                     );
@@ -264,7 +269,8 @@ namespace DetailingArsenal.Persistence.Billing {
                         new SubscriptionPlanModel {
                             Id = entity.Id,
                             Name = entity.Name,
-                            Description = entity.Description
+                            Description = entity.Description,
+                            RoleId = entity.RoleId
                         }
                     );
 
