@@ -14,19 +14,19 @@ namespace DetailingArsenal.Application.Common {
         ICustomerService customerService;
         IRoleService roleService;
         IUserRepo userRepo;
-        ISubscriptionPlanService planService;
+        ISubscriptionPlanRepo subscriptionPlanRepo;
 
-        public UpdateRolesOnInvoiceUpdated(ICustomerService customerService, IRoleService roleService, IUserRepo userRepo, ISubscriptionPlanService planService) {
+        public UpdateRolesOnInvoiceUpdated(ICustomerService customerService, IRoleService roleService, IUserRepo userRepo, ISubscriptionPlanRepo planRepo) {
             this.customerService = customerService;
             this.roleService = roleService;
             this.userRepo = userRepo;
-            this.planService = planService;
+            this.subscriptionPlanRepo = planRepo;
         }
 
         public async Task Notify(CustomerSubscriptionInvoiceUpdated busEvent) {
             var customer = await customerService.GetByBillingId(busEvent.CustomerBillingId);
             var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
-            var plan = await planService.GetById(busEvent.PlanId);
+            var plan = await subscriptionPlanRepo.FindById(busEvent.PlanId) ?? throw new EntityNotFoundException();
 
             var userRoles = await roleService.GetByUser(user);
             var planRole = await roleService.TryGetByName(plan.Name) ?? throw new EntityNotFoundException();

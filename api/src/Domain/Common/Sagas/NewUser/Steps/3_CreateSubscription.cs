@@ -6,15 +6,15 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Domain.Common {
     public class CreateSubscriptionStep : SagaStep<string> {
         ICustomerService customerService;
-        ISubscriptionPlanService subscriptionPlanService;
+        ISubscriptionPlanRepo planRepo;
 
-        public CreateSubscriptionStep(ICustomerService customerService, ISubscriptionPlanService subscriptionPlanService) {
+        public CreateSubscriptionStep(ICustomerService customerService, ISubscriptionPlanRepo planRepo) {
             this.customerService = customerService;
-            this.subscriptionPlanService = subscriptionPlanService;
+            this.planRepo = planRepo;
         }
 
         public override async Task Execute(SagaContext<string> context) {
-            var trialPlan = await subscriptionPlanService.GetDefaultPlan();
+            var trialPlan = await planRepo.FindDefault();
             await customerService.StartSubscription(context.Data.User, trialPlan);
 
             context.Data.Plan = trialPlan;

@@ -8,7 +8,13 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing {
     public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
-        public SubscriptionPlanRepo(IDatabase database) : base(database) { }
+        IBillingConfig billingConfig;
+
+        public SubscriptionPlanRepo(IDatabase database, IBillingConfig billingConfig) : base(database) {
+            this.billingConfig = billingConfig;
+        }
+
+
 
         public async Task<SubscriptionPlan?> FindById(Guid id) {
             using (var conn = OpenConnection()) {
@@ -335,6 +341,11 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                     t.Commit();
                 }
             }
+        }
+
+        public async Task<SubscriptionPlan> FindDefault() {
+            var p = await FindByBillingReference(BillingReference.Product(billingConfig.DefaultPlan));
+            return p ?? throw new EntityNotFoundException();
         }
     }
 }

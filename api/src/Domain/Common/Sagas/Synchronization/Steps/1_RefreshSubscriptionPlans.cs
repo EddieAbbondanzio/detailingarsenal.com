@@ -3,9 +3,9 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Domain.Common {
     public class RefreshSubscriptionPlansStep : SagaStep {
-        ISubscriptionPlanService subscriptionPlanService;
+        ISubscriptionPlanRefresher subscriptionPlanService;
 
-        public RefreshSubscriptionPlansStep(ISubscriptionPlanService subscriptionPlanService) {
+        public RefreshSubscriptionPlansStep(ISubscriptionPlanRefresher subscriptionPlanService) {
             this.subscriptionPlanService = subscriptionPlanService;
         }
 

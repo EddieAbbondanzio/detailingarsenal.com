@@ -8,18 +8,16 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "refresh", Scope = "subscription-plans")]
-    public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanReadModel>> {
-        ISubscriptionPlanService service;
-        private IMapper mapper;
+    public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand, CommandResult> {
+        ISubscriptionPlanRefresher refreshService;
 
-        public RefreshSubscriptionPlansHandler(ISubscriptionPlanService service, IMapper mapper) {
-            this.service = service;
-            this.mapper = mapper;
+        public RefreshSubscriptionPlansHandler(ISubscriptionPlanRefresher service) {
+            this.refreshService = service;
         }
 
-        public async override Task<List<SubscriptionPlanReadModel>> Execute(RefreshSubscriptionPlansCommand input, User? user) {
-            var plans = await service.RefreshPlans();
-            return mapper.Map<List<SubscriptionPlan>, List<SubscriptionPlanReadModel>>(plans);
+        public async override Task<CommandResult> Execute(RefreshSubscriptionPlansCommand input, User? user) {
+            await refreshService.RefreshPlans();
+            return CommandResult.Success();
         }
     }
 }

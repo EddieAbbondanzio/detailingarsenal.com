@@ -7,17 +7,14 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "read", Scope = "subscription-plans")]
     public class GetSubscriptionPlansHandler : ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>> {
-        private ISubscriptionPlanService service;
-        private IMapper mapper;
+        ISubscriptionPlanReader reader;
 
-        public GetSubscriptionPlansHandler(ISubscriptionPlanService service, IMapper mapper) {
-            this.service = service;
-            this.mapper = mapper;
+        public GetSubscriptionPlansHandler(ISubscriptionPlanReader reader) {
+            this.reader = reader;
         }
 
         public async override Task<List<SubscriptionPlanReadModel>> Execute(GetSubscriptionPlansQuery input, User? user) {
-            var plans = await service.GetAllPlans();
-            return mapper.Map<List<SubscriptionPlan>, List<SubscriptionPlanReadModel>>(plans);
+            return await reader.ReadAll();
         }
     }
 }

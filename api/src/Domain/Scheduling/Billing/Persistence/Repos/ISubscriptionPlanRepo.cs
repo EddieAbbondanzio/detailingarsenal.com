@@ -7,6 +7,7 @@ namespace DetailingArsenal.Domain.Scheduling.Billing {
         Task<List<SubscriptionPlan>> FindAll();
         Task<SubscriptionPlan?> FindByBillingReference(BillingReference reference);
         Task<SubscriptionPlan?> FindByName(string name);
+        Task<SubscriptionPlan> FindDefault();
         Task DeleteAll();
     }
 }
