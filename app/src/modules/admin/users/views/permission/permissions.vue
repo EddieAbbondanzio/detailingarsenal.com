@@ -5,18 +5,18 @@
                 title="Permissions"
                 description="Access control"
                 icon="lock"
-                :backButtonTo="{name: 'adminPanel'}"
+                :backButtonTo="{ name: 'adminPanel' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
-                        <breadcrumb name="Permissions" :to="{name: 'permissions'}" :active="true" />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Permissions" :to="{ name: 'permissions' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <create-button :to="{name: 'createPermission' }" text="Create permission" />
+                    <create-button :to="{ name: 'createPermission' }" text="Create permission" />
                 </template>
             </page-header>
         </template>
@@ -27,11 +27,7 @@
                 <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
                 <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
                 <b-table-column>
-                    <edit-delete-dropdown
-                        @edit="onEdit(props.row)"
-                        @delete="onDelete(props.row)"
-                        size="is-small"
-                    />
+                    <edit-delete-dropdown @edit="onEdit(props.row)" @delete="onDelete(props.row)" size="is-small" />
                 </b-table-column>
             </template>
 
@@ -49,7 +45,7 @@ import { confirmDelete, toast, displayError, displayLoading } from '@/core';
 import securityStore from '../../store/security-store';
 
 @Component({
-    name: 'permissions'
+    name: 'permissions',
 })
 export default class Permissions extends Vue {
     get permissions(): Permission[] {

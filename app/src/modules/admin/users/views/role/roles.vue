@@ -5,29 +5,24 @@
                 title="Roles"
                 description="Collection of permissions"
                 icon="lock"
-                :backButtonTo="{name: 'adminPanel'}"
+                :backButtonTo="{ name: 'adminPanel' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
-                        <breadcrumb name="Roles" :to="{name: 'roles'}" :active="true" />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Roles" :to="{ name: 'roles' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <create-button :to="{name: 'createRole' }" text="Create role" />
+                    <create-button :to="{ name: 'createRole' }" text="Create role" />
                 </template>
             </page-header>
         </template>
 
         <list>
-            <list-item
-                v-for="r in roles"
-                :key="r.id"
-                :title="r.name"
-                :to="{name: 'role', params: { id: r.id}}"
-            >
+            <list-item v-for="r in roles" :key="r.id" :title="r.name" :to="{ name: 'role', params: { id: r.id } }">
                 <template v-slot:actions>
                     <edit-delete-dropdown @edit="onEdit(r)" @delete="onDelete(r)" />
                 </template>
@@ -44,7 +39,7 @@ import { Role } from '@/api';
 import securityStore from '../../store/security-store';
 
 @Component({
-    name: 'roles'
+    name: 'roles',
 })
 export default class Roles extends Vue {
     get roles() {

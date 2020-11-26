@@ -4,44 +4,9 @@ import { adminGuard } from '@/modules/admin/core/router/admin-guard';
 
 const schedulingAdminRoutes: RouteConfig[] = [
     {
-        path: 'scheduling/scheduling',
+        path: 'scheduling',
         name: 'schedulingPanel',
         component: () => import('@/modules/admin/scheduling/views/scheduling-panel.vue')
-    },
-    {
-        path: 'scheduling/permissions',
-        name: 'permissions',
-        component: () => import('@/modules/admin/scheduling/views/permission/permissions.vue')
-    },
-    {
-        path: 'scheduling/permissions/create',
-        name: 'createPermission',
-        component: () => import('@/modules/admin/scheduling/views/permission/create-permission.vue')
-    },
-    {
-        path: 'scheduling/permission/:id/edit',
-        name: 'editPermission',
-        component: () => import('@/modules/admin/scheduling/views/permission/edit-permission.vue')
-    },
-    {
-        path: 'scheduling/roles',
-        name: 'roles',
-        component: () => import('@/modules/admin/scheduling/views/role/roles.vue')
-    },
-    {
-        path: 'scheduling/roles/create',
-        name: 'createRole',
-        component: () => import('@/modules/admin/scheduling/views/role/create-role.vue')
-    },
-    {
-        path: 'scheduling/roles/:id',
-        name: 'role',
-        component: () => import('@/modules/admin/scheduling/views/role/role.vue')
-    },
-    {
-        path: 'scheduling/roles/:id/edit',
-        name: 'editRole',
-        component: () => import('@/modules/admin/scheduling/views/role/edit-role.vue')
     },
     {
         path: 'scheduling/subscription-plans',

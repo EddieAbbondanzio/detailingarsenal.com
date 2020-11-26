@@ -3,6 +3,7 @@ import { RouteConfig } from 'vue-router';
 import { adminGuard } from '@/modules/admin/core/router/admin-guard';
 import { schedulingAdmin } from '../../scheduling/router/scheduling-admin';
 import { productCatalogAdmin } from '../../product-catalog/router/product-catalog-admin';
+import { usersAdmin } from '../../users/router/users-admin';
 
 const a: RouteConfig[] = [
     {
@@ -15,7 +16,10 @@ const a: RouteConfig[] = [
                 component: () => import('@/modules/admin/core/views/admin-panel.vue'),
             },
             ...productCatalogAdmin,
-            ...schedulingAdmin],
+            ...schedulingAdmin,
+            ...usersAdmin,
+
+        ],
     },
 ];
 

@@ -1,16 +1,11 @@
 <template>
     <page background="is-light">
         <template v-slot:header>
-            <page-header
-                title="Scheduling Panel"
-                description="Scheduling specific controls"
-                icon="cogs"
-                :backButton="false"
-            >
+            <page-header title="Users Panel" description="Users specific controls" icon="cogs" :backButton="false">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" :active="true" />
+                        <breadcrumb name="Users Panel" :to="{ name: 'UsersPanel' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -37,13 +32,19 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RawLocation } from 'vue-router';
 
 @Component({})
-export default class SchedulingPanel extends Vue {
+export default class UsersPanel extends Vue {
     entries: { title: string; description: string; icon: string; to: RawLocation }[] = [
         {
-            title: 'Subscription Plans',
-            description: 'Plans for customers',
-            icon: 'ferry',
-            to: { name: 'subscriptionPlans' },
+            title: 'Permissions',
+            description: 'Access control',
+            icon: 'lock',
+            to: { name: 'permissions' },
+        },
+        {
+            title: 'Roles',
+            description: 'Collection of roles',
+            icon: 'account',
+            to: { name: 'roles' },
         },
     ];
 }
