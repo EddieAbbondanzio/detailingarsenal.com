@@ -11,20 +11,20 @@ using Serilog;
 
 namespace DetailingArsenal.Application.Common {
     public class UpdateRolesOnInvoiceUpdated : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
-        ICustomerService customerService;
+        ICustomerRepo customerRepo;
         IRoleService roleService;
         IUserRepo userRepo;
         ISubscriptionPlanRepo subscriptionPlanRepo;
 
-        public UpdateRolesOnInvoiceUpdated(ICustomerService customerService, IRoleService roleService, IUserRepo userRepo, ISubscriptionPlanRepo planRepo) {
-            this.customerService = customerService;
+        public UpdateRolesOnInvoiceUpdated(ICustomerRepo customerRepo, IRoleService roleService, IUserRepo userRepo, ISubscriptionPlanRepo planRepo) {
+            this.customerRepo = customerRepo;
             this.roleService = roleService;
             this.userRepo = userRepo;
             this.subscriptionPlanRepo = planRepo;
         }
 
         public async Task Notify(CustomerSubscriptionInvoiceUpdated busEvent) {
-            var customer = await customerService.GetByBillingId(busEvent.CustomerBillingId);
+            var customer = await customerRepo.FindByBillingId(busEvent.CustomerBillingId) ?? throw new EntityNotFoundException();
             var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
             var plan = await subscriptionPlanRepo.FindById(busEvent.PlanId) ?? throw new EntityNotFoundException();
 

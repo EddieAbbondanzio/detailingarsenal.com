@@ -182,7 +182,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ICustomerReader, CustomerReader>();
-            services.AddTransient<ICustomerService, Domain.Scheduling.Billing.CustomerService>();
+            services.AddTransient<ICustomerRefresher, Domain.Scheduling.Billing.CustomerRefresher>();
             services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
             services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
             services.AddTransient<ICheckoutSessionGateway, StripeCheckoutSessionGateway>();
@@ -196,7 +196,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetDefaultSubscriptionPlanQuery, SubscriptionPlanReadModel>, GetDefaultSubscriptionPlanHandler>();
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();
-            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanReadModel>>, RefreshSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, CommandResult>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<SubscriptionPlanUpdateCommand, CommandResult>, SubscriptionPlanUpdateHandler>();
             services.AddTransient<ISubscriptionPlanRefresher, SubscriptionPlanRefresher>();
             services.AddTransient<IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully>, RefreshCustomerOnCheckoutSuccess>();

@@ -10,17 +10,17 @@ using Serilog;
 namespace DetailingArsenal.Application.Scheduling.Billing {
     public class EmailEdOnCustomerTrialWillEnd : IDomainEventSubscriber<CustomerTrialWillEndSoon> {
         IEmailClient emailClient;
-        ICustomerService customerService;
+        ICustomerRepo customerRepo;
         IUserRepo userRepo;
 
-        public EmailEdOnCustomerTrialWillEnd(IEmailClient emailClient, ICustomerService customerService, IUserRepo userRepo) {
+        public EmailEdOnCustomerTrialWillEnd(IEmailClient emailClient, ICustomerRepo customerRepo, IUserRepo userRepo) {
             this.emailClient = emailClient;
-            this.customerService = customerService;
+            this.customerRepo = customerRepo;
             this.userRepo = userRepo;
         }
 
         public async Task Notify(CustomerTrialWillEndSoon busEvent) {
-            var customer = await customerService.GetByBillingId(busEvent.CustomerBillingId);
+            var customer = await customerRepo.FindByBillingId(busEvent.CustomerBillingId) ?? throw new EntityNotFoundException();
             var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
 
             try {

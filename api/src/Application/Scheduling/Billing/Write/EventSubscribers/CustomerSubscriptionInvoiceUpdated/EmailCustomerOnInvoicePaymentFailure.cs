@@ -8,17 +8,17 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Scheduling.Billing {
     public class EmailCustomerOnInvoicePaymentFailure : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
         IEmailClient emailClient;
-        ICustomerService customerService;
+        ICustomerRepo customerRepo;
         IUserRepo userRepo;
 
-        public EmailCustomerOnInvoicePaymentFailure(IEmailClient emailClient, ICustomerService customerService, IUserRepo userRepo) {
+        public EmailCustomerOnInvoicePaymentFailure(IEmailClient emailClient, ICustomerRepo customerRepo, IUserRepo userRepo) {
             this.emailClient = emailClient;
-            this.customerService = customerService;
+            this.customerRepo = customerRepo;
             this.userRepo = userRepo;
         }
 
         public async Task Notify(CustomerSubscriptionInvoiceUpdated busEvent) {
-            var customer = await customerService.GetByBillingId(busEvent.CustomerBillingId);
+            var customer = await customerRepo.FindByBillingId(busEvent.CustomerBillingId) ?? throw new EntityNotFoundException();
             var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
 
             MailMessage message = new MailMessage();

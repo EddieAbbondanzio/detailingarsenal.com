@@ -1,18 +1,22 @@
 using System.Threading.Tasks;
+using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     public class CancelSubscriptionAtPeriodEndHandler : ActionHandler<CancelSubscriptionAtPeriodEndCommand> {
-        ICustomerService service;
+        ICustomerGateway customerGateway;
+        ICustomerRepo customerRepo;
 
-        public CancelSubscriptionAtPeriodEndHandler(ICustomerService service) {
-            this.service = service;
+        public CancelSubscriptionAtPeriodEndHandler(ICustomerGateway customerGateway, ICustomerRepo customerRepo) {
+            this.customerGateway = customerGateway;
+            this.customerRepo = customerRepo;
         }
 
         public async override Task Execute(CancelSubscriptionAtPeriodEndCommand input, User? user) {
-            var c = await service.GetByUser(user!);
-            await service.CancelSubscriptionAtPeriodEnd(c);
+            var customer = await customerRepo.FindByUser(user!) ?? throw new EntityNotFoundException();
+            await customerGateway.CancelSubscriptionAtPeriodEnd(customer);
+            await customerRepo.Update(customer);
         }
     }
 }
