@@ -209,7 +209,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
 
                     // insert plan
                     await conn.ExecuteAsync(
-                        @"insert into subscription_plans (id, name, billing_reference_id) values (@Id, @Name, @BillingReferenceId);",
+                        @"insert into subscription_plans (id, name, description, role_id, billing_reference_id) values (@Id, @Name, @Description, @RoleId, @BillingReferenceId);",
                         new SubscriptionPlanModel() {
                             Id = entity.Id,
                             Name = entity.Name,
@@ -265,7 +265,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     await conn.ExecuteAsync(
-                        @"update subscription_plans set name = @Name where id = @Id;",
+                        @"update subscription_plans set name = @Name, description = @Description, role_id = @RoleId where id = @Id;",
                         new SubscriptionPlanModel {
                             Id = entity.Id,
                             Name = entity.Name,

@@ -197,6 +197,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>, GetSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanReadModel>>, RefreshSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<SubscriptionPlanUpdateCommand, CommandResult>, SubscriptionPlanUpdateHandler>();
             services.AddTransient<ISubscriptionPlanService, SubscriptionPlanService>();
             services.AddTransient<IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully>, RefreshCustomerOnCheckoutSuccess>();
             services.AddTransient<IDomainEventSubscriber<CustomerTrialWillEndSoon>, EmailEdOnCustomerTrialWillEnd>();
