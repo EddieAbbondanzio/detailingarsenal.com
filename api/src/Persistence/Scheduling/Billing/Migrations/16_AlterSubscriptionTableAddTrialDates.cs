@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_07_09_01, "Alter subscription plans add trial start and trial end")]
     public class AlterSubscriptionAddTrialDates : Migration {
         public override void Up() {

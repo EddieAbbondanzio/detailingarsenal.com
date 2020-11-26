@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class CheckoutSessionCompletedSuccessfully : IDomainEvent {
         public string CustomerBillingId { get; }
         public string NewPaymentMethodBillingId { get; }

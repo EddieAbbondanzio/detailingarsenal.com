@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public interface ICustomerGateway : IGateway {
         Task<Customer> GetByBillingId(string billingId);
         Task<Customer> CreateTrialCustomer(User user, SubscriptionPlan trialPlan);

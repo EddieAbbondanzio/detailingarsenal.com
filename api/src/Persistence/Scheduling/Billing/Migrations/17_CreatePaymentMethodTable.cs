@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_07_13_00, "Create payment method table")]
     public class CreatePaymentMethodTable : Migration {
         public override void Up() {

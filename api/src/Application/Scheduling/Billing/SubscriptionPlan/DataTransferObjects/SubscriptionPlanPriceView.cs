@@ -1,7 +1,7 @@
 using System;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     public class SubscriptionPlanPriceView : IDataTransferObject {
         public decimal Amount { get; set; }
         public string Interval { get; set; } = null!;

@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using Stripe;
 using Stripe.Checkout;
 
-namespace DetailingArsenal.Infrastructure.Billing {
+namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
     /// <summary>
     /// Converter that retrieves additional information on a Stripe checkout session completed
     /// successfully event before returning our domain event.

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class SubscriptionPlan : Aggregate<SubscriptionPlan>, IBillingEntity {
         public string Name { get; set; }
         public string? Description { get; set; }

@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class SubscriptionPlanReference : ValueObject<SubscriptionPlanReference> {
         public Guid PlanId { get; }
         public string PriceBillingId { get; }

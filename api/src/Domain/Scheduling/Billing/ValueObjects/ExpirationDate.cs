@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     /// <summary>
     /// Payment method expiration date.
     /// </summary>

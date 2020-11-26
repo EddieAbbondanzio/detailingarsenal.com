@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class CustomerTrialWillEndSoon : IDomainEvent {
         public string CustomerBillingId { get; }
 

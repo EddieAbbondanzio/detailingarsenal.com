@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 using Stripe;
 
-namespace DetailingArsenal.Infrastructure.Billing {
+namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
     public class StripeCustomerGateway : ICustomerGateway {
         Stripe.CustomerService customerService;
         Stripe.SubscriptionService subscriptionService;
@@ -19,7 +19,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
             this.config = config;
         }
 
-        public async Task<Domain.Billing.Customer> CreateTrialCustomer(User user, SubscriptionPlan trialPlan) {
+        public async Task<Domain.Scheduling.Billing.Customer> CreateTrialCustomer(User user, SubscriptionPlan trialPlan) {
             var customerId = Guid.NewGuid();
 
             var custCreateOpts = new Stripe.CustomerCreateOptions {
@@ -52,18 +52,18 @@ namespace DetailingArsenal.Infrastructure.Billing {
 
             var subscription = await subscriptionService.CreateAsync(subCreateOpts);
 
-            return new Domain.Billing.Customer(
+            return new Domain.Scheduling.Billing.Customer(
                 customerId,
                 user.Id,
                 BillingReference.Customer(customer.Id),
-                new Domain.Billing.Subscription(
+                new Domain.Scheduling.Billing.Subscription(
                     subId,
-                    Domain.Billing.Subscription.ParseStatus(subscription.Status),
-                    new Domain.Billing.Period(
+                    Domain.Scheduling.Billing.Subscription.ParseStatus(subscription.Status),
+                    new Domain.Scheduling.Billing.Period(
                         subscription.TrialStart ?? throw new NullReferenceException(),
                         subscription.TrialEnd ?? throw new NullReferenceException()
                     ),
-                    new Domain.Billing.Period(
+                    new Domain.Scheduling.Billing.Period(
                         subscription.CurrentPeriodStart,
                         subscription.CurrentPeriodEnd
                     ),
@@ -77,14 +77,14 @@ namespace DetailingArsenal.Infrastructure.Billing {
             );
         }
 
-        public async Task Delete(Domain.Billing.Customer customer) {
+        public async Task Delete(Domain.Scheduling.Billing.Customer customer) {
             await customerService.DeleteAsync(customer.BillingReference.BillingId);
         }
 
-        public async Task<Domain.Billing.Customer> GetByBillingId(string billingId) {
+        public async Task<Domain.Scheduling.Billing.Customer> GetByBillingId(string billingId) {
             var stripeCustomer = await customerService.GetAsync(billingId);
 
-            var customer = new Domain.Billing.Customer(
+            var customer = new Domain.Scheduling.Billing.Customer(
                 Guid.Parse(stripeCustomer.Metadata["Id"]),
                 Guid.Parse(stripeCustomer.Metadata["UserId"]),
                 BillingReference.Customer(stripeCustomer.Id)
@@ -93,14 +93,14 @@ namespace DetailingArsenal.Infrastructure.Billing {
             if (stripeCustomer.Subscriptions.Data.Count > 0) {
                 var stripeSubscription = stripeCustomer.Subscriptions.Data[0];
 
-                customer.Subscription = new Domain.Billing.Subscription(
+                customer.Subscription = new Domain.Scheduling.Billing.Subscription(
                     Guid.Parse(stripeSubscription.Metadata["Id"]),
-                    Domain.Billing.Subscription.ParseStatus(stripeSubscription.Status),
-                    new Domain.Billing.Period(
+                    Domain.Scheduling.Billing.Subscription.ParseStatus(stripeSubscription.Status),
+                    new Domain.Scheduling.Billing.Period(
                     stripeSubscription.TrialStart ?? throw new NullReferenceException(),
                     stripeSubscription.TrialEnd ?? throw new NullReferenceException()
                     ),
-                    new Domain.Billing.Period(
+                    new Domain.Scheduling.Billing.Period(
                         stripeSubscription.CurrentPeriodStart,
                         stripeSubscription.CurrentPeriodEnd
                     ),
@@ -136,7 +136,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
 
                 var card = paymentMethod.Card;
 
-                customer.PaymentMethods.Add(new Domain.Billing.PaymentMethod(
+                customer.PaymentMethods.Add(new Domain.Scheduling.Billing.PaymentMethod(
                     Guid.Parse(paymentMethod.Metadata["Id"]),
                     card.Brand,
                     card.Last4,
@@ -151,7 +151,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
         }
 
 
-        public async Task CancelSubscriptionAtPeriodEnd(Domain.Billing.Customer customer) {
+        public async Task CancelSubscriptionAtPeriodEnd(Domain.Scheduling.Billing.Customer customer) {
             if (customer.Subscription == null) {
                 throw new InvalidOperationException("No subscription to cancel.");
             }
@@ -164,7 +164,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
             customer.Subscription.CancellingAtPeriodEnd = true;
         }
 
-        public async Task UndoCancellingSubscription(Domain.Billing.Customer customer) {
+        public async Task UndoCancellingSubscription(Domain.Scheduling.Billing.Customer customer) {
             if (customer.Subscription == null) {
                 throw new InvalidOperationException("No subscription to cancel.");
             }

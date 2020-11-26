@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public interface ICustomerService : IService {
         Task<Customer> GetByUser(User user);
         Task<Customer> GetByBillingId(string billingId);

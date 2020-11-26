@@ -4,11 +4,11 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 using Serilog;
 
-namespace DetailingArsenal.Persistence.Billing {
+namespace DetailingArsenal.Persistence.Scheduling.Billing {
     public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
         public CustomerRepo(IDatabase database) : base(database) { }
 

@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class BillingReference : ValueObject<BillingReference> {
         public string BillingId { get; }
         public BillingReferenceType Type { get; }

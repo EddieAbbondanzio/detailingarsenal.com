@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class CustomerReadModel : IDataTransferObject {
         public SubscriptionReadModel? Subscription { get; }
         public List<PaymentMethodReadModel> PaymentMethods { get; }

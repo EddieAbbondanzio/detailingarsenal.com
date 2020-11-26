@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Persistence.Billing {
+namespace DetailingArsenal.Persistence.Scheduling.Billing {
     public class CustomerReader : DatabaseInteractor, ICustomerReader {
         public CustomerReader(IDatabase database) : base(database) { }
 

@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using Stripe;
 
-namespace DetailingArsenal.Infrastructure.Billing {
+namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
     public class CustomerSubscriptionInvoiceUpdatedConverter : StripeWebhookConverter {
         protected override string WebhookType => Events.InvoiceUpdated;
 
@@ -13,7 +13,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
 
             return Task.FromResult(
                 new CustomerSubscriptionInvoiceUpdated(
-                    Domain.Billing.Subscription.ParseStatus(subscription.Status),
+                    Domain.Scheduling.Billing.Subscription.ParseStatus(subscription.Status),
                     Guid.Parse(subscription.Metadata["PlanId"]),
                     subscription.CustomerId
                 ) as IDomainEvent

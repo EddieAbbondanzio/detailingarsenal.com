@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using Stripe;
 
-namespace DetailingArsenal.Infrastructure.Billing {
+namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
     public abstract class StripeWebhookConverter {
         /// <summary>
         /// The Stripe event type it supports converting.

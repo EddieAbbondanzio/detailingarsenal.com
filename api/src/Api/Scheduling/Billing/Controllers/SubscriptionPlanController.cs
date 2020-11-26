@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
-using DetailingArsenal.Application.Billing;
+using DetailingArsenal.Application.Scheduling.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DetailingArsenal.Api.Billing {
+namespace DetailingArsenal.Api.Scheduling.Billing {
     [Route("/billing/subscription-plan")]
     [ApiController]
     public class SubscriptionPlanController : ControllerBase {
@@ -35,6 +37,20 @@ namespace DetailingArsenal.Api.Billing {
             var plan = await mediator.Dispatch<GetDefaultSubscriptionPlanQuery, SubscriptionPlanView>(
                 new GetDefaultSubscriptionPlanQuery()
             // Anon is allowed
+            );
+
+            return Ok(plan);
+        }
+
+        /// <summary>
+        /// Update the description and role id of a subscription plan.
+        /// </summary>
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, SubscriptionPlanUpdateRequest body) {
+            var plan = await mediator.Dispatch<SubscriptionPlanUpdateCommand, SubscriptionPlanView>(
+                new SubscriptionPlanUpdateCommand(id, body.Description, body.RoleId),
+                User.GetUserId()
             );
 
             return Ok(plan);

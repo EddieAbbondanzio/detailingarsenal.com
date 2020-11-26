@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 
-namespace DetailingArsenal.Persistence.Billing {
+namespace DetailingArsenal.Persistence.Scheduling.Billing {
     public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
         public SubscriptionPlanRepo(IDatabase database) : base(database) { }
 

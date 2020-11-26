@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_07_13_01, "Alter subscription add next payment date column")]
     public class AlterSubscriptionAddNextPayment : Migration {
         public override void Up() {

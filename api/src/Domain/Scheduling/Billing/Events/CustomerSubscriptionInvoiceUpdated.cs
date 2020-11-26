@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class CustomerSubscriptionInvoiceUpdated : IDomainEvent {
         public SubscriptionStatus SubscriptionStatus { get; }
         public Guid PlanId { get; }

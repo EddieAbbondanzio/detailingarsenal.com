@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class SubscriptionPlanPrice : ValueObject<SubscriptionPlanPrice> {
         public decimal Amount { get; }
         public string Interval { get; }

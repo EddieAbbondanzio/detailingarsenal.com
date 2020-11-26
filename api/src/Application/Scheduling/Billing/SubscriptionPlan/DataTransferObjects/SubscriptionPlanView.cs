@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Application.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     public class SubscriptionPlanView : IDataTransferObject {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;

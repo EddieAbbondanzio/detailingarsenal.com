@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_07_28_00, "Alter payment_methods add is default")]
     public class AlterPaymentMethodsAddIsDefault : Migration {
         public override void Up() {

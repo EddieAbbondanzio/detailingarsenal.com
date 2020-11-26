@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization]
     public class CreateSessionHandler : ActionHandler<CreateCheckoutSessionCommand, BillingReference> {
         ICustomerService customerService;

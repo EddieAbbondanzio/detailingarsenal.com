@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 using DetailingArsenal.Domain.Users.Security;
 

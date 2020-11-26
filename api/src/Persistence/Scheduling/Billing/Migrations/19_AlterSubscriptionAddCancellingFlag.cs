@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_07_26_00, "Alter subscription add cancelling at period end column")]
     public class AlterSubscriptionAddCancellingAtPeriodEndFlag : Migration {
         public override void Up() {

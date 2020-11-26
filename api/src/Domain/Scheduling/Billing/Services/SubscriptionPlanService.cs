@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public interface ISubscriptionPlanService : IService {
         Task<SubscriptionPlan> GetById(Guid id);
         Task<List<SubscriptionPlan>> GetAllPlans();

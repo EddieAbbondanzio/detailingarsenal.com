@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_06_29_0, "Alter subscription plan prices table to reference new billing reference table")]
     public class AlterSubscriptionPlanPriceTableAddBillingReference : Migration {
         public override void Up() {

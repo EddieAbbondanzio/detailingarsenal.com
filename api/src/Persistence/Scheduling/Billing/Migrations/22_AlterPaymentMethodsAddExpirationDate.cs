@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_07_31_00, "Alter payment_methods add expiration month, expiration year.")]
     public class AlterPaymentMethodsAddExpiration : Migration {
         public override void Up() {

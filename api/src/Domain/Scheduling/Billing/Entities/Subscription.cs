@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class Subscription : Entity<Subscription>, IBillingEntity {
         public SubscriptionStatus Status { get; set; }
         public Period TrialPeriod { get; set; }
@@ -30,8 +30,7 @@ namespace DetailingArsenal.Domain.Billing {
         }
 
         // I don't like this here but it feels like an orphan.
-        public static SubscriptionStatus ParseStatus(string status) => status switch
-        {
+        public static SubscriptionStatus ParseStatus(string status) => status switch {
             "trialing" => SubscriptionStatus.Trialing,
             "active" => SubscriptionStatus.Active,
             "incomplete" => SubscriptionStatus.Incomplete,

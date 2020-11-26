@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class Period : ValueObject<Period> {
         public DateTime Start { get; }
         public DateTime End { get; }

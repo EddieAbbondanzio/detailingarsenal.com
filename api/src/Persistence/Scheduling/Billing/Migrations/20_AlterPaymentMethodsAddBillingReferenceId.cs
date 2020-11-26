@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_07_27_00, "Alter payment_methods add billing_reference_id")]
     public class AlterPaymentMethodsAddBillingReferenceId : Migration {
         public override void Up() {

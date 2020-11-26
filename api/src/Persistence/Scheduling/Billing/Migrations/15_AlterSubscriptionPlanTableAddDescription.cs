@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_07_08_1, "Alter subscription plans add description")]
     public class AlterSubscriptionPlanTableAddDescription : Migration {
         public override void Up() {

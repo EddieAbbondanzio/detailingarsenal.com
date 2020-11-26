@@ -1,7 +1,7 @@
 using System;
 using DetailingArsenal.Domain;
 
-namespace DetailingArsenal.Persistence.Billing {
+namespace DetailingArsenal.Persistence.Scheduling.Billing {
     public class SubscriptionModel : IDataTransferObject {
         public Guid Id { get; set; }
         public Guid CustomerId { get; set; }

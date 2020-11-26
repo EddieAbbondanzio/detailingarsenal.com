@@ -3,11 +3,11 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 using Serilog;
 
-namespace DetailingArsenal.Application.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     public class EmailEdOnCustomerTrialWillEnd : IDomainEventSubscriber<CustomerTrialWillEndSoon> {
         IEmailClient emailClient;
         ICustomerService customerService;

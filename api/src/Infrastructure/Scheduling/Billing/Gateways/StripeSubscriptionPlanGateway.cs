@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using Stripe;
 using Stripe.Checkout;
 
-namespace DetailingArsenal.Infrastructure.Billing {
+namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
     public class StripeSubscriptionPlanGateway : ISubscriptionPlanGateway {
         ProductService productService;
         PriceService priceService;
@@ -31,7 +31,7 @@ namespace DetailingArsenal.Infrastructure.Billing {
 
                     product = await productService.UpdateAsync(product.Id, updateOpts);
                 }
- 
+
                 var plan = new SubscriptionPlan(
                     Guid.Parse(product.Metadata["Id"]),
                     product.Name,

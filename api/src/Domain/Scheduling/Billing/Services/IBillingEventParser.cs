@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using System.Linq;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     /// <summary>
     /// Service that supports parsing billing webhook events from their raw streams and
     /// converting them into the corresponding domain event.

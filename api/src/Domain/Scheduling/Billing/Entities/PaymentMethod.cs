@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class PaymentMethod : Entity<PaymentMethod>, IBillingEntity {
         public string Brand { get; }
         public string Last4 { get; }

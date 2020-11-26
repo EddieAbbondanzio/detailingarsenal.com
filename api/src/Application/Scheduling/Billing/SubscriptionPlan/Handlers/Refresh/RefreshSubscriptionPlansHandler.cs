@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "refresh", Scope = "subscription-plans")]
     public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand, List<SubscriptionPlanView>> {
         ISubscriptionPlanService service;

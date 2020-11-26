@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application.Billing {
+namespace DetailingArsenal.Application.Scheduling.Billing {
     public class GetCustomerHandler : ActionHandler<GetCustomerQuery, CustomerReadModel> {
         ICustomerReader customerReader;
 

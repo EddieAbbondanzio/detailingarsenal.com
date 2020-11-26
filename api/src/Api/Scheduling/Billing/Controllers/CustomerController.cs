@@ -2,14 +2,14 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using DetailingArsenal.Application;
-using DetailingArsenal.Application.Billing;
+using DetailingArsenal.Application.Scheduling.Billing;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 
-namespace DetailingArsenal.Api.Billing {
+namespace DetailingArsenal.Api.Scheduling.Billing {
     [Authorize]
     [ApiController]
     [Route("/billing/customer")]

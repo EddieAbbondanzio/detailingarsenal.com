@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Domain.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     /// <summary>
     /// See: https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses
     /// </summary>
@@ -15,8 +15,7 @@ namespace DetailingArsenal.Domain.Billing {
     }
 
     public static class SubscriptionStatusExts {
-        public static string ToBillingString(this SubscriptionStatus status) => status switch
-        {
+        public static string ToBillingString(this SubscriptionStatus status) => status switch {
             SubscriptionStatus.Trialing => "trialing",
             SubscriptionStatus.Active => "active",
             SubscriptionStatus.Incomplete => "incomplete",

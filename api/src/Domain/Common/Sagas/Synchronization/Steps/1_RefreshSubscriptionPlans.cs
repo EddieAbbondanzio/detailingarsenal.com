@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using DetailingArsenal.Domain.Billing;
+using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Domain.Common {
     public class RefreshSubscriptionPlansStep : SagaStep {

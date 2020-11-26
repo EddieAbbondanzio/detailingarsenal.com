@@ -1,6 +1,6 @@
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Billing.Migrations {
+namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
     [Migration(2020_06_28_0, "Alter subscription table to be child entity")]
     public class AlterSubscriptionTableToBeChildEntity : Migration {
         public override void Up() {
