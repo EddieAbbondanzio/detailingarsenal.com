@@ -1,6 +1,6 @@
 using System;
 
-namespace DetailingArsenal.Application.Scheduling.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class CreateCheckoutSessionCommand : IAction {
         /// <summary>
         /// External ID of the price to create the checkout session for. 

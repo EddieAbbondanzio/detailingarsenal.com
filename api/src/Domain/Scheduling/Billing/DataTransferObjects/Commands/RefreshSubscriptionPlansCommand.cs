@@ -1,3 +1,3 @@
-namespace DetailingArsenal.Application.Scheduling.Billing {
+namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class RefreshSubscriptionPlansCommand : IAction { }
 }
