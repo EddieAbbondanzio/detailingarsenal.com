@@ -24,8 +24,8 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Get() {
-            var plans = await mediator.Dispatch<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>(
-                new GetSubscriptionPlansQuery(),
+            var plans = await mediator.Dispatch<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>(
+                new GetAllSubscriptionPlansQuery(),
                 User.GetUserId()
             );
 
@@ -48,8 +48,13 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, SubscriptionPlanUpdateRequest body) {
-            var plan = await mediator.Dispatch<SubscriptionPlanUpdateCommand, SubscriptionPlanReadModel>(
+            await mediator.Dispatch<SubscriptionPlanUpdateCommand>(
                 new SubscriptionPlanUpdateCommand(id, body.Description, body.RoleId),
+                User.GetUserId()
+            );
+
+            var plan = await mediator.Dispatch<GetByIdSubscriptionPlanQuery, SubscriptionPlanReadModel?>(
+                new GetByIdSubscriptionPlanQuery(id),
                 User.GetUserId()
             );
 
@@ -62,11 +67,12 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         [Authorize]
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh() {
-            var plans = await mediator.Dispatch<RefreshSubscriptionPlansCommand, List<SubscriptionPlanReadModel>>(
+            await mediator.Dispatch<RefreshSubscriptionPlansCommand>(
                 new RefreshSubscriptionPlansCommand(),
                 User.GetUserId()
             );
 
+            var plans = await mediator.Dispatch<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>(new GetAllSubscriptionPlansQuery(), User.GetUserId());
             return Ok(plans);
         }
     }

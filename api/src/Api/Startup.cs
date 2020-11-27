@@ -101,7 +101,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionMiddleware, AuthorizationMiddleware>();
             services.AddTransient<ActionMiddleware, ValidationMiddleware>();
 
-            // Mapping
+            // Mapping DON'T USE! LEGACY
             var mapperConfiguration = new MapperConfiguration(config => {
                 config.CreateMap<Client, ClientView>();
                 config.CreateMap<Business, BusinessView>();
@@ -114,13 +114,6 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<AppointmentBlock, AppointmentBlockView>();
                 config.CreateMap<Permission, PermissionView>();
                 config.CreateMap<Role, RoleView>();
-                config.CreateMap<SubscriptionPlan, SubscriptionPlanReadModel>();
-                config.CreateMap<SubscriptionPlanPrice, SubscriptionPlanPriceReadModel>()
-                    .ForMember(v => v.BillingId, p => p.MapFrom(p => p.BillingReference.BillingId));
-
-                config.CreateMap<Brand, BrandReadModel>();
-                config.CreateMap<Pad, PadReadModel>();
-                config.CreateMap<PadSeries, PadSeriesReadModel>();
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
@@ -180,6 +173,7 @@ namespace DetailingArsenal.Api {
             StripeConfiguration.ApiKey = stripeConfig.SecretKey;
             services.AddTransient<BillingConfigValidator>();
             services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
+            services.AddTransient<ISubscriptionPlanReader, SubscriptionPlanReader>();
             services.AddTransient<ICustomerRepo, CustomerRepo>();
             services.AddTransient<ICustomerReader, CustomerReader>();
             services.AddTransient<ICustomerRefresher, Domain.Scheduling.Billing.CustomerRefresher>();
@@ -194,7 +188,8 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<CancelSubscriptionAtPeriodEndCommand>, CancelSubscriptionAtPeriodEndHandler>();
             services.AddTransient<ActionHandler<UndoCancellingSubscriptionCommand>, UndoCancellingSubscriptionHandler>();
             services.AddTransient<ActionHandler<GetDefaultSubscriptionPlanQuery, SubscriptionPlanReadModel>, GetDefaultSubscriptionPlanHandler>();
-            services.AddTransient<ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>, GetSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<GetByIdSubscriptionPlanQuery, SubscriptionPlanReadModel?>, GetByIdSubscriptionPlanHandler>();
+            services.AddTransient<ActionHandler<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>, GetAllSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();
             services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, CommandResult>, RefreshSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<SubscriptionPlanUpdateCommand, CommandResult>, SubscriptionPlanUpdateHandler>();

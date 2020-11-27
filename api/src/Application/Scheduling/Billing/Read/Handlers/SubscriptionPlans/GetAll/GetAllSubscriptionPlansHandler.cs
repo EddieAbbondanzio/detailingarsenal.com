@@ -6,14 +6,14 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "read", Scope = "subscription-plans")]
-    public class GetSubscriptionPlansHandler : ActionHandler<GetSubscriptionPlansQuery, List<SubscriptionPlanReadModel>> {
+    public class GetAllSubscriptionPlansHandler : ActionHandler<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>> {
         ISubscriptionPlanReader reader;
 
-        public GetSubscriptionPlansHandler(ISubscriptionPlanReader reader) {
+        public GetAllSubscriptionPlansHandler(ISubscriptionPlanReader reader) {
             this.reader = reader;
         }
 
-        public async override Task<List<SubscriptionPlanReadModel>> Execute(GetSubscriptionPlansQuery input, User? user) {
+        public async override Task<List<SubscriptionPlanReadModel>> Execute(GetAllSubscriptionPlansQuery input, User? user) {
             return await reader.ReadAll();
         }
     }

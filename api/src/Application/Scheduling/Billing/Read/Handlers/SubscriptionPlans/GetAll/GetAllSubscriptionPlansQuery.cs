@@ -1,3 +1,3 @@
 namespace DetailingArsenal.Application.Scheduling.Billing {
-    public class GetSubscriptionPlansQuery : IAction { }
+    public class GetAllSubscriptionPlansQuery : IAction { }
 }

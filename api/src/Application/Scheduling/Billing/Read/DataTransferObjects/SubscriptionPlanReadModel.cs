@@ -4,9 +4,18 @@ using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     public class SubscriptionPlanReadModel : IDataTransferObject {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public Guid Id { get; }
+        public string Name { get; }
+        public string? Description { get; }
+        public Guid? RoleId { get; }
         public List<SubscriptionPlanPriceReadModel> Prices { get; set; } = null!;
+
+        public SubscriptionPlanReadModel(Guid id, string name, string? description, Guid? roleId, List<SubscriptionPlanPriceReadModel>? prices = null) {
+            Id = id;
+            Name = name;
+            Description = description;
+            RoleId = roleId;
+            Prices = prices!;
+        }
     }
 }
