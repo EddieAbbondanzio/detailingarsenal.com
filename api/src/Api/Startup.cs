@@ -112,8 +112,8 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<HoursOfOperationDay, HoursOfOperationDayView>();
                 config.CreateMap<Appointment, AppointmentView>();
                 config.CreateMap<AppointmentBlock, AppointmentBlockView>();
-                config.CreateMap<Permission, PermissionView>();
-                config.CreateMap<Role, RoleView>();
+                config.CreateMap<Permission, PermissionReadModel>();
+                config.CreateMap<Role, RoleReadModel>();
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
@@ -212,13 +212,13 @@ namespace DetailingArsenal.Api {
             services.AddTransient<UpdatePermissionValidator>();
             services.AddTransient<CreateRoleValidator>();
             services.AddTransient<UpdateRoleValidator>();
-            services.AddTransient<ActionHandler<GetPermissionsQuery, List<PermissionView>>, GetPermissionsHandler>();
-            services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionView>, CreatePermissionHandler>();
-            services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionView>, UpdatePermissionHandler>();
+            services.AddTransient<ActionHandler<GetAllPermissionsQuery, List<PermissionReadModel>>, GetAllPermissionsHandler>();
+            services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionReadModel>, CreatePermissionHandler>();
+            services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionReadModel>, UpdatePermissionHandler>();
             services.AddTransient<ActionHandler<DeletePermissionCommand>, DeletePermissionHandler>();
-            services.AddTransient<ActionHandler<GetRolesQuery, List<RoleView>>, GetRolesHandler>();
-            services.AddTransient<ActionHandler<CreateRoleCommand, RoleView>, CreateRoleHandler>();
-            services.AddTransient<ActionHandler<UpdateRoleCommand, RoleView>, UpdateRoleHandler>();
+            services.AddTransient<ActionHandler<GetAllRolesQuery, List<RoleReadModel>>, GetRolesHandler>();
+            services.AddTransient<ActionHandler<CreateRoleCommand, RoleReadModel>, CreateRoleHandler>();
+            services.AddTransient<ActionHandler<UpdateRoleCommand, RoleReadModel>, UpdateRoleHandler>();
             services.AddTransient<ActionHandler<DeleteRoleCommand>, DeleteRoleHandler>();
             services.AddTransient<ActionHandler<AddRoleToUserCommand>, AddRoleToUserHandler>();
             services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();

@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(CreatePermissionValidator))]
     [Authorization(Action = "create", Scope = "permissions")]
-    public class CreatePermissionHandler : ActionHandler<CreatePermissionCommand, PermissionView> {
+    public class CreatePermissionHandler : ActionHandler<CreatePermissionCommand, PermissionReadModel> {
         IPermissionService service;
         private IMapper mapper;
 
@@ -16,7 +16,7 @@ namespace DetailingArsenal.Application.Users.Security {
             this.mapper = mapper;
         }
 
-        public async override Task<PermissionView> Execute(CreatePermissionCommand input, User? user) {
+        public async override Task<PermissionReadModel> Execute(CreatePermissionCommand input, User? user) {
             var p = await service.Create(
                 new PermissionCreate(
                     input.Action,
@@ -24,7 +24,7 @@ namespace DetailingArsenal.Application.Users.Security {
                 ),
                 user!
             );
-            return mapper.Map<Permission, PermissionView>(p);
+            return mapper.Map<Permission, PermissionReadModel>(p);
         }
     }
 }

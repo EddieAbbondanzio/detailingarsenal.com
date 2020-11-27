@@ -11,10 +11,10 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
       <RootNamespace>DetailingArsenal.Infrastructure</RootNamespace>
     
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable> 
   </PropertyGroup>
 

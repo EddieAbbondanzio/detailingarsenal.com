@@ -1,3 +1,3 @@
 namespace DetailingArsenal.Application.Users.Security {
-    public class GetRolesQuery : IAction { }
+    public class GetAllRolesQuery : IAction { }
 }
