@@ -24,7 +24,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
         [HttpGet("pad/{id}")]
         public async Task<IActionResult> GetForPad(Guid id) {
             List<ReviewReadModel> reviews = await mediator.Dispatch<GetAllReviewsForPadQuery, List<ReviewReadModel>>(
-                new GetAllReviewsForPadQuery(id)
+                new(id)
             );
 
             return Ok(reviews);
@@ -33,12 +33,13 @@ namespace DetailingArsenal.Api.ProductCatalog {
         [HttpPost]
         public async Task<IActionResult> Create(ReviewCreateRequest create) {
             var res = await mediator.Dispatch<ReviewCreateCommand, CommandResult>(
-                new ReviewCreateCommand(
+                new(
                     create.PadId, create.Stars, create.Cut, create.Finish, create.Title, create.Body
-                )
+                ),
+                User
             );
 
-            var r = await mediator.Dispatch<GetReviewByIdQuery, ReviewReadModel>(new GetReviewByIdQuery(res.Data.Id));
+            var r = await mediator.Dispatch<GetReviewByIdQuery, ReviewReadModel>(new(res.Data.Id));
             return Ok(r);
         }
     }

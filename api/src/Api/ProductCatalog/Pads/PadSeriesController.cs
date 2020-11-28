@@ -24,10 +24,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            List<PadSeriesReadModel> pads = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>(
-                new GetAllPadSeriesQuery()
-            );
-
+            List<PadSeriesReadModel> pads = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>();
             return Ok(pads);
         }
 
@@ -40,12 +37,10 @@ namespace DetailingArsenal.Api.ProductCatalog {
                     create.Sizes.Select(s => new PadSeriesSize(s.Diameter, s.Thickness, s.PartNumber)).ToList(),
                     create.Pads.Select(p => p.ToReal()).ToList()
                 ),
-                User.GetUserId()
+                User
             );
 
-            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(
-                new GetPadSeriesByIdQuery(res.Data.Id)
-            );
+            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(res.Data.Id));
 
             return Ok(ps);
         }
@@ -60,23 +55,17 @@ namespace DetailingArsenal.Api.ProductCatalog {
                     update.Sizes,
                     update.Pads.Select(p => p.ToReal()).ToList()
                 ),
-                User.GetUserId()
+                User
             );
 
-            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(
-                new GetPadSeriesByIdQuery(id)
-            );
+            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
 
             return Ok(ps);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleCategory(Guid id) {
-            var res = await mediator.Dispatch<PadSeriesDeleteCommand, CommandResult>(
-                new PadSeriesDeleteCommand(id),
-                User.GetUserId()
-            );
-
+            var res = await mediator.Dispatch<PadSeriesDeleteCommand, CommandResult>(new(id), User);
             return Ok();
         }
     }

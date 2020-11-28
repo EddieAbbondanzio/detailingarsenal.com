@@ -21,13 +21,13 @@ namespace DetailingArsenal.Api.Users {
 
         [HttpGet]
         public async Task<IActionResult> GetUser() {
-            var user = await mediator.Dispatch<GetUserByAuth0IdQuery, UserReadModel>(new GetUserByAuth0IdQuery(), User.GetUserId());
+            var user = await mediator.Dispatch<GetUserByAuth0IdQuery, UserReadModel>(User);
             return Ok(user);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(UpdateUserCommand command) {
-            await mediator.Dispatch<UpdateUserCommand, CommandResult>(command, User.GetUserId());
+            await mediator.Dispatch<UpdateUserCommand, CommandResult>(command, User);
             return Ok();
         }
     }

@@ -13,16 +13,6 @@ namespace DetailingArsenal.Application {
     /// </summary>
     public interface IMediator {
         /// <summary>
-        /// Dispatch a command or query that doesn't need any input.
-        /// </summary>
-        Task Dispatch<TInput>(string? userId = null) where TInput : class, IAction, new();
-
-        /// <summary>
-        /// Dispatch a command or query that doesn't need an input but returns a value.
-        /// </summary>
-        Task<TOutput> Dispatch<TInput, TOutput>(string? userId = null) where TInput : class, IAction, new();
-
-        /// <summary>
         /// Dispatch a command or query that has no output.
         /// </summary>
         Task Dispatch<TInput>(TInput input, string? userId = null) where TInput : class, IAction;
@@ -31,6 +21,16 @@ namespace DetailingArsenal.Application {
         /// Dispatch a command or query that has an input, and return value.
         /// </summary>
         Task<TOutput> Dispatch<TInput, TOutput>(TInput input, string? userId = null) where TInput : class, IAction;
+
+        /// <summary>
+        /// Dispatch a command or query that doesn't need any input.
+        /// </summary>
+        Task Dispatch<TInput>(string? userId = null) where TInput : class, IAction, new();
+
+        /// <summary>
+        /// Dispatch a command or query that doesn't need an input but returns a value.
+        /// </summary>
+        Task<TOutput> Dispatch<TInput, TOutput>(string? userId = null) where TInput : class, IAction, new();
     }
 
     public sealed class Mediator : IMediator {
@@ -68,7 +68,7 @@ namespace DetailingArsenal.Application {
             return await handler.Execute(input, user);
         }
 
-        public async Task Dispatch<TInput>(string? userId) where TInput : class, IAction, new() {
+        public async Task Dispatch<TInput>(string? userId = null) where TInput : class, IAction, new() {
             ActionHandler<TInput> handler = serviceProvider.GetRequiredService<ActionHandler<TInput>>();
             var user = userId != null ? await userResolver.Resolve(userId) : null;
             var input = new TInput();
@@ -80,7 +80,7 @@ namespace DetailingArsenal.Application {
             await handler.Execute(input, user);
         }
 
-        public async Task<TOutput> Dispatch<TInput, TOutput>(string? userId) where TInput : class, IAction, new() {
+        public async Task<TOutput> Dispatch<TInput, TOutput>(string? userId = null) where TInput : class, IAction, new() {
             ActionHandler<TInput, TOutput> handler = serviceProvider.GetRequiredService<ActionHandler<TInput, TOutput>>();
             var user = userId != null ? await userResolver.Resolve(userId) : null;
             var input = new TInput();
