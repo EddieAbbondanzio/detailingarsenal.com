@@ -4,23 +4,23 @@ using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Domain.Common {
     public class CreateRolesStep : SagaStep {
-        IRoleService roleService;
+        IRoleRepo repo;
 
-        public CreateRolesStep(IRoleService roleService) {
-            this.roleService = roleService;
+        public CreateRolesStep(IRoleRepo repo) {
+            this.repo = repo;
         }
 
         public async override Task Execute(SagaContext context) {
-            var proRole = await roleService.TryGetByName("Pro");
+            var proRole = await repo.FindByName("Pro");
 
             if (proRole == null) {
-                await roleService.Create(new RoleCreate("Pro"));
+                await repo.Add(new Role("Pro"));
             }
 
-            var expiredRole = await roleService.TryGetByName("Expired");
+            var expiredRole = await repo.FindByName("Expired");
 
             if (expiredRole == null) {
-                await roleService.Create(new RoleCreate("Expired"));
+                await repo.Add(new Role("Expired"));
             }
         }
     }

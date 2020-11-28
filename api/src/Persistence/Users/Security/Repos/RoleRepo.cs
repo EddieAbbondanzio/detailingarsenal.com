@@ -11,9 +11,9 @@ namespace DetailingArsenal.Persistence.Users.Security {
     public class RoleRepo : DatabaseInteractor, IRoleRepo {
         public RoleRepo(IDatabase database) : base(database) { }
 
-        public async Task<Role?> Find(string name) {
+        public async Task<Role?> FindByName(string name) {
             using (var conn = OpenConnection()) {
-                var r = await conn.QueryFirstOrDefaultAsync<Role>(
+                var r = await conn.QueryFirstOrDefaultAsync<RoleRow>(
                     @"select * from roles where name = @Name;",
                     new {
                         Name = name
@@ -24,24 +24,24 @@ namespace DetailingArsenal.Persistence.Users.Security {
                     return null;
                 }
 
-                var perms = await conn.QueryAsync<RolePermission>(
+                var perms = await conn.QueryAsync<RolePermissionRow>(
                     @"select * from role_permissions where role_id = @Id",
                     r
                 );
 
-                r.PermissionIds = perms.Select(p => p.PermissionId).ToList();
-                return r;
+                var role = new Role(r.Id, r.Name, perms.Select(p => p.PermissionId).ToList());
+                return role;
             }
         }
 
         public async Task<List<Role>> FindAll() {
             using (var conn = OpenConnection()) {
-                var roles = await conn.QueryAsync<Role>(
+                var roles = (await conn.QueryAsync<Role>(
                     @"select * from roles"
-                );
+                )).Select(r => new Role(r.Id, r.Name));
 
                 foreach (Role role in roles) {
-                    var perms = await conn.QueryAsync<RolePermission>(
+                    var perms = await conn.QueryAsync<RolePermissionRow>(
                         @"select * from role_permissions where role_id = @Id",
                         role
                     );
@@ -66,13 +66,13 @@ namespace DetailingArsenal.Persistence.Users.Security {
                     return null;
                 }
 
-                var perms = await conn.QueryAsync<RolePermission>(
+                var perms = await conn.QueryAsync<RolePermissionRow>(
                     @"select * from role_permissions where role_id = @Id",
                     r
                 );
 
-                r.PermissionIds = perms.Select(p => p.PermissionId).ToList();
-                return r;
+                var role = new Role(r.Id, r.Name, perms.Select(p => p.PermissionId).ToList());
+                return role;
             }
         }
 
@@ -84,13 +84,13 @@ namespace DetailingArsenal.Persistence.Users.Security {
                     user
                 )).ToList();
 
-                var roles = await conn.QueryAsync<Role>(
+                var roles = (await conn.QueryAsync<RoleRow>(
                     "select * from roles where id = any(@Ids);",
                     new { Ids = userRoles }
-                );
+                )).Select(r => new Role(r.Id, r.Name));
 
                 foreach (Role role in roles) {
-                    var perms = await conn.QueryAsync<RolePermission>(
+                    var perms = await conn.QueryAsync<RolePermissionRow>(
                         @"select * from role_permissions where role_id = @Id",
                         role
                     );
@@ -109,7 +109,7 @@ namespace DetailingArsenal.Persistence.Users.Security {
                         @"insert into roles (id, name) values (@Id, @Name);", entity
                     );
 
-                    var rolePerms = entity.PermissionIds.Select(p => new RolePermission() { PermissionId = p, RoleId = entity.Id });
+                    var rolePerms = entity.PermissionIds.Select(p => new RolePermissionRow() { PermissionId = p, RoleId = entity.Id });
 
                     await conn.ExecuteAsync(
                         @"insert into role_permissions (role_id, permission_id) values (@RoleId, @PermissionId);", rolePerms
@@ -129,7 +129,7 @@ namespace DetailingArsenal.Persistence.Users.Security {
 
                     await conn.ExecuteAsync(@"delete from role_permissions where role_id = @Id;", entity);
 
-                    var rolePerms = entity.PermissionIds.Select(p => new RolePermission() { PermissionId = p, RoleId = entity.Id });
+                    var rolePerms = entity.PermissionIds.Select(p => new RolePermissionRow() { PermissionId = p, RoleId = entity.Id });
 
                     await conn.ExecuteAsync(
                         @"insert into role_permissions (role_id, permission_id) values (@RoleId, @PermissionId);", rolePerms
@@ -167,7 +167,7 @@ namespace DetailingArsenal.Persistence.Users.Security {
                         );
                     }
 
-                    var userRole = new UserRole() {
+                    var userRole = new UserRoleRow() {
                         UserId = user.Id,
                         RoleId = role.Id
                     };
@@ -191,6 +191,13 @@ namespace DetailingArsenal.Persistence.Users.Security {
                         RoleId = role.Id
                     }
                 );
+            }
+        }
+
+        public async Task<bool> IsRoleInUse(Role role) {
+            using (var conn = OpenConnection()) {
+                var count = await conn.ExecuteScalarAsync<int>("select count(*) from user_roles where role_id = @Id;", role);
+                return count > 0;
             }
         }
     }

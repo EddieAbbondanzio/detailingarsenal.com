@@ -4,9 +4,8 @@ using Dapper;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
-using DetailingArsenal.Persistence.Security;
 
-namespace DetailingArsenal.Persistence.Security.Migrations {
+namespace DetailingArsenal.Persistence.Users.Security.Migrations {
     [Migration(2020_1_14_0, "Insert crud review permissions")]
     public class InsertCrudReviewPermissions : Migration {
         const string Scope = "reviews";

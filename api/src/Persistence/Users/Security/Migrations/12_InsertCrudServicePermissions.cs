@@ -5,7 +5,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Security.Migrations {
+namespace DetailingArsenal.Persistence.Users.Security.Migrations {
     [Migration(2020_06_02_6, "Insert crud service permissions")]
     public class InsertCrudServicePermissions : Migration {
         const string Scope = "services";

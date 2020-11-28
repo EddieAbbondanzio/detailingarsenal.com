@@ -7,14 +7,18 @@ namespace DetailingArsenal.Domain.Users.Security {
         public const int NameMaxLength = 32;
 
         public string Name { get; set; } = null!;
-        public List<Guid> PermissionIds { get; set; } = new List<Guid>();
+        public List<Guid> PermissionIds { get; set; }
 
-        public static Role Create(string name, List<Guid> permissionIds) {
-            return new Role() {
-                Id = Guid.NewGuid(),
-                Name = name,
-                PermissionIds = permissionIds
-            };
+        public Role(Guid id, string name, List<Guid>? permissionIds = null) {
+            Id = id;
+            Name = name;
+            PermissionIds = permissionIds ?? new List<Guid>();
+        }
+
+        public Role(string name, List<Guid>? permissionIds = null) {
+            Id = Guid.NewGuid();
+            Name = name;
+            PermissionIds = permissionIds ?? new List<Guid>();
         }
     }
 }

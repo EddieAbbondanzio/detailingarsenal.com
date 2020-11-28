@@ -12,13 +12,13 @@ using Serilog;
 namespace DetailingArsenal.Application.Common {
     public class UpdateRolesOnInvoiceUpdated : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
         ICustomerRepo customerRepo;
-        IRoleService roleService;
+        IRoleAssigner roleAssigner;
         IUserRepo userRepo;
         ISubscriptionPlanRepo subscriptionPlanRepo;
 
-        public UpdateRolesOnInvoiceUpdated(ICustomerRepo customerRepo, IRoleService roleService, IUserRepo userRepo, ISubscriptionPlanRepo planRepo) {
+        public UpdateRolesOnInvoiceUpdated(ICustomerRepo customerRepo, IRoleAssigner roleService, IUserRepo userRepo, ISubscriptionPlanRepo planRepo) {
             this.customerRepo = customerRepo;
-            this.roleService = roleService;
+            this.roleAssigner = roleService;
             this.userRepo = userRepo;
             this.subscriptionPlanRepo = planRepo;
         }
@@ -26,23 +26,18 @@ namespace DetailingArsenal.Application.Common {
         public async Task Notify(CustomerSubscriptionInvoiceUpdated busEvent) {
             var customer = await customerRepo.FindByBillingId(busEvent.CustomerBillingId) ?? throw new EntityNotFoundException();
             var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
-            var plan = await subscriptionPlanRepo.FindById(busEvent.PlanId) ?? throw new EntityNotFoundException();
-
-            var userRoles = await roleService.GetByUser(user);
-            var planRole = await roleService.TryGetByName(plan.Name) ?? throw new EntityNotFoundException();
-            var expiredRole = await roleService.TryGetByName("Expired") ?? throw new EntityNotFoundException();
 
             switch (busEvent.SubscriptionStatus) {
                 case SubscriptionStatus.Active:
                 case SubscriptionStatus.Trialing:
                 case SubscriptionStatus.Incomplete:
                 case SubscriptionStatus.Unpaid:
-                    await roleService.AddRoleToUser(planRole, user, true);
+                    await roleAssigner.AddRoleToUser(user, busEvent.PlanId, true);
                     break;
                 case SubscriptionStatus.IncompleteExpired:
                 case SubscriptionStatus.PastDue:
                 case SubscriptionStatus.Canceled:
-                    await roleService.AddRoleToUser(expiredRole, user, true);
+                    await roleAssigner.RemoveRoleFromUser(user, "Expired");
                     break;
             }
         }

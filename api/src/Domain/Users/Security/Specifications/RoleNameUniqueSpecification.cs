@@ -9,7 +9,7 @@ namespace DetailingArsenal.Domain.Users.Security {
         }
 
         protected async override Task<SpecificationResult> IsSatisfied(Role entity) {
-            var existing = await repo.Find(entity.Name);
+            var existing = await repo.FindByName(entity.Name);
 
             if (existing == null || existing.Id == entity.Id) {
                 return new SpecificationResult(true);

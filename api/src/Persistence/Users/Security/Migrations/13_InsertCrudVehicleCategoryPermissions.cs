@@ -5,7 +5,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Security.Migrations {
+namespace DetailingArsenal.Persistence.Users.Security.Migrations {
     [Migration(2020_06_02_7, "Insert crud vehicle category permissions")]
     public class InsertCrudVehicleCategoryPermissions : Migration {
         const string Scope = "vehicle-categories";

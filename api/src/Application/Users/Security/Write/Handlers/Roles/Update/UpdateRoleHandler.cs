@@ -1,3 +1,4 @@
+
 using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
@@ -7,23 +8,25 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(UpdateRoleValidator))]
     [Authorization(Action = "update", Scope = "roles")]
-    public class UpdateRoleHandler : ActionHandler<RoleUpdateCommand, RoleReadModel> {
-        private IRoleService service;
-        private IMapper mapper;
+    public class UpdateRoleHandler : ActionHandler<RoleUpdateCommand, CommandResult> {
+        IRoleRepo repo;
+        RoleNameUniqueSpecification spec;
 
-        public UpdateRoleHandler(IRoleService service, IMapper mapper) {
-            this.service = service;
-            this.mapper = mapper;
+        public UpdateRoleHandler(IRoleRepo repo, RoleNameUniqueSpecification spec) {
+            this.repo = repo;
+            this.spec = spec;
         }
 
-        public async override Task<RoleReadModel> Execute(RoleUpdateCommand input, User? user) {
-            var r = await service.GetById(input.Id);
-            await service.Update(r, new RoleUpdate(
-                input.Name,
-                input.PermissionIds
-            ));
+        public async override Task<CommandResult> Execute(RoleUpdateCommand input, User? user) {
+            var r = await repo.FindById(input.Id) ?? throw new EntityNotFoundException();
 
-            return mapper.Map<Role, RoleReadModel>(r);
+            r.Name = input.Name;
+            r.PermissionIds = input.PermissionIds;
+
+            await spec.CheckAndThrow(r);
+
+            await repo.Update(r);
+            return CommandResult.Success();
         }
     }
 }

@@ -5,7 +5,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Security.Migrations {
+namespace DetailingArsenal.Persistence.Users.Security.Migrations {
     [Migration(2020_08_18_1, "Insert crud brand permissions")]
     public class InsertCrudBrandPermissions : Migration {
         const string Scope = "brands";

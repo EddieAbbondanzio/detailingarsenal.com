@@ -5,7 +5,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Security.Migrations {
+namespace DetailingArsenal.Persistence.Users.Security.Migrations {
     [Migration(2020_06_09_0, "Insert read and refresh subscription plan permissions")]
     public class InsertReadAndRefreshSubscriptionPlanPermissions : Migration {
         const string Scope = "subscription-plans";

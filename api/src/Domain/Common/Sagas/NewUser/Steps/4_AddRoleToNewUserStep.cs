@@ -6,28 +6,18 @@ using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Domain.Common {
     public class AddRoleToNewUserStep : SagaStep<string> {
-        IRoleService roleService;
+        IRoleAssigner roleAssigner;
 
-        public AddRoleToNewUserStep(IRoleService roleService) {
-            this.roleService = roleService;
+        public AddRoleToNewUserStep(IRoleAssigner roleAssigner) {
+            this.roleAssigner = roleAssigner;
         }
 
         public async override Task Execute(SagaContext<string> context) {
-            //TODO: Refactor this out. It's not good to hardcode these but it works for now!
-            var roles = await roleService.GetAll();
-
-            var role = roles.Find(r => r.Name == context.Data.Plan.Name);
-
-            if (role == null) {
-                throw new InvalidOperationException($"No role with name ${context.Data.Plan.Name} exists");
-            }
-
-            await roleService.AddRoleToUser(role, context.Data.User);
+            await roleAssigner.AddRoleToUser(context.Data.User, context.Data.Plan.Name);
         }
 
         public async override Task Compensate(SagaContext<string> context) {
-            var role = (await roleService.GetAll()).Find(r => r.Name == context.Data.Plan.Name);
-            await roleService.RemoveRoleFromUser(role, context.Data.User);
+            await roleAssigner.RemoveRoleFromUser(context.Data.User, context.Data.Plan.Name);
         }
     }
 }

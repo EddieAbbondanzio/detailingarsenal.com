@@ -4,7 +4,7 @@ using Dapper;
 using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Security {
+namespace DetailingArsenal.Persistence.Users.Security {
     public static class MigrationSecurityExts {
         public static void AddCrudPermissions(this Migration migration, string scope) {
             migration.Execute.WithConnection((c, t) => {

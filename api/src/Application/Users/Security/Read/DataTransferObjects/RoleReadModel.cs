@@ -3,9 +3,5 @@ using System.Collections.Generic;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application.Users.Security {
-    public class RoleReadModel : IDataTransferObject {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = null!;
-        public List<Guid> PermissionIds { get; set; } = new List<Guid>();
-    }
+    public record RoleReadModel(Guid Id, string Name, List<PermissionReadModel> Permissions) : IDataTransferObject;
 }

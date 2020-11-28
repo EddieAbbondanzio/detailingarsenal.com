@@ -1,3 +1,4 @@
+
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
@@ -5,16 +6,22 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "delete", Scope = "roles")]
-    public class DeleteRoleHandler : ActionHandler<RoleDeleteCommand> {
-        IRoleService service;
+    public class DeleteRoleHandler : ActionHandler<RoleDeleteCommand, CommandResult> {
+        IRoleRepo repo;
+        RoleNotInUseSpecification spec;
 
-        public DeleteRoleHandler(IRoleService service) {
-            this.service = service;
+        public DeleteRoleHandler(IRoleRepo repo, RoleNotInUseSpecification spec) {
+            this.repo = repo;
+            this.spec = spec;
         }
 
-        public async override Task Execute(RoleDeleteCommand input, User? user) {
-            var r = await service.GetById(input.Id);
-            await service.Delete(r);
+        public async override Task<CommandResult> Execute(RoleDeleteCommand input, User? user) {
+            var r = await repo.FindById(input.Id) ?? throw new EntityNotFoundException();
+
+            await spec.CheckAndThrow(r);
+
+            await repo.Delete(r);
+            return CommandResult.Success();
         }
     }
 }

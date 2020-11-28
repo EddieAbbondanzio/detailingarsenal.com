@@ -7,18 +7,16 @@ namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "remove-role", Scope = "users")]
     public class RemoveRoleFromUserHandler : ActionHandler<RemoveRoleFromUserCommand> {
         IUserRepo userRepo;
-        IRoleService roleService;
+        IRoleAssigner roleAssigner;
 
-        public RemoveRoleFromUserHandler(IUserRepo userRepo, IRoleService roleService) {
+        public RemoveRoleFromUserHandler(IUserRepo userRepo, IRoleAssigner roleAssigner) {
             this.userRepo = userRepo;
-            this.roleService = roleService;
+            this.roleAssigner = roleAssigner;
         }
 
         public async override Task Execute(RemoveRoleFromUserCommand input, User? user) {
             var userToAddTo = await userRepo.FindById(input.UserId) ?? throw new EntityNotFoundException();
-            var role = await roleService.GetById(input.RoleId);
-
-            await roleService.AddRoleToUser(role, userToAddTo);
+            await roleAssigner.AddRoleToUser(userToAddTo, input.RoleId);
         }
     }
 }

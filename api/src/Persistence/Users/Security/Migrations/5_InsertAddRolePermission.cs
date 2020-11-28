@@ -4,7 +4,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
-namespace DetailingArsenal.Persistence.Security.Migrations {
+namespace DetailingArsenal.Persistence.Users.Security.Migrations {
     [Migration(2020_06_01_0, "Insert add role to users permission")]
     public class InsertAddRolePermission : Migration {
         public override void Up() {

@@ -37,7 +37,6 @@ using DetailingArsenal.Domain.Users;
 using DetailingArsenal.Application.Common;
 using DetailingArsenal.Domain.Common;
 using DetailingArsenal.Persistence.Scheduling.Billing;
-using DetailingArsenal.Persistence.Security;
 using DetailingArsenal.Persistence.Settings;
 using DetailingArsenal.Persistence.Users;
 using DetailingArsenal.Persistence.Clients;
@@ -112,7 +111,6 @@ namespace DetailingArsenal.Api {
                 config.CreateMap<HoursOfOperationDay, HoursOfOperationDayView>();
                 config.CreateMap<Appointment, AppointmentView>();
                 config.CreateMap<AppointmentBlock, AppointmentBlockView>();
-                config.CreateMap<Permission, PermissionReadModel>();
                 config.CreateMap<Role, RoleReadModel>();
             });
             services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
@@ -203,23 +201,27 @@ namespace DetailingArsenal.Api {
             // Security
             services.AddTransient<IPermissionRepo, PermissionRepo>();
             services.AddTransient<IRoleRepo, RoleRepo>();
-            services.AddTransient<IPermissionService, PermissionService>();
-            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IPermissionReader, PermissionReader>();
+            services.AddTransient<IRoleReader, RoleReader>();
+            services.AddTransient<IRoleAssigner, RoleAssigner>();
             services.AddTransient<PermissionUniqueSpecification>();
             services.AddTransient<PermissionNotInUseSpecification>();
             services.AddTransient<RoleNameUniqueSpecification>();
+            services.AddTransient<RoleNotInUseSpecification>();
             services.AddTransient<CreatePermissionValidator>();
             services.AddTransient<UpdatePermissionValidator>();
             services.AddTransient<CreateRoleValidator>();
             services.AddTransient<UpdateRoleValidator>();
             services.AddTransient<ActionHandler<GetAllPermissionsQuery, List<PermissionReadModel>>, GetAllPermissionsHandler>();
-            services.AddTransient<ActionHandler<PermissionCreateCommand, PermissionReadModel>, CreatePermissionHandler>();
-            services.AddTransient<ActionHandler<PermissionUpdateCommand, PermissionReadModel>, UpdatePermissionHandler>();
-            services.AddTransient<ActionHandler<PermissionDeleteCommand>, DeletePermissionHandler>();
+            services.AddTransient<ActionHandler<GetPermissionByIdQuery, PermissionReadModel?>, GetPermissionByIdHandler>();
+            services.AddTransient<ActionHandler<PermissionCreateCommand, CommandResult>, PermissionCreateHandler>();
+            services.AddTransient<ActionHandler<PermissionUpdateCommand, CommandResult>, PermissionUpdateHandler>();
+            services.AddTransient<ActionHandler<PermissionDeleteCommand, CommandResult>, PermissionDeleteHandler>();
             services.AddTransient<ActionHandler<GetAllRolesQuery, List<RoleReadModel>>, GetRolesHandler>();
-            services.AddTransient<ActionHandler<RoleCreateCommand, RoleReadModel>, CreateRoleHandler>();
-            services.AddTransient<ActionHandler<RoleUpdateCommand, RoleReadModel>, UpdateRoleHandler>();
-            services.AddTransient<ActionHandler<RoleDeleteCommand>, DeleteRoleHandler>();
+            services.AddTransient<ActionHandler<GetRoleByIdQuery, RoleReadModel?>, GetRoleByIdHandler>();
+            services.AddTransient<ActionHandler<RoleCreateCommand, CommandResult>, CreateRoleHandler>();
+            services.AddTransient<ActionHandler<RoleUpdateCommand, CommandResult>, UpdateRoleHandler>();
+            services.AddTransient<ActionHandler<RoleDeleteCommand, CommandResult>, DeleteRoleHandler>();
             services.AddTransient<ActionHandler<AddRoleToUserCommand>, AddRoleToUserHandler>();
             services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
 
@@ -233,7 +235,7 @@ namespace DetailingArsenal.Api {
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IUserReader, UserReader>();
-            services.AddTransient<ActionHandler<UpdateUserCommand, CommandResult>, UpdateUserHandler>();
+            services.AddTransient<ActionHandler<UserUpdateCommand, CommandResult>, UserUpdateHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserReadModel>, GetUserByAuth0IdHandler>();
 
             // Vehicle Categories

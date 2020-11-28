@@ -27,7 +27,7 @@ namespace DetailingArsenal.Domain.Common {
                 user = await userGateway.CreateUser(config.Email, config.Password);
                 await userRepo.Add(user);
 
-                var adminRole = await roleRepo.Find("Admin");
+                var adminRole = await roleRepo.FindByName("Admin");
                 await roleRepo.AddToUser(user, adminRole!);
 
                 Log.Information("Created new admin user");
