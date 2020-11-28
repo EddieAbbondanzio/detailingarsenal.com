@@ -6,14 +6,14 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "delete", Scope = "permissions")]
-    public class DeletePermissionHandler : ActionHandler<DeletePermissionCommand> {
+    public class DeletePermissionHandler : ActionHandler<PermissionDeleteCommand> {
         IPermissionService service;
 
         public DeletePermissionHandler(IPermissionService service) {
             this.service = service;
         }
 
-        public async override Task Execute(DeletePermissionCommand input, User? user) {
+        public async override Task Execute(PermissionDeleteCommand input, User? user) {
             var p = await service.GetById(input.Id);
             await service.Delete(p);
         }

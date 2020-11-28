@@ -19,25 +19,25 @@ namespace DetailingArsenal.Api.Users.Security {
 
         [HttpGet]
         public async Task<IActionResult> GetAllPermissions() {
-            List<PermissionReadModel> perms = await mediator.Dispatch<GetAllPermissionsQuery, List<PermissionReadModel>>(new GetAllPermissionsQuery(), User.GetUserId());
+            List<PermissionReadModel> perms = await mediator.Dispatch<GetAllPermissionsQuery, List<PermissionReadModel>>(User.GetUserId());
             return Ok(perms);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePermission(CreatePermissionCommand command) {
-            PermissionReadModel perm = await mediator.Dispatch<CreatePermissionCommand, PermissionReadModel>(command, User.GetUserId());
+        public async Task<IActionResult> CreatePermission(PermissionCreateCommand command) {
+            PermissionReadModel perm = await mediator.Dispatch<PermissionCreateCommand, PermissionReadModel>(command, User.GetUserId());
             return Ok(perm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePermission(Guid id, [FromBody] UpdatePermissionCommand command) {
-            PermissionReadModel perm = await mediator.Dispatch<UpdatePermissionCommand, PermissionReadModel>(command, User.GetUserId());
+        public async Task<IActionResult> UpdatePermission(Guid id, [FromBody] PermissionUpdateCommand command) {
+            PermissionReadModel perm = await mediator.Dispatch<PermissionUpdateCommand, PermissionReadModel>(command, User.GetUserId());
             return Ok(perm);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePermission(Guid id) {
-            await mediator.Dispatch<DeletePermissionCommand>(new DeletePermissionCommand() { Id = id }, User.GetUserId());
+            await mediator.Dispatch<PermissionDeleteCommand>(new(id), User.GetUserId());
             return Ok();
         }
     }

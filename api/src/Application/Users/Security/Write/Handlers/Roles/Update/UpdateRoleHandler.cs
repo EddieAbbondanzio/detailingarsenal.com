@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(UpdateRoleValidator))]
     [Authorization(Action = "update", Scope = "roles")]
-    public class UpdateRoleHandler : ActionHandler<UpdateRoleCommand, RoleReadModel> {
+    public class UpdateRoleHandler : ActionHandler<RoleUpdateCommand, RoleReadModel> {
         private IRoleService service;
         private IMapper mapper;
 
@@ -16,7 +16,7 @@ namespace DetailingArsenal.Application.Users.Security {
             this.mapper = mapper;
         }
 
-        public async override Task<RoleReadModel> Execute(UpdateRoleCommand input, User? user) {
+        public async override Task<RoleReadModel> Execute(RoleUpdateCommand input, User? user) {
             var r = await service.GetById(input.Id);
             await service.Update(r, new RoleUpdate(
                 input.Name,

@@ -24,20 +24,20 @@ namespace DetailingArsenal.Api.Users.Security {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateRoleCommand command) {
-            RoleReadModel perm = await mediator.Dispatch<CreateRoleCommand, RoleReadModel>(command, User.GetUserId());
+        public async Task<IActionResult> Create(RoleCreateCommand command) {
+            RoleReadModel perm = await mediator.Dispatch<RoleCreateCommand, RoleReadModel>(command, User.GetUserId());
             return Ok(perm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRoleCommand command) {
-            RoleReadModel perm = await mediator.Dispatch<UpdateRoleCommand, RoleReadModel>(command, User.GetUserId());
+        public async Task<IActionResult> Update(Guid id, [FromBody] RoleUpdateCommand command) {
+            RoleReadModel perm = await mediator.Dispatch<RoleUpdateCommand, RoleReadModel>(command, User.GetUserId());
             return Ok(perm);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id) {
-            await mediator.Dispatch<DeleteRoleCommand>(new DeleteRoleCommand() { Id = id }, User.GetUserId());
+            await mediator.Dispatch<RoleDeleteCommand>(new(id), User.GetUserId());
             return Ok();
         }
     }

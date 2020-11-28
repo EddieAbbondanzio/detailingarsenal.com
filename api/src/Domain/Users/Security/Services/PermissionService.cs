@@ -5,7 +5,6 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Users.Security {
     public interface IPermissionService : IService {
-        Task<List<Permission>> GetAll();
         Task<Permission> GetById(Guid id);
         Task<PermissionSet> GetForRoles(IEnumerable<Role> roles);
 
@@ -23,10 +22,6 @@ namespace DetailingArsenal.Domain.Users.Security {
             this.permissionUniqueSpec = permissionUniqueSpec;
             this.permissionNotInUseSpec = notInUseSpec;
             this.repo = repo;
-        }
-
-        public async Task<List<Permission>> GetAll() {
-            return await repo.FindAll();
         }
 
         public async Task<Permission> GetById(Guid id) {

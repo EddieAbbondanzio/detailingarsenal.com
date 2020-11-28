@@ -213,13 +213,13 @@ namespace DetailingArsenal.Api {
             services.AddTransient<CreateRoleValidator>();
             services.AddTransient<UpdateRoleValidator>();
             services.AddTransient<ActionHandler<GetAllPermissionsQuery, List<PermissionReadModel>>, GetAllPermissionsHandler>();
-            services.AddTransient<ActionHandler<CreatePermissionCommand, PermissionReadModel>, CreatePermissionHandler>();
-            services.AddTransient<ActionHandler<UpdatePermissionCommand, PermissionReadModel>, UpdatePermissionHandler>();
-            services.AddTransient<ActionHandler<DeletePermissionCommand>, DeletePermissionHandler>();
+            services.AddTransient<ActionHandler<PermissionCreateCommand, PermissionReadModel>, CreatePermissionHandler>();
+            services.AddTransient<ActionHandler<PermissionUpdateCommand, PermissionReadModel>, UpdatePermissionHandler>();
+            services.AddTransient<ActionHandler<PermissionDeleteCommand>, DeletePermissionHandler>();
             services.AddTransient<ActionHandler<GetAllRolesQuery, List<RoleReadModel>>, GetRolesHandler>();
-            services.AddTransient<ActionHandler<CreateRoleCommand, RoleReadModel>, CreateRoleHandler>();
-            services.AddTransient<ActionHandler<UpdateRoleCommand, RoleReadModel>, UpdateRoleHandler>();
-            services.AddTransient<ActionHandler<DeleteRoleCommand>, DeleteRoleHandler>();
+            services.AddTransient<ActionHandler<RoleCreateCommand, RoleReadModel>, CreateRoleHandler>();
+            services.AddTransient<ActionHandler<RoleUpdateCommand, RoleReadModel>, UpdateRoleHandler>();
+            services.AddTransient<ActionHandler<RoleDeleteCommand>, DeleteRoleHandler>();
             services.AddTransient<ActionHandler<AddRoleToUserCommand>, AddRoleToUserHandler>();
             services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
 
