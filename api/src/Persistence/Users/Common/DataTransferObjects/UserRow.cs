@@ -1,7 +1,7 @@
 using System;
 
 namespace DetailingArsenal.Persistence.Users {
-    public class UserModel : IDataTransferObject {
+    public class UserRow : IDataTransferObject {
         public Guid Id { get; set; }
         public string Auth0Id { get; set; } = null!;
         public string Email { get; set; } = null!;
