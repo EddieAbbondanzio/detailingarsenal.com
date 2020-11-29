@@ -24,7 +24,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                     join billing_references br2 on sp.billing_reference_id = br2.id;
                 "
                 )) {
-                    var plans = reader.Read<SubscriptionPlanModel>().Select(
+                    var plans = reader.Read<SubscriptionPlanRow>().Select(
                         (sp, br) => new SubscriptionPlanReadModel(
                             sp.Id,
                             sp.Name,
@@ -35,7 +35,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                     );
 
                     var planDict = new Dictionary<Guid, SubscriptionPlanReadModel>(plans.Select(p => KeyValuePair.Create(p.Id, p)));
-                    var prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPriceReadModel>(
+                    var prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPriceReadModel>(
                                     (spp, br) => {
                                         var price = new SubscriptionPlanPriceReadModel(
                                             spp.Price,
@@ -66,12 +66,12 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                         where sp.id = @BId;",
                         new { Id = id }
                 )) {
-                    var raw = reader.ReadFirst<SubscriptionPlanModel>();
+                    var raw = reader.ReadFirst<SubscriptionPlanRow>();
                     var plan = new SubscriptionPlanReadModel(
                         raw.Id, raw.Name, raw.Description, raw.RoleId
                     );
 
-                    plan.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReference, SubscriptionPlanPriceReadModel>(
+                    plan.Prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPriceReadModel>(
                         (spp, br) => new SubscriptionPlanPriceReadModel(
                                 spp.Price,
                                 spp.Interval,
@@ -100,12 +100,12 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                         where br2.billing_id = @BillingId;",
                         param
                 )) {
-                    var raw = reader.ReadFirst<SubscriptionPlanModel>();
+                    var raw = reader.ReadFirst<SubscriptionPlanRow>();
                     var plan = new SubscriptionPlanReadModel(
                         raw.Id, raw.Name, raw.Description, raw.RoleId
                     );
 
-                    plan.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReference, SubscriptionPlanPriceReadModel>(
+                    plan.Prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPriceReadModel>(
                         (spp, br) => new SubscriptionPlanPriceReadModel(
                                 spp.Price,
                                 spp.Interval,

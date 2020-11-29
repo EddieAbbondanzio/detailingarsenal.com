@@ -26,14 +26,14 @@ namespace DetailingArsenal.Api.Users.Security {
         [HttpPost]
         public async Task<IActionResult> Create(RoleCreateRequest body) {
             var id = await mediator.Dispatch<RoleCreateCommand, Guid>(new(body.Name, body.PermissionIds), User);
-            var perm = await mediator.Dispatch<GetRoleByIdQuery, RoleReadModel?>(new(id));
+            var perm = await mediator.Dispatch<GetRoleByIdQuery, RoleReadModel?>(new(id), User);
             return Ok(perm);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] RoleUpdateRequest body) {
             await mediator.Dispatch<RoleUpdateCommand>(new(id, body.Name, body.PermissionIds), User);
-            var perm = await mediator.Dispatch<GetRoleByIdQuery, RoleReadModel?>(new(id));
+            var perm = await mediator.Dispatch<GetRoleByIdQuery, RoleReadModel?>(new(id), User);
             return Ok(perm);
         }
 

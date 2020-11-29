@@ -20,6 +20,10 @@ namespace DetailingArsenal.Application {
             AuthorizationAttribute? attribute = handler.GetType().GetCustomAttribute<AuthorizationAttribute>();
 
             if (attribute != null) {
+                if (attribute.Scope == null || attribute.Action == null) {
+                    throw new ArgumentNullException("Authorization attribute improperly set up. Missing scope or action.");
+                }
+
                 if (user == null) {
                     throw new AuthorizationException("Authentication required.");
                 }

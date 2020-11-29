@@ -31,7 +31,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                     }
                 )) {
 
-                    var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                    var sp = reader.Read<SubscriptionPlanRow, BillingReferenceRow, SubscriptionPlan>(
                     (sp, br) => new SubscriptionPlan(
                         sp.Id,
                         sp.Name,
@@ -44,7 +44,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                         return null;
                     }
 
-                    sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                    sp.Prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPrice>(
                         (spp, br) => new SubscriptionPlanPrice(
                                 spp.Price,
                                 spp.Interval,
@@ -77,7 +77,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                     }
                 )) {
 
-                    var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                    var sp = reader.Read<SubscriptionPlanRow, BillingReferenceRow, SubscriptionPlan>(
                     (sp, br) => new SubscriptionPlan(
                         sp.Id,
                         sp.Name,
@@ -90,7 +90,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                         return null;
                     }
 
-                    sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                    sp.Prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPrice>(
                         (spp, br) => new SubscriptionPlanPrice(
                                 spp.Price,
                                 spp.Interval,
@@ -122,7 +122,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                     reference)
                 ) {
 
-                    var sp = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                    var sp = reader.Read<SubscriptionPlanRow, BillingReferenceRow, SubscriptionPlan>(
                     (sp, br) => new SubscriptionPlan(
                         sp.Id,
                         sp.Name,
@@ -135,7 +135,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                         return null;
                     }
 
-                    sp.Prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                    sp.Prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPrice>(
                         (spp, br) => new SubscriptionPlanPrice(
                                 spp.Price,
                                 spp.Interval,
@@ -163,7 +163,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                 ")
                 ) {
 
-                    var plans = reader.Read<SubscriptionPlanModel, BillingReferenceModel, SubscriptionPlan>(
+                    var plans = reader.Read<SubscriptionPlanRow, BillingReferenceRow, SubscriptionPlan>(
                         (sp, br) => new SubscriptionPlan(
                             sp.Id,
                             sp.Name,
@@ -175,7 +175,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
 
                     var planDict = new Dictionary<Guid, SubscriptionPlan>(plans.Select(p => KeyValuePair.Create(p.Id, p)));
 
-                    var prices = reader.Read<SubscriptionPlanPriceModel, BillingReferenceModel, SubscriptionPlanPrice>(
+                    var prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPrice>(
                         (spp, br) => {
                             var price = new SubscriptionPlanPrice(
                                 spp.Price,
@@ -201,7 +201,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     // insert plan billing ref first
-                    var planBillingRef = new BillingReferenceModel() {
+                    var planBillingRef = new BillingReferenceRow() {
                         Id = Guid.NewGuid(),
                         BillingId = entity.BillingReference.BillingId,
                         Type = entity.BillingReference.Type
@@ -216,7 +216,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                     // insert plan
                     await conn.ExecuteAsync(
                         @"insert into subscription_plans (id, name, description, role_id, billing_reference_id) values (@Id, @Name, @Description, @RoleId, @BillingReferenceId);",
-                        new SubscriptionPlanModel() {
+                        new SubscriptionPlanRow() {
                             Id = entity.Id,
                             Name = entity.Name,
                             Description = entity.Description,
@@ -226,17 +226,17 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                         t
                     );
 
-                    var prices = new List<SubscriptionPlanPriceModel>();
-                    var billingReferences = new List<BillingReferenceModel>();
+                    var prices = new List<SubscriptionPlanPriceRow>();
+                    var billingReferences = new List<BillingReferenceRow>();
 
                     foreach (var p in entity.Prices) {
-                        var billingRefModel = new BillingReferenceModel() {
+                        var billingRefModel = new BillingReferenceRow() {
                             Id = Guid.NewGuid(),
                             BillingId = p.BillingReference.BillingId,
                             Type = p.BillingReference.Type
                         };
 
-                        var priceModel = new SubscriptionPlanPriceModel() {
+                        var priceModel = new SubscriptionPlanPriceRow() {
                             Id = Guid.NewGuid(),
                             Interval = p.Interval,
                             Price = p.Amount,
@@ -272,7 +272,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                 using (var t = conn.BeginTransaction()) {
                     await conn.ExecuteAsync(
                         @"update subscription_plans set name = @Name, description = @Description, role_id = @RoleId where id = @Id;",
-                        new SubscriptionPlanModel {
+                        new SubscriptionPlanRow {
                             Id = entity.Id,
                             Name = entity.Name,
                             Description = entity.Description,

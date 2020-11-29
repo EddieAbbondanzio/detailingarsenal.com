@@ -4,30 +4,30 @@
             <page-header title="Create role" :description="`Create new role`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
-                        <breadcrumb name="Roles" :to="{name: 'roles'}" />
-                        <breadcrumb name="Create" :to="{name: 'createRole'}" active="true" />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Roles" :to="{ name: 'roles' }" />
+                        <breadcrumb name="Create" :to="{ name: 'createRole' }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
         <input-form @submit="onSubmit" submitText="Create">
-            <input-text-field
-                label="Name"
-                rules="required|max:32"
-                :required="true"
-                v-model="name"
-                placeholder="user"
-            />
+            <input-text-field label="Name" rules="required|max:32" :required="true" v-model="name" placeholder="user" />
 
             <input-group-header text="Permissions" />
             <b-table :data="permissions" checkable :checked-rows.sync="enabledPermissions">
-                <template slot-scope="props">
-                    <b-table-column label="Permission" field="label" sortable>{{ props.row.label }}</b-table-column>
-                    <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
-                    <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
+                <template>
+                    <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
+                        props.row.label
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Action" field="action" sortable>{{
+                        props.row.action
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{
+                        props.row.scope
+                    }}</b-table-column>
                 </template>
 
                 <template slot="empty">
@@ -45,7 +45,7 @@ import { displayError, toast, displayLoading } from '@/core';
 import securityStore from '../../store/security-store';
 
 @Component({
-    name: 'create-role'
+    name: 'create-role',
 })
 export default class CreateRole extends Vue {
     get permissions() {
@@ -64,7 +64,7 @@ export default class CreateRole extends Vue {
     async onSubmit() {
         const create = {
             name: this.name,
-            permissionIds: this.enabledPermissions.map(p => p.id)
+            permissionIds: this.enabledPermissions.map((p) => p.id),
         };
 
         try {
