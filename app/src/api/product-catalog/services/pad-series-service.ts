@@ -1,9 +1,10 @@
-import { Pad } from '@/api/product-catalog/pad-series/data-transfer-objects/pad';
-import { PadSeriesCreateRequest } from '@/api/product-catalog/pad-series/data-transfer-objects/requests/pad-series-create-request';
-import { PadSeriesUpdateRequest } from '@/api/product-catalog/pad-series/data-transfer-objects/requests/pad-series-update-request';
-import { PadSeries, Brand } from '@/api';
+import { Brand } from '../data-transfer-objects/brand';
+import { PadSeries } from '../data-transfer-objects/pad-series';
 import { http } from '@/api/core/http';
 import { PadSeriesSize } from '../data-transfer-objects/pad-series-size';
+import { Pad } from '../data-transfer-objects/pad';
+import { PadSeriesCreateRequest } from '../data-transfer-objects/requests/pad-series-create-request';
+import { PadSeriesUpdateRequest } from '../data-transfer-objects/requests/pad-series-update-request';
 
 export class PadSeriesService {
     async get(): Promise<PadSeries[]> {

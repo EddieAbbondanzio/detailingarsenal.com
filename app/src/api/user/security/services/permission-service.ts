@@ -1,7 +1,7 @@
-import { PermissionCreate } from '@/api/scheduling/security/data-transfer-objects/permission-create';
-import { PermissionUpdate } from '@/api/scheduling/security/data-transfer-objects/permission-update';
-import { Permission } from '@/api/scheduling/security/data-transfer-objects/permission';
 import { http } from '@/api/core/http';
+import { Permission } from '../data-transfer-objects/permission';
+import { PermissionCreate } from '../data-transfer-objects/permission-create';
+import { PermissionUpdate } from '../data-transfer-objects/permission-update';
 
 export class PermissionService {
     async getPermissions() {

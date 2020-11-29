@@ -1,7 +1,7 @@
-import { Role } from '@/api/scheduling/security/data-transfer-objects/role';
-import { RoleCreate } from '@/api/scheduling/security/data-transfer-objects/role-create';
-import { RoleUpdate } from '@/api/scheduling/security/data-transfer-objects/role-update';
 import { http } from '@/api/core/http';
+import { Role } from '../data-transfer-objects/role';
+import { RoleCreate } from '../data-transfer-objects/role-create';
+import { RoleUpdate } from '../data-transfer-objects/role-update';
 
 export class RoleService {
     async getRoles() {

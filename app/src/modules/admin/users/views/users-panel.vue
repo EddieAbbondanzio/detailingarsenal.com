@@ -5,7 +5,7 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Users Panel" :to="{ name: 'UsersPanel' }" :active="true" />
+                        <breadcrumb name="Users Panel" :to="{ name: 'usersPanel' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>

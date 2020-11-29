@@ -1,6 +1,6 @@
-import { Stars } from '../../common/data-transfer-objects/stars';
-import { PadCut } from '../../pad-series/data-transfer-objects/pad-cut';
-import { PadFinish } from '../../pad-series/data-transfer-objects/pad-finish';
+import { PadCut } from './pad-cut';
+import { PadFinish } from './pad-finish';
+import { Stars } from './stars';
 
 export class Review {
     constructor(

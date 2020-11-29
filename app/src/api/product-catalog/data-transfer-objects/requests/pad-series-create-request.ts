@@ -1,5 +1,5 @@
 import { PadSeriesSize } from '../pad-series-size';
-import { PadCreateOrUpdate } from './pad-create-or-update';
+import { PadCreateOrUpdate } from '../pad-create-or-update';
 
 export interface PadSeriesCreateRequest {
     name: string;

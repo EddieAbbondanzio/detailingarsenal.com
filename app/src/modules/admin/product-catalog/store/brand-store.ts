@@ -2,9 +2,7 @@ import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-dec
 import { InitableModule } from '@/core/store/initable-module';
 import { api } from '@/api/api';
 import store from '@/core/store/index';
-import { SubscriptionPlan, Brand } from '@/api';
-import { BrandCreateRequest } from '@/api/product-catalog/brands/data-transfer-objects/requests/brand-create-request';
-import { BrandUpdateRequest } from '@/api/product-catalog/brands/data-transfer-objects/requests/brand-update-request';
+import { SubscriptionPlan, Brand, BrandCreateRequest, BrandUpdateRequest } from '@/api';
 
 @Module({ namespaced: true, name: 'brand', dynamic: true, store })
 class BrandStore extends InitableModule {

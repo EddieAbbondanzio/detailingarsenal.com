@@ -1,4 +1,4 @@
-import { UserPermission } from '@/api/user/data-transfer-objects/user-permission';
+import { UserPermission } from './user-permission';
 
 export class User {
     constructor(
@@ -9,7 +9,7 @@ export class User {
         public joinedDate: Date,
         public isAdmin: boolean,
         public permissions: UserPermission[]
-    ) {}
+    ) { }
 
     /**
      * Check to see if a user has a specific permission.

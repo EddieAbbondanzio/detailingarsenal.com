@@ -1,8 +1,7 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { Pad, PadSeries, Brand, PadCategory, PadMaterial, PadSeriesSize, PolisherType, Rating, api } from '@/api';
-import { PadTexture } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-texture';
+import { Pad, api } from '@/api';
 
 @Module({ namespaced: true, name: 'pad', dynamic: true, store })
 class PadStore extends InitableModule {

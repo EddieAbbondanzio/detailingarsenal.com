@@ -1,8 +1,7 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { Review } from '@/api/product-catalog/reviews/data-transfer-objects/review';
-import { api, ReviewCreateRequest } from '@/api';
+import { api, Review, ReviewCreateRequest } from '@/api';
 
 @Module({ namespaced: true, name: 'review', dynamic: true, store })
 class ReviewStore extends InitableModule {

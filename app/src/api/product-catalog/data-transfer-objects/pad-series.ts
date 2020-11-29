@@ -1,4 +1,5 @@
-import { Pad, Brand } from '@/api';
+import { Pad } from './pad';
+import { Brand } from './brand';
 import { PadSeriesSize } from './pad-series-size';
 
 export class PadSeries {

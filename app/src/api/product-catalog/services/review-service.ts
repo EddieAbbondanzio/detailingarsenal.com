@@ -1,6 +1,6 @@
+import { ReviewCreateRequest } from '@/api';
 import { http } from '@/api/core/http';
 import { Review } from '../data-transfer-objects/review';
-import { ReviewCreateRequest } from '../data-transfer-objects/review-create-request';
 
 export class ReviewService {
     async getForPad(padId: string) {

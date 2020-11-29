@@ -69,9 +69,9 @@
                     v-model="value.category"
                 >
                     <option :value="null">Select a category</option>
-                    <option v-for="category in categories" :key="category[1]" :value="category[1]">{{
-                        category[0]
-                    }}</option>
+                    <option v-for="category in categories" :key="category[1]" :value="category[1]">
+                        {{ category[0] }}
+                    </option>
                 </input-select>
 
                 <input-select
@@ -128,11 +128,11 @@ import {
     PadCategory,
     PadCreateOrUpdate,
     PadMaterial,
+    PadTexture,
     PadSeriesSize,
     PolisherType,
-    SpecificationError
+    SpecificationError,
 } from '@/api';
-import { PadTexture } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-texture';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStrore from '../../store/admin-pad-store';
 

@@ -1,12 +1,11 @@
-import { Brand, PadCategory, Stars } from '@/api';
-import { PadSeries } from '@/api/product-catalog/pad-series/data-transfer-objects/pad-series';
-import { Image } from '@/api/product-catalog/common/data-transfer-objects/image';
+import { Brand, PadCategory, PadSeries, Stars } from '@/api';
 import { PadFinish } from './pad-finish';
 import { PadCut } from './pad-cut';
 import { PadMaterial } from './pad-material';
 import { PadTexture } from './pad-texture';
 import { PolisherType } from './polisher-type';
 import { Rating } from './rating';
+import { Image } from './image';
 
 export class Pad {
     get label() {
