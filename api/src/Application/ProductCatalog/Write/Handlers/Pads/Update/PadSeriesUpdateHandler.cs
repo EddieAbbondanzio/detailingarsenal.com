@@ -8,14 +8,14 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "update", Scope = "pad-series")]
-    public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand, CommandResult> {
+    public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand> {
         IPadSeriesRepo repo;
 
         public PadSeriesUpdateHandler(IPadSeriesRepo repo) {
             this.repo = repo;
         }
 
-        public async override Task<CommandResult> Execute(PadSeriesUpdateCommand command, User? user) {
+        public async override Task Execute(PadSeriesUpdateCommand command, User? user) {
             var series = await repo.FindById(command.Id) ?? throw new EntityNotFoundException();
 
             series.Name = command.Name;
@@ -26,8 +26,6 @@ namespace DetailingArsenal.Application.ProductCatalog {
             )).ToList();
 
             await repo.Update(series);
-
-            return CommandResult.Success();
         }
     }
 }

@@ -8,14 +8,14 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "update", Scope = "subscription-plans")]
-    public class SubscriptionPlanUpdateHandler : ActionHandler<SubscriptionPlanUpdateCommand, CommandResult> {
+    public class SubscriptionPlanUpdateHandler : ActionHandler<SubscriptionPlanUpdateCommand> {
         ISubscriptionPlanRepo repo;
 
         public SubscriptionPlanUpdateHandler(ISubscriptionPlanRepo repo) {
             this.repo = repo;
         }
 
-        public async override Task<CommandResult> Execute(SubscriptionPlanUpdateCommand input, User? user) {
+        public async override Task Execute(SubscriptionPlanUpdateCommand input, User? user) {
             var plan = await repo.FindById(input.Id);
 
             if (plan == null) {
@@ -26,7 +26,6 @@ namespace DetailingArsenal.Application.Scheduling.Billing {
             plan.RoleId = input.RoleId;
 
             await repo.Update(plan);
-            return CommandResult.Success();
         }
     }
 }

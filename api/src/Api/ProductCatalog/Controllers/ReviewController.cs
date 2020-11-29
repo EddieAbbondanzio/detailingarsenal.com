@@ -32,14 +32,14 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(ReviewCreateRequest create) {
-            var res = await mediator.Dispatch<ReviewCreateCommand, CommandResult>(
+            var id = await mediator.Dispatch<ReviewCreateCommand, Guid>(
                 new(
                     create.PadId, create.Stars, create.Cut, create.Finish, create.Title, create.Body
                 ),
                 User
             );
 
-            var r = await mediator.Dispatch<GetReviewByIdQuery, ReviewReadModel>(new(res.Data.Id));
+            var r = await mediator.Dispatch<GetReviewByIdQuery, ReviewReadModel>(new(id));
             return Ok(r);
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Dynamic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
@@ -7,7 +8,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "create", Scope = "brands")]
     [Validation(typeof(BrandCreateValidator))]
-    public class BrandCreateHandler : ActionHandler<BrandCreateCommand, CommandResult> {
+    public class BrandCreateHandler : ActionHandler<BrandCreateCommand, Guid> {
         IBrandRepo repo;
         BrandNameUniqueSpecification unique;
 
@@ -16,13 +17,13 @@ namespace DetailingArsenal.Application.ProductCatalog {
             this.unique = unique;
         }
 
-        public async override Task<CommandResult> Execute(BrandCreateCommand input, User? user) {
+        public async override Task<Guid> Execute(BrandCreateCommand input, User? user) {
             var brand = new Brand(input.Name);
 
             await unique.CheckAndThrow(brand);
             await repo.Add(brand);
 
-            return CommandResult.Insert(brand.Id);
+            return brand.Id;
         }
     }
 }

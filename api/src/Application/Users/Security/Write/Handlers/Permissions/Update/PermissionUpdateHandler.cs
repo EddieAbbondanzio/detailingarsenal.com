@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(UpdatePermissionValidator))]
     [Authorization(Action = "update", Scope = "permissions")]
-    public class PermissionUpdateHandler : ActionHandler<PermissionUpdateCommand, CommandResult> {
+    public class PermissionUpdateHandler : ActionHandler<PermissionUpdateCommand> {
         IPermissionRepo repo;
         PermissionUniqueSpecification spec;
 
@@ -15,7 +15,7 @@ namespace DetailingArsenal.Application.Users.Security {
             this.spec = spec;
         }
 
-        public async override Task<CommandResult> Execute(PermissionUpdateCommand input, User? user) {
+        public async override Task Execute(PermissionUpdateCommand input, User? user) {
             var p = await repo.FindById(input.Id) ?? throw new EntityNotFoundException();
 
             p.Action = input.Action;
@@ -24,7 +24,6 @@ namespace DetailingArsenal.Application.Users.Security {
             await spec.CheckAndThrow(p);
 
             await repo.Update(p);
-            return CommandResult.Success();
         }
     }
 }

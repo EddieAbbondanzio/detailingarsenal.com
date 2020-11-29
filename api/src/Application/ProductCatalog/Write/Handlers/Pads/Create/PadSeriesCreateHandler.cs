@@ -8,14 +8,14 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "create", Scope = "pad-series")]
-    public class PadSeriesCreateHandler : ActionHandler<PadSeriesCreateCommand, CommandResult> {
+    public class PadSeriesCreateHandler : ActionHandler<PadSeriesCreateCommand, Guid> {
         IPadSeriesRepo repo;
 
         public PadSeriesCreateHandler(IPadSeriesRepo repo) {
             this.repo = repo;
         }
 
-        public async override Task<CommandResult> Execute(PadSeriesCreateCommand command, User? user) {
+        public async override Task<Guid> Execute(PadSeriesCreateCommand command, User? user) {
             var pads = command.Pads.Select(p => new Pad(
                 p.Name, p.Category, p.Material, p.Texture, p.PolisherTypes
             )).ToList();
@@ -28,8 +28,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             );
 
             await repo.Add(series);
-
-            return CommandResult.Insert(series.Id);
+            return series.Id;
         }
     }
 }

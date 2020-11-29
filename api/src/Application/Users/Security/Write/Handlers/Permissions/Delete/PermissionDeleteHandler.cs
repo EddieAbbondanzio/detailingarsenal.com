@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "delete", Scope = "permissions")]
-    public class PermissionDeleteHandler : ActionHandler<PermissionDeleteCommand, CommandResult> {
+    public class PermissionDeleteHandler : ActionHandler<PermissionDeleteCommand> {
         IPermissionRepo repo;
         PermissionNotInUseSpecification spec;
 
@@ -15,13 +15,12 @@ namespace DetailingArsenal.Application.Users.Security {
             this.spec = spec;
         }
 
-        public async override Task<CommandResult> Execute(PermissionDeleteCommand input, User? user) {
+        public async override Task Execute(PermissionDeleteCommand input, User? user) {
             var p = await repo.FindById(input.Id) ?? throw new EntityNotFoundException();
 
             await spec.CheckAndThrow(p);
 
             await repo.Delete(p);
-            return CommandResult.Success();
         }
     }
 }

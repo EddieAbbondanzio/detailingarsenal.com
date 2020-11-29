@@ -8,7 +8,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(UpdateRoleValidator))]
     [Authorization(Action = "update", Scope = "roles")]
-    public class UpdateRoleHandler : ActionHandler<RoleUpdateCommand, CommandResult> {
+    public class UpdateRoleHandler : ActionHandler<RoleUpdateCommand> {
         IRoleRepo repo;
         RoleNameUniqueSpecification spec;
 
@@ -17,7 +17,7 @@ namespace DetailingArsenal.Application.Users.Security {
             this.spec = spec;
         }
 
-        public async override Task<CommandResult> Execute(RoleUpdateCommand input, User? user) {
+        public async override Task Execute(RoleUpdateCommand input, User? user) {
             var r = await repo.FindById(input.Id) ?? throw new EntityNotFoundException();
 
             r.Name = input.Name;
@@ -26,7 +26,6 @@ namespace DetailingArsenal.Application.Users.Security {
             await spec.CheckAndThrow(r);
 
             await repo.Update(r);
-            return CommandResult.Success();
         }
     }
 }

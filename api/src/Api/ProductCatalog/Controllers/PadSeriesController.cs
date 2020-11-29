@@ -30,7 +30,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
-            var res = await mediator.Dispatch<PadSeriesCreateCommand, CommandResult>(
+            var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(
                 new PadSeriesCreateCommand(
                     create.Name,
                     create.BrandId,
@@ -40,14 +40,14 @@ namespace DetailingArsenal.Api.ProductCatalog {
                 User
             );
 
-            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(res.Data.Id));
+            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
 
             return Ok(ps);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateRequest update) {
-            var res = await mediator.Dispatch<PadSeriesUpdateCommand, CommandResult>(
+            await mediator.Dispatch<PadSeriesUpdateCommand>(
                 new PadSeriesUpdateCommand(
                     id,
                     update.Name,
@@ -65,7 +65,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleCategory(Guid id) {
-            var res = await mediator.Dispatch<PadSeriesDeleteCommand, CommandResult>(new(id), User);
+            await mediator.Dispatch<PadSeriesDeleteCommand>(new(id), User);
             return Ok();
         }
     }

@@ -144,9 +144,9 @@ namespace DetailingArsenal.Api {
             // Product Catalog
             services.AddTransient<ActionHandler<GetAllBrandsQuery, List<BrandReadModel>>, GetAllBrandsHandler>();
             services.AddTransient<ActionHandler<GetBrandByIdQuery, BrandReadModel?>, GetBrandByIdHandler>();
-            services.AddTransient<ActionHandler<BrandCreateCommand, CommandResult>, BrandCreateHandler>();
-            services.AddTransient<ActionHandler<BrandUpdateCommand, CommandResult>, UpdateBrandHandler>();
-            services.AddTransient<ActionHandler<BrandDeleteCommand, CommandResult>, BrandDeleteHandler>();
+            services.AddTransient<ActionHandler<BrandCreateCommand, Guid>, BrandCreateHandler>();
+            services.AddTransient<ActionHandler<BrandUpdateCommand>, UpdateBrandHandler>();
+            services.AddTransient<ActionHandler<BrandDeleteCommand>, BrandDeleteHandler>();
             services.AddTransient<BrandCreateValidator>();
             services.AddTransient<BrandUpdateValidator>();
             services.AddTransient<IBrandReader, BrandReader>();
@@ -156,13 +156,13 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IPadSeriesReader, PadSeriesReader>();
             services.AddTransient<ActionHandler<GetPadSeriesByIdQuery, PadSeriesReadModel?>, GetPadSeriesByIdHandler>();
             services.AddTransient<ActionHandler<GetAllPadSeriesQuery, List<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
-            services.AddTransient<ActionHandler<PadSeriesCreateCommand, CommandResult>, PadSeriesCreateHandler>();
-            services.AddTransient<ActionHandler<PadSeriesUpdateCommand, CommandResult>, PadSeriesUpdateHandler>();
-            services.AddTransient<ActionHandler<PadSeriesDeleteCommand, CommandResult>, PadSeriesDeleteHandler>();
+            services.AddTransient<ActionHandler<PadSeriesCreateCommand, Guid>, PadSeriesCreateHandler>();
+            services.AddTransient<ActionHandler<PadSeriesUpdateCommand>, PadSeriesUpdateHandler>();
+            services.AddTransient<ActionHandler<PadSeriesDeleteCommand>, PadSeriesDeleteHandler>();
             services.AddTransient<ActionHandler<GetAllReviewsForPadQuery, List<ReviewReadModel>>, GetAllReviewsForPadHandler>();
             services.AddTransient<ActionHandler<GetReviewByIdQuery, ReviewReadModel?>, GetReviewByIdHandler>();
             services.AddTransient<ReviewCreateValidator>();
-            services.AddTransient<ActionHandler<ReviewCreateCommand, CommandResult>, ReviewCreateHandler>();
+            services.AddTransient<ActionHandler<ReviewCreateCommand, Guid>, ReviewCreateHandler>();
             services.AddTransient<IReviewRepo, ReviewRepo>();
             services.AddTransient<IReviewReader, ReviewReader>();
 
@@ -189,8 +189,8 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetByIdSubscriptionPlanQuery, SubscriptionPlanReadModel?>, GetByIdSubscriptionPlanHandler>();
             services.AddTransient<ActionHandler<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>, GetAllSubscriptionPlansHandler>();
             services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();
-            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand, CommandResult>, RefreshSubscriptionPlansHandler>();
-            services.AddTransient<ActionHandler<SubscriptionPlanUpdateCommand, CommandResult>, SubscriptionPlanUpdateHandler>();
+            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand>, RefreshSubscriptionPlansHandler>();
+            services.AddTransient<ActionHandler<SubscriptionPlanUpdateCommand>, SubscriptionPlanUpdateHandler>();
             services.AddTransient<ISubscriptionPlanRefresher, SubscriptionPlanRefresher>();
             services.AddTransient<IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully>, RefreshCustomerOnCheckoutSuccess>();
             services.AddTransient<IDomainEventSubscriber<CustomerTrialWillEndSoon>, EmailEdOnCustomerTrialWillEnd>();
@@ -214,14 +214,14 @@ namespace DetailingArsenal.Api {
             services.AddTransient<UpdateRoleValidator>();
             services.AddTransient<ActionHandler<GetAllPermissionsQuery, List<PermissionReadModel>>, GetAllPermissionsHandler>();
             services.AddTransient<ActionHandler<GetPermissionByIdQuery, PermissionReadModel?>, GetPermissionByIdHandler>();
-            services.AddTransient<ActionHandler<PermissionCreateCommand, CommandResult>, PermissionCreateHandler>();
-            services.AddTransient<ActionHandler<PermissionUpdateCommand, CommandResult>, PermissionUpdateHandler>();
-            services.AddTransient<ActionHandler<PermissionDeleteCommand, CommandResult>, PermissionDeleteHandler>();
+            services.AddTransient<ActionHandler<PermissionCreateCommand, Guid>, PermissionCreateHandler>();
+            services.AddTransient<ActionHandler<PermissionUpdateCommand>, PermissionUpdateHandler>();
+            services.AddTransient<ActionHandler<PermissionDeleteCommand>, PermissionDeleteHandler>();
             services.AddTransient<ActionHandler<GetAllRolesQuery, List<RoleReadModel>>, GetRolesHandler>();
             services.AddTransient<ActionHandler<GetRoleByIdQuery, RoleReadModel?>, GetRoleByIdHandler>();
-            services.AddTransient<ActionHandler<RoleCreateCommand, CommandResult>, CreateRoleHandler>();
-            services.AddTransient<ActionHandler<RoleUpdateCommand, CommandResult>, UpdateRoleHandler>();
-            services.AddTransient<ActionHandler<RoleDeleteCommand, CommandResult>, DeleteRoleHandler>();
+            services.AddTransient<ActionHandler<RoleCreateCommand, Guid>, CreateRoleHandler>();
+            services.AddTransient<ActionHandler<RoleUpdateCommand>, UpdateRoleHandler>();
+            services.AddTransient<ActionHandler<RoleDeleteCommand>, DeleteRoleHandler>();
             services.AddTransient<ActionHandler<AddRoleToUserCommand>, AddRoleToUserHandler>();
             services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
 
@@ -235,7 +235,7 @@ namespace DetailingArsenal.Api {
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IUserReader, UserReader>();
-            services.AddTransient<ActionHandler<UserUpdateCommand, CommandResult>, UserUpdateHandler>();
+            services.AddTransient<ActionHandler<UserUpdateCommand>, UserUpdateHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserReadModel>, GetUserByAuth0IdHandler>();
 
             // Vehicle Categories

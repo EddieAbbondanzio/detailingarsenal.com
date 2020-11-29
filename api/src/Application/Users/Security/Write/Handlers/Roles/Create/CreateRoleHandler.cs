@@ -7,7 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(CreateRoleValidator))]
     [Authorization(Action = "create", Scope = "roles")]
-    public class CreateRoleHandler : ActionHandler<RoleCreateCommand, CommandResult> {
+    public class CreateRoleHandler : ActionHandler<RoleCreateCommand, Guid> {
         IRoleRepo repo;
         RoleNameUniqueSpecification spec;
 
@@ -16,13 +16,13 @@ namespace DetailingArsenal.Application.Users.Security {
             this.spec = spec;
         }
 
-        public async override Task<CommandResult> Execute(RoleCreateCommand input, User? user) {
+        public async override Task<Guid> Execute(RoleCreateCommand input, User? user) {
             var r = new Role(input.Name, input.PermissionIds);
 
             await spec.CheckAndThrow(r);
             await repo.Add(r);
 
-            return CommandResult.Success();
+            return r.Id;
         }
     }
 }

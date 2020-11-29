@@ -25,9 +25,9 @@ namespace DetailingArsenal.Api.Users.Security {
 
         [HttpPost]
         public async Task<IActionResult> CreatePermission(PermissionCreateRequest body) {
-            var res = await mediator.Dispatch<PermissionCreateCommand, CommandResult>(new(body.Action, body.Scope), User);
+            var id = await mediator.Dispatch<PermissionCreateCommand, Guid>(new(body.Action, body.Scope), User);
 
-            var perm = await mediator.Dispatch<GetPermissionByIdQuery, PermissionReadModel?>(new(res.Data.Id), User);
+            var perm = await mediator.Dispatch<GetPermissionByIdQuery, PermissionReadModel?>(new(id), User);
             return Ok(perm);
         }
 

@@ -29,15 +29,15 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(BrandCreateRequest create) {
-            var result = await mediator.Dispatch<BrandCreateCommand, CommandResult>(new(create.Name), User);
-            var brand = await mediator.Dispatch<GetBrandByIdQuery, BrandReadModel>(new(result.Data.Id));
+            var id = await mediator.Dispatch<BrandCreateCommand, Guid>(new(create.Name), User);
+            var brand = await mediator.Dispatch<GetBrandByIdQuery, BrandReadModel>(new(id));
 
             return Ok(brand);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] BrandUpdateRequest update) {
-            var result = await mediator.Dispatch<BrandUpdateCommand, CommandResult>(new(id, update.Name), User);
+            await mediator.Dispatch<BrandUpdateCommand>(new(id, update.Name), User);
             var brand = await mediator.Dispatch<GetBrandByIdQuery, BrandReadModel>(new(id));
 
             return Ok(brand);
@@ -45,7 +45,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleCategory(Guid id) {
-            var result = await mediator.Dispatch<BrandDeleteCommand, CommandResult>(new(id), User);
+            await mediator.Dispatch<BrandDeleteCommand>(new(id), User);
             return Ok();
         }
     }

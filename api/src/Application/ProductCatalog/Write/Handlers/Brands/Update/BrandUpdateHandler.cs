@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "update", Scope = "brands")]
     [Validation(typeof(BrandUpdateValidator))]
-    public class UpdateBrandHandler : ActionHandler<BrandUpdateCommand, CommandResult> {
+    public class UpdateBrandHandler : ActionHandler<BrandUpdateCommand> {
         IBrandRepo repo;
         BrandNameUniqueSpecification unique;
 
@@ -15,13 +15,11 @@ namespace DetailingArsenal.Application.ProductCatalog {
             this.unique = unique;
         }
 
-        public async override Task<CommandResult> Execute(BrandUpdateCommand input, User? user) {
+        public async override Task Execute(BrandUpdateCommand input, User? user) {
             var brand = await repo.FindById(input.Id) ?? throw new EntityNotFoundException();
 
             await unique.CheckAndThrow(brand);
             await repo.Update(brand);
-
-            return CommandResult.Success();
         }
     }
 }

@@ -8,16 +8,15 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "refresh", Scope = "subscription-plans")]
-    public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand, CommandResult> {
+    public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand> {
         ISubscriptionPlanRefresher refreshService;
 
         public RefreshSubscriptionPlansHandler(ISubscriptionPlanRefresher service) {
             this.refreshService = service;
         }
 
-        public async override Task<CommandResult> Execute(RefreshSubscriptionPlansCommand input, User? user) {
+        public async override Task Execute(RefreshSubscriptionPlansCommand input, User? user) {
             await refreshService.RefreshPlans();
-            return CommandResult.Success();
         }
     }
 }
