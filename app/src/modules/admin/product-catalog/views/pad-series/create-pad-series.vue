@@ -4,8 +4,8 @@
             <page-header title="Create pad" :description="`Create a new pad series`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Product Catalog Panel" :to="{ name: 'productCatalogPanel' }" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
                         <breadcrumb name="Pads" :to="{ name: 'padSeries' }" />
                         <breadcrumb name="Create" :to="{ name: 'createPadSeries' }" :active="true" />
                     </breadcrumb-trail>

@@ -2,19 +2,15 @@
     <page background="is-light">
         <template v-slot:header>
             <page-header
-                title="Product Catalog Panel"
+                title="Product catalog panel"
                 description="Product catalog specific controls"
                 icon="cogs"
                 :backButton="false"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb
-                            name="Product Catalog Panel"
-                            :to="{name: 'productCatalogPanel'}"
-                            :active="true"
-                        />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -41,7 +37,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RawLocation } from 'vue-router';
 
 @Component({
-    name: 'admin-panel'
+    name: 'admin-panel',
 })
 export default class ProductCatalogPanel extends Vue {
     entries: { title: string; description: string; icon?: string; to: RawLocation }[] = [
@@ -49,14 +45,14 @@ export default class ProductCatalogPanel extends Vue {
             title: 'Brands',
             description: 'Product brands',
             icon: 'watermark',
-            to: { name: 'brands' }
+            to: { name: 'brands' },
         },
         {
             title: 'Pads',
             description: 'Pad series by manufacturers',
             icon: 'checkbox-blank-circle',
-            to: { name: 'padSeries' }
-        }
+            to: { name: 'padSeries' },
+        },
     ];
 }
 </script>

@@ -5,21 +5,18 @@
                 title="Brands"
                 description="Need I say more"
                 icon="watermark"
-                :backButtonTo="{name: 'productCatalogPanel'}"
+                :backButtonTo="{ name: 'productCatalogPanel' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb
-                            name="Product Catalog Panel"
-                            :to="{name: 'productCatalogPanel'}"
-                        />
-                        <breadcrumb name="Brands" :to="{name: 'brands'}" :active="true" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
+                        <breadcrumb name="Brands" :to="{ name: 'brands' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <create-button :to="{name: 'createBrand' }" text="Create brand" />
+                    <create-button :to="{ name: 'createBrand' }" text="Create brand" />
                 </template>
             </page-header>
         </template>
@@ -55,8 +52,8 @@ export default class Brands extends Vue {
         this.$router.push({
             name: 'editBrand',
             params: {
-                id: brand.id
-            }
+                id: brand.id,
+            },
         });
     }
 

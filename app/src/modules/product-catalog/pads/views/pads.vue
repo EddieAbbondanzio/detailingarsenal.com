@@ -2,7 +2,7 @@
     <page>
         <template v-slot:header>
             <page-header
-                title="Buffing Pad Catalog"
+                title="Buffing pad catalog"
                 :description="`Compare buffing pads of multiple brands based on cut, finish, size, etc...`"
                 :backButton="false"
             >
@@ -18,7 +18,7 @@
                     class="label-link has-text-weight-bold"
                     :to="{
                         name: 'pad',
-                        params: { id: props.row.id }
+                        params: { id: props.row.id },
                     }"
                     >{{ props.row.name }}</router-link
                 >
@@ -92,8 +92,8 @@ import PolisherTypeTag from '@/modules/product-catalog/pads/components/polisher-
         PadCutBar,
         PadFinishBar,
         Stars,
-        PolisherTypeTag
-    }
+        PolisherTypeTag,
+    },
 })
 export default class Pads extends Vue {
     get summaries(): PadSummary[] {
@@ -108,7 +108,7 @@ export default class Pads extends Vue {
                 cut: pad.cut,
                 finish: pad.finish,
                 rating: pad.rating,
-                polisherTypes: pad.polisherTypes
+                polisherTypes: pad.polisherTypes,
             });
         }
 

@@ -4,13 +4,10 @@
             <page-header title="Create brand" :description="`Create brand`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb
-                            name="Product Catalog Panel"
-                            :to="{name: 'productCatalogPanel'}"
-                        />
-                        <breadcrumb name="Brands" :to="{name: 'brands'}" />
-                        <breadcrumb name="Create" :to="{name: 'createBrand'}" :active="true" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
+                        <breadcrumb name="Brands" :to="{ name: 'brands' }" />
+                        <breadcrumb name="Create" :to="{ name: 'createBrand' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -48,7 +45,7 @@ export default class CreateBrand extends Vue {
 
         try {
             await brandStore.create({
-                name: this.name
+                name: this.name,
             });
 
             toast(`Created new brand ${create.name}`);

@@ -9,8 +9,8 @@
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Users panel" :to="{ name: 'usersPanel' }" />
                         <breadcrumb name="Roles" :to="{ name: 'roles' }" :active="true" />
                     </breadcrumb-trail>
                 </template>

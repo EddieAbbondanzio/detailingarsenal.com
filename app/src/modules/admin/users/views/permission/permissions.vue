@@ -1,16 +1,11 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header
-                title="Permissions"
-                description="Access control"
-                icon="lock"
-                :backButtonTo="{ name: 'adminPanel' }"
-            >
+            <page-header title="Permissions" description="Access control" icon="lock">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Users panel" :to="{ name: 'schedulingPanel' }" />
                         <breadcrumb name="Permissions" :to="{ name: 'permissions' }" :active="true" />
                     </breadcrumb-trail>
                 </template>

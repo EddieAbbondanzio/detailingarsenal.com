@@ -9,8 +9,8 @@
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Product Catalog Panel" :to="{ name: 'productCatalogPanel' }" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
                         <breadcrumb name="Pads" :to="{ name: 'pads' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
@@ -58,8 +58,8 @@ export default class Pads extends Vue {
         this.$router.push({
             name: 'editPad',
             params: {
-                id: pad.id
-            }
+                id: pad.id,
+            },
         });
     }
 

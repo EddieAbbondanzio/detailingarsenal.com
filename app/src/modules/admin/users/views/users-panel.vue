@@ -4,8 +4,8 @@
             <page-header title="Users Panel" description="Users specific controls" icon="cogs" :backButton="false">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Users Panel" :to="{ name: 'usersPanel' }" :active="true" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Users panel" :to="{ name: 'usersPanel' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>

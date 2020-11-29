@@ -4,8 +4,8 @@
             <page-header title="Edit permission" :description="`Edit an existing permission`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Users panel" :to="{ name: 'usersPanel' }" />
                         <breadcrumb name="Permissions" :to="{ name: 'permissions' }" />
                         <breadcrumb name="Edit" :to="{ name: 'editPermission', params: $route.params }" active="true" />
                     </breadcrumb-trail>

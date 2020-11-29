@@ -4,17 +4,10 @@
             <page-header title="Edit brand" :description="`Edit brand`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb
-                            name="Product Catalog Panel"
-                            :to="{name: 'productCatalogPanel'}"
-                        />
-                        <breadcrumb name="Brands" :to="{name: 'brands'}" />
-                        <breadcrumb
-                            name="Edit"
-                            :to="{name: 'editBrand', params: $route.params}"
-                            active="true"
-                        />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
+                        <breadcrumb name="Brands" :to="{ name: 'brands' }" />
+                        <breadcrumb name="Edit" :to="{ name: 'editBrand', params: $route.params }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -51,7 +44,7 @@ export default class EditBrand extends Vue {
         const id = this.$route.params.id;
         await brandStore.init();
 
-        const brand = brandStore.brands.find(b => b.id == id);
+        const brand = brandStore.brands.find((b) => b.id == id);
 
         if (brand == null) {
             throw new Error(`Brand with id ${id} does not exist.`);

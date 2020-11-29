@@ -4,10 +4,10 @@
             <page-header title="Create permission" :description="`Create new permission`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
-                        <breadcrumb name="Permissions" :to="{name: 'permissions'}" />
-                        <breadcrumb name="Create" :to="{name: 'createPermission'}" active="true" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Users panel" :to="{ name: 'usersPanel' }" />
+                        <breadcrumb name="Permissions" :to="{ name: 'permissions' }" />
+                        <breadcrumb name="Create" :to="{ name: 'createPermission' }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -42,7 +42,7 @@ import { SpecificationError } from '@/api';
 import securityStore from '../../store/security-store';
 
 @Component({
-    name: 'create-permission'
+    name: 'create-permission',
 })
 export default class CreatePermission extends Vue {
     action: string = '';
