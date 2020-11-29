@@ -12,11 +12,30 @@ namespace DetailingArsenal.Persistence.Users.Security {
         public async Task<List<RoleReadModel>> ReadAll() {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(@"
-                    select * roles;
+                    select * from roles;
                     select * from role_permissions;
                     select * from permissions;
                 ")) {
-                    return new();
+                    var roles = new Dictionary<Guid, RoleReadModel>(
+                         reader.Read<RoleRow>().Select(r => new KeyValuePair<Guid, RoleReadModel>(r.Id, new(r.Id, r.Name))
+                    ));
+
+                    var pairs = reader.Read<RolePermissionRow>();
+
+                    var perms = new Dictionary<Guid, PermissionReadModel>(
+                        reader.Read<PermissionRow>().Select(p => new KeyValuePair<Guid, PermissionReadModel>(p.Id, new(p.Id, p.Action, p.Scope))
+                    ));
+
+                    foreach (RolePermissionRow rolePerm in pairs) {
+                        RoleReadModel? role;
+                        PermissionReadModel? permission;
+
+                        if (roles.TryGetValue(rolePerm.RoleId, out role) && perms.TryGetValue(rolePerm.PermissionId, out permission)) {
+                            role.Permissions.Add(permission);
+                        }
+                    }
+
+                    return roles.Values.ToList();
                 }
             }
         }

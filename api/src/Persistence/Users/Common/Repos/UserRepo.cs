@@ -10,7 +10,7 @@ namespace DetailingArsenal.Persistence.Users {
 
         public async Task<User?> FindById(Guid id) {
             using (var conn = OpenConnection()) {
-                var model = await conn.QueryFirstOrDefaultAsync<UserModel>(
+                var model = await conn.QueryFirstOrDefaultAsync<UserRow>(
                     @"select * from users where id = @Id", new { Id = id }
                 );
 
@@ -20,7 +20,7 @@ namespace DetailingArsenal.Persistence.Users {
 
         public async Task<User?> FindByAuth0Id(string id) {
             using (var conn = OpenConnection()) {
-                var model = await conn.QueryFirstOrDefaultAsync<UserModel>(
+                var model = await conn.QueryFirstOrDefaultAsync<UserRow>(
                     @"select * from users where auth_0_id = @Id", new { Id = id }
                 );
 
@@ -30,7 +30,7 @@ namespace DetailingArsenal.Persistence.Users {
 
         public async Task<User?> FindByEmail(string email) {
             using (var conn = OpenConnection()) {
-                var model = await conn.QueryFirstOrDefaultAsync<UserModel>(
+                var model = await conn.QueryFirstOrDefaultAsync<UserRow>(
                     @"select * from users where email = @Email", new { Email = email }
                 );
 
@@ -69,8 +69,8 @@ namespace DetailingArsenal.Persistence.Users {
             }
         }
 
-        User? Rebuild(UserModel? model) => model == null ? null : new User(model.Id, model.Auth0Id, model.Email, model.Username, model.JoinedDate, model.Name);
-        UserModel Map(User entity) => new UserModel() {
+        User? Rebuild(UserRow? model) => model == null ? null : new User(model.Id, model.Auth0Id, model.Email, model.Username, model.JoinedDate, model.Name);
+        UserRow Map(User entity) => new UserRow() {
             Id = entity.Id,
             Auth0Id = entity.Auth0Id,
             Email = entity.Email,

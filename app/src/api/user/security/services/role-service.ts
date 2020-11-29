@@ -1,7 +1,8 @@
 import { http } from '@/api/core/http';
 import { Role } from '../data-transfer-objects/role';
-import { RoleCreate } from '../data-transfer-objects/role-create';
-import { RoleUpdate } from '../data-transfer-objects/role-update';
+import { RoleCreateRequest } from '../data-transfer-objects/requests/role-create-request';
+import { RoleUpdateRequest } from '../data-transfer-objects/requests/role-update-request';
+import { Permission } from '../data-transfer-objects/permission';
 
 export class RoleService {
     async getRoles() {
@@ -9,12 +10,12 @@ export class RoleService {
         return res.data.map(d => this._map(d));
     }
 
-    async createRole(create: RoleCreate) {
+    async createRole(create: RoleCreateRequest) {
         const res = await http.post('/security/role', create);
         return this._map(res.data);
     }
 
-    async updateRole(update: RoleUpdate) {
+    async updateRole(update: RoleUpdateRequest) {
         const res = await http.put(`/security/role/${update.id}`, update);
         return this._map(res.data);
     }
@@ -24,7 +25,8 @@ export class RoleService {
     }
 
     _map(data: any) {
-        const role = new Role(data.id, data.name, data.permissionIds);
+        // An empty array is turned to null in axios.
+        const role = new Role(data.id, data.name, (data.permissions ?? [] as any[]).map((p: any) => new Permission(p.id, p.action, p.scope)));
         return role;
     }
 }

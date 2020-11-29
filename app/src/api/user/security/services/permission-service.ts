@@ -1,7 +1,7 @@
 import { http } from '@/api/core/http';
 import { Permission } from '../data-transfer-objects/permission';
-import { PermissionCreate } from '../data-transfer-objects/permission-create';
-import { PermissionUpdate } from '../data-transfer-objects/permission-update';
+import { PermissionCreateRequest } from '../data-transfer-objects/requests/permission-create-request';
+import { PermissionUpdateReqest } from '../data-transfer-objects/requests/permission-update-request';
 
 export class PermissionService {
     async getPermissions() {
@@ -9,12 +9,12 @@ export class PermissionService {
         return res.data.map(r => this._map(r));
     }
 
-    async createPermission(create: PermissionCreate) {
+    async createPermission(create: PermissionCreateRequest) {
         const res = await http.post('/security/permission', create);
         return this._map(res.data);
     }
 
-    async updatePermission(update: PermissionUpdate) {
+    async updatePermission(update: PermissionUpdateReqest) {
         const res = await http.put(`/security/permission/${update.id}`, update);
         return this._map(res.data);
     }

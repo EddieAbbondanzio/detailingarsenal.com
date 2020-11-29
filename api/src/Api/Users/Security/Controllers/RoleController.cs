@@ -19,8 +19,8 @@ namespace DetailingArsenal.Api.Users.Security {
 
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            var perms = await mediator.Dispatch<GetAllRolesQuery, List<RoleReadModel>>(User);
-            return Ok(perms);
+            var roles = await mediator.Dispatch<GetAllRolesQuery, List<RoleReadModel>>(User);
+            return Ok(roles);
         }
 
         [HttpPost]

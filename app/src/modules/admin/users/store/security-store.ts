@@ -2,7 +2,7 @@ import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-dec
 import { InitableModule } from '@/core/store/initable-module';
 import { api } from '@/api/api';
 import store from '@/core/store/index';
-import { Permission, Role, SubscriptionPlan, PermissionCreate, PermissionUpdate, RoleCreate, RoleUpdate } from '@/api';
+import { Permission, Role, SubscriptionPlan, PermissionCreateRequest, PermissionUpdateReqest as PermissionUpdateRequest, RoleCreateRequest, RoleUpdateRequest } from '@/api';
 
 /**
  * Store for the schedule view.
@@ -75,7 +75,7 @@ class SecurityStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async createPermission(createPermission: PermissionCreate) {
+    async createPermission(createPermission: PermissionCreateRequest) {
         const p = await api.scheduling.security.permission.createPermission(createPermission);
         this.context.commit('CREATE_PERMISSION', p);
 
@@ -83,7 +83,7 @@ class SecurityStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async updatePermission(updatePermission: PermissionUpdate) {
+    async updatePermission(updatePermission: PermissionUpdateRequest) {
         const p = await api.scheduling.security.permission.updatePermission(updatePermission);
         this.context.commit('UPDATE_PERMISSION', p);
 
@@ -97,7 +97,7 @@ class SecurityStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async createRole(createRole: RoleCreate) {
+    async createRole(createRole: RoleCreateRequest) {
         const r = await api.scheduling.security.role.createRole(createRole);
         this.context.commit('CREATE_ROLE', r);
 
@@ -105,7 +105,7 @@ class SecurityStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async updateRole(updateRole: RoleUpdate) {
+    async updateRole(updateRole: RoleUpdateRequest) {
         const r = await api.scheduling.security.role.updateRole(updateRole);
         this.context.commit('UPDATE_ROLE', r);
 

@@ -4,34 +4,29 @@
             <page-header title="Edit role" :description="`Edit new role`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
-                        <breadcrumb name="Roles" :to="{name: 'roles'}" />
-                        <breadcrumb
-                            :name="name"
-                            :to="{name: 'role', params: {id: $route.params }}"
-                        />
-                        <breadcrumb name="Edit" :to="{name: 'editRole'}" active="true" />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Roles" :to="{ name: 'roles' }" />
+                        <breadcrumb :name="name" :to="{ name: 'role', params: { id: $route.params } }" />
+                        <breadcrumb name="Edit" :to="{ name: 'editRole' }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
         <input-form @submit="onSubmit" submitText="Save changes">
-            <input-text-field
-                label="Name"
-                rules="required|max:32"
-                :required="true"
-                v-model="name"
-                placeholder="user"
-            />
+            <input-text-field label="Name" rules="required|max:32" :required="true" v-model="name" placeholder="user" />
 
             <input-group-header text="Permissions" />
             <b-table
                 :data="permissions"
                 checkable
                 :checked-rows.sync="enabledPermissions"
-                :custom-is-checked="(a, b) => { return a.id === b.id }"
+                :custom-is-checked="
+                    (a, b) => {
+                        return a.id === b.id;
+                    }
+                "
             >
                 <template slot-scope="props">
                     <b-table-column label="Permission" field="label" sortable>{{ props.row.label }}</b-table-column>
@@ -54,7 +49,7 @@ import { displayError, toast, displayLoading } from '@/core';
 import securityStore from '../../store/security-store';
 
 @Component({
-    name: 'edit-role'
+    name: 'edit-role',
 })
 export default class EditRole extends Vue {
     get permissions() {
@@ -68,10 +63,10 @@ export default class EditRole extends Vue {
     async created() {
         await securityStore.init();
 
-        const role = securityStore.roles.find(r => r.id == this.$route.params.id);
+        const role = securityStore.roles.find((r) => r.id == this.$route.params.id);
 
         this.name = role!.name;
-        this.enabledPermissions = role!.permissionIds.map(id => securityStore.permissions.find(p => p.id == id)!);
+        // this.enabledPermissions = role!.permissionIds.map(id => securityStore.permissions.find(p => p.id == id)!);
     }
 
     @displayLoading
@@ -79,7 +74,7 @@ export default class EditRole extends Vue {
         const edit = {
             id: this.$route.params.id,
             name: this.name,
-            permissionIds: this.enabledPermissions.map(p => p.id)
+            permissionIds: this.enabledPermissions.map((p) => p.id),
         };
 
         try {

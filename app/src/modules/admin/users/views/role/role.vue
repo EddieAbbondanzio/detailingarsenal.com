@@ -4,19 +4,19 @@
             <page-header :title="role != null ? role.name : ``">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
-                        <breadcrumb name="Roles" :to="{name: 'roles'}" />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Roles" :to="{ name: 'roles' }" />
                         <breadcrumb
                             :name="role != null ? role.name : ''"
-                            :to="{name: 'role', params: $route.params}"
+                            :to="{ name: 'role', params: $route.params }"
                             :active="true"
                         />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <edit-button :to="{name: 'editRole', params: { id: $route.params.id }}" />
+                    <edit-button :to="{ name: 'editRole', params: { id: $route.params.id } }" />
                 </template>
             </page-header>
         </template>
@@ -32,7 +32,11 @@
                 :data="permissions"
                 checkable
                 :checked-rows.sync="enabledPermissions"
-                :custom-is-checked="(a, b) => { return a.id === b.id }"
+                :custom-is-checked="
+                    (a, b) => {
+                        return a.id === b.id;
+                    }
+                "
                 :is-row-checkable="(r) => false"
             >
                 <template slot-scope="props">
@@ -57,7 +61,7 @@ import securityStore from '../../store/security-store';
 import { displayLoading } from '@/core';
 
 @Component({
-    name: 'role'
+    name: 'role',
 })
 export default class RoleView extends Vue {
     get permissions() {
@@ -71,13 +75,13 @@ export default class RoleView extends Vue {
     async created() {
         await securityStore.init();
 
-        this.role = securityStore.roles.find(r => r.id == this.$route.params.id)!;
+        this.role = securityStore.roles.find((r) => r.id == this.$route.params.id)!;
 
         if (this.role == null) {
             throw new Error('Role not found');
         }
 
-        this.enabledPermissions = this.role.permissionIds.map(id => securityStore.permissions.find(p => p.id == id)!);
+        // this.enabledPermissions = this.role.permissionIds.map(id => securityStore.permissions.find(p => p.id == id)!);
     }
 }
 </script>

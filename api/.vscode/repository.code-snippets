@@ -6,36 +6,24 @@
 	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
 	// Placeholders with the same ids are connected.
 	// Example:
-	"API Controller": {
+	"Database repository": {
 		"scope": "csharp",
-		"prefix": "controller",
+		"prefix": "repo",
 		"body": [
 			"using System;",
 			"using System.Collections.Generic;",
-			"using System.Linq;",
 			"using System.Threading.Tasks;",
-			"using DetailingArsenal.Application;",
-			"using DetailingArsenal.Domain;",
-			"using Microsoft.AspNetCore.Authorization;",
-			"using Microsoft.AspNetCore.Mvc;",
-			"using DetailingArsenal.Application.Settings;",
-			"using DetailingArsenal.Domain.ProductCatalog;",
-			"using DetailingArsenal.Application.ProductCatalog;",
+			"using Dapper;",
+			"using System.Linq;",
 			"",
-			"namespace DetailingArsenal.Api.ProductCatalog {",
-			"\t[Authorize]",
-			"\t[ApiController]",
-			"\t[Route(\"$2\")]",
-			"\tpublic class $1 : ControllerBase {",
-			"\tIMediator mediator;",
-			"",
-			"\tpublic $1(IMediator mediator) {",
-			"\t\tthis.mediator = mediator;",
-			"\t}",
-			"\t$0",
-			"\t}",
-			"}",
+			"namespace DetailingArsenal.Persistence.$1 {",
+			"   public class ${2:ClassName} : DatabaseInteractor, $3 {",
+			"       public $2(IDatabase database) : base(database) { }",
+			"       ",
+			"       $0",
+			"   }",
+			"}"
 		],
-		"description": "API controller"
+		"description": "Database repository"
 	}
 }

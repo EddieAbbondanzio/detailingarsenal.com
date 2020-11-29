@@ -49,6 +49,7 @@ export default class Roles extends Vue {
     @displayLoading
     async created() {
         await securityStore.init();
+        console.log(this.roles);
     }
 
     async onEdit(r: Role) {

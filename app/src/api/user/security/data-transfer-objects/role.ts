@@ -1,3 +1,5 @@
+import { Permission } from './permission';
+
 export class Role {
-    constructor(public id: string, public name: string, public permissionIds: string[] = []) {}
+    constructor(public id: string, public name: string, public permissions: Permission[]) { }
 }

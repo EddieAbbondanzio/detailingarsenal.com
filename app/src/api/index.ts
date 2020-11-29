@@ -44,11 +44,11 @@ export * from './scheduling/settings/data-transfer-objects/hours-of-operation-da
 
 //Security
 export * from './user/security/data-transfer-objects/permission';
-export * from './user/security/data-transfer-objects/permission-create';
-export * from './user/security/data-transfer-objects/permission-update';
+export * from './user/security/data-transfer-objects/requests/permission-create-request';
+export * from './user/security/data-transfer-objects/requests/permission-update-request';
 export * from './user/security/data-transfer-objects/role';
-export * from './user/security/data-transfer-objects/role-create';
-export * from './user/security/data-transfer-objects/role-update';
+export * from './user/security/data-transfer-objects/requests/role-create-request';
+export * from './user/security/data-transfer-objects/requests/role-update-request';
 
 //Users
 export * from './user/common/data-transfer-objects/user';
