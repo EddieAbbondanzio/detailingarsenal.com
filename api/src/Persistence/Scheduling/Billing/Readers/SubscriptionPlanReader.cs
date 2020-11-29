@@ -17,7 +17,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
         public async Task<List<SubscriptionPlanReadModel>> ReadAll() {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
-                    @"select sp.*,from subscription_plans sp;
+                    @"select sp.* from subscription_plans sp;
 
                   select spp.*, br2.* from subscription_plan_prices spp
                     join subscription_plans sp on spp.plan_id = sp.id
@@ -43,7 +43,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                                                 br.BillingId
                                         );
 
-                                        planDict[spp.PlanId].Prices.Add(price);
+                                        (planDict[spp.PlanId].Prices ??= new()).Add(price);
 
                                         return price;
                                     }
