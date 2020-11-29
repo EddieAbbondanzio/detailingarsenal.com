@@ -123,6 +123,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<CreateOrUpdateAdminStep>();
             services.AddTransient<CreateRolesStep>();
             services.AddTransient<ValidateBillingConfigStep>();
+            services.AddTransient<GiveAdminAllPermissionsStep>();
 
             services.AddTransient<NewUserSaga>();
             services.AddTransient<CreateUserStep>();
