@@ -39,11 +39,15 @@
                 "
                 :is-row-checkable="(r) => false"
             >
-                <template slot-scope="props">
-                    <b-table-column label="Permission" field="label" sortable>{{ props.row.label }}</b-table-column>
-                    <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
-                    <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
-                </template>
+                <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
+                    props.row.label
+                }}</b-table-column>
+                <b-table-column v-slot="props" label="Action" field="action" sortable>{{
+                    props.row.action
+                }}</b-table-column>
+                <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{
+                    props.row.scope
+                }}</b-table-column>
 
                 <template slot="empty">
                     <div class="is-flex is-justify-content-center">There's nothing here!</div>
@@ -81,7 +85,7 @@ export default class RoleView extends Vue {
             throw new Error('Role not found');
         }
 
-        // this.enabledPermissions = this.role.permissionIds.map(id => securityStore.permissions.find(p => p.id == id)!);
+        this.enabledPermissions = this.role.permissions;
     }
 }
 </script>
