@@ -5,7 +5,7 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
+                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
                         <breadcrumb name="Subscription Plans" :to="{ name: 'subscriptionPlans' }" />
                         <breadcrumb
                             :name="plan != null ? plan.name : ''"
@@ -25,17 +25,13 @@
             <input-group-header text="Prices" />
 
             <b-table :data="plan.prices">
-                <template slot-scope="props">
-                    <b-table-column label="Price" field="label" sortable>
-                        {{
-                        (props.row.amount / 100) | currency
-                        }}
+                <template>
+                    <b-table-column v-slot="props" label="Price" field="label" sortable>
+                        {{ (props.row.amount / 100) | currency }}
                     </b-table-column>
-                    <b-table-column
-                        label="Interval"
-                        field="action"
-                        sortable
-                    >{{ props.row.interval }}</b-table-column>
+                    <b-table-column v-slot="props" label="Interval" field="action" sortable>{{
+                        props.row.interval
+                    }}</b-table-column>
                 </template>
 
                 <template slot="empty">
@@ -59,7 +55,7 @@ export default class SubscriptionPlanView extends Vue {
     @displayLoading
     async created() {
         await subscriptionPlanStore.init();
-        this.plan = subscriptionPlanStore.subscriptionPlans.find(p => p.id == this.$route.params.id)!;
+        this.plan = subscriptionPlanStore.subscriptionPlans.find((p) => p.id == this.$route.params.id)!;
     }
 }
 </script>

@@ -43,13 +43,13 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                                                 br.BillingId
                                         );
 
-                                        (planDict[spp.PlanId].Prices ??= new()).Add(price);
+                                        planDict[spp.PlanId].Prices.Add(price);
 
                                         return price;
                                     }
                                 );
 
-                    return plans.ToList();
+                    return planDict.Values.ToList();
                 }
             }
         }
@@ -68,16 +68,15 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                 )) {
                     var raw = reader.ReadFirst<SubscriptionPlanRow>();
                     var plan = new SubscriptionPlanReadModel(
-                        raw.Id, raw.Name, raw.Description, raw.RoleId
-                    );
-
-                    plan.Prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPriceReadModel>(
+                        raw.Id, raw.Name, raw.Description, raw.RoleId,
+                        reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPriceReadModel>(
                         (spp, br) => new SubscriptionPlanPriceReadModel(
                                 spp.Price,
                                 spp.Interval,
                                 br.BillingId
                             )
-                            ).ToList();
+                            ).ToList()
+                    );
 
                     return plan;
                 }
@@ -102,16 +101,15 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                 )) {
                     var raw = reader.ReadFirst<SubscriptionPlanRow>();
                     var plan = new SubscriptionPlanReadModel(
-                        raw.Id, raw.Name, raw.Description, raw.RoleId
-                    );
-
-                    plan.Prices = reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPriceReadModel>(
+                        raw.Id, raw.Name, raw.Description, raw.RoleId,
+                        reader.Read<SubscriptionPlanPriceRow, BillingReferenceRow, SubscriptionPlanPriceReadModel>(
                         (spp, br) => new SubscriptionPlanPriceReadModel(
                                 spp.Price,
                                 spp.Interval,
                                 br.BillingId
                             )
-                            ).ToList();
+                            ).ToList()
+                    );
 
                     return plan;
                 }
