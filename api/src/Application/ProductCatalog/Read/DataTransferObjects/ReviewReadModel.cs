@@ -1,7 +1,7 @@
 using System;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    public class ReviewReadModel : IDataTransferObject {
+    public record ReviewReadModel : IDataTransferObject {
         public Guid PadId { get; }
         public string Username { get; }
         public DateTime Date { get; }

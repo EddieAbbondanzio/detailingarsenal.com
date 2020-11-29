@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    public class PadSeriesReadModel : IDataTransferObject {
+    public record PadSeriesReadModel : IDataTransferObject {
         public Guid Id { get; }
-        public string Name { get; } = null!;
-        public BrandReadModel Brand { get; } = null!;
-        public List<PadSeriesSizeReadModel> Sizes { get; set; } = new List<PadSeriesSizeReadModel>();
-        public List<PadReadModel> Pads { get; set; } = new List<PadReadModel>();
-
-        public PadSeriesReadModel() {
-            // Needed for AutoMapper
-        }
+        public string Name { get; }
+        public BrandReadModel Brand { get; }
+        public List<PadSeriesSizeReadModel> Sizes { get; }
+        public List<PadReadModel> Pads { get; }
 
         public PadSeriesReadModel(Guid id, string name, BrandReadModel brand, List<PadSeriesSizeReadModel>? series = null, List<PadSeriesSizeReadModel>? sizes = null, List<PadReadModel>? pads = null) {
             Id = id;

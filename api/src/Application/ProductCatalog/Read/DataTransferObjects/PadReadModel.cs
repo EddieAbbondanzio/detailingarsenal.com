@@ -4,7 +4,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    public class PadReadModel : IDataTransferObject {
+    public record PadReadModel : IDataTransferObject {
         public Guid Id { get; }
         public string Name { get; }
         public string Category { get; }

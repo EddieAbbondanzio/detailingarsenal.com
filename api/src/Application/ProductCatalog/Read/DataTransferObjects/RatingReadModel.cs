@@ -1,5 +1,5 @@
 namespace DetailingArsenal.Application.ProductCatalog {
-    public class RatingReadModel : IDataTransferObject {
+    public record RatingReadModel : IDataTransferObject {
         public int Stars { get; }
         public int ReviewCount { get; }
 

@@ -62,8 +62,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     }
 
-                    series.Pads = pads;
-                    series.Sizes = sizes;
+                    series.Pads.AddRange(pads);
+                    series.Sizes.AddRange(sizes);
                     return series;
                 }
             }
@@ -130,7 +130,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             );
 
                             padDict.Add(pad.Id, pad);
-                            ps.Pads.Add(pad);
+                            ps!.Pads.Add(pad);
 
                         }
                     }
