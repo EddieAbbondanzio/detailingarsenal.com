@@ -4,14 +4,10 @@
             <page-header title="Edit permission" :description="`Edit an existing permission`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
-                        <breadcrumb name="Permissions" :to="{name: 'permissions'}" />
-                        <breadcrumb
-                            name="Edit"
-                            :to="{name: 'editPermission', params: $route.params}"
-                            active="true"
-                        />
+                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Permissions" :to="{ name: 'permissions' }" />
+                        <breadcrumb name="Edit" :to="{ name: 'editPermission', params: $route.params }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -44,7 +40,7 @@ import { Permission, SpecificationError } from '@/api';
 import securityStore from '../../store/security-store';
 
 @Component({
-    name: 'edit-permission'
+    name: 'edit-permission',
 })
 export default class EditPermission extends Vue {
     loading = false;
@@ -55,7 +51,7 @@ export default class EditPermission extends Vue {
         const id = this.$route.params.id;
         await securityStore.init();
 
-        const perm = securityStore.permissions.find(p => p.id == id);
+        const perm = securityStore.permissions.find((p) => p.id == id);
 
         if (perm == null) {
             throw new Error(`Permission with id ${id} does not exist.`);
@@ -73,7 +69,7 @@ export default class EditPermission extends Vue {
         try {
             await securityStore.updatePermission(edit);
 
-            toast(`Created new permission`);
+            toast(`Updated permission`);
             this.$router.push({ name: 'permissions' });
         } catch (err) {
             if (err instanceof SpecificationError) {

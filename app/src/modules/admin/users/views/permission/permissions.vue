@@ -22,14 +22,16 @@
         </template>
 
         <b-table :data="permissions">
-            <template slot-scope="props">
-                <b-table-column label="Permission" field="permission" sortable>{{ props.row.label }}</b-table-column>
-                <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
-                <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
-                <b-table-column>
-                    <edit-delete-dropdown @edit="onEdit(props.row)" @delete="onDelete(props.row)" size="is-small" />
-                </b-table-column>
-            </template>
+            <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
+                props.row.label
+            }}</b-table-column>
+            <b-table-column v-slot="props" label="Action" field="action" sortable>{{
+                props.row.action
+            }}</b-table-column>
+            <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
+            <b-table-column v-slot="props">
+                <edit-delete-dropdown @edit="onEdit(props.row)" @delete="onDelete(props.row)" size="is-small" />
+            </b-table-column>
 
             <template slot="empty">
                 <div class="is-flex is-justify-content-center">There's nothing here!</div>
