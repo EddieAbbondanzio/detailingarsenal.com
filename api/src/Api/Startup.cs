@@ -208,6 +208,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<PermissionUniqueSpecification>();
             services.AddTransient<PermissionNotInUseSpecification>();
             services.AddTransient<RoleNameUniqueSpecification>();
+            services.AddTransient<RolePermissionsDistinctSpecification>();
             services.AddTransient<RoleNotInUseSpecification>();
             services.AddTransient<CreatePermissionValidator>();
             services.AddTransient<UpdatePermissionValidator>();

@@ -3,23 +3,27 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
+using System.Linq;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(CreateRoleValidator))]
     [Authorization(Action = "create", Scope = "roles")]
     public class CreateRoleHandler : ActionHandler<RoleCreateCommand, Guid> {
         IRoleRepo repo;
-        RoleNameUniqueSpecification spec;
+        RoleNameUniqueSpecification uniqueNameSpec;
+        RolePermissionsDistinctSpecification permissionsDistinctSpec;
 
-        public CreateRoleHandler(IRoleRepo repo, RoleNameUniqueSpecification spec) {
+        public CreateRoleHandler(IRoleRepo repo, RoleNameUniqueSpecification uniqueNameSpec, RolePermissionsDistinctSpecification permissionsDistinctSpec) {
             this.repo = repo;
-            this.spec = spec;
+            this.uniqueNameSpec = uniqueNameSpec;
+            this.permissionsDistinctSpec = permissionsDistinctSpec;
         }
 
         public async override Task<Guid> Execute(RoleCreateCommand input, User? user) {
-            var r = new Role(input.Name, input.PermissionIds);
+            var r = new Role(input.Name, input.PermissionIds.Distinct().ToList());
 
-            await spec.CheckAndThrow(r);
+            await uniqueNameSpec.CheckAndThrow(r);
+            await permissionsDistinctSpec.CheckAndThrow(r);
             await repo.Add(r);
 
             return r.Id;

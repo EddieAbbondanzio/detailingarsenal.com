@@ -36,7 +36,7 @@ namespace DetailingArsenal.Persistence.Users.Security {
 
         public async Task<List<Role>> FindAll() {
             using (var conn = OpenConnection()) {
-                var roles = (await conn.QueryAsync<Role>(
+                var roles = (await conn.QueryAsync<RoleRow>(
                     @"select * from roles"
                 )).Select(r => new Role(r.Id, r.Name));
 
@@ -55,7 +55,7 @@ namespace DetailingArsenal.Persistence.Users.Security {
 
         public async Task<Role?> FindById(Guid id) {
             using (var conn = OpenConnection()) {
-                var r = await conn.QueryFirstOrDefaultAsync<Role>(
+                var r = await conn.QueryFirstOrDefaultAsync<RoleRow>(
                     @"select * from roles where id = @Id;",
                     new {
                         Id = id

@@ -44,7 +44,7 @@ namespace DetailingArsenal.Persistence.Users.Security {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(@"
                     select * from roles where id = @Id;
-                    select p.* from roles r join role_permissions rp on r.id = rp.role_id join permissions p on rp.permission_id = p.id;
+                    select p.* from roles r join role_permissions rp on r.id = rp.role_id join permissions p on rp.permission_id = p.id where r.id = @Id;
                 ",
                 new { Id = id })) {
                     var roleRow = reader.ReadFirstOrDefault<RoleRow>();
@@ -63,7 +63,7 @@ namespace DetailingArsenal.Persistence.Users.Security {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(@"
                     select * from roles where name = @Name;
-                    select p.* from roles r join role_permissions rp on r.id = rp.role_id join permissions p on rp.permission_id = p.id;
+                    select p.* from roles r join role_permissions rp on r.id = rp.role_id join permissions p on rp.permission_id = p.id where r.name = @Name;
                 ",
                 new { Name = name })) {
                     var roleRow = reader.ReadFirstOrDefault<RoleRow>();

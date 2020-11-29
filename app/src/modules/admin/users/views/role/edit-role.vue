@@ -7,7 +7,7 @@
                         <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
                         <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
                         <breadcrumb name="Roles" :to="{ name: 'roles' }" />
-                        <breadcrumb :name="name" :to="{ name: 'role', params: { id: $route.params } }" />
+                        <breadcrumb :name="name" :to="{ name: 'role', params: { id: $route.params.id } }" />
                         <breadcrumb name="Edit" :to="{ name: 'editRole' }" active="true" />
                     </breadcrumb-trail>
                 </template>
@@ -28,10 +28,16 @@
                     }
                 "
             >
-                <template slot-scope="props">
-                    <b-table-column label="Permission" field="label" sortable>{{ props.row.label }}</b-table-column>
-                    <b-table-column label="Action" field="action" sortable>{{ props.row.action }}</b-table-column>
-                    <b-table-column label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
+                <template>
+                    <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
+                        props.row.label
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Action" field="action" sortable>{{
+                        props.row.action
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{
+                        props.row.scope
+                    }}</b-table-column>
                 </template>
 
                 <template slot="empty">
@@ -66,7 +72,7 @@ export default class EditRole extends Vue {
         const role = securityStore.roles.find((r) => r.id == this.$route.params.id);
 
         this.name = role!.name;
-        // this.enabledPermissions = role!.permissionIds.map(id => securityStore.permissions.find(p => p.id == id)!);
+        this.enabledPermissions = role?.permissions ?? [];
     }
 
     @displayLoading
@@ -74,8 +80,10 @@ export default class EditRole extends Vue {
         const edit = {
             id: this.$route.params.id,
             name: this.name,
-            permissionIds: this.enabledPermissions.map((p) => p.id),
+            permissionIds: [...new Set(this.enabledPermissions.map((p) => p.id))],
         };
+
+        console.log(this.enabledPermissions.length);
 
         try {
             const role = await securityStore.updateRole(edit);
