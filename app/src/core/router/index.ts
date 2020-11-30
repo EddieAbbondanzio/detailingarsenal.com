@@ -14,10 +14,6 @@ Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
     ...schedulingRoutes,
-    {
-        path: '/goodbye',
-        component: () => import('@/core/views/goodbye.vue')
-    },
     ...userRoutes,
     ...adminRoutes,
     ...productCatalogRoutes,
