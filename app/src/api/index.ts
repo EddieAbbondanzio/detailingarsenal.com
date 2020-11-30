@@ -11,6 +11,7 @@ export * from './scheduling/billing/data-transfer-objects/customer';
 export * from './scheduling/billing/data-transfer-objects/payment-method';
 export * from './scheduling/billing/data-transfer-objects/subscription';
 export * from './scheduling/billing/data-transfer-objects/subscription-plan';
+export * from './scheduling/billing/data-transfer-objects/requests/subscription-plan-update-request';
 export * from './scheduling/billing/data-transfer-objects/subscription-plan-price';
 export * from './scheduling/billing/data-transfer-objects/subscription-status';
 

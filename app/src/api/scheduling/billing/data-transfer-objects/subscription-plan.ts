@@ -9,8 +9,9 @@ export class SubscriptionPlan {
         public id: string,
         public name: string,
         public description: string | null,
+        public roleId: string | null,
         public prices: SubscriptionPlanPrice[]
-    ) {}
+    ) { }
 
     get yearlyPrice() {
         const p = this.prices.find(p => p.interval == 'year');

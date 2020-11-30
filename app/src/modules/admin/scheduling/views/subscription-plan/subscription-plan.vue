@@ -4,15 +4,19 @@
             <page-header :title="plan != null ? plan.name : ``">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" />
-                        <breadcrumb name="Subscription Plans" :to="{ name: 'subscriptionPlans' }" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Subscription plans" :to="{ name: 'subscriptionPlans' }" />
                         <breadcrumb
                             :name="plan != null ? plan.name : ''"
                             :to="{ name: 'subscriptionPlan', params: $route.params }"
                             :active="true"
                         />
                     </breadcrumb-trail>
+                </template>
+
+                <template v-slot:action>
+                    <edit-button :to="{ name: 'editSubscriptionPlan', params: { id: $route.params.id } }" />
                 </template>
             </page-header>
         </template>
@@ -21,6 +25,8 @@
             <div class="has-margin-bottom-4">
                 <h5 class="is-size-4 title has-margin-bottom-2">{{ plan.name }}</h5>
             </div>
+
+            <p v-if="plan.description">{{ plan.description }}</p>
 
             <input-group-header text="Prices" />
 

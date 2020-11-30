@@ -63,7 +63,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
                     select spp.*, br1.* from subscription_plan_prices spp
                         join subscription_plans sp on spp.plan_id = sp.id
                         join billing_references br1 on spp.billing_reference_id = br1.id
-                        where sp.id = @BId;",
+                        where sp.id = @Id;",
                         new { Id = id }
                 )) {
                     var raw = reader.ReadFirst<SubscriptionPlanRow>();

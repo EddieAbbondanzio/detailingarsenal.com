@@ -26,7 +26,7 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         public async Task<IActionResult> Get() {
             var plans = await mediator.Dispatch<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>(
                 new GetAllSubscriptionPlansQuery(),
-                User.GetUserId()
+                User
             );
 
             return Ok(plans);
@@ -34,10 +34,7 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
 
         [HttpGet("default")]
         public async Task<IActionResult> GetDefault() {
-            var plan = await mediator.Dispatch<GetDefaultSubscriptionPlanQuery, SubscriptionPlanReadModel>(
-                new GetDefaultSubscriptionPlanQuery()
-            // Anon is allowed
-            );
+            var plan = await mediator.Dispatch<GetDefaultSubscriptionPlanQuery, SubscriptionPlanReadModel>();// Anon is allowed
 
             return Ok(plan);
         }
@@ -49,13 +46,11 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, SubscriptionPlanUpdateRequest body) {
             await mediator.Dispatch<SubscriptionPlanUpdateCommand>(
-                new SubscriptionPlanUpdateCommand(id, body.Description, body.RoleId),
-                User.GetUserId()
+                new(id, body.Description, body.RoleId), User
             );
 
             var plan = await mediator.Dispatch<GetByIdSubscriptionPlanQuery, SubscriptionPlanReadModel?>(
-                new GetByIdSubscriptionPlanQuery(id),
-                User.GetUserId()
+                new(id), User
             );
 
             return Ok(plan);
@@ -67,12 +62,9 @@ namespace DetailingArsenal.Api.Scheduling.Billing {
         [Authorize]
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh() {
-            await mediator.Dispatch<RefreshSubscriptionPlansCommand>(
-                new RefreshSubscriptionPlansCommand(),
-                User.GetUserId()
-            );
+            await mediator.Dispatch<RefreshSubscriptionPlansCommand>(User);
 
-            var plans = await mediator.Dispatch<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>(new GetAllSubscriptionPlansQuery(), User.GetUserId());
+            var plans = await mediator.Dispatch<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>(User);
             return Ok(plans);
         }
     }

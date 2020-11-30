@@ -2,20 +2,16 @@
     <page>
         <template v-slot:header>
             <page-header
-                title="Subscription Plans"
+                title="Subscription plans"
                 description="Plans for customers"
                 icon="ferry"
-                :backButtonTo="{name: 'adminPanel'}"
+                :backButtonTo="{ name: 'adminPanel' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{name: 'adminPanel'}" />
-                        <breadcrumb name="Scheduling Panel" :to="{name: 'schedulingPanel'}" />
-                        <breadcrumb
-                            name="Subscription Plans"
-                            :to="{name: 'subscriptionPlans'}"
-                            :active="true"
-                        />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling panel" :to="{ name: 'schedulingPanel' }" />
+                        <breadcrumb name="Subscription plans" :to="{ name: 'subscriptionPlans' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
@@ -25,7 +21,8 @@
                         type="is-success"
                         icon-left="refresh"
                         title="Pull in the subscription plans from Stripe"
-                    >Refresh</b-button>
+                        >Refresh</b-button
+                    >
                 </template>
             </page-header>
         </template>
@@ -35,8 +32,12 @@
                 v-for="p in plans"
                 :key="p.id"
                 :title="p.name"
-                :to="{name: 'subscriptionPlan', params: { id: p.id}}"
-            ></list-item>
+                :to="{ name: 'subscriptionPlan', params: { id: p.id } }"
+            >
+                <template v-slot:actions>
+                    <edit-delete-dropdown @edit="onEdit(p)" @delete="onDelete(p)" />
+                </template>
+            </list-item>
         </list>
     </page>
 </template>
@@ -45,9 +46,10 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading } from '@/core';
 import subscriptionPlanStore from '@/modules/admin/scheduling/store/subscription-plan-store';
+import { SubscriptionPlan } from '@/api';
 
 @Component({
-    name: 'subscription-plans'
+    name: 'subscription-plans',
 })
 export default class SubscriptionPlans extends Vue {
     get plans() {
@@ -62,6 +64,14 @@ export default class SubscriptionPlans extends Vue {
     @displayLoading
     async onRefreshClick() {
         await subscriptionPlanStore.refreshSubscriptionPlans();
+    }
+
+    onEdit(p: SubscriptionPlan) {
+        this.$router.push({ name: 'editSubscriptionPlan', params: { id: p.id } });
+    }
+
+    onDelete(p: SubscriptionPlan) {
+        alert('Plans can only be deleted via Stripe.');
     }
 }
 </script>

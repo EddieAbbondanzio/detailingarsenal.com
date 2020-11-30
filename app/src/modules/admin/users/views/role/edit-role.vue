@@ -83,8 +83,6 @@ export default class EditRole extends Vue {
             permissionIds: [...new Set(this.enabledPermissions.map((p) => p.id))],
         };
 
-        console.log(this.enabledPermissions.length);
-
         try {
             const role = await securityStore.updateRole(edit);
 

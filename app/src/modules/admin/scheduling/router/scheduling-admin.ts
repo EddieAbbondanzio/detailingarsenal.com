@@ -17,6 +17,11 @@ const schedulingAdminRoutes: RouteConfig[] = [
         path: 'scheduling/subscription-plans/:id',
         name: 'subscriptionPlan',
         component: () => import('@/modules/admin/scheduling/views/subscription-plan/subscription-plan.vue')
+    },
+    {
+        path: 'scheduling/subscription-plans/:id/edit',
+        name: 'editSubscriptionPlan',
+        component: () => import('@/modules/admin/scheduling/views/subscription-plan/edit-subscription-plan.vue')
     }
 ];
 

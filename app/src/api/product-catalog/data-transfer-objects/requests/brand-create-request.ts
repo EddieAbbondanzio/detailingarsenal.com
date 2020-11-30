@@ -1,1 +1,1 @@
-export type BrandCreateRequest = { name: string };
+export interface BrandCreateRequest { name: string };

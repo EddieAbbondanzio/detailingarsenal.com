@@ -1,6 +1,7 @@
 import { SubscriptionPlanPrice } from '@/api/scheduling/billing/data-transfer-objects/subscription-plan-price';
 import { SubscriptionPlan } from '@/api/scheduling/billing/data-transfer-objects/subscription-plan';
 import { http } from '@/api/core/http';
+import { SubscriptionPlanUpdateRequest } from '../data-transfer-objects/requests/subscription-plan-update-request';
 
 export class SubscriptionPlanService {
     async getPlans() {
@@ -18,6 +19,11 @@ export class SubscriptionPlanService {
         return this._map(res.data);
     }
 
+    async updatePlan(update: SubscriptionPlanUpdateRequest) {
+        const res = await http.put(`/billing/subscription-plan/${update.id}`, update);
+        return this._map([res.data])[0];
+    }
+
     _map(data: any[]) {
         return data.map(d => {
             const prices =
@@ -25,7 +31,7 @@ export class SubscriptionPlanService {
                     ? []
                     : d.prices.map((p: any) => new SubscriptionPlanPrice(p.amount, p.interval, p.billingId));
 
-            const plan = new SubscriptionPlan(d.id, d.name, d.description, prices);
+            const plan = new SubscriptionPlan(d.id, d.name, d.description, d.roleId, prices);
 
             return plan;
         });

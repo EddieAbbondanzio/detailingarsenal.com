@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace DetailingArsenal.Domain.Scheduling.Billing {
     public class SubscriptionPlan : Aggregate<SubscriptionPlan>, IBillingEntity {
+        public const int DescriptionMaxLength = 1024;
+
         public string Name { get; set; }
         public string? Description { get; set; }
         public BillingReference BillingReference { get; }

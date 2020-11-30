@@ -2,15 +2,15 @@
     <page background="is-light">
         <template v-slot:header>
             <page-header
-                title="Scheduling Panel"
+                title="Scheduling panel"
                 description="Scheduling specific controls"
                 icon="cogs"
                 :backButton="false"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Admin Panel" :to="{ name: 'adminPanel' }" />
-                        <breadcrumb name="Scheduling Panel" :to="{ name: 'schedulingPanel' }" :active="true" />
+                        <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
+                        <breadcrumb name="Scheduling panel" :to="{ name: 'schedulingPanel' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -40,7 +40,7 @@ import { RawLocation } from 'vue-router';
 export default class SchedulingPanel extends Vue {
     entries: { title: string; description: string; icon: string; to: RawLocation }[] = [
         {
-            title: 'Subscription Plans',
+            title: 'Subscription plans',
             description: 'Plans for customers',
             icon: 'ferry',
             to: { name: 'subscriptionPlans' },

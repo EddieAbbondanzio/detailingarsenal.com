@@ -1,1 +1,1 @@
-export type BrandUpdateRequest = { id: string; name: string };
+export interface BrandUpdateRequest { id: string; name: string };
