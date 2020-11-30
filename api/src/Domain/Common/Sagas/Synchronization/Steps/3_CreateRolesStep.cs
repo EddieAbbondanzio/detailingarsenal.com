@@ -17,10 +17,10 @@ namespace DetailingArsenal.Domain.Common {
                 await repo.Add(new Role("Pro"));
             }
 
-            var expiredRole = await repo.FindByName("Expired");
+            var expiredRole = await repo.FindByName("Free");
 
             if (expiredRole == null) {
-                await repo.Add(new Role("Expired"));
+                await repo.Add(new Role("Free"));
             }
         }
     }

@@ -15,8 +15,8 @@ namespace DetailingArsenal.Application.Users.Security {
         }
 
         public async override Task Execute(RemoveRoleFromUserCommand input, User? user) {
-            var userToAddTo = await userRepo.FindById(input.UserId) ?? throw new EntityNotFoundException();
-            await roleAssigner.AddRoleToUser(userToAddTo, input.RoleId);
+            var userToRemoveFrom = await userRepo.FindById(input.UserId) ?? throw new EntityNotFoundException();
+            await roleAssigner.RemoveRole(userToRemoveFrom, input.RoleId);
         }
     }
 }

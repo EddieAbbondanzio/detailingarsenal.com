@@ -27,17 +27,19 @@ namespace DetailingArsenal.Application.Common {
             var customer = await customerRepo.FindByBillingId(busEvent.CustomerBillingId) ?? throw new EntityNotFoundException();
             var user = await userRepo.FindById(customer.UserId) ?? throw new EntityNotFoundException();
 
+
             switch (busEvent.SubscriptionStatus) {
                 case SubscriptionStatus.Active:
                 case SubscriptionStatus.Trialing:
                 case SubscriptionStatus.Incomplete:
                 case SubscriptionStatus.Unpaid:
-                    await roleAssigner.AddRoleToUser(user, busEvent.PlanId, true);
+                    var plan = await subscriptionPlanRepo.FindById(busEvent.PlanId) ?? throw new EntityNotFoundException();
+                    await roleAssigner.ReplaceRoles(user, (Guid)plan.RoleId!); //TODO: Fix this
                     break;
                 case SubscriptionStatus.IncompleteExpired:
                 case SubscriptionStatus.PastDue:
                 case SubscriptionStatus.Canceled:
-                    await roleAssigner.RemoveRoleFromUser(user, "Expired");
+                    await roleAssigner.ReplaceRoles(user, "Free");
                     break;
             }
         }

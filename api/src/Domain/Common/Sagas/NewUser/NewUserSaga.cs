@@ -12,7 +12,7 @@ namespace DetailingArsenal.Domain.Common {
             Add(createUser);
             Add(createBusiness);
             Add(createHoursOfOperation);
-            Add(createSubscription);
+            // Add(createSubscription);
             Add(addRoleToNewUser);
         }
     }

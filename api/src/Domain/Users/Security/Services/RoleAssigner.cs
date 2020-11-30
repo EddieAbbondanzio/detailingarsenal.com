@@ -5,11 +5,12 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.Users.Security {
     public interface IRoleAssigner : IService {
-
-        Task AddRoleToUser(User user, string roleName, bool deleteExisting = false);
-        Task AddRoleToUser(User user, Guid roleId, bool deleteExisting = false);
-        Task RemoveRoleFromUser(User user, string roleName);
-        Task RemoveRoleFromUser(User user, Guid roleId);
+        Task ReplaceRoles(User user, string roleName);
+        Task ReplaceRoles(User user, Guid roleId);
+        Task AddRole(User user, string roleName);
+        Task AddRole(User user, Guid roleId);
+        Task RemoveRole(User user, string roleName);
+        Task RemoveRole(User user, Guid roleId);
     }
 
     public class RoleAssigner : IRoleAssigner {
@@ -19,22 +20,32 @@ namespace DetailingArsenal.Domain.Users.Security {
             this.roleRepo = roleRepo;
         }
 
-        public async Task AddRoleToUser(User user, string roleName, bool deleteExisting = false) {
+        public async Task ReplaceRoles(User user, string roleName) {
             var role = await roleRepo.FindByName(roleName) ?? throw new EntityNotFoundException();
-            await roleRepo.AddToUser(user, role, deleteExisting);
+            await roleRepo.AddToUser(user, role, true);
         }
 
-        public async Task AddRoleToUser(User user, Guid roleId, bool deleteExisting = false) {
+        public async Task ReplaceRoles(User user, Guid roleId) {
             var role = await roleRepo.FindById(roleId) ?? throw new EntityNotFoundException();
-            await roleRepo.AddToUser(user, role, deleteExisting);
+            await roleRepo.AddToUser(user, role, true);
         }
 
-        public async Task RemoveRoleFromUser(User user, string roleName) {
+        public async Task AddRole(User user, string roleName) {
+            var role = await roleRepo.FindByName(roleName) ?? throw new EntityNotFoundException();
+            await roleRepo.AddToUser(user, role, false);
+        }
+
+        public async Task AddRole(User user, Guid roleId) {
+            var role = await roleRepo.FindById(roleId) ?? throw new EntityNotFoundException();
+            await roleRepo.AddToUser(user, role, false);
+        }
+
+        public async Task RemoveRole(User user, string roleName) {
             var role = await roleRepo.FindByName(roleName) ?? throw new EntityNotFoundException();
             await roleRepo.RemoveFromUser(user, role);
         }
 
-        public async Task RemoveRoleFromUser(User user, Guid roleId) {
+        public async Task RemoveRole(User user, Guid roleId) {
             var role = await roleRepo.FindById(roleId) ?? throw new EntityNotFoundException();
             await roleRepo.RemoveFromUser(user, role);
         }
