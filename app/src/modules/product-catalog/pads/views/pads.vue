@@ -115,6 +115,7 @@ export default class Pads extends Vue {
         return summaries;
     }
 
+    @displayLoading
     async created() {
         await padStore.init();
     }

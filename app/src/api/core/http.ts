@@ -36,7 +36,7 @@ http.interceptors.request.use(config => {
 
         // We remove any circular references by JSONifying it first.
         // https://stackoverflow.com/questions/9382167/serializing-object-that-contains-cyclic-object-value
-        var jsonData = JSON.stringify(data, function(key, val) {
+        var jsonData = JSON.stringify(data, function (key, val) {
             if (val != null && typeof val == 'object') {
                 if (seen.indexOf(val) >= 0) {
                     return;
@@ -103,9 +103,10 @@ http.interceptors.response.use(
                     /*
                      * Assume (for now) that they tried to use a pro feature.
                      */
-                    router.push({ name: 'subscription' });
+                    // router.push({ name: 'subscription' });
                     return Promise.reject(
-                        new AuthorizationError('Please upgrade your subscription to use this feature')
+                        new AuthorizationError('Uh Uh Uh. You didn\'t say the magic word')
+                        // new AuthorizationError('Please upgrade your subscription to use this feature')
                     );
                 }
             }
