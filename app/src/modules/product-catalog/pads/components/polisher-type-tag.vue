@@ -23,6 +23,8 @@ export default class PolisherTypeTag extends Vue {
                 return 'is-success';
             case PolisherType.Rotary:
                 return 'is-warning';
+            case PolisherType.Mini:
+                return 'is-danger';
         }
     }
 
