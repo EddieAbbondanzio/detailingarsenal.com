@@ -6,8 +6,9 @@ import { PadTexture } from './pad-texture';
 import { PolisherType } from './polisher-type';
 import { Rating } from './rating';
 import { Image } from './image';
+import { PadOption } from './pad-option';
 
-export class Pad {
+export class PadColor {
     get label() {
         return `${this.series.brand.name} ${this.series.name} ${this.name}`
     }
@@ -19,10 +20,8 @@ export class Pad {
         public category: PadCategory,
         public cut: PadCut | null,
         public finish: PadFinish | null,
-        public material: PadMaterial,
-        public texture: PadTexture,
-        public polisherTypes: PolisherType[],
         public rating: Rating,
         public image: Image | null = null,
+        public options: PadOption[] = []
     ) { }
 }

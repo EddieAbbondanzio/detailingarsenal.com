@@ -1,9 +1,9 @@
 namespace DetailingArsenal.Application.ProductCatalog {
     public record RatingReadModel : IDataTransferObject {
-        public int Stars { get; }
+        public decimal Stars { get; }
         public int ReviewCount { get; }
 
-        public RatingReadModel(int stars, int reviewCount) {
+        public RatingReadModel(decimal stars, int reviewCount) {
             Stars = stars;
             ReviewCount = reviewCount;
         }

@@ -5,23 +5,35 @@ namespace DetailingArsenal.Domain.ProductCatalog {
     public class PadSeries : Aggregate<PadSeries> {
         public string Name { get; set; }
         public Guid BrandId { get; set; }
-        public List<PadSeriesSize> Sizes { get; set; }
-        public List<Pad> Pads { get; set; }
+        public PadMaterial Material { get; set; }
+        public PadTexture Texture { get; set; }
 
-        public PadSeries(Guid id, string name, Guid brandId, List<PadSeriesSize>? sizes = null, List<Pad>? pads = null) {
+        /// <summary>
+        /// Recommended for the following polisher types.
+        /// </summary>
+        public List<PolisherType> PolisherTypes { get; set; }
+        public List<PadSize> Sizes { get; set; }
+        public List<PadColor> Colors { get; set; }
+
+        public PadSeries(Guid id, string name, Guid brandId, PadMaterial material, PadTexture texture, List<PolisherType> polisherTypes, List<PadSize>? sizes = null, List<PadColor>? colors = null) {
             Id = id;
             Name = name;
             BrandId = brandId;
-            Sizes = sizes ?? new List<PadSeriesSize>();
-            Pads = pads ?? new List<Pad>();
+            Material = material;
+            Texture = texture;
+            PolisherTypes = polisherTypes;
+            Sizes = sizes ?? new();
+            Colors = colors ?? new();
         }
 
-        public PadSeries(string name, Guid brandId, List<PadSeriesSize>? sizes = null, List<Pad>? pads = null) {
-            Id = Guid.NewGuid();
+        public PadSeries(string name, Guid brandId, PadMaterial material, PadTexture texture, List<PolisherType> polisherTypes, List<PadSize>? sizes = null, List<PadColor>? colors = null) {
             Name = name;
             BrandId = brandId;
-            Sizes = sizes ?? new List<PadSeriesSize>();
-            Pads = pads ?? new List<Pad>();
+            Material = material;
+            Texture = texture;
+            PolisherTypes = polisherTypes;
+            Sizes = sizes ?? new();
+            Colors = colors ?? new();
         }
     }
 }

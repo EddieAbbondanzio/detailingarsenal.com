@@ -1,7 +1,7 @@
 using System;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
-    public class ReviewRow : IDataTransferObject {
+    internal class ReviewRow : IDataTransferObject {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid PadId { get; set; }

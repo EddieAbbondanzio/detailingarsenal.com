@@ -12,9 +12,9 @@
 		"body": [
 			"using FluentMigrator;",
 			"",
-			"namespace DetailingArsenal.Persistence.Billing.Migrations {",
-			"   [Migration(${1:YYYY_MM_DD_NN}, \"${2:Description}\")]",
-			"    public class $3 : Migration {",
+			"namespace DetailingArsenal.Persistence.$1.Migrations {",
+			"   [Migration(${2:YYYY_MM_DD_NN}, \"${3:Description}\")]",
+			"    public class $4 : Migration {",
 			"       public override void Up() {",
 			"           $0",
 			"       }",

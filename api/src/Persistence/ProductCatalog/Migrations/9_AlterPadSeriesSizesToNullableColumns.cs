@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
-    [Migration(2020_10_19, "Alter pad_series_sizes to have nullable columns.")]
+    [Migration(2020_10_19_0, "Alter pad_series_sizes to have nullable columns.")]
     public class AlterPadSeriesSizesToNullableColumns : Migration {
         public override void Up() {
             Alter.Column("thickness").OnTable("pad_series_sizes").AsFloat().Nullable();

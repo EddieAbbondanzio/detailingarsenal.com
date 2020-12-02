@@ -1,10 +1,10 @@
-import { PadSeriesSize } from '../pad-series-size';
+import { PadSize } from '../pad-size';
 import { PadCreateOrUpdate } from '../pad-create-or-update';
 
 export interface PadSeriesUpdateRequest {
     id: string;
     name: string;
     brandId: string;
-    sizes: PadSeriesSize[];
+    sizes: PadSize[];
     pads: PadCreateOrUpdate[];
 }

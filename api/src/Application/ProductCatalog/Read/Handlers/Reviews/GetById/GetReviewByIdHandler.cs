@@ -9,7 +9,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             this.reader = reader;
         }
 
-        public async override Task<ReviewReadModel> Execute(GetReviewByIdQuery input, User? user) {
+        public async override Task<ReviewReadModel?> Execute(GetReviewByIdQuery input, User? user) {
             var r = await reader.ReadById(input.Id);
             return r;
         }

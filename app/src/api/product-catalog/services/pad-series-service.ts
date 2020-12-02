@@ -1,8 +1,8 @@
 import { Brand } from '../data-transfer-objects/brand';
 import { PadSeries } from '../data-transfer-objects/pad-series';
 import { http } from '@/api/core/http';
-import { PadSeriesSize } from '../data-transfer-objects/pad-series-size';
-import { Pad } from '../data-transfer-objects/pad';
+import { PadSize } from '../data-transfer-objects/pad-size';
+import { PadColor } from '../data-transfer-objects/pad-color';
 import { PadSeriesCreateRequest } from '../data-transfer-objects/requests/pad-series-create-request';
 import { PadSeriesUpdateRequest } from '../data-transfer-objects/requests/pad-series-update-request';
 
@@ -31,8 +31,8 @@ export class PadSeriesService {
     _map(ps: any): PadSeries {
         const series = new PadSeries(ps.id, ps.name, new Brand(ps.brand.id, ps.brand.name));
 
-        series.pads = (ps.pads as any[]).map(p => new Pad(p.id, series, p.name, p.category, p.cut, p.finish, p.material, p.texture, p.polisherTypes, null!, p.image));
-        series.sizes = (ps.sizes as any[]).map(s => new PadSeriesSize(s.diameter, s.thickness, s.partNumber));
+        series.pads = (ps.pads as any[]).map(p => new PadColor(p.id, series, p.name, p.category, p.cut, p.finish, p.material, p.texture, p.polisherTypes, null!, p.image));
+        series.sizes = (ps.sizes as any[]).map(s => new PadSize(s.diameter, s.thickness, s.partNumber));
 
         return series;
     }

@@ -34,9 +34,18 @@ namespace DetailingArsenal.Api.ProductCatalog {
                 new PadSeriesCreateCommand(
                     create.Name,
                     create.BrandId,
-                    create.Sizes.Select(s => new PadSeriesSize(s.Diameter, s.Thickness, s.PartNumber)).ToList(),
-                    create.Pads.Select(p => p.ToReal()).ToList()
-                ),
+                    PadTextureUtils.Parse(create.Texture),
+                    PadMaterialUtils.Parse(create.Material),
+                    create.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
+                    create.Sizes.Select(s => new PadSize(s.Diameter, s.Thickness)).ToList(),
+                    create.Colors.Select(
+                        c => new PadColor(
+                            c.Name,
+                            PadCategoryUtils.Parse(c.Category),
+                            c.Image,
+                            c.Options.Select(o => new PadOption(o.PadSizeId, o.PartNumber)).ToList()
+                        )
+                    ).ToList()),
                 User
             );
 
@@ -52,9 +61,18 @@ namespace DetailingArsenal.Api.ProductCatalog {
                     id,
                     update.Name,
                     update.BrandId,
-                    update.Sizes,
-                    update.Pads.Select(p => p.ToReal()).ToList()
-                ),
+                    PadTextureUtils.Parse(update.Texture),
+                    PadMaterialUtils.Parse(update.Material),
+                    update.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
+                    update.Sizes.Select(s => new PadSize(s.Diameter, s.Thickness)).ToList(),
+                    update.Colors.Select(
+                        c => new PadColor(
+                            c.Name,
+                            PadCategoryUtils.Parse(c.Category),
+                            c.Image,
+                            c.Options.Select(o => new PadOption(o.PadSizeId, o.PartNumber)).ToList()
+                        )
+                    ).ToList()),
                 User
             );
 

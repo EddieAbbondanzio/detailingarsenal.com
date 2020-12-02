@@ -16,15 +16,14 @@ namespace DetailingArsenal.Application.ProductCatalog {
         }
 
         public async override Task<Guid> Execute(PadSeriesCreateCommand command, User? user) {
-            var pads = command.Pads.Select(p => new Pad(
-                p.Name, p.Category, p.Material, p.Texture, p.PolisherTypes
-            )).ToList();
-
             var series = new PadSeries(
                 command.Name,
                 command.BrandId,
+                command.Material,
+                command.Texture,
+                command.PolisherTypes,
                 command.Sizes,
-                pads
+                command.Colors
             );
 
             await repo.Add(series);

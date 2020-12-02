@@ -10,7 +10,9 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public string Name { get; set; } = null!;
         public string Data { get; set; } = null!;
 
-        public DataUrlImage() { }
+        public DataUrlImage() {
+            // Used by API layer
+        }
 
         public DataUrlImage(string name, byte[] data) {
             Name = name;

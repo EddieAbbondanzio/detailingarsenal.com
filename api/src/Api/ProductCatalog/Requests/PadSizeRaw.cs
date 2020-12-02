@@ -1,7 +1,6 @@
 namespace DetailingArsenal.Api.ProductCatalog {
-    public class PadSeriesSizeRaw : IDataTransferObject {
+    public class PadSizeRaw : IDataTransferObject {
         public float Diameter { get; set; }
         public float? Thickness { get; set; }
-        public string? PartNumber { get; set; }
     }
 }

@@ -10,60 +10,68 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
     public class PadSeriesReader : DatabaseInteractor, IPadSeriesReader {
         public PadSeriesReader(IDatabase database) : base(database) { }
 
-
         public async Task<PadSeriesReadModel?> ReadById(Guid id) {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
-                    @"
-                        select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id; 
-                        select * from pad_series_sizes where pad_series_id = @Id;
-                        select p.*, avg(r.cut) as cut, avg(r.finish) as finish from pads p 
-                            left join reviews r on p.id = r.pad_id 
-                            where pad_series_id = @Id group by p.id;
-                        select ppt.* from pad_polisher_types ppt join pads p on ppt.pad_id = p.id where p.pad_series_id = @Id;
+                    @"  select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id;
+                        select * from pad_series_polisher_types where pad_series_id = @Id;
+                        select * from pad_sizes where pad_series_id = @Id;
+                        select count(reviews.*) as count, pad_colors.id from pad_colors
+                            left join reviews on reviews.pad_color_id = pad_colors.id 
+                            where pad_series_id = @Id;
+                        select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pad_colors pc 
+                            left join reviews r on pc.id = r.pad_color_id 
+                            where pad_series_id = @Id group by pc.id;
+                        select * from pad_options po left join pad_colors pc on po.pad_color_id = pc.id where pad_series_id = @Id;
                     ",
                     new { Id = id }
                 )) {
                     var series = reader.Read<PadSeriesRow, BrandRow, PadSeriesReadModel>(
                         (ps, b) => new PadSeriesReadModel(
-                            ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
+                            ps.Id,
+                            ps.Name,
+                            new BrandReadModel(
+                                b.Id,
+                                b.Name
+                            ),
+                            ps.Material,
+                            ps.Texture
+                        )).ElementAt(0);
+
+                    series.PolisherTypes.AddRange(reader.Read<PadSeriesPolisherTypeRow>()
+                        .Select(p => p.PolisherType));
+
+                    series.Sizes.AddRange(reader.Read<PadSizeReadModel>()
+                        .Select(s => new PadSizeReadModel(s.Diameter, s.Thickness)));
+
+                    var reviewCount = reader.ReadFirstOrDefault<int>();
+
+                    var colors = new Dictionary<Guid, PadColorReadModel>(
+                        reader.Read().Select(c => new KeyValuePair<Guid, PadColorReadModel>(
+                            c.id,
+                            new PadColorReadModel(
+                                c.id,
+                                c.name,
+                                c.category,
+                                c.image_name != null ? new DataUrlImage(c.image_name, c.image_data) : null,
+                                new List<PadOptionReadModel>(),
+                                c.cut,
+                                c.finish,
+                                new RatingReadModel(c.stars, reviewCount)
+                            )
                         )
-                    ).ElementAt(0);
+                    ));
 
-                    if (series == null) {
-                        return null;
-                    }
+                    var options = reader.Read<PadOptionRow>();
+                    foreach (var opt in options) {
+                        PadColorReadModel? color;
 
-                    var sizes = reader.Read<PadSeriesSizeRow>().Select(pss => new PadSeriesSizeReadModel(
-                        pss.Diameter,
-                        pss.Thickness,
-                        pss.PartNumber
-                    )).ToList();
-
-                    var pads = reader.Read().Select(p => new PadReadModel(
-                       p.id,
-                       p.name,
-                       p.category,
-                       p.cut,   // THIS MIGHT BREAK!
-                       p.finish,
-                       p.material,
-                       p.texture
-                    )).ToList();
-
-                    var padLookup = pads.ToDictionary(p => p.Id, p => p);
-
-                    // Assign each pad their polisher types
-                    var padPolisherTypes = reader.Read<PadPolisherTypeRow>();
-                    foreach (var padPolisherType in padPolisherTypes) {
-                        PadReadModel? pad;
-
-                        if (padLookup.TryGetValue(padPolisherType.PadId, out pad)) {
-                            pad.PolisherTypes.Add(padPolisherType.PolisherType);
+                        if (colors.TryGetValue(opt.PadColorId, out color)) {
+                            color.Options.Add(new PadOptionReadModel(opt.PadSizeId, opt.PartNumber));
                         }
                     }
 
-                    series.Pads.AddRange(pads);
-                    series.Sizes.AddRange(sizes);
+                    series.Colors.AddRange(colors.Values);
                     return series;
                 }
             }
@@ -72,75 +80,81 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public async Task<List<PadSeriesReadModel>> ReadAll() {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
-                    @"
-                        select * from pad_series ps join brands b on ps.brand_id = b.id; 
-                        select * from pad_series_sizes;
-                        select p.*, avg(r.cut) as cut, avg(r.finish) as finish from pads p 
-                            left join reviews r on p.id = r.pad_id group by p.id;
-                        select * from pad_polisher_types;
-                    "
+                    @"  select * from pad_series ps join brands b on ps.brand_id = b.id;
+                        select * from pad_series_polisher_types;
+                        select * from pad_sizes;
+                        select count(reviews.*) as count, pad_colors.id from pad_colors
+                            left join reviews on reviews.pad_color_id = pad_colors.id 
+                            group by pad_colors.id;
+                        select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pad_colors pc 
+                            left join reviews r on pc.id = r.pad_color_id 
+                            group by pc.id;
+                        select * from pad_options po left join pad_colors pc on po.pad_color_id = pc.id;
+                        "
                 )) {
-                    var series = new Dictionary<Guid, PadSeriesReadModel>(reader.Read<PadSeriesRow, BrandRow, PadSeriesReadModel>(
-                        (ps, b) => new PadSeriesReadModel(
-                            ps.Id, ps.Name, new BrandReadModel(b.Id, b.Name)
-                        )).Select(s => new KeyValuePair<Guid, PadSeriesReadModel>(s.Id, s))
+                    var series = new Dictionary<Guid, PadSeriesReadModel>(
+                        reader.Read<PadSeriesRow, BrandRow, PadSeriesReadModel>(
+                            (ps, b) => new PadSeriesReadModel(
+                                ps.Id,
+                                ps.Name,
+                                new BrandReadModel(
+                                    b.Id,
+                                    b.Name
+                                ),
+                                ps.Material,
+                                ps.Texture
+                            )
+                        ).Select(p => new KeyValuePair<Guid, PadSeriesReadModel>(p.Id, p))
                     );
 
-                    // Stop if we didn't find anything.
-                    if (series.Count() == 0) {
-                        return new List<PadSeriesReadModel>();
+                    var polisherTypes = reader.Read<PadSeriesPolisherTypeRow>();
+                    foreach (var pt in polisherTypes) {
+                        PadSeriesReadModel? s;
+
+                        if (series.TryGetValue(pt.PadSeriesId, out s)) {
+                            s.PolisherTypes.Add(pt.PolisherType);
+                        }
                     }
 
-                    var sizes = reader.Read<PadSeriesSizeRow>();
+                    var sizes = reader.Read<PadSizeRow>();
                     foreach (var size in sizes) {
-                        PadSeriesReadModel? ps;
+                        PadSeriesReadModel? s;
 
-                        if (series.TryGetValue(size.PadSeriesId, out ps)) {
-                            ps.Sizes.Add(new PadSeriesSizeReadModel(size.Diameter, size.Thickness, size.PartNumber));
+                        if (series.TryGetValue(size.PadSeriesId, out s)) {
+                            s.Sizes.Add(new PadSizeReadModel(size.Diameter, size.Thickness));
                         }
                     }
 
-                    var pads = reader.Read();
-                    var padDict = new Dictionary<Guid, PadReadModel>();
-                    foreach (var p in pads) {
-                        PadSeriesReadModel? ps;
+                    var reviewCounts = new Dictionary<Guid, int>(reader.Read<(int Count, Guid Id)>().Select(c => new KeyValuePair<Guid, int>(c.Id, c.Count)));
+                    var colors = new Dictionary<Guid, PadColorReadModel>();
 
-                        if (series.TryGetValue(p.pad_series_id, out ps)) {
-                            var maybe = (IDictionary<string, object>)p;
-                            int? cut = null;
-                            int? finish = null;
+                    foreach (var raw in reader.Read()) {
+                        var color = new PadColorReadModel(
+                            raw.id,
+                            raw.name,
+                            raw.category,
+                            raw.image_name != null ? new DataUrlImage(raw.image_name, raw.image_data) : null,
+                            new List<PadOptionReadModel>(),
+                            raw.cut,
+                            raw.finish,
+                            new RatingReadModel(raw.stars, reviewCounts[raw.id])
+                        );
 
-                            if (maybe.ContainsKey("cut")) {
-                                cut = p.cut;
-                            }
+                        colors.Add(color.Id, color);
 
-                            if (maybe.ContainsKey("finish")) {
-                                finish = p.finish;
-                            }
+                        PadSeriesReadModel? s;
 
-
-                            var pad = new PadReadModel(
-                                p.id,
-                                p.name,
-                                p.category,
-                                cut,
-                                finish,
-                                p.material,
-                                p.texture
-                            );
-
-                            padDict.Add(pad.Id, pad);
-                            ps!.Pads.Add(pad);
-
+                        if (series.TryGetValue(raw.pad_series_id, out s)) {
+                            s!.Colors.Add(color);
                         }
                     }
 
-                    var polisherTypes = reader.Read<PadPolisherTypeRow>();
-                    foreach (var polisherType in polisherTypes) {
-                        PadReadModel? pad;
+                    var options = reader.Read<PadOptionRow>();
+                    foreach (var opt in options) {
+                        PadColorReadModel? color;
 
-                        if (padDict.TryGetValue(polisherType.PadId, out pad)) {
-                            pad.PolisherTypes.Add(polisherType.PolisherType);
+                        if (colors.TryGetValue(opt.PadColorId, out color)) {
+                            color.Options.Add(new PadOptionReadModel(opt.PadSizeId, opt.PartNumber));
                         }
                     }
 
