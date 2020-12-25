@@ -28,7 +28,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
             List<PadSeriesReadModel> pads = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>();
             return Ok(pads);
         }
-
+ 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
             var sizes = create.Sizes.Select(

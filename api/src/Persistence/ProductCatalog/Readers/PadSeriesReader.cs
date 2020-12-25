@@ -19,7 +19,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         select * from pad_sizes where pad_series_id = @Id;
                         select count(reviews.*) as count, pad_colors.id from pad_colors
                             left join reviews on reviews.pad_color_id = pad_colors.id 
-                            where pad_series_id = @Id;
+                            where pad_series_id = @Id
+                            group by pad_colors.id;
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pad_colors pc 
                             left join reviews r on pc.id = r.pad_color_id 
                             where pad_series_id = @Id group by pc.id;

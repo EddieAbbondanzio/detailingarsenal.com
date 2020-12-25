@@ -91,9 +91,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     );
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_sizes (id, pad_series_id, diameter, thickness) values (@Id, @PadSeriesId, @Diameter, @Thickness);",
+                        @"insert into pad_sizes (id, pad_series_id, diameter_amount, diameter_unit, thickness_amount, thickness_unit) values (@Id, @PadSeriesId, @DiameterAmount, @DiameterUnit, @ThicknessAmount, @ThicknessUnit);",
                         series.Sizes.Select(s => new PadSizeRow() {
-                            Id = Guid.NewGuid(),
+                            Id = s.Id,
                             PadSeriesId = series.Id,
                             DiameterAmount = s.Diameter.Amount,
                             DiameterUnit = s.Diameter.Unit.Serialize(),
@@ -163,7 +163,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync(
                         @"insert into pad_sizes (id, pad_series_id, diameter, thickness) values (@Id, @PadSeriesId, @Diameter, @Thickness);",
                         series.Sizes.Select(s => new PadSizeRow() {
-                            Id = Guid.NewGuid(),
+                            Id = s.Id,
                             PadSeriesId = series.Id,
                             DiameterAmount = s.Diameter.Amount,
                             DiameterUnit = s.Diameter.Unit.Serialize(),

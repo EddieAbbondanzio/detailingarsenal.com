@@ -51,11 +51,11 @@
             />
 
             <input-array title="Sizes" :factory="() => ({})" v-model="sizes" v-slot="{ value }">
-                <measurement-input label="Diameter" v-model="value.diameter" rules="required" />
+                <measurement-input label="Diameter" v-model="value.diameter" rules="required" :required="true" />
                 <measurement-input label="Thickness" v-model="value.thickness" />
             </input-array>
 
-            <input-array title="Colors" :factory="padColorCreateOrUpdateFactory" v-model="pads">
+            <input-array title="Colors" :factory="padColorCreateFactory" v-model="colors">
                 <template v-slot="{ value }">
                     <input-text-field
                         class="has-margin-x-1 has-margin-y-0"
@@ -83,19 +83,22 @@
                 <template v-slot:detail="{ value }">
                     <input-array title="Options" v-model="value.options">
                         <template v-slot="{ value }">
-                            <input-select label="Size" v-model="value.padSizeId" rules="required">
+                            <input-select label="Size" v-model="value.padSizeIndex" rules="required">
                                 <option :value="null">Select a size</option>
-                                <option v-for="size in sizes" :key="size.id" :value="size">{{ size.diameter }}</option>
+                                <option v-for="(size, i) in sizes" :key="i" :value="i">
+                                    {{ size.diameter.amount.toString() + size.diameter.unit }}
+                                </option>
                             </input-select>
 
-                            <input-text-field v-model="value.partNumber" />
+                            <input-text-field label="Part Number" v-model="value.partNumber" />
                         </template>
                     </input-array>
                 </template>
             </input-array>
         </input-form>
-
-        {{ pads[0] }}
+        count: {{ sizes.length }}
+        <br />
+        {{ sizes }}
     </page>
 </template>
 
@@ -110,16 +113,14 @@ import brandStore from '../../store/brand-store';
 import {
     Brand,
     Image,
-    Pad,
     PadCategory,
-    PadCreateOrUpdate,
     PadMaterial,
     PadTexture,
-    PadSeriesSize,
     PolisherType,
     SpecificationError,
-    PadColorCreateOrUpdate,
     PadOption,
+    PadColorCreate,
+    PadSizeCreateOrUpdate,
 } from '@/api';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStrore from '../../store/admin-pad-store';
@@ -156,8 +157,8 @@ export default class CreatePadSeries extends Vue {
     material: PadMaterial | null = null;
     texture: PadTexture | null = null;
     polisherTypes: PolisherType[] = [];
-    pads: PadCreateOrUpdate[] = [];
-    sizes: PadSeriesSize[] = [];
+    sizes: PadSizeCreateOrUpdate[] = [];
+    colors: PadColorCreate[] = [];
 
     async created() {
         await brandStore.init();
@@ -165,24 +166,30 @@ export default class CreatePadSeries extends Vue {
 
     @displayLoading
     public async onSubmit() {
-        console.log(this.sizes[0].diameter);
+        const create = {
+            name: this.name,
+            texture: this.texture!,
+            material: this.material!,
+            polisherTypes: this.polisherTypes,
+            brandId: this.brand!.id,
+            sizes: this.sizes,
+            colors: this.colors,
+        };
 
-        // const create = { name: this.name, brandId: this.brand!.id, pads: this.pads, sizes: this.sizes };
-        // try {
-        //     console.log(this.sizes);
-        //     await adminPadStrore.create(create);
-        //     toast(`Created new pad series ${create.name}`);
-        //     this.$router.push({ name: 'padSeries' });
-        // } catch (err) {
-        //     if (err instanceof SpecificationError) {
-        //         displayError(err);
-        //     } else {
-        //         throw err;
-        //     }
-        // }
+        try {
+            await adminPadStrore.create(create);
+            toast(`Created new pad series ${create.name}`);
+            this.$router.push({ name: 'padSeries' });
+        } catch (err) {
+            if (err instanceof SpecificationError) {
+                displayError(err);
+            } else {
+                throw err;
+            }
+        }
     }
 
-    padColorCreateOrUpdateFactory(): PadColorCreateOrUpdate {
+    padColorCreateFactory(): PadColorCreate {
         return {
             name: '',
             category: null!,

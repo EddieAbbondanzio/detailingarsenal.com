@@ -27,6 +27,7 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         }
 
         public PadSeries(string name, Guid brandId, PadMaterial material, PadTexture texture, List<PolisherType> polisherTypes, List<PadSize>? sizes = null, List<PadColor>? colors = null) {
+            Id = Guid.NewGuid();
             Name = name;
             BrandId = brandId;
             Material = material;
