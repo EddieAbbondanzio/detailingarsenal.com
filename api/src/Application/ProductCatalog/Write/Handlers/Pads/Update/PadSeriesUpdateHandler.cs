@@ -10,9 +10,11 @@ namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "update", Scope = "pad-series")]
     public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand> {
         IPadSeriesRepo repo;
+        PadSizeDiameterUniqueSpecification spec;
 
-        public PadSeriesUpdateHandler(IPadSeriesRepo repo) {
+        public PadSeriesUpdateHandler(IPadSeriesRepo repo, PadSizeDiameterUniqueSpecification spec) {
             this.repo = repo;
+            this.spec = spec;
         }
 
         public async override Task Execute(PadSeriesUpdateCommand command, User? user) {
@@ -25,6 +27,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             series.Colors = command.Colors;
             series.Sizes = command.Sizes;
 
+            await spec.CheckAndThrow(series);
             await repo.Update(series);
         }
     }

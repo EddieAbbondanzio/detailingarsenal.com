@@ -16,5 +16,15 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             Amount = amount;
             Unit = unit;
         }
+
+        public override bool Equals(object? obj) {
+            return obj is Measurement measurement &&
+                   Amount == measurement.Amount &&
+                   Unit == measurement.Unit;
+        }
+
+        public override int GetHashCode() {
+            return HashCode.Combine(Amount, Unit);
+        }
     }
 }
