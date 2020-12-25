@@ -51,19 +51,8 @@
             />
 
             <input-array title="Sizes" :factory="() => ({})" v-model="sizes" v-slot="{ value }">
-                <input-text-field
-                    class="has-margin-x-1 has-margin-y-0"
-                    v-model.number="value.diameter"
-                    label="Diameter"
-                    rules="required"
-                    :required="true"
-                />
-
-                <input-text-field
-                    class="has-margin-x-1 has-margin-y-0"
-                    v-model.number="value.thickness"
-                    label="Thickness"
-                />
+                <measurement-input label="Diameter" v-model="value.diameter" />
+                <measurement-input label="Thickness" v-model="value.thickness" />
             </input-array>
 
             <input-array title="Colors" :factory="padColorCreateOrUpdateFactory" v-model="pads">
@@ -95,9 +84,9 @@
                     <input-array title="Options" v-model="value.options">
                         <template v-slot="{ value }">
                             <input-select label="Size" v-model="value.padSizeId" rules="required">
-                <option :value="null">Select a size</option>
-                <option v-for="size in sizes" :key="size.id" :value="size">{{ size.diameter }}</option>
-            </input-select>
+                                <option :value="null">Select a size</option>
+                                <option v-for="size in sizes" :key="size.id" :value="size">{{ size.diameter }}</option>
+                            </input-select>
 
                             <input-text-field v-model="value.partNumber" />
                         </template>
@@ -134,8 +123,13 @@ import {
 } from '@/api';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStrore from '../../store/admin-pad-store';
+import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
 
-@Component
+@Component({
+    components: {
+        MeasurementInput,
+    },
+})
 export default class CreatePadSeries extends Vue {
     get brands() {
         return brandStore.brands;
@@ -171,19 +165,21 @@ export default class CreatePadSeries extends Vue {
 
     @displayLoading
     public async onSubmit() {
-        const create = { name: this.name, brandId: this.brand!.id, pads: this.pads, sizes: this.sizes };
-        try {
-            console.log(this.sizes);
-            await adminPadStrore.create(create);
-            toast(`Created new pad series ${create.name}`);
-            this.$router.push({ name: 'padSeries' });
-        } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
-        }
+        console.log(this.sizes[0].diameter);
+
+        // const create = { name: this.name, brandId: this.brand!.id, pads: this.pads, sizes: this.sizes };
+        // try {
+        //     console.log(this.sizes);
+        //     await adminPadStrore.create(create);
+        //     toast(`Created new pad series ${create.name}`);
+        //     this.$router.push({ name: 'padSeries' });
+        // } catch (err) {
+        //     if (err instanceof SpecificationError) {
+        //         displayError(err);
+        //     } else {
+        //         throw err;
+        //     }
+        // }
     }
 
     padColorCreateOrUpdateFactory(): PadColorCreateOrUpdate {

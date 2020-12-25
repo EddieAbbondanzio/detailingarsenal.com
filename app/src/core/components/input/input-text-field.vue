@@ -4,13 +4,7 @@
             <slot name="label"></slot>
         </template>
 
-        <validation-provider
-            :vid="vid"
-            :name="label"
-            :rules="rules"
-            v-slot="{ errors, classes }"
-            ref="validator"
-        >
+        <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
             <b-input
                 :icon="iconLeft"
                 :type="type"
@@ -35,9 +29,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
  * Text field that supports validation, and can have a required * indicator.
  */
 @Component({
-    name: 'input-text-field'
+    name: 'input-text-field',
 })
 export default class InputTextField extends Vue {
+    /**
+     * Hidden name of the field.
+     */
     @Prop({ default: null })
     id!: string | null;
 
@@ -93,7 +90,7 @@ export default class InputTextField extends Vue {
         (this.$refs.validator as any).applyResult({
             errors: [error],
             valid: false,
-            failedRules: {}
+            failedRules: {},
         });
     }
 }

@@ -84,7 +84,7 @@ import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue
 import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import padStore from '../store/pad/pad-store';
-import PolisherTypeTag from '@/modules/product-catalog/pads/components/polisher-type-tag.vue';
+import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 
 @Component({
     components: {
