@@ -51,7 +51,7 @@
             />
 
             <input-array title="Sizes" :factory="() => ({})" v-model="sizes" v-slot="{ value }">
-                <measurement-input label="Diameter" v-model="value.diameter" />
+                <measurement-input label="Diameter" v-model="value.diameter" rules="required" />
                 <measurement-input label="Thickness" v-model="value.thickness" />
             </input-array>
 

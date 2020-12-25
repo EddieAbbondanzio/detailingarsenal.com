@@ -4,7 +4,7 @@
             style="width: 120px"
             v-model.number="value.amount"
             @input="onInput()"
-            rules="required|min_value:0"
+            :rules="rules + '|min_value:0'"
             label="Amount"
             :hideLabel="true"
         />
@@ -25,6 +25,9 @@ export default class MeasurementInput extends Vue {
     get units() {
         return [MeasurementUnit.Inches, MeasurementUnit.Millimeters];
     }
+
+    @Prop()
+    rules!: string | null;
 
     @Prop()
     label!: string | null;
