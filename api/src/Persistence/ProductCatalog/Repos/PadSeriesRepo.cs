@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using DetailingArsenal.Domain.Common;
 using DetailingArsenal.Domain.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
@@ -31,8 +32,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     )).ToList();
 
                     var sizes = reader.Read<PadSizeRow>().Select(ps => new PadSize(
-                        ps.Diameter,
-                        ps.Thickness
+                        ps.Id,
+                        new Measurement(ps.DiameterAmount, MeasurementUnitUtils.Parse(ps.DiameterUnit)),
+                        ps.ThicknessAmount != null ? new Measurement(ps.ThicknessAmount ?? 0, MeasurementUnitUtils.Parse(ps.ThicknessUnit!)) : null
                     )).ToList();
 
                     var colors = new Dictionary<Guid, PadColor>(
@@ -93,8 +95,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         series.Sizes.Select(s => new PadSizeRow() {
                             Id = Guid.NewGuid(),
                             PadSeriesId = series.Id,
-                            Diameter = s.Diameter,
-                            Thickness = s.Thickness
+                            DiameterAmount = s.Diameter.Amount,
+                            DiameterUnit = s.Diameter.Unit.Serialize(),
+                            ThicknessAmount = s.Thickness?.Amount,
+                            ThicknessUnit = s.Thickness?.Unit.Serialize()
                         }).ToList()
                     );
 
@@ -161,8 +165,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         series.Sizes.Select(s => new PadSizeRow() {
                             Id = Guid.NewGuid(),
                             PadSeriesId = series.Id,
-                            Diameter = s.Diameter,
-                            Thickness = s.Thickness
+                            DiameterAmount = s.Diameter.Amount,
+                            DiameterUnit = s.Diameter.Unit.Serialize(),
+                            ThicknessAmount = s.Thickness?.Amount,
+                            ThicknessUnit = s.Thickness?.Unit.Serialize()
                         }).ToList()
                     );
 

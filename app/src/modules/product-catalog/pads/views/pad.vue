@@ -152,7 +152,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Pad, PadSeries, PadSeriesSize } from '@/api';
+import { PadColor, PadSeries, PadSize } from '@/api';
 import padStore from '../store/pad/pad-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
@@ -165,8 +165,8 @@ import PolisherTypeTag from '@/modules/product-catalog/pads/components/polisher-
         Stars,
         PadCutBar,
         PadFinishBar,
-        PolisherTypeTag
-    }
+        PolisherTypeTag,
+    },
 })
 export default class PadView extends Vue {
     get id() {
@@ -177,8 +177,8 @@ export default class PadView extends Vue {
         return reviewStore.reviews;
     }
 
-    value: Pad | null = null;
-    sizes: PadSeriesSize[] = [];
+    value: PadColor | null = null;
+    sizes: PadSize[] = [];
 
     async created() {
         this.value = await padStore.getPadById(this.id);

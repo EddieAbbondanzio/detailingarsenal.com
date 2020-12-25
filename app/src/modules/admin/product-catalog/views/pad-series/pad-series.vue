@@ -40,7 +40,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading, confirmDelete, toast, displayError } from '@/core';
-import { Pad, PadSeries } from '@/api';
+import { PadColor, PadSeries } from '@/api';
 import adminPadStore from '../../store/admin-pad-store';
 
 @Component
@@ -54,7 +54,7 @@ export default class Pads extends Vue {
         await adminPadStore.init();
     }
 
-    async onEdit(pad: Pad) {
+    async onEdit(pad: PadSeries) {
         this.$router.push({
             name: 'editPad',
             params: {

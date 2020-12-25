@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using DetailingArsenal.Application.Common;
 using DetailingArsenal.Application.ProductCatalog;
 using DetailingArsenal.Domain.ProductCatalog;
 
@@ -41,8 +42,12 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     series.PolisherTypes.AddRange(reader.Read<PadSeriesPolisherTypeRow>()
                         .Select(p => p.PolisherType));
 
-                    series.Sizes.AddRange(reader.Read<PadSizeReadModel>()
-                        .Select(s => new PadSizeReadModel(s.Diameter, s.Thickness)));
+                    series.Sizes.AddRange(reader.Read<PadSizeRow>()
+                        .Select(s => new PadSizeReadModel(
+                            s.Id,
+                            new MeasurementReadModel(s.DiameterAmount, s.DiameterUnit),
+                            s.ThicknessAmount != null ? new MeasurementReadModel(s.ThicknessAmount ?? 0, s.ThicknessUnit!) : null
+                            )));
 
                     var reviewCount = reader.ReadFirstOrDefault<int>();
 
@@ -121,7 +126,13 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         PadSeriesReadModel? s;
 
                         if (series.TryGetValue(size.PadSeriesId, out s)) {
-                            s.Sizes.Add(new PadSizeReadModel(size.Diameter, size.Thickness));
+                            s.Sizes.Add(new PadSizeReadModel(
+                                size.Id,
+                                new MeasurementReadModel(size.DiameterAmount, size.DiameterUnit),
+                                size.ThicknessAmount != null ? new MeasurementReadModel(size.ThicknessAmount ?? 0, size.ThicknessUnit!) : null
+                            )
+
+                            );
                         }
                     }
 

@@ -16,8 +16,9 @@ export const http = axios.create({
 
 http.interceptors.request.use(async config => {
     /*
-     * Cannot user user-store.ts here or else you'll introduce a circular dependency
-     * which will proceed to throw a "rawModule is undefined" error
+     * Cannot use user-store.ts here or else you'll introduce a circular dependency
+     * which will throw a "rawModule is undefined" error and leave you banging your head
+     * against the wall for hours.
      */
 
     // When authenticated, and sending a request to the backend add the token.

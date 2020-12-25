@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Pad, PadCut, PadFinish, Stars } from '@/api';
+import { PadColor, PadCut, PadFinish, Stars } from '@/api';
 import { displayLoading } from '@/core';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import padStore from '../store/pad/pad-store';
@@ -58,7 +58,7 @@ export default class WriteReview extends Vue {
         return this.value?.label ?? '';
     }
 
-    value: Pad | null = null;
+    value: PadColor | null = null;
 
     stars: Stars | null = null;
     cut: PadCut | null = null;

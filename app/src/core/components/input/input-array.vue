@@ -1,17 +1,24 @@
 <template>
     <div class="is-flex is-flex-column">
-        <input-group-header v-if="title" :text="title" />
+        <div>
+            <input-group-header v-if="title" :text="title" />
 
-        <div class="is-flex is-flex-row" v-for="(v, i) in value" :key="i">
-            <slot :value="v"></slot>
-            <b-button
-                class="has-margin-left-1 is-justify-self-center"
-                type="is-danger"
-                @click="onDelete(i)"
-            >Delete</b-button>
+            <div class="is-flex is-flex-column" v-for="(v, i) in value" :key="i">
+                <div class="is-flex is-flex-row">
+                    <slot :value="v"></slot>
+                    <b-button class="has-margin-left-1 is-justify-self-center" type="is-danger" @click="onDelete(i)"
+                        >Delete</b-button
+                    >
+                </div>
+
+                <!-- Nested detail row. Allows for input arrays in input arrays and more -->
+                <div class="is-flex is-flex-row has-padding-left-3 has-border-left-1-light" v-if="!$slots['detail']">
+                    <slot :value="v" name="detail"></slot>
+                </div>
+            </div>
+
+            <b-button type="is-text" class="is-align-self-start" @click="onAddAnother">Add another</b-button>
         </div>
-
-        <b-button type="is-text" class="is-align-self-start" @click="onAddAnother">Add another</b-button>
     </div>
 </template>
 
@@ -23,7 +30,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
  * list and a delete button for each item.
  */
 @Component({
-    name: 'input-array'
+    name: 'input-array',
 })
 export default class InputArray extends Vue {
     /**
@@ -36,7 +43,7 @@ export default class InputArray extends Vue {
      * Factory method to create a new instance of the objects
      * being inputted.
      */
-    @Prop()
+    @Prop({ default: () => () => ({}) })
     factory!: () => any;
 
     /**

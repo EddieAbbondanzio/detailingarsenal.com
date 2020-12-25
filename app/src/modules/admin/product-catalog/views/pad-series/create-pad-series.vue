@@ -27,6 +27,29 @@
                 <option v-for="brand in brands" :key="brand.id" :value="brand">{{ brand.name }}</option>
             </input-select>
 
+            <input-select class="has-margin-x-1 has-margin-y-0" label="Material" rules="required" v-model="material">
+                <option :value="null">Select a material</option>
+                <option v-for="m in materials" :key="m[1]" :value="m[1]">
+                    {{ m[0] }}
+                </option>
+            </input-select>
+
+            <input-select class="has-margin-x-1 has-margin-y-0" label="Texture" rules="required" v-model="texture">
+                <option :value="null">Select a texture</option>
+                <option v-for="t in textures" :key="t[1]" :value="t[1]">
+                    {{ t[0] }}
+                </option>
+            </input-select>
+
+            <input-tagger
+                class="has-margin-x-1 has-margin-y-0"
+                label="Polisher Type(s)"
+                rules="required"
+                v-model="polisherTypes"
+                autocomplete
+                :data="allPolisherTypes"
+            />
+
             <input-array title="Sizes" :factory="() => ({})" v-model="sizes" v-slot="{ value }">
                 <input-text-field
                     class="has-margin-x-1 has-margin-y-0"
@@ -41,75 +64,49 @@
                     v-model.number="value.thickness"
                     label="Thickness"
                 />
-                <input-text-field
-                    class="has-margin-x-1 has-margin-y-0"
-                    v-model="value.partNumber"
-                    label="Part Number"
-                />
             </input-array>
 
-            <input-array
-                title="Pads"
-                :factory="() => ({ name: '', category: null, image: null })"
-                v-slot="{ value }"
-                v-model="pads"
-            >
-                <input-text-field
-                    class="has-margin-x-1 has-margin-y-0"
-                    type="text"
-                    v-model="value.name"
-                    label="Name"
-                    rules="required|max:32"
-                />
+            <input-array title="Colors" :factory="padColorCreateOrUpdateFactory" v-model="pads">
+                <template v-slot="{ value }">
+                    <input-text-field
+                        class="has-margin-x-1 has-margin-y-0"
+                        type="text"
+                        v-model="value.name"
+                        label="Name"
+                        rules="required|max:32"
+                    />
 
-                <input-select
-                    class="has-margin-x-1 has-margin-y-0"
-                    label="Category"
-                    rules="required"
-                    v-model="value.category"
-                >
-                    <option :value="null">Select a category</option>
-                    <option v-for="category in categories" :key="category[1]" :value="category[1]">
-                        {{ category[0] }}
-                    </option>
-                </input-select>
+                    <input-select
+                        class="has-margin-x-1 has-margin-y-0"
+                        label="Category"
+                        rules="required"
+                        v-model="value.category"
+                    >
+                        <option :value="null">Select a category</option>
+                        <option v-for="category in categories" :key="category[1]" :value="category[1]">
+                            {{ category[0] }}
+                        </option>
+                    </input-select>
 
-                <input-select
-                    class="has-margin-x-1 has-margin-y-0"
-                    label="Material"
-                    rules="required"
-                    v-model="value.material"
-                >
-                    <option :value="null">Select a material</option>
-                    <option v-for="material in materials" :key="material[1]" :value="material[1]">
-                        {{ material[0] }}
-                    </option>
-                </input-select>
+                    <input-image-upload label="Image" v-model="value.image" />
+                </template>
 
-                <input-select
-                    class="has-margin-x-1 has-margin-y-0"
-                    label="Texture"
-                    rules="required"
-                    v-model="value.texture"
-                >
-                    <option :value="null">Select a texture</option>
-                    <option v-for="texture in textures" :key="texture[1]" :value="texture[1]">
-                        {{ texture[0] }}
-                    </option>
-                </input-select>
+                <template v-slot:detail="{ value }">
+                    <input-array title="Options" v-model="value.options">
+                        <template v-slot="{ value }">
+                            <input-select label="Size" v-model="value.padSizeId" rules="required">
+                <option :value="null">Select a size</option>
+                <option v-for="size in sizes" :key="size.id" :value="size">{{ size.diameter }}</option>
+            </input-select>
 
-                <input-tagger
-                    class="has-margin-x-1 has-margin-y-0"
-                    label="Polisher Type(s)"
-                    rules="required"
-                    v-model="value.polisherTypes"
-                    autocomplete
-                    :data="polisherTypes"
-                />
-
-                <input-image-upload label="Image" v-model="value.image" />
+                            <input-text-field v-model="value.partNumber" />
+                        </template>
+                    </input-array>
+                </template>
             </input-array>
         </input-form>
+
+        {{ pads[0] }}
     </page>
 </template>
 
@@ -132,6 +129,8 @@ import {
     PadSeriesSize,
     PolisherType,
     SpecificationError,
+    PadColorCreateOrUpdate,
+    PadOption,
 } from '@/api';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStrore from '../../store/admin-pad-store';
@@ -154,12 +153,15 @@ export default class CreatePadSeries extends Vue {
         return Object.entries(PadTexture);
     }
 
-    get polisherTypes() {
+    get allPolisherTypes() {
         return Object.values(PolisherType);
     }
 
     name: string = '';
     brand: Brand | null = null;
+    material: PadMaterial | null = null;
+    texture: PadTexture | null = null;
+    polisherTypes: PolisherType[] = [];
     pads: PadCreateOrUpdate[] = [];
     sizes: PadSeriesSize[] = [];
 
@@ -182,6 +184,14 @@ export default class CreatePadSeries extends Vue {
                 throw err;
             }
         }
+    }
+
+    padColorCreateOrUpdateFactory(): PadColorCreateOrUpdate {
+        return {
+            name: '',
+            category: null!,
+            options: [],
+        };
     }
 }
 </script>

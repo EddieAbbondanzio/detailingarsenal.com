@@ -1,6 +1,9 @@
+using System;
+
 namespace DetailingArsenal.Api.ProductCatalog {
     public class PadSizeRaw : IDataTransferObject {
-        public float Diameter { get; set; }
-        public float? Thickness { get; set; }
+        public Guid Id { get; set; }
+        public MeasurementRaw Diameter { get; set; } = null!;
+        public MeasurementRaw? Thickness { get; set; }
     }
 }

@@ -1,6 +1,8 @@
-export class PadSize {
-    constructor(
-        public diameter: number,
-        public thickness: number,
-    ) { }
+import { Measurement } from "./measurement";
+import { MeasurementUnit } from "./measurement-unit";
+
+export interface PadSize {
+    id: string;
+    diameter: Measurement;
+    thickness?: Measurement;
 }

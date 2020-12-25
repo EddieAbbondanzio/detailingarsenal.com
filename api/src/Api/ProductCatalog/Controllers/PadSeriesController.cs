@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Application.ProductCatalog;
+using DetailingArsenal.Domain.Common;
 
 namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
@@ -30,6 +31,12 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
+            var sizes = create.Sizes.Select(
+                s => new PadSize(
+                    new Measurement(s.Diameter.Amount, MeasurementUnitUtils.Parse(s.Diameter.Unit)),
+                    s.Thickness != null ? new Measurement(s.Thickness.Amount, MeasurementUnitUtils.Parse(s.Thickness.Unit)) : null
+            )).ToList();
+
             var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(
                 new PadSeriesCreateCommand(
                     create.Name,
@@ -37,13 +44,13 @@ namespace DetailingArsenal.Api.ProductCatalog {
                     PadTextureUtils.Parse(create.Texture),
                     PadMaterialUtils.Parse(create.Material),
                     create.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
-                    create.Sizes.Select(s => new PadSize(s.Diameter, s.Thickness)).ToList(),
+                    sizes,
                     create.Colors.Select(
                         c => new PadColor(
                             c.Name,
                             PadCategoryUtils.Parse(c.Category),
                             c.Image,
-                            c.Options.Select(o => new PadOption(o.PadSizeId, o.PartNumber)).ToList()
+                            c.Options.Select(o => new PadOption(sizes[o.PadSizeIndex].Id, o.PartNumber)).ToList()
                         )
                     ).ToList()),
                 User
@@ -64,7 +71,11 @@ namespace DetailingArsenal.Api.ProductCatalog {
                     PadTextureUtils.Parse(update.Texture),
                     PadMaterialUtils.Parse(update.Material),
                     update.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
-                    update.Sizes.Select(s => new PadSize(s.Diameter, s.Thickness)).ToList(),
+                    update.Sizes.Select(
+                        s => new PadSize(
+                            new Measurement(s.Diameter.Amount, MeasurementUnitUtils.Parse(s.Diameter.Unit)),
+                            s.Thickness != null ? new Measurement(s.Thickness.Amount, MeasurementUnitUtils.Parse(s.Thickness.Unit)) : null
+                        )).ToList(),
                     update.Colors.Select(
                         c => new PadColor(
                             c.Name,

@@ -74,7 +74,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { api, Pad, PadCategory, PadCut, PadFinish, PadMaterial, PadSeriesSize, PolisherType, Rating } from '@/api';
+import { api, PadCategory, PadCut, PadFinish, PadMaterial, PolisherType, Rating } from '@/api';
 import { displayLoading } from '@/core';
 import PadFilterControl from '@/modules/product-catalog/pads/components/pad-filter-control.vue';
 import store from '@/core/store';
@@ -104,11 +104,11 @@ export default class Pads extends Vue {
                 id: pad.id,
                 name: pad.label,
                 category: pad.category,
-                material: pad.material,
+                material: PadMaterial.Foam,
                 cut: pad.cut,
                 finish: pad.finish,
                 rating: pad.rating,
-                polisherTypes: pad.polisherTypes,
+                polisherTypes: [],
             });
         }
 

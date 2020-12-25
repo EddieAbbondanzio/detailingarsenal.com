@@ -1,3 +1,4 @@
-export class PadOption {
-    constructor(public padSizeId: string, public partNumber: string | null = null) { }
+export interface PadOption {
+    padSizeDiameter: number;
+    partNumber: string | null;
 }

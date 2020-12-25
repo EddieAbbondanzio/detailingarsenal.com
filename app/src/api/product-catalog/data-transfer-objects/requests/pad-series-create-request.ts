@@ -1,9 +1,15 @@
-import { PadSize } from '../pad-size';
-import { PadCreateOrUpdate } from '../pad-create-or-update';
+import { PadTexture } from '../pad-texture';
+import { PadMaterial } from '../pad-material';
+import { PolisherType } from '../polisher-type';
+import { PadColorCreate } from './pad-color-create';
+import { PadSizeCreateOrUpdate } from './pad-size-create-or-update';
 
 export interface PadSeriesCreateRequest {
     name: string;
     brandId: string;
-    sizes: PadSize[];
-    pads: PadCreateOrUpdate[];
+    texture: PadTexture;
+    material: PadMaterial;
+    polisherTypes: PolisherType[];
+    sizes: PadSizeCreateOrUpdate[];
+    colors: PadColorCreate[];
 }

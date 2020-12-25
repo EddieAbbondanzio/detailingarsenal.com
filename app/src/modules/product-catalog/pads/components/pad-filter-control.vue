@@ -7,11 +7,9 @@
             <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Brand</p>
 
             <div v-for="brand in brands" :key="brand">
-                <b-checkbox
-                    :native-value="brand"
-                    v-model="selectedBrands"
-                    @input.prevent="onInput()"
-                >{{ brand }}</b-checkbox>
+                <b-checkbox :native-value="brand" v-model="selectedBrands" @input.prevent="onInput()">{{
+                    brand
+                }}</b-checkbox>
             </div>
         </div>
 
@@ -29,11 +27,9 @@
             <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Category</p>
 
             <div v-for="category in categories" :key="category">
-                <b-checkbox
-                    :native-value="category"
-                    v-model="selectedCategories"
-                    @input="onInput"
-                >{{ category | padCategory }}</b-checkbox>
+                <b-checkbox :native-value="category" v-model="selectedCategories" @input="onInput">{{
+                    category | padCategory
+                }}</b-checkbox>
             </div>
         </div>
 
@@ -44,7 +40,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { PadCategory, Pad } from '@/api';
+import { PadCategory, PadColor } from '@/api';
 import { padCategory } from '@/modules/product-catalog/pads/filters/pad-category';
 import { FilterType } from '../store/filter-type';
 import { Filter } from '../store/filter';
@@ -54,8 +50,8 @@ import { MutationPayload } from 'vuex';
 @Component({
     name: 'pad-filter-control',
     filters: {
-        padCategory
-    }
+        padCategory,
+    },
 })
 export default class PadFilterControl extends Vue {
     // /**

@@ -1,3 +1,6 @@
+using DetailingArsenal.Application.Common;
+using System;
+
 namespace DetailingArsenal.Application.ProductCatalog {
-    public record PadSizeReadModel(float Diameter, float? Thickness) : IDataTransferObject;
+    public record PadSizeReadModel(Guid Id, MeasurementReadModel Diameter, MeasurementReadModel? Thickness) : IDataTransferObject;
 }
