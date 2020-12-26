@@ -41,14 +41,13 @@
                 </option>
             </input-select>
 
-            <input-tagger
-                class="has-margin-x-1 has-margin-y-0"
-                label="Polisher Type(s)"
-                rules="required"
-                v-model="polisherTypes"
-                autocomplete
-                :data="allPolisherTypes"
-            />
+            <b-field label="Polisher Type(s)">
+                <input-checkbox v-model="polisherTypes" native-value="dual_action" label="Dual Action" />
+                <input-checkbox v-model="polisherTypes" native-value="long_throw" label="Long Throw" />
+                <input-checkbox v-model="polisherTypes" native-value="forced_rotation" label="Forced Rotation" />
+                <input-checkbox v-model="polisherTypes" native-value="rotary" label="Rotary" />
+                <input-checkbox v-model="polisherTypes" native-value="mini" label="Mini" />
+            </b-field>
 
             <input-array title="Sizes" :factory="() => ({})" v-model="sizes" v-slot="{ value }">
                 <measurement-input label="Diameter" v-model="value.diameter" rules="required" :required="true" />

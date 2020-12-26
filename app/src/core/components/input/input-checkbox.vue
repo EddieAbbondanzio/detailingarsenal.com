@@ -4,22 +4,17 @@
             <slot name="label"></slot>
         </template>
 
-        <validation-provider
-            :vid="vid"
-            :name="label"
-            :rules="rules"
-            v-slot="{ errors, classes }"
-            ref="validator"
-        >
+        <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
             <b-checkbox
                 :class="classes"
                 :value="value"
                 @input="onInput"
                 :type="type"
                 :disabled="disabled"
+                :native-value="nativeValue"
             >
                 <slot>
-                    <span v-if="!hideLabel">{{label}}</span>
+                    <span v-if="!hideLabel">{{ label }}</span>
                 </slot>
             </b-checkbox>
             <input-error-message v-if="!hideErrors" :text="errors[0]" />
@@ -31,7 +26,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({
-    name: 'input-checkbox'
+    name: 'input-checkbox',
 })
 export default class InputCheckbox extends Vue {
     @Prop({ default: null })
@@ -61,6 +56,9 @@ export default class InputCheckbox extends Vue {
     @Prop({ default: 'is-primary' })
     type!: string;
 
+    @Prop()
+    nativeValue!: string | null;
+
     get vid() {
         if (this.id != null) {
             return this.id;
@@ -77,7 +75,7 @@ export default class InputCheckbox extends Vue {
         (this.$refs.validator as any).applyResult({
             errors: [error],
             valid: false,
-            failedRules: {}
+            failedRules: {},
         });
     }
 }
