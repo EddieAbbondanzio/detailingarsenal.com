@@ -1,7 +1,7 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header :title="value != null ? value.name : ``">
+            <page-header :title="title" :description="description">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
@@ -26,8 +26,8 @@
                 <p class="is-size-4 title">{{ value.name }}</p>
                 <p class="is-size-4 subtitle">By {{ value.brand.name }}</p>
 
-                <p><span class="has-text-weight-bold">Material: </span>{{ value.material }}</p>
-                <p><span class="has-text-weight-bold">Texture: </span>{{ value.texture }}</p>
+                <p><span class="has-text-weight-bold">Material: </span>{{ value.material | uppercaseFirst }}</p>
+                <p><span class="has-text-weight-bold">Texture: </span>{{ value.texture | uppercaseFirst }}</p>
 
                 <div class="has-margin-bottom-3">
                     <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Recommended For Polisher Type(s)</p>
@@ -37,36 +37,38 @@
                 </div>
             </div>
 
-            <input-group-header text="Colors" />
+            <b-field label="Sizes">
+                <b-table :data="value.sizes">
+                    <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>{{
+                        props.row.diameter.amount + props.row.diameter.unit
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Thickness" field="thickness" sortable
+                        >{{ props.row.thickness != null ? props.row.thickness.amount + props.row.thickness.unit : '' }}
+                    </b-table-column>
 
-            <b-table :data="value.colors">
-                <b-table-column v-slot="props" label="Name" field="label" sortable>{{ props.row.name }}</b-table-column>
-                <b-table-column v-slot="props" label="Category" field="action" sortable>{{
-                    props.row.category
-                }}</b-table-column>
-                <b-table-column v-slot="props" label="Image" field="scope" sortable>{{
-                    props.row.image != null ? props.row.image.name : ''
-                }}</b-table-column>
+                    <template slot="empty">
+                        <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                    </template>
+                </b-table>
+            </b-field>
 
-                <template slot="empty">
-                    <div class="is-flex is-justify-content-center">There's nothing here!</div>
-                </template>
-            </b-table>
+            <b-field label="Colors">
+                <b-table :data="value.colors">
+                    <b-table-column v-slot="props" label="Name" field="label" sortable>{{
+                        props.row.name
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Category" field="action" sortable>{{
+                        props.row.category
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Image" field="scope" sortable>{{
+                        props.row.image != null ? props.row.image.name : ''
+                    }}</b-table-column>
 
-            <input-group-header text="Sizes" />
-
-            <b-table :data="value.sizes">
-                <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>{{
-                    props.row.diameter
-                }}</b-table-column>
-                <b-table-column v-slot="props" label="Thickness" field="thickness" sortable
-                    >{{ props.row.thickness }}
-                </b-table-column>
-
-                <template slot="empty">
-                    <div class="is-flex is-justify-content-center">There's nothing here!</div>
-                </template>
-            </b-table>
+                    <template slot="empty">
+                        <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                    </template>
+                </b-table>
+            </b-field>
         </div>
     </page>
 </template>
@@ -88,6 +90,14 @@ import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 export default class PadSeriesDetails extends Vue {
     get value() {
         return adminPadStore.series.find((s) => s.id == this.$route.params.id);
+    }
+
+    get title() {
+        return this.value?.name;
+    }
+
+    get description() {
+        return `By ${this.value?.brand.name}`;
     }
 
     @displayLoading

@@ -17,33 +17,34 @@
         <input-form @submit="onSubmit" submitText="Save changes">
             <input-text-field label="Name" rules="required|max:32" :required="true" v-model="name" placeholder="user" />
 
-            <input-group-header text="Permissions" />
-            <b-table
-                :data="permissions"
-                checkable
-                :checked-rows.sync="enabledPermissions"
-                :custom-is-checked="
-                    (a, b) => {
-                        return a.id === b.id;
-                    }
-                "
-            >
-                <template>
-                    <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
-                        props.row.label
-                    }}</b-table-column>
-                    <b-table-column v-slot="props" label="Action" field="action" sortable>{{
-                        props.row.action
-                    }}</b-table-column>
-                    <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{
-                        props.row.scope
-                    }}</b-table-column>
-                </template>
+            <b-field label="Permissions">
+                <b-table
+                    :data="permissions"
+                    checkable
+                    :checked-rows.sync="enabledPermissions"
+                    :custom-is-checked="
+                        (a, b) => {
+                            return a.id === b.id;
+                        }
+                    "
+                >
+                    <template>
+                        <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
+                            props.row.label
+                        }}</b-table-column>
+                        <b-table-column v-slot="props" label="Action" field="action" sortable>{{
+                            props.row.action
+                        }}</b-table-column>
+                        <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{
+                            props.row.scope
+                        }}</b-table-column>
+                    </template>
 
-                <template slot="empty">
-                    <div class="is-flex is-justify-content-center">There's nothing here!</div>
-                </template>
-            </b-table>
+                    <template slot="empty">
+                        <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                    </template>
+                </b-table>
+            </b-field>
         </input-form>
     </page>
 </template>

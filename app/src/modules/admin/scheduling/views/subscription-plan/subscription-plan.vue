@@ -28,22 +28,22 @@
 
             <p v-if="plan.description">{{ plan.description }}</p>
 
-            <input-group-header text="Prices" />
+            <b-field label="Prices">
+                <b-table :data="plan.prices">
+                    <template>
+                        <b-table-column v-slot="props" label="Price" field="label" sortable>
+                            {{ (props.row.amount / 100) | currency }}
+                        </b-table-column>
+                        <b-table-column v-slot="props" label="Interval" field="action" sortable>{{
+                            props.row.interval
+                        }}</b-table-column>
+                    </template>
 
-            <b-table :data="plan.prices">
-                <template>
-                    <b-table-column v-slot="props" label="Price" field="label" sortable>
-                        {{ (props.row.amount / 100) | currency }}
-                    </b-table-column>
-                    <b-table-column v-slot="props" label="Interval" field="action" sortable>{{
-                        props.row.interval
-                    }}</b-table-column>
-                </template>
-
-                <template slot="empty">
-                    <div class="is-flex is-justify-content-center">There's nothing here!</div>
-                </template>
-            </b-table>
+                    <template slot="empty">
+                        <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                    </template>
+                </b-table></b-field
+            >
         </div>
     </page>
 </template>

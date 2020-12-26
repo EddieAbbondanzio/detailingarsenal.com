@@ -26,33 +26,33 @@
                 <h5 class="is-size-4 title has-margin-bottom-2">{{ role.name }}</h5>
             </div>
 
-            <input-group-header text="Permissions" />
+            <b-field label="Permissions">
+                <b-table
+                    :data="permissions"
+                    checkable
+                    :checked-rows.sync="enabledPermissions"
+                    :custom-is-checked="
+                        (a, b) => {
+                            return a.id === b.id;
+                        }
+                    "
+                    :is-row-checkable="(r) => false"
+                >
+                    <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
+                        props.row.label
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Action" field="action" sortable>{{
+                        props.row.action
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{
+                        props.row.scope
+                    }}</b-table-column>
 
-            <b-table
-                :data="permissions"
-                checkable
-                :checked-rows.sync="enabledPermissions"
-                :custom-is-checked="
-                    (a, b) => {
-                        return a.id === b.id;
-                    }
-                "
-                :is-row-checkable="(r) => false"
-            >
-                <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
-                    props.row.label
-                }}</b-table-column>
-                <b-table-column v-slot="props" label="Action" field="action" sortable>{{
-                    props.row.action
-                }}</b-table-column>
-                <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{
-                    props.row.scope
-                }}</b-table-column>
-
-                <template slot="empty">
-                    <div class="is-flex is-justify-content-center">There's nothing here!</div>
-                </template>
-            </b-table>
+                    <template slot="empty">
+                        <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                    </template>
+                </b-table>
+            </b-field>
         </div>
     </page>
 </template>
