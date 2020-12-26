@@ -24,15 +24,17 @@
         <div class="box is-shadowless" v-if="value != null">
             <div class="has-margin-bottom-4">
                 <p class="is-size-4 title">{{ value.name }}</p>
-                <p class="is-size-4 subtitle">{{ value.brand.name }}</p>
+                <p class="is-size-4 subtitle">By {{ value.brand.name }}</p>
 
                 <p><span class="has-text-weight-bold">Material: </span>{{ value.material }}</p>
                 <p><span class="has-text-weight-bold">Texture: </span>{{ value.texture }}</p>
-                <p>
-                    <span class="has-text-weight-bold">Polisher types: </span
-                    ><span v-for="pt in value.polisherTypes" :key="pt">{{ pt }}</span>
-                    <span v-if="!value.polisherTypes">None specified</span>
-                </p>
+
+                <div class="has-margin-bottom-3">
+                    <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Recommended For Polisher Type(s)</p>
+                    <b-taglist>
+                        <polisher-type-tag v-for="t in value.polisherTypes" :key="t" :value="t" />
+                    </b-taglist>
+                </div>
             </div>
 
             <input-group-header text="Colors" />
@@ -75,17 +77,17 @@ import appStore from '@/core/store/app-store';
 import { PadSize, Permission, Role } from '@/api';
 import { displayLoading } from '@/core';
 import adminPadStore from '../../store/admin-pad-store';
+import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 
 @Component({
     name: 'role',
+    components: {
+        PolisherTypeTag,
+    },
 })
 export default class PadSeriesDetails extends Vue {
     get value() {
         return adminPadStore.series.find((s) => s.id == this.$route.params.id);
-    }
-
-    get sizes() {
-        return [new PadSize(1, 1)];
     }
 
     @displayLoading

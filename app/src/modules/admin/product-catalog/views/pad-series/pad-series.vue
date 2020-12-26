@@ -2,7 +2,7 @@
     <page>
         <template v-slot:header>
             <page-header
-                title="Pads"
+                title="Pad Series"
                 description="Pad series by manufacturer"
                 icon="checkbox-blank-circle"
                 :backButtonTo="{ name: 'productCatalogPanel' }"
@@ -11,12 +11,12 @@
                     <breadcrumb-trail>
                         <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
                         <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
-                        <breadcrumb name="Pads" :to="{ name: 'pads' }" :active="true" />
+                        <breadcrumb name="Pad series" :to="{ name: 'padSeries' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <create-button :to="{ name: 'createPadSeries' }" text="Create pad" />
+                    <create-button :to="{ name: 'createPadSeries' }" text="Create pad series" />
                 </template>
             </page-header>
         </template>
@@ -64,12 +64,12 @@ export default class Pads extends Vue {
     }
 
     async onDelete(pad: PadSeries) {
-        const del = await confirmDelete('pad', pad.name);
+        const del = await confirmDelete('pad series', pad.name);
 
         if (del) {
             try {
                 await adminPadStore.delete(pad);
-                toast(`Deleted pad ${pad.name}`);
+                toast(`Deleted pad series ${pad.name}`);
             } catch (err) {
                 displayError(err);
             }

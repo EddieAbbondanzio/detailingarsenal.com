@@ -1,7 +1,7 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header :title="value != null ? value.label : ``">
+            <page-header :title="title" :description="description">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Pads" :to="{ name: 'pads' }" />
@@ -17,15 +17,23 @@
 
         <div class="box is-shadowless is-flex is-flex-column is-flex-grow-1" v-if="value != null">
             <div class="is-flex is-flex-row-desktop is-flex-column">
-                <div class="has-margin-right-3-desktop is-align-self-center is-align-self-start-desktop">
-                    <img class="img is-square" src="https://bulma.io/images/placeholders/480x480.png" />
+                <div
+                    class="has-margin-right-3-desktop is-align-self-center is-align-self-start-desktop"
+                    style="max-width: 50%"
+                >
+                    <img
+                        class="img is-square"
+                        :src="
+                            value.image != null ? value.image.data : 'https://bulma.io/images/placeholders/480x480.png'
+                        "
+                    />
                 </div>
 
                 <div class="is-flex-grow-1">
                     <div class="has-margin-bottom-3">
                         <p class="is-size-4 is-size-3-desktop">{{ value.label }}</p>
                         <div class="is-flex is-flex-row">
-                            <stars :value="3" :count="20" />
+                            <stars :value="value.rating.stars" :count="value.rating.reviewCount" />
                         </div>
 
                         <div class="columns">
@@ -69,21 +77,22 @@
 
                             <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
                                 <p class="is-size-5 title">Material</p>
-                                <p class="is-size-6 subtitle">{{ value.material | uppercaseFirst }}</p>
+                                <p class="is-size-6 subtitle">{{ value.series.material | uppercaseFirst }}</p>
                             </div>
 
                             <div class="is-flex-grow-1 is-flex-basis-0">
                                 <p class="is-size-5 title">Texture</p>
-                                <p class="is-size-6 subtitle">{{ value.texture | uppercaseFirst }}</p>
+                                <p class="is-size-6 subtitle">{{ value.series.texture | uppercaseFirst }}</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="has-margin-bottom-3">
                         <p class="is-size-5 title has-margin-bottom-1">Recommended For Polisher Type(s)</p>
-                        <ul>
-                            <li v-for="t in value.polisherTypes" :key="t"><polisher-type-tag :value="t" /></li>
-                        </ul>
+
+                        <b-taglist>
+                            <polisher-type-tag v-for="t in polisherTypes" :key="t" :value="t" />
+                        </b-taglist>
                     </div>
 
                     <div class="has-margin-bottom-3">
@@ -91,10 +100,14 @@
 
                         <b-table :data="sizes">
                             <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>
-                                {{ props.row.diameter }}
+                                {{ props.row.diameter.amount + props.row.diameter.unit }}
                             </b-table-column>
                             <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
-                                {{ props.row.thickness }}
+                                {{
+                                    props.row.thickness != null
+                                        ? props.row.thickness.amount + props.row.thickness.unit
+                                        : ''
+                                }}
                             </b-table-column>
                             <b-table-column v-slot="props" label="Part Number" field="partNumber">
                                 {{ props.row.partNumber }}
@@ -152,7 +165,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { PadColor, PadSeries, PadSize } from '@/api';
+import { PadColor, PadSeries, PadSize, PolisherType } from '@/api';
 import padStore from '../store/pad/pad-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
@@ -171,6 +184,22 @@ import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 export default class PadView extends Vue {
     get id() {
         return this.$route.params.id;
+    }
+
+    get title() {
+        if (this.value == null) {
+            return '';
+        }
+
+        return `${this.value.series.name} ${this.value.name}`;
+    }
+
+    get description() {
+        return `By ${this.value?.series.brand.name}`;
+    }
+
+    get polisherTypes() {
+        return this.value?.series.polisherTypes;
     }
 
     get reviews() {

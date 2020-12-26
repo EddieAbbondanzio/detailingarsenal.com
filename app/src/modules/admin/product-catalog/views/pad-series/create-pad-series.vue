@@ -1,12 +1,12 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header title="Create pad" :description="`Create a new pad series`">
+            <page-header title="Create pad series" :description="`Create a new pad series`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
                         <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
-                        <breadcrumb name="Pads" :to="{ name: 'padSeries' }" />
+                        <breadcrumb name="Pad series" :to="{ name: 'padSeries' }" />
                         <breadcrumb name="Create" :to="{ name: 'createPadSeries' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
