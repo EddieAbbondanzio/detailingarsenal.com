@@ -39,6 +39,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     var colors = new Dictionary<Guid, PadColor>(
                         reader.Read<PadColorRow>().Select(c => new PadColor(
+                            c.Id,
                             c.Name,
                             PadCategoryUtils.Parse(c.Category),
                             c.ImageName != null ? new DataUrlImage(c.ImageName, c.ImageData!) : null
@@ -214,10 +215,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", series);
+                    await conn.ExecuteAsync(@"delete from pad_options where pad_color_id = @Id;", series.Colors);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", series);
-                    await conn.ExecuteAsync(@"delete from pad_options where id = @Id;", series.Colors.SelectMany(c => c.Options).ToList());
                     await conn.ExecuteAsync(@"delete from pad_colors where pad_series_id = @Id;", series);
-
+                    await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
                     t.Commit();
                 }
             }
