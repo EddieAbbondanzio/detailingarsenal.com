@@ -20,7 +20,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 );
 
                 return new ReviewReadModel(
-                    r.pad_id,
+                    r.pad_color_id,
                     r.username,
                     r.created_date,
                     r.stars,
@@ -37,12 +37,12 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 var reviews = await conn.QueryAsync(
                     @"select r.*, u.username from reviews r
                         join users u on r.user_id = u.id 
-                        where pad_id = @Id",
+                        where pad_color_id = @Id",
                         new { Id = padId }
                 );
 
                 return reviews.Select(r => new ReviewReadModel(
-                    r.pad_id,
+                    r.pad_color_id,
                     r.username,
                     r.created_date,
                     r.stars,

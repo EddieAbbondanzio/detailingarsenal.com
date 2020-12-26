@@ -21,6 +21,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
             this.mediator = mediator;
         }
 
+        [AllowAnonymous]
         [HttpGet("pad/{id}")]
         public async Task<IActionResult> GetForPad(Guid id) {
             List<ReviewReadModel> reviews = await mediator.Dispatch<GetAllReviewsForPadQuery, List<ReviewReadModel>>(
