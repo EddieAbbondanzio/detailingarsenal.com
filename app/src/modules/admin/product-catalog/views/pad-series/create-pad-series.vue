@@ -80,12 +80,17 @@
                     <input-image-upload label="Image" v-model="value.image" />
                 </template>
 
-                <template v-slot:detail="{ value }">
-                    <input-array title="Options" v-model="value.options">
+                <template v-slot:detail="{ value: color }">
+                    <input-array title="Options" v-model="color.options">
                         <template v-slot="{ value }">
                             <input-select label="Size" v-model="value.padSizeIndex" rules="required">
                                 <option :value="null">Select a size</option>
-                                <option v-for="(size, i) in sizes" :key="i" :value="i">
+                                <option
+                                    v-for="(size, i) in sizes"
+                                    :key="i"
+                                    :value="i"
+                                    :disabled="isSizeDisabled(size, value, color)"
+                                >
                                     {{ size.diameter.amount.toString() + size.diameter.unit }}
                                 </option>
                             </input-select>
@@ -96,9 +101,6 @@
                 </template>
             </input-array>
         </input-form>
-        count: {{ sizes.length }}
-        <br />
-        {{ sizes }}
     </page>
 </template>
 
@@ -121,6 +123,8 @@ import {
     PadOption,
     PadColorCreate,
     PadSizeCreateOrUpdate,
+    PadSize,
+    PadOptionCreate,
 } from '@/api';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStrore from '../../store/admin-pad-store';
@@ -195,6 +199,16 @@ export default class CreatePadSeries extends Vue {
             category: null!,
             options: [],
         };
+    }
+
+    /**
+     * Don't allow a size to be picked on an option if it's already used by another
+     * option on the same color.
+     */
+    isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreate, color: PadColorCreate) {
+        const sizesUsedAlready = color.options.map((o) => o.padSizeIndex).map((i) => this.sizes[i]);
+
+        return !sizesUsedAlready.every((s) => s != size);
     }
 }
 </script>
