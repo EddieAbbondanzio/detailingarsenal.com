@@ -8,9 +8,9 @@ using DetailingArsenal.Domain.Users;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace DetailingArsenal.Tests.Domain.Clients {
+namespace DetailingArsenal.Tests.Domain.ProductCatalog {
     [TestClass]
-    public class PadSizeDiameterUniqueSpecificationTests {
+    public class PadSeriesSizeDiametersAreUniqueSpecificationTests {
         [TestMethod]
         public async Task RejectsDuplicateSizes() {
             var sizes = new List<PadSize>();
@@ -21,7 +21,7 @@ namespace DetailingArsenal.Tests.Domain.Clients {
             sizes, new()
             );
 
-            var res = await new PadSizeDiameterUniqueSpecification().Check(series);
+            var res = await new PadSeriesPadSizeDiametersAreUniqueSpecification().Check(series);
             Assert.AreEqual(false, res.IsSatisfied);
         }
 
@@ -35,7 +35,7 @@ namespace DetailingArsenal.Tests.Domain.Clients {
             sizes, new()
             );
 
-            var res = await new PadSizeDiameterUniqueSpecification().Check(series);
+            var res = await new PadSeriesPadSizeDiametersAreUniqueSpecification().Check(series);
             Assert.AreEqual(true, res.IsSatisfied);
         }
 
@@ -49,7 +49,7 @@ namespace DetailingArsenal.Tests.Domain.Clients {
             sizes, new()
             );
 
-            var res = await new PadSizeDiameterUniqueSpecification().Check(series);
+            var res = await new PadSeriesPadSizeDiametersAreUniqueSpecification().Check(series);
             Assert.AreEqual(true, res.IsSatisfied);
         }
     }

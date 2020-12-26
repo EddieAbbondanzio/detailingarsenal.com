@@ -10,9 +10,9 @@ namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "update", Scope = "pad-series")]
     public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand> {
         IPadSeriesRepo repo;
-        PadSizeDiameterUniqueSpecification spec;
+        PadSeriesCreateOrUpdateCompositeSpecification spec;
 
-        public PadSeriesUpdateHandler(IPadSeriesRepo repo, PadSizeDiameterUniqueSpecification spec) {
+        public PadSeriesUpdateHandler(IPadSeriesRepo repo, PadSeriesCreateOrUpdateCompositeSpecification spec) {
             this.repo = repo;
             this.spec = spec;
         }

@@ -9,10 +9,10 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.ProductCatalog {
     [Authorization(Action = "create", Scope = "pad-series")]
     public class PadSeriesCreateHandler : ActionHandler<PadSeriesCreateCommand, Guid> {
-        PadSizeDiameterUniqueSpecification spec;
+        PadSeriesCreateOrUpdateCompositeSpecification spec;
         IPadSeriesRepo repo;
 
-        public PadSeriesCreateHandler(PadSizeDiameterUniqueSpecification spec, IPadSeriesRepo repo) {
+        public PadSeriesCreateHandler(PadSeriesCreateOrUpdateCompositeSpecification spec, IPadSeriesRepo repo) {
             this.spec = spec;
             this.repo = repo;
         }

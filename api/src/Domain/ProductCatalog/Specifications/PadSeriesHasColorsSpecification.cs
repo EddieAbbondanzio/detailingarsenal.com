@@ -2,14 +2,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
-    public class PadSizeDiameterUniqueSpecification : Specification<PadSeries> {
-
+    public class PadSeriesHasColorsSpecification : Specification<PadSeries> {
 #pragma warning disable 1998
         protected async override Task<SpecificationResult> IsSatisfied(PadSeries series) {
-            var duplicate = series.Sizes.GroupBy(s => s.Diameter).Any(g => g.Count() > 1);
-
-            if (duplicate) {
-                return new SpecificationResult(false, "Duplicate pad sizes with the same diameter exist.");
+            if (series.Colors.Count == 0) {
+                return new SpecificationResult(false, "Pad series has no colors.");
             } else {
                 return new SpecificationResult(true);
             }
