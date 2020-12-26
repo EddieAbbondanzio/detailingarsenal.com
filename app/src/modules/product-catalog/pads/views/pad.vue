@@ -100,14 +100,10 @@
 
                         <b-table :data="sizes">
                             <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>
-                                {{ props.row.diameter.amount + props.row.diameter.unit }}
+                                {{ props.row.diameter | measurement }}
                             </b-table-column>
                             <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
-                                {{
-                                    props.row.thickness != null
-                                        ? props.row.thickness.amount + props.row.thickness.unit
-                                        : ''
-                                }}
+                                {{ props.row.thickness | measurement }}
                             </b-table-column>
                             <b-table-column v-slot="props" label="Part Number" field="partNumber">
                                 {{ props.row.partNumber }}
@@ -172,6 +168,7 @@ import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue
 import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
 import reviewStore from '../store/review/review-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
+import { measurement } from '@/modules/shared/filters/measurement';
 
 @Component({
     components: {
@@ -179,6 +176,9 @@ import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
         PadCutBar,
         PadFinishBar,
         PolisherTypeTag,
+    },
+    filters: {
+        measurement,
     },
 })
 export default class PadView extends Vue {

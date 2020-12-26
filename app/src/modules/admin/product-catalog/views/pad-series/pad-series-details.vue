@@ -40,10 +40,10 @@
             <b-field label="Sizes">
                 <b-table :data="value.sizes">
                     <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>{{
-                        props.row.diameter.amount + props.row.diameter.unit
+                        props.row.diameter | measurement
                     }}</b-table-column>
                     <b-table-column v-slot="props" label="Thickness" field="thickness" sortable
-                        >{{ props.row.thickness != null ? props.row.thickness.amount + props.row.thickness.unit : '' }}
+                        >{{ props.row.thickness | measurement }}
                     </b-table-column>
 
                     <template slot="empty">
@@ -93,11 +93,15 @@ import { PadSize, Permission, Role } from '@/api';
 import { displayLoading } from '@/core';
 import adminPadStore from '../../store/admin-pad-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
+import { measurement } from '@/modules/shared/filters/measurement';
 
 @Component({
     name: 'role',
     components: {
         PolisherTypeTag,
+    },
+    filters: {
+        measurement,
     },
 })
 export default class PadSeriesDetails extends Vue {
