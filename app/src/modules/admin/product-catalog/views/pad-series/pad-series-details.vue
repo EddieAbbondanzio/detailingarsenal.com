@@ -53,7 +53,7 @@
             </b-field>
 
             <b-field label="Colors">
-                <b-table :data="value.colors">
+                <b-table :data="value.colors" detailed>
                     <b-table-column v-slot="props" label="Name" field="label" sortable>{{
                         props.row.name
                     }}</b-table-column>
@@ -66,6 +66,19 @@
 
                     <template slot="empty">
                         <div class="is-flex is-justify-content-center">There's nothing here!</div>
+                    </template>
+
+                    <template v-slot:detail="props">
+                        <b-field label="Options">
+                            <b-table :data="props.row.options">
+                                <b-table-column v-slot="props" label="Pad size">
+                                    {{ getPadSize(props.row.padSizeId) }}
+                                </b-table-column>
+                                <b-table-column v-slot="props" label="Part number">
+                                    {{ props.row.partNumber }}
+                                </b-table-column>
+                            </b-table>
+                        </b-field>
                     </template>
                 </b-table>
             </b-field>
@@ -103,6 +116,12 @@ export default class PadSeriesDetails extends Vue {
     @displayLoading
     async created() {
         await adminPadStore.init();
+    }
+
+    getPadSize(id: string) {
+        const s = this.value?.sizes.find((s) => s.id == id)!;
+
+        return `${s.diameter.amount}${s.diameter.unit}`;
     }
 }
 </script>
