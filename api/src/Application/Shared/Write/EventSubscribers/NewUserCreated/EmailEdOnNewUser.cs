@@ -6,7 +6,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 using Serilog;
 
-namespace DetailingArsenal.Application.Common {
+namespace DetailingArsenal.Application {
     public class EmailEdOnNewUser : IDomainEventSubscriber<NewUserCreatedEvent> {
         IEmailClient emailClient;
 

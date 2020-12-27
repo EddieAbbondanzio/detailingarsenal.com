@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Domain.Common {
+namespace DetailingArsenal.Domain {
     public class CreateSubscriptionStep : SagaStep<string> {
         ICustomerGateway customerGateway;
         ICustomerRepo customerRepo;

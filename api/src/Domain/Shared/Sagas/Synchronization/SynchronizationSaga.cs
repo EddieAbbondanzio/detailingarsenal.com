@@ -1,4 +1,4 @@
-namespace DetailingArsenal.Domain.Common {
+namespace DetailingArsenal.Domain {
     public class SynchronizationSaga : Saga {
         public SynchronizationSaga(
             RunDatabaseMigrationsStep runDatabaseMigrations,

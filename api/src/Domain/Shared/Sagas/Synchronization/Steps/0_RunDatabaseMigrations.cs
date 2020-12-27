@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace DetailingArsenal.Domain.Common {
+namespace DetailingArsenal.Domain {
     public class RunDatabaseMigrationsStep : SagaStep {
         IDatabaseMigrationRunner migrationRunner;
 

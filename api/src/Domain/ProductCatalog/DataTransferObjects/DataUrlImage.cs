@@ -6,7 +6,7 @@ namespace DetailingArsenal.Domain.ProductCatalog {
     /// <summary>
     /// DataURL encoded image from the front end.
     /// </summary>
-    public class DataUrlImage : IValueObject {
+    public class DataUrlImage : IDataTransferObject {
         public string Name { get; set; } = null!;
         public string Data { get; set; } = null!;
 

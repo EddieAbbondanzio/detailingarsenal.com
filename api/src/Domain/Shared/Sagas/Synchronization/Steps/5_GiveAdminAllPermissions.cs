@@ -4,7 +4,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 using DetailingArsenal.Domain.Users.Security;
 
-namespace DetailingArsenal.Domain.Common {
+namespace DetailingArsenal.Domain {
     public class GiveAdminAllPermissionsStep : SagaStep {
         IRoleRepo roleRepo;
         IPermissionRepo permissionRepo;

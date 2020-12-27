@@ -1,5 +1,4 @@
 using System;
-using DetailingArsenal.Domain.Common;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
     /// <summary>

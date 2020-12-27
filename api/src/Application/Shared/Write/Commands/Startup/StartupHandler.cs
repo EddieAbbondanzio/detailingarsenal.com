@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using DetailingArsenal.Domain.Common;
+using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Application.Common {
+namespace DetailingArsenal.Application {
     public class StartupHandler : ActionHandler<StartupCommand> {
         SynchronizationSaga saga;
 

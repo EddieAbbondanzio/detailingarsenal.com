@@ -1,6 +1,6 @@
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Domain.Common {
+namespace DetailingArsenal.Domain {
     public class NewUserSaga : Saga<string> {
         public NewUserSaga(
                             CreateUserStep createUser,

@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Common;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users {

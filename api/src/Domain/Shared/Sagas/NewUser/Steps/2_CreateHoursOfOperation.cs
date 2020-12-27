@@ -1,12 +1,13 @@
+
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Domain.Common {
-    public class CreateBusinessStep : SagaStep<string> {
-        IBusinessService service;
+namespace DetailingArsenal.Domain {
+    public class CreateHoursOfOperationStep : SagaStep<string> {
+        IHoursOfOperationService service;
 
-        public CreateBusinessStep(IBusinessService service) {
+        public CreateHoursOfOperationStep(IHoursOfOperationService service) {
             this.service = service;
         }
 
@@ -15,8 +16,8 @@ namespace DetailingArsenal.Domain.Common {
         }
 
         public async override Task Compensate(SagaContext<string> context) {
-            var b = await service.GetByUser(context.Data.User);
-            await service.Delete(b);
+            var hours = await service.GetByUser(context.Data.User);
+            await service.Delete(hours);
         }
     }
 }

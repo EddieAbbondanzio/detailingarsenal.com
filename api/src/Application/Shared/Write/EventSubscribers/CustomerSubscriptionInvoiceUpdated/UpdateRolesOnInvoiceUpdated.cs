@@ -9,7 +9,7 @@ using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
 using Serilog;
 
-namespace DetailingArsenal.Application.Common {
+namespace DetailingArsenal.Application {
     public class UpdateRolesOnInvoiceUpdated : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
         ICustomerRepo customerRepo;
         IRoleAssigner roleAssigner;

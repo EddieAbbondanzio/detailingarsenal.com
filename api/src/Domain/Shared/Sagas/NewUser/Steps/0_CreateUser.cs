@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
-namespace DetailingArsenal.Domain.Common {
+namespace DetailingArsenal.Domain {
     public class CreateUserStep : SagaStep<string> {
         IUserRepo userRepo;
         IUserGateway userGateway;

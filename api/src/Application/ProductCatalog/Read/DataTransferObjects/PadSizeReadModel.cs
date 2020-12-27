@@ -1,4 +1,3 @@
-using DetailingArsenal.Application.Common;
 using System;
 
 namespace DetailingArsenal.Application.ProductCatalog {

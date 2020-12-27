@@ -34,8 +34,6 @@ using DetailingArsenal.Application.Calendar;
 using DetailingArsenal.Application.Users;
 using DetailingArsenal.Domain.Calendar;
 using DetailingArsenal.Domain.Users;
-using DetailingArsenal.Application.Common;
-using DetailingArsenal.Domain.Common;
 using DetailingArsenal.Persistence.Scheduling.Billing;
 using DetailingArsenal.Persistence.Settings;
 using DetailingArsenal.Persistence.Users;

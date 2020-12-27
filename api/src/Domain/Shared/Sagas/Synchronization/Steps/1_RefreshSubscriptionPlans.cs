@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Scheduling.Billing;
 
-namespace DetailingArsenal.Domain.Common {
+namespace DetailingArsenal.Domain {
     public class RefreshSubscriptionPlansStep : SagaStep {
         ISubscriptionPlanRefresher subscriptionPlanService;
 

@@ -1,6 +1,5 @@
 using System;
 using DetailingArsenal.Domain;
-using DetailingArsenal.Domain.Common;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
     public class PadSize : Entity<PadSize> {

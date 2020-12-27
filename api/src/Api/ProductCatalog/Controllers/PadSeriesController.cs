@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Application.ProductCatalog;
-using DetailingArsenal.Domain.Common;
 
 namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
@@ -28,7 +27,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
             List<PadSeriesReadModel> pads = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>();
             return Ok(pads);
         }
- 
+
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
             var sizes = create.Sizes.Select(

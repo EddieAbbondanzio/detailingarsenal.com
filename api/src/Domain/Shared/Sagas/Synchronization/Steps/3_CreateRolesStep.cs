@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users.Security;
 
-namespace DetailingArsenal.Domain.Common {
+namespace DetailingArsenal.Domain {
     public class CreateRolesStep : SagaStep {
         IRoleRepo repo;
 
