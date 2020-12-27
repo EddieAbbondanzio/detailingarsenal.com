@@ -46,6 +46,9 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Application.ProductCatalog;
 using DetailingArsenal.Persistence.ProductCatalog;
 using DetailingArsenal.Persistence.Users.Security;
+using DetailingArsenal.Application.Shared;
+using DetailingArsenal.Persistence.Shared;
+using DetailingArsenal.Domain.Shared;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -299,6 +302,12 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<CreateAppointmentCommand, AppointmentView>, CreateAppointmentHandler>();
             services.AddTransient<ActionHandler<UpdateAppointmentCommand, AppointmentView>, UpdateAppointmentHandler>();
             services.AddTransient<ActionHandler<DeleteAppointmentCommand>, DeleteAppointmentHandler>();
+
+            // Shared
+            services.AddTransient<IImageReader, ImageReader>();
+            services.AddSingleton<IImageProcessor, ImageProcessor>();
+            services.AddTransient<ActionHandler<GetImageByIdQuery, SerializedImage?>, GetImageByIdHandler>();
+            services.AddTransient<ActionHandler<GetThumbnailByIdQuery, SerializedImage?>, GetThumbnailByIdHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

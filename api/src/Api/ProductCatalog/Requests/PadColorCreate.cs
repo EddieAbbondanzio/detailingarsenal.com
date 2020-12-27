@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DetailingArsenal.Api.Shared;
 using DetailingArsenal.Domain.ProductCatalog;
 
 namespace DetailingArsenal.Api.ProductCatalog {

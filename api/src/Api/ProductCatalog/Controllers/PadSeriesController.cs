@@ -9,16 +9,21 @@ using Microsoft.AspNetCore.Mvc;
 using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Application.ProductCatalog;
+using System.Drawing;
+using System.IO;
+using DetailingArsenal.Domain.Shared;
 
 namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
     [ApiController]
     [Route("product-catalog/pad-series")]
     public class PadSeriesController : ControllerBase {
-        private IMediator mediator;
+        IMediator mediator;
+        IImageProcessor imageProcessor;
 
-        public PadSeriesController(IMediator mediator) {
+        public PadSeriesController(IMediator mediator, IImageProcessor imageProcessor) {
             this.mediator = mediator;
+            this.imageProcessor = imageProcessor;
         }
 
         [AllowAnonymous]
@@ -48,7 +53,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
                         c => new PadColor(
                             c.Name,
                             PadCategoryUtils.Parse(c.Category),
-                            c.Image,
+                            c.Image != null ? imageProcessor.Process(c.Image.Name, c.Image.Data) : null,
                             c.Options.Select(o => new PadOption(sizes[o.PadSizeIndex].Id, o.PartNumber)).ToList()
                         )
                     ).ToList()),
@@ -79,7 +84,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
                         c => new PadColor(
                             c.Name,
                             PadCategoryUtils.Parse(c.Category),
-                            c.Image,
+                            c.Image != null ? imageProcessor.Process(c.Image.Name, c.Image.Data) : null,
                             c.Options.Select(o => new PadOption(o.PadSizeId, o.PartNumber)).ToList()
                         )
                     ).ToList()),

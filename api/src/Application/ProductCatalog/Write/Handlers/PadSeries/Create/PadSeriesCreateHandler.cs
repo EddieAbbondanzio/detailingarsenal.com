@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
+using DetailingArsenal.Domain.Shared;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
@@ -27,6 +28,12 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 command.Sizes,
                 command.Colors
             );
+
+            foreach (var color in series.Colors) {
+                if (color.Image != null) {
+                    color.Image.Parent = new ImageParentReference(color.Id, ImageParentType.PadColor);
+                }
+            }
 
             await spec.CheckAndThrow(series);
             await repo.Add(series);
