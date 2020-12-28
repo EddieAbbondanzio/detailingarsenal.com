@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using DetailingArsenal.Shared;
 
 namespace DetailingArsenal.Domain.Shared {
     public interface IImageProcessor : IService {
@@ -9,17 +10,12 @@ namespace DetailingArsenal.Domain.Shared {
 
     public class ImageProcessor : IImageProcessor {
         const int ThumbnailSize = 100;
-        readonly ImageConverter imageConverter;
-
-        public ImageProcessor() {
-            this.imageConverter = new ImageConverter();
-        }
 
         public ProcessedImage Process(string fileName, string fileData) {
             Image full = LoadFromDataUrl(fileData);
             Image thumb = GenerateThumbnail(full);
 
-            return new ProcessedImage(fileName, full, thumb);
+            return new ProcessedImage(fileName, full.GetMimeType(), full, thumb);
         }
 
         Image LoadFromDataUrl(string data) {
@@ -31,8 +27,7 @@ namespace DetailingArsenal.Domain.Shared {
             var base64Data = match.Groups["data"].Value;
             var binaryData = System.Convert.FromBase64String(base64Data);
 
-            // https://stackoverflow.com/questions/3801275/how-to-convert-image-to-byte-array/16576471#16576471
-            Image i = (Image)imageConverter.ConvertFrom(binaryData);
+            Image i = ImageUtils.LoadFromBinary(binaryData);
             return i;
         }
 

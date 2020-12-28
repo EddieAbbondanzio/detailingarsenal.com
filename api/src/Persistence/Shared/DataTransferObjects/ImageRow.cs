@@ -6,6 +6,7 @@ namespace DetailingArsenal.Persistence.Shared {
         public Guid ParentId { get; set; }
         public string ParentType { get; set; } = null!;
         public string FileName { get; set; } = null!;
+        public string MimeType { get; set; } = null!;
         public byte[] ImageData { get; set; } = null!;
         public byte[] ThumbnailData { get; set; } = null!;
     }

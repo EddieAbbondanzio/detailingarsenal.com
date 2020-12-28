@@ -9,17 +9,17 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public string Name { get; }
         public string Category { get; }
 
-        public string? Image { get; }
+        public Guid? ImageId { get; }
         public List<PadOptionReadModel> Options { get; }
         public int? Cut { get; }
         public int? Finish { get; }
         public RatingReadModel Rating { get; }
 
-        public PadColorReadModel(Guid id, string name, string category, string? image, List<PadOptionReadModel> options, int? cut, int? finish, RatingReadModel rating) {
+        public PadColorReadModel(Guid id, string name, string category, Guid? image, List<PadOptionReadModel> options, int? cut, int? finish, RatingReadModel rating) {
             Id = id;
             Name = name;
             Category = category;
-            Image = image;
+            ImageId = image;
             Options = options;
             Cut = cut;
             Finish = finish;

@@ -10,11 +10,23 @@ namespace DetailingArsenal.Persistence.Shared {
         public ImageReader(IDatabase database) : base(database) { }
 
         public async Task<SerializedImage?> ReadImageById(Guid id) {
-            throw new NotImplementedException();
+            using (var conn = OpenConnection()) {
+                var row = await conn.QueryFirstOrDefaultAsync<ImageRow>(
+                    @"select image_data, mime_Type from images where id = @Id;", new { Id = id }
+                );
+
+                return new SerializedImage(row.ImageData, row.MimeType);
+            }
         }
 
         public async Task<SerializedImage?> ReadThumbnailById(Guid id) {
-            throw new NotImplementedException();
+            using (var conn = OpenConnection()) {
+                var row = await conn.QueryFirstOrDefaultAsync<ImageRow>(
+                    @"select thumbnail_data, mime_type from images where id = @Id;", new { Id = id }
+                );
+
+                return new SerializedImage(row.ThumbnailData, row.MimeType);
+            }
         }
     }
 }

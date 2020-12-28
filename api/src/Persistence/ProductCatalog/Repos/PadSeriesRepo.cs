@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Domain.ProductCatalog;
+using DetailingArsenal.Domain.Shared;
+using DetailingArsenal.Persistence.Shared;
+using DetailingArsenal.Shared;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
     public class PadSeriesRepo : DatabaseInteractor, IPadSeriesRepo {
@@ -15,6 +18,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         @"  select * from pad_series where id = @Id;
                             select * from pad_series_polisher_types where pad_series_id = @Id;
                             select * from pad_sizes where pad_series_id = @Id;
+                            select * from images i join pad_colors pc on i.id = pc.image_id where pad_series_id = @Id;
                             select * from pad_colors where pad_series_id = @Id;
                             select * from pad_options po left join pad_colors pc on po.pad_color_id = pc.id where pad_series_id = @Id;
                         ",
@@ -36,12 +40,21 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         ps.ThicknessAmount != null ? new Measurement(ps.ThicknessAmount ?? 0, MeasurementUnitUtils.Parse(ps.ThicknessUnit!)) : null
                     )).ToList();
 
+                    var images = reader.Read<ImageRow>().Select(i => new ProcessedImage(
+                        i.Id,
+                        new ImageParentReference(i.ParentId, ImageParentTypeUtils.Parse(i.ParentType)),
+                        i.FileName,
+                        i.MimeType,
+                        ImageUtils.LoadFromBinary(i.ImageData),
+                        ImageUtils.LoadFromBinary(i.ThumbnailData)
+                    ));
+
                     var colors = new Dictionary<Guid, PadColor>(
                         reader.Read<PadColorRow>().Select(c => new PadColor(
                             c.Id,
                             c.Name,
                             PadCategoryUtils.Parse(c.Category),
-                            c.ImageName != null ? new DataUrlImage(c.ImageName, c.ImageData!) : null
+                            images.Where(i => i.Parent.ParentId == c.Id).FirstOrDefault()
                         )).Select(c => new KeyValuePair<Guid, PadColor>(c.Id, c))
                     );
 
@@ -109,9 +122,23 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             PadSeriesId = series.Id,
                             Category = c.Category.Serialize(),
                             Name = c.Name,
-                            ImageName = c.Image?.Name,
-                            ImageData = c.Image?.ToBinary()
+                            ImageId = c.Image?.Id
                         }).ToList()
+                    );
+
+                    var imageRows = series.Colors.Select(c => c.Image != null ? new ImageRow() {
+                        Id = c.Image.Id,
+                        ParentId = c.Id,
+                        ParentType = ImageParentType.PadColor.Serialize(),
+                        FileName = c.Image.FileName,
+                        MimeType = c.Image.MimeType,
+                        ImageData = ImageUtils.ToBinary(c.Image.Full),
+                        ThumbnailData = ImageUtils.ToBinary(c.Image.Thumbnail)
+                    } : null);
+
+                    await conn.ExecuteAsync(
+                        @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                        imageRows
                     );
 
                     var optionRows = new List<PadOptionRow>();
@@ -182,9 +209,24 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             PadSeriesId = series.Id,
                             Category = c.Category.Serialize(),
                             Name = c.Name,
-                            ImageName = c.Image?.Name,
-                            ImageData = c.Image?.ToBinary()
+                            ImageId = c.Image?.Id
                         }).ToList()
+                    );
+
+                    await conn.ExecuteAsync("delete from images where id = @Id;", series.Colors.Select(c => c.Image).ToList());
+                    var imageRows = series.Colors.Select(c => c.Image != null ? new ImageRow() {
+                        Id = c.Image.Id,
+                        ParentId = c.Id,
+                        ParentType = ImageParentType.PadColor.Serialize(),
+                        FileName = c.Image.FileName,
+                        MimeType = c.Image.MimeType,
+                        ImageData = ImageUtils.ToBinary(c.Image.Full),
+                        ThumbnailData = ImageUtils.ToBinary(c.Image.Thumbnail)
+                    } : null);
+
+                    await conn.ExecuteAsync(
+                        @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                        imageRows
                     );
 
                     var optionRows = new List<PadOptionRow>();
@@ -217,6 +259,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync(@"delete from pad_options where pad_color_id = @Id;", series.Colors);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", series);
                     await conn.ExecuteAsync(@"delete from pad_colors where pad_series_id = @Id;", series);
+                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", series.Colors);
                     await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
                     t.Commit();
                 }
