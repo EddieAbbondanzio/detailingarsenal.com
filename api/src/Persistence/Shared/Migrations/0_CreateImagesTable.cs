@@ -5,7 +5,7 @@ namespace DetailingArsenal.Persistence.Shared.Migrations {
     public class CreateImagesTable : Migration {
         public override void Up() {
             Create.Table("images")
-                .WithColumn("id").AsGuid()
+                .WithColumn("id").AsGuid().PrimaryKey()
                 .WithColumn("parent_id").AsGuid()
                 .WithColumn("parent_type").AsString(16)
                 .WithColumn("file_name").AsString(128)

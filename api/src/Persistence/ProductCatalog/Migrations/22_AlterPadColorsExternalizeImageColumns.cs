@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
-    [Migration(2020_12_27_00, "Alter pad colors externalize image data")]
+    [Migration(2020_12_27_02, "Alter pad colors externalize image data")]
     public class AlterPadColorsExternalizeImageColumns : Migration {
         public override void Up() {
             Delete.Column("image_name").Column("image_data").FromTable("pad_colors");
