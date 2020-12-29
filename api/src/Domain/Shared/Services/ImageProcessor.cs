@@ -32,7 +32,12 @@ namespace DetailingArsenal.Domain.Shared {
         }
 
         Image GenerateThumbnail(Image full) {
-            return full.GetThumbnailImage(ThumbnailSize, ThumbnailSize, () => false, IntPtr.Zero);
+            float y = full.Size.Height / ThumbnailSize;
+
+            int thumbWidth = Convert.ToInt32(full.Size.Width / y);
+            int thumbHeight = Convert.ToInt32(full.Size.Height / y);
+
+            return full.GetThumbnailImage(thumbWidth, thumbHeight, () => false, IntPtr.Zero);
         }
     }
 }

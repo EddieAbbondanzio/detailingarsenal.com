@@ -61,7 +61,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 c.id,
                                 c.name,
                                 c.category,
-                                images.Where(i => i.PadColorId == c.id).FirstOrDefault().ImageId,
+                                images.Where(i => i.PadColorId == c.id).FirstOrDefault().ImageId,   //TODO: Fix this. Will leave Guid.Empty instead of null.
                                 new List<PadOptionReadModel>(),
                                 c.cut,
                                 c.finish,
@@ -147,16 +147,23 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     var colors = new Dictionary<Guid, PadColorReadModel>();
 
                     foreach (var raw in reader.Read()) {
+                        Guid? imageId = images.Where(i => i.PadColorId == raw.id).FirstOrDefault().ImageId;
+
+                        if (imageId == Guid.Empty) {
+                            imageId = null;
+                        }
+
                         var color = new PadColorReadModel(
                             raw.id,
                             raw.name,
                             raw.category,
-                            images.Where(i => i.PadColorId == raw.id).FirstOrDefault().ImageId,
+                            imageId,
                             new List<PadOptionReadModel>(),
                             raw.cut,
                             raw.finish,
                             new RatingReadModel(raw.stars, reviewCounts[raw.id])
                         );
+
 
                         colors.Add(color.Id, color);
 
