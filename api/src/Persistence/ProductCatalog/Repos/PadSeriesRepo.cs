@@ -115,17 +115,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }).ToList()
                     );
 
-                    await conn.ExecuteAsync(
-                        @"insert into pad_colors (id, pad_series_id, category, name, image_name, image_data) values (@Id, @PadSeriesId, @Category, @Name, @ImageName, @ImageData);",
-                        series.Colors.Select(c => new PadColorRow() {
-                            Id = c.Id,
-                            PadSeriesId = series.Id,
-                            Category = c.Category.Serialize(),
-                            Name = c.Name,
-                            ImageId = c.Image?.Id
-                        }).ToList()
-                    );
-
                     var imageRows = series.Colors.Select(c => c.Image != null ? new ImageRow() {
                         Id = c.Image.Id,
                         ParentId = c.Id,
@@ -137,8 +126,19 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     } : null);
 
                     await conn.ExecuteAsync(
-                        @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                        @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
                         imageRows
+                    );
+
+                    await conn.ExecuteAsync(
+                        @"insert into pad_colors (id, pad_series_id, category, name, image_id) values (@Id, @PadSeriesId, @Category, @Name, @ImageId);",
+                        series.Colors.Select(c => new PadColorRow() {
+                            Id = c.Id,
+                            PadSeriesId = series.Id,
+                            Category = c.Category.Serialize(),
+                            Name = c.Name,
+                            ImageId = c.Image?.Id
+                        }).ToList()
                     );
 
                     var optionRows = new List<PadOptionRow>();
@@ -202,17 +202,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync("delete from pad_options join pad_colors on pad_options.pad_colors_id = pad_colors.id where pad_series_id = @Id", series);
                     await conn.ExecuteAsync("delete from pad_colors where pad_series_id = @Id;", series);
 
-                    await conn.ExecuteAsync(
-                        @"insert into pad_colors (id, pad_series_id, category, name, image_name, image_data) values (@Id, @PadSeriesId, @Category, @Name, @ImageName, @ImageData);",
-                        series.Colors.Select(c => new PadColorRow() {
-                            Id = c.Id,
-                            PadSeriesId = series.Id,
-                            Category = c.Category.Serialize(),
-                            Name = c.Name,
-                            ImageId = c.Image?.Id
-                        }).ToList()
-                    );
-
                     await conn.ExecuteAsync("delete from images where id = @Id;", series.Colors.Select(c => c.Image).ToList());
                     var imageRows = series.Colors.Select(c => c.Image != null ? new ImageRow() {
                         Id = c.Image.Id,
@@ -225,8 +214,19 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     } : null);
 
                     await conn.ExecuteAsync(
-                        @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                        @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
                         imageRows
+                    );
+
+                    await conn.ExecuteAsync(
+                        @"insert into pad_colors (id, pad_series_id, category, name, image_id) values (@Id, @PadSeriesId, @Category, @Name, @ImageId);",
+                        series.Colors.Select(c => new PadColorRow() {
+                            Id = c.Id,
+                            PadSeriesId = series.Id,
+                            Category = c.Category.Serialize(),
+                            Name = c.Name,
+                            ImageId = c.Image?.Id
+                        }).ToList()
                     );
 
                     var optionRows = new List<PadOptionRow>();
@@ -258,8 +258,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", series);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_color_id = @Id;", series.Colors);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", series);
-                    await conn.ExecuteAsync(@"delete from pad_colors where pad_series_id = @Id;", series);
                     await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", series.Colors);
+                    await conn.ExecuteAsync(@"delete from pad_colors where pad_series_id = @Id;", series);
                     await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
                     t.Commit();
                 }

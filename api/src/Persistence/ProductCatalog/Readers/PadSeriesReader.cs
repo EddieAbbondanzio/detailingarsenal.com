@@ -20,8 +20,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             left join reviews on reviews.pad_color_id = pad_colors.id 
                             where pad_series_id = @Id
                             group by pad_colors.id;
-                        select pc.id as pad_color_id, i.id as image_id from images
-                            join pad_colors pc on images pc.image_id = i.id where pc.pad_series_id = @Id;
+                        select pc.id as pad_color_id, i.id as image_id from images i
+                            join pad_colors pc on pc.image_id = i.id where pc.pad_series_id = @Id;
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pad_colors pc 
                             left join reviews r on pc.id = r.pad_color_id 
                             where pad_series_id = @Id group by pc.id;
@@ -61,7 +61,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 c.id,
                                 c.name,
                                 c.category,
-                                images.Select(i => i.PadColorId == c.id).FirstOrDefault()?.ImageId,
+                                images.Where(i => i.PadColorId == c.id).FirstOrDefault().ImageId,
                                 new List<PadOptionReadModel>(),
                                 c.cut,
                                 c.finish,
@@ -94,8 +94,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         select count(reviews.*) as count, pad_colors.id from pad_colors
                             left join reviews on reviews.pad_color_id = pad_colors.id 
                             group by pad_colors.id;
-                        select pc.id as pad_color_id, i.id as image_id from images
-                            join pad_colors pc on images pc.image_id = i.id;
+                        select pc.id as pad_color_id, i.id as image_id from images i
+                            join pad_colors pc on pc.image_id = i.id;
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pad_colors pc 
                             left join reviews r on pc.id = r.pad_color_id 
                             group by pc.id;
@@ -151,7 +151,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             raw.id,
                             raw.name,
                             raw.category,
-                            images.Select(i => i.PadColorId == raw.id).FirstOrDefault()?.ImageId,
+                            images.Where(i => i.PadColorId == raw.id).FirstOrDefault().ImageId,
                             new List<PadOptionReadModel>(),
                             raw.cut,
                             raw.finish,
