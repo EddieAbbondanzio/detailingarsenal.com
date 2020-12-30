@@ -18,13 +18,13 @@ export default class PolisherTypeTag extends Vue {
             case PolisherType.DualAction:
                 return 'is-primary';
             case PolisherType.LongThrow:
-                return 'is-info';
+                return 'is-cyan';
             case PolisherType.ForcedRotation:
-                return 'is-success';
+                return 'is-yellow';
             case PolisherType.Rotary:
-                return 'is-warning';
+                return 'is-red';
             case PolisherType.Mini:
-                return 'is-danger';
+                return 'is-green';
         }
     }
 

@@ -24,7 +24,7 @@
                     <img
                         class="img is-square"
                         :src="
-                            value.image != null ? value.image.data : 'https://bulma.io/images/placeholders/480x480.png'
+                            value.image != null ? value.imageUrl : 'https://via.placeholder.com/900x671?text=No+Image'
                         "
                     />
                 </div>

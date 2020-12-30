@@ -12,8 +12,24 @@
             </page-header>
         </template>
         <b-table class="pads-table" :data="summaries">
-            <b-table-column v-slot="props">{{ props.row.image != null ? props.row.image.name : '' }}</b-table-column>
-            <b-table-column v-slot="props" label="Name" field="label">
+            <b-table-column v-slot="props">
+                <router-link
+                    :to="{
+                        name: 'pad',
+                        params: { id: props.row.id },
+                    }"
+                >
+                    <img
+                        :src="
+                            props.row.thumbnailUrl != null
+                                ? props.row.thumbnailUrl
+                                : 'https://via.placeholder.com/60x60?text=NA'
+                        "
+                        class="pad-thumb"
+                    />
+                </router-link>
+            </b-table-column>
+            <b-table-column v-slot="props" label="Name" field="label" sortable>
                 <router-link
                     class="label-link has-text-weight-bold"
                     :to="{
@@ -61,6 +77,9 @@
 </template>
 
 <style lang="sass">
+.pad-thumb
+    max-height: 40px!important
+
 .label-link
     color: $dark!important
 
@@ -70,6 +89,7 @@
 .pads-table
     td
         margin: auto!important
+        vertical-align: middle
 </style>
 
 <script lang="ts">
@@ -102,13 +122,14 @@ export default class Pads extends Vue {
         for (const pad of padStore.pads) {
             summaries.push({
                 id: pad.id,
+                thumbnailUrl: pad.thumbnailUrl,
                 name: pad.label,
                 category: pad.category,
                 material: PadMaterial.Foam,
                 cut: pad.cut,
                 finish: pad.finish,
                 rating: pad.rating,
-                polisherTypes: [],
+                polisherTypes: pad.series.polisherTypes,
             });
         }
 
@@ -127,6 +148,7 @@ export default class Pads extends Vue {
 
 interface PadSummary {
     id: string;
+    thumbnailUrl: string | null;
     name: string;
     category: PadCategory;
     material: PadMaterial;

@@ -10,6 +10,14 @@ export class PadColor {
         return `${this.series.brand.name} ${this.series.name} ${this.name}`
     }
 
+    get imageUrl() {
+        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/image/${this.image}` : null;
+    }
+
+    get thumbnailUrl() {
+        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/image/${this.image}/thumb` : null;
+    }
+
     constructor(
         public id: string,
         public series: PadSeries, // Used for quick lookup of series info only
@@ -18,7 +26,7 @@ export class PadColor {
         public cut: PadCut | null, // Comes from review
         public finish: PadFinish | null, // Comes from review
         public rating: Rating,
-        public image: Image | null = null,
+        public image: string | null = null,
         public options: PadOption[] = []
     ) { }
 }
