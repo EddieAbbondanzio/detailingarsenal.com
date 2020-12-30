@@ -153,6 +153,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<BrandUpdateValidator>();
             services.AddTransient<IBrandReader, BrandReader>();
             services.AddTransient<BrandNameUniqueSpecification>();
+            services.AddTransient<BrandNotInUseSpecification>();
             services.AddTransient<IBrandRepo, BrandRepo>();
             services.AddTransient<IPadSeriesRepo, PadSeriesRepo>();
             services.AddTransient<IPadSeriesReader, PadSeriesReader>();

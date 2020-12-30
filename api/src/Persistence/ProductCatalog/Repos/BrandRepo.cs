@@ -55,5 +55,12 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 await conn.ExecuteAsync(@"delete from brands where id = @Id;", entity);
             }
         }
+
+        public async Task<bool> IsBrandInUse(Brand brand) {
+            using (var conn = OpenConnection()) {
+                var count = await conn.ExecuteScalarAsync<int>(@"select count(*) from pad_series where brand_id = @Id;", brand);
+                return count > 0;
+            }
+        }
     }
 }
