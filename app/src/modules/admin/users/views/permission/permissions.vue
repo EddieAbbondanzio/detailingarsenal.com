@@ -25,7 +25,7 @@
             }}</b-table-column>
             <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
             <b-table-column v-slot="props">
-                <edit-delete-dropdown @edit="onEdit(props.row)" @delete="onDelete(props.row)" size="is-small" />
+                <update-delete-dropdown @edit="onEdit(props.row)" @delete="onDelete(props.row)" size="is-small" />
             </b-table-column>
 
             <template slot="empty">
@@ -55,7 +55,7 @@ export default class Permissions extends Vue {
     }
 
     async onEdit(p: Permission) {
-        this.$router.push({ name: 'editPermission', params: { id: p.id } });
+        this.$router.push({ name: 'updatePermission', params: { id: p.id } });
     }
 
     @displayLoading
@@ -65,7 +65,7 @@ export default class Permissions extends Vue {
         if (del) {
             try {
                 await securityStore.deletePermission(p);
-                toast(`Deleted permission ${p.toString()}`);
+                toast(`Deleted permission ${p.label}`);
             } catch (err) {
                 displayError(err);
             }

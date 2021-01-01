@@ -4,17 +4,17 @@
             <page-header :title="client.name">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Clients" :to="{name: 'clients'}" />
+                        <breadcrumb name="Clients" :to="{ name: 'clients' }" />
                         <breadcrumb
                             :name="client.name"
-                            :to="{name: 'client', params: $route.params}"
+                            :to="{ name: 'client', params: $route.params }"
                             :active="true"
                         />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <edit-delete-dropdown @edit="onEdit" @delete="onDelete" />
+                    <update-delete-dropdown @edit="onEdit" @delete="onDelete" />
                 </template>
             </page-header>
         </template>
@@ -22,9 +22,7 @@
         <div class="box is-shadowless is-flex is-flex-column is-flex-grow-1">
             <div class="is-flex is-flex-column is-align-items-center has-margin-y-3">
                 <!-- User Icon -->
-                <div
-                    class="box is-shadowless has-background-light has-padding-all-3 is-inline-block"
-                >
+                <div class="box is-shadowless has-background-light has-padding-all-3 is-inline-block">
                     <b-icon icon="account" type="is-dark" size="is-large" />
                 </div>
 
@@ -78,12 +76,12 @@ import { confirmDelete, displayError, toast, displayLoading } from '@/core';
 @Component({
     name: 'client',
     components: {
-        ClientWidget
-    }
+        ClientWidget,
+    },
 })
 export default class Client extends Vue {
     get client() {
-        return clientsStore.clients.find(c => c.id == this.$route.params.id)!;
+        return clientsStore.clients.find((c) => c.id == this.$route.params.id)!;
     }
 
     @displayLoading

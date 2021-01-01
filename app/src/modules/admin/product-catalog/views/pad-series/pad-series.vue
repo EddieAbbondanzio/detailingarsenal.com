@@ -30,7 +30,7 @@
                 :to="{ name: 'padSeriesDetails', params: { id: s.id } }"
             >
                 <template v-slot:actions>
-                    <edit-delete-dropdown @edit="onEdit(s)" @delete="onDelete(s)" />
+                    <update-delete-dropdown @edit="onEdit(s)" @delete="onDelete(s)" />
                 </template>
             </list-item>
         </list>

@@ -5,17 +5,17 @@
                 title="Services"
                 :description="`${count} ${count == 1 ? 'service' : 'services'}`"
                 icon="toolbox"
-                :backButtonTo="{name: 'settings'}"
+                :backButtonTo="{ name: 'settings' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb name="Services" :to="{name: 'services'}" :active="true" />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Services" :to="{ name: 'services' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <create-button :to="{name: 'createService' }" text="Create service" />
+                    <create-button :to="{ name: 'createService' }" text="Create service" />
                 </template>
             </page-header>
         </template>
@@ -26,11 +26,11 @@
                 :key="s.id"
                 :title="s.name"
                 :description="s.description"
-                :to="{name: 'service', params: {id: s.id}}"
+                :to="{ name: 'service', params: { id: s.id } }"
                 height="124px"
             >
                 <template v-slot:actions>
-                    <edit-delete-dropdown @edit="onEdit(s)" @delete="onDelete(s)" />
+                    <update-delete-dropdown @edit="onEdit(s)" @delete="onDelete(s)" />
                 </template>
             </list-item>
         </list>
@@ -44,7 +44,7 @@ import { confirmDelete, displayError, toast, displayLoading } from '@/core';
 import { Service } from '@/api';
 
 @Component({
-    name: 'services'
+    name: 'services',
 })
 export default class Services extends Vue {
     get count() {

@@ -1,12 +1,7 @@
 <template>
     <b-dropdown position="is-bottom-left" ref="dropdown">
         <template v-slot:trigger>
-            <b-button
-                type="is-text"
-                icon-left="dots-vertical"
-                :size="size"
-                @click.native="show($event)"
-            />
+            <b-button type="is-text" icon-left="dots-vertical" :size="size" @click.native="show($event)" />
         </template>
 
         <b-dropdown-item
@@ -14,7 +9,7 @@
             class="is-flex is-flex-row is-align-items-center"
             @click.native="onEdit($event)"
         >
-            <b-icon icon="pencil" type="is-dark" class="has-margin-right-2" />Edit
+            <b-icon icon="pencil" type="is-dark" class="has-margin-right-2" />Update
         </b-dropdown-item>
         <b-dropdown-item
             aria-role="listitem"
@@ -30,9 +25,9 @@
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 
 @Component({
-    name: 'edit-delete-dropdown'
+    name: 'update-delete-dropdown',
 })
-export default class EditDeleteDropdown extends Vue {
+export default class UpdateDeleteDropdown extends Vue {
     @Ref('dropdown')
     public dropdown: any;
 

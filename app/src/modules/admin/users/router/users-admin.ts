@@ -16,12 +16,12 @@ const usersAdminRoutes: RouteConfig[] = [
     {
         path: 'users/permissions/create',
         name: 'createPermission',
-        component: () => import('@/modules/admin/users/views/permission/create-permission.vue')
+        component: () => import('@/modules/admin/users/views/permission/create-or-update-permission.vue')
     },
     {
-        path: 'users/permission/:id/edit',
-        name: 'editPermission',
-        component: () => import('@/modules/admin/users/views/permission/edit-permission.vue')
+        path: 'users/permission/:id/update',
+        name: 'updatePermission',
+        component: () => import('@/modules/admin/users/views/permission/create-or-update-permission.vue')
     },
     {
         path: 'users/roles',

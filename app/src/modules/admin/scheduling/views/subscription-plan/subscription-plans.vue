@@ -35,7 +35,7 @@
                 :to="{ name: 'subscriptionPlan', params: { id: p.id } }"
             >
                 <template v-slot:actions>
-                    <edit-delete-dropdown @edit="onEdit(p)" @delete="onDelete(p)" />
+                    <update-delete-dropdown @edit="onEdit(p)" @delete="onDelete(p)" />
                 </template>
             </list-item>
         </list>

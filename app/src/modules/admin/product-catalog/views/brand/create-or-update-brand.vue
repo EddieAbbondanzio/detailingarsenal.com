@@ -1,7 +1,7 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header title="Create brand" :description="`Create brand`">
+            <page-header :title="`${verb} brand`" :description="`${verb} brand`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
@@ -43,7 +43,7 @@ export default class CreateOrUpdateBrand extends InputViewMixin {
 
     @displayLoading
     async created() {
-        if (this.id != null) {
+        if (this.mode == 'update') {
             await brandStore.init();
 
             const brand = brandStore.brands.find((b) => b.id == this.id);

@@ -34,7 +34,7 @@ import List from './components/layout/list.vue';
 import ListItem from './components/layout/list-item.vue';
 import Phone from './components/elements/phone.vue';
 import Email from './components/elements/email.vue';
-import EditDeleteDropdown from './components/dropdowns/edit-delete-dropdown.vue';
+import UpdateDeleteDropdown from './components/dropdowns/update-delete-dropdown.vue';
 import Navbar from '@/core/components/navigation/navbar.vue';
 import NavbarItem from '@/core/components/navigation/navbar-item.vue';
 import NavFooter from '@/core/components/navigation/nav-footer.vue';
@@ -74,7 +74,7 @@ export default {
         Vue.component(InputTimepicker.name, InputTimepicker);
         Vue.component(InputSlider.name, InputSlider);
         Vue.component(InputTagger.name, InputTagger);
-        Vue.component('edit-delete-dropdown', EditDeleteDropdown);
+        Vue.component('update-delete-dropdown', UpdateDeleteDropdown);
         Vue.component(Phone.name, Phone);
         Vue.component(Email.name, Email);
         Vue.component(Navbar.name, Navbar);

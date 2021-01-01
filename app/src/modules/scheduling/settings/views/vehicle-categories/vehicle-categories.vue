@@ -5,24 +5,17 @@
                 title="Vehicle categories"
                 :description="`${count} vehicle ${count == 1 ? 'category' : 'categories'}`"
                 icon="car"
-                :backButtonTo="{name: 'settings'}"
+                :backButtonTo="{ name: 'settings' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb
-                            name="Vehicle categories"
-                            :to="{name: 'vehicleCategories'}"
-                            :active="true"
-                        />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Vehicle categories" :to="{ name: 'vehicleCategories' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <create-button
-                        :to="{name: 'createVehicleCategory' }"
-                        text="Create vehicle category"
-                    />
+                    <create-button :to="{ name: 'createVehicleCategory' }" text="Create vehicle category" />
                 </template>
             </page-header>
         </template>
@@ -36,7 +29,7 @@
                 height="124px"
             >
                 <template v-slot:actions>
-                    <edit-delete-dropdown @edit="onEdit(vc)" @delete="onDelete(vc)" />
+                    <update-delete-dropdown @edit="onEdit(vc)" @delete="onDelete(vc)" />
                 </template>
             </list-item>
         </list>
@@ -53,7 +46,7 @@ import { VehicleCategory } from '@/api';
  * Settings page for managing vehicle categories.
  */
 @Component({
-    name: 'vehicle-categories'
+    name: 'vehicle-categories',
 })
 export default class VehicleCategories extends Vue {
     get count() {

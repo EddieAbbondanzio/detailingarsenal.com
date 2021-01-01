@@ -24,7 +24,7 @@
         <list>
             <list-item v-for="b in brands" :key="b.id" :title="b.name" :to="{ name: 'brand', params: { id: b.id } }">
                 <template v-slot:actions>
-                    <edit-delete-dropdown @edit="onEdit(b)" @delete="onDelete(b)" />
+                    <update-delete-dropdown @edit="onEdit(b)" @delete="onDelete(b)" />
                 </template>
             </list-item>
         </list>
