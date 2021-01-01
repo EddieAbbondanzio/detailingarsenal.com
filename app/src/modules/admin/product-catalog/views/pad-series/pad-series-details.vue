@@ -58,11 +58,13 @@
                         props.row.name
                     }}</b-table-column>
                     <b-table-column v-slot="props" label="Category" field="action" sortable>{{
-                        props.row.category
+                        props.row.category | uppercaseFirst
                     }}</b-table-column>
-                    <b-table-column v-slot="props" label="Image" field="scope" sortable>{{
-                        props.row.image != null ? props.row.image.name : ''
-                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Image" field="scope" sortable>
+                        <a :href="props.row.imageUrl" target="_blank">
+                            <img :src="props.row.thumbnailUrl" style="max-height: 40px !important" />
+                        </a>
+                    </b-table-column>
 
                     <template slot="empty">
                         <div class="is-flex is-justify-content-center">There's nothing here!</div>
