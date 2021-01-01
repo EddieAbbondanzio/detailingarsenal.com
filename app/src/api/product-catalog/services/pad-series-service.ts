@@ -8,6 +8,7 @@ import { PadSeriesUpdateRequest } from '../data-transfer-objects/requests/pad-se
 import { Rating } from '../data-transfer-objects/rating';
 import { Image } from '../data-transfer-objects/image';
 import { PadOption } from '../data-transfer-objects/pad-option';
+import { Measurement } from '../data-transfer-objects/measurement';
 
 export class PadSeriesService {
     async get(): Promise<PadSeries[]> {
@@ -39,11 +40,11 @@ export class PadSeriesService {
             ps.material,
             ps.texture,
             ps.polisherTypes,
-            (ps.sizes ?? [] as any[]).map((s: any) => ({
-                id: s.id,
-                diameter: { amount: s.diameter.amount, unit: s.diameter.unit },
-                thickness: s.thickness != null ? { amount: s.thickness.amount, unit: s.thickness.unit } : null
-            })),
+            (ps.sizes ?? [] as any[]).map((s: any) => new PadSize(
+                s.id,
+                { amount: s.diameter.amount, unit: s.diameter.unit },
+                s.thickness != null ? { amount: s.thickness.amount, unit: s.thickness.unit } : null as any as Measurement
+            )),
             (ps.colors ?? [] as any[]).map((c: any) => new PadColor(
                 c.id,
                 ps,

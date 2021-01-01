@@ -11,7 +11,7 @@
                 </template>-->
             </page-header>
         </template>
-        <b-table class="pads-table" :data="summaries">
+        <b-table class="pads-table" :data="summaries" :loading="loading">
             <b-table-column v-slot="props">
                 <router-link
                     :to="{
@@ -36,8 +36,9 @@
                         name: 'pad',
                         params: { id: props.row.id },
                     }"
-                    >{{ props.row.name }}</router-link
-                >
+                    >{{ props.row.name }}
+                    <b-tag type="is-info" v-if="props.row.isThin" size="is-small">Thin</b-tag>
+                </router-link>
             </b-table-column>
             <b-table-column v-slot="props" label="Category" field="category" sortable>{{
                 props.row.category | uppercaseFirst
@@ -94,7 +95,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { api, PadCategory, PadCut, PadFinish, PadMaterial, PolisherType, Rating } from '@/api';
+import { api, PadCategory, PadCut, PadFinish, PadMaterial, PadSize, PolisherType, Rating } from '@/api';
 import { displayLoading } from '@/core';
 import PadFilterControl from '@/modules/product-catalog/pads/components/pad-filter-control.vue';
 import store from '@/core/store';
@@ -105,6 +106,7 @@ import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-b
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import padStore from '../store/pad/pad-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
+import appStore from '@/core/store/app-store';
 
 @Component({
     components: {
@@ -130,19 +132,20 @@ export default class Pads extends Vue {
                 finish: pad.finish,
                 rating: pad.rating,
                 polisherTypes: pad.series.polisherTypes,
+                isThin: PadSize.isThin(pad.series.sizes[0]),
             });
         }
 
         return summaries;
     }
 
+    loading = false; // used for b-table
+
     @displayLoading
     async created() {
+        this.loading = true;
         await padStore.init();
-    }
-
-    isThin(thickness: number) {
-        return thickness < 0.75;
+        this.loading = false;
     }
 }
 
@@ -156,5 +159,6 @@ interface PadSummary {
     finish: PadFinish | null;
     rating: Rating;
     polisherTypes: PolisherType[];
+    isThin: boolean;
 }
 </script>

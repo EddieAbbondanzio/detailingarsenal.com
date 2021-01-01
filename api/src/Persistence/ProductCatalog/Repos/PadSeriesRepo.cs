@@ -115,20 +115,22 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }).ToList()
                     );
 
-                    var imageRows = series.Colors.Select(c => c.Image != null ? new ImageRow() {
-                        Id = c.Image.Id,
+                    var imageRows = series.Colors.Where(c => c.Image != null).Select(c => new ImageRow() {
+                        Id = c.Image!.Id,
                         ParentId = c.Id,
                         ParentType = ImageParentType.PadColor.Serialize(),
                         FileName = c.Image.FileName,
                         MimeType = c.Image.MimeType,
                         ImageData = ImageUtils.ToBinary(c.Image.Full),
                         ThumbnailData = ImageUtils.ToBinary(c.Image.Thumbnail)
-                    } : null);
+                    });
 
-                    await conn.ExecuteAsync(
-                        @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
-                        imageRows
-                    );
+                    if (imageRows.Count() > 0) {
+                        await conn.ExecuteAsync(
+                            @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                            imageRows
+                        );
+                    }
 
                     await conn.ExecuteAsync(
                         @"insert into pad_colors (id, pad_series_id, category, name, image_id) values (@Id, @PadSeriesId, @Category, @Name, @ImageId);",
@@ -203,15 +205,23 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync("delete from pad_colors where pad_series_id = @Id;", series);
 
                     await conn.ExecuteAsync("delete from images where id = @Id;", series.Colors.Select(c => c.Image).ToList());
-                    var imageRows = series.Colors.Select(c => c.Image != null ? new ImageRow() {
-                        Id = c.Image.Id,
+
+                    var imageRows = series.Colors.Where(c => c.Image != null).Select(c => new ImageRow() {
+                        Id = c.Image!.Id,
                         ParentId = c.Id,
                         ParentType = ImageParentType.PadColor.Serialize(),
                         FileName = c.Image.FileName,
                         MimeType = c.Image.MimeType,
                         ImageData = ImageUtils.ToBinary(c.Image.Full),
                         ThumbnailData = ImageUtils.ToBinary(c.Image.Thumbnail)
-                    } : null);
+                    });
+
+                    if (imageRows.Count() > 0) {
+                        await conn.ExecuteAsync(
+                            @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                            imageRows
+                        );
+                    }
 
                     await conn.ExecuteAsync(
                         @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
