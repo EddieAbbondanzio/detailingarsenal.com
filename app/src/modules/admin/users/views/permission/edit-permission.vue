@@ -1,5 +1,5 @@
 <template>
-    <page :loading="loading">
+    <page>
         <template v-slot:header>
             <page-header title="Edit permission" :description="`Edit an existing permission`">
                 <template v-slot:breadcrumb-trail>
@@ -13,7 +13,7 @@
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" :loading="loading" submitText="Save changes">
+        <input-form @submit="onSubmit" submitText="Save changes">
             <input-text-field
                 label="Action"
                 rules="required|max:32"
@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { toast, displayError } from '@/core';
+import { toast, displayError, displayLoading } from '@/core';
 import { Permission, SpecificationError } from '@/api';
 import securityStore from '../../store/security-store';
 
@@ -43,10 +43,10 @@ import securityStore from '../../store/security-store';
     name: 'edit-permission',
 })
 export default class EditPermission extends Vue {
-    loading = false;
     action: string = '';
     scope: string = '';
 
+    @displayLoading
     async created() {
         const id = this.$route.params.id;
         await securityStore.init();
@@ -59,11 +59,10 @@ export default class EditPermission extends Vue {
 
         this.action = perm.action;
         this.scope = perm.scope;
-        this.loading = false;
     }
 
+    @displayLoading
     async onSubmit() {
-        this.loading = true;
         const edit = { id: this.$route.params.id, action: this.action, scope: this.scope };
 
         try {
@@ -72,13 +71,7 @@ export default class EditPermission extends Vue {
             toast(`Updated permission`);
             this.$router.push({ name: 'permissions' });
         } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
-        } finally {
-            this.loading = false;
+            displayError(err);
         }
     }
 }

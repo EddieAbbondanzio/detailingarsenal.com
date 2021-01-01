@@ -58,11 +58,7 @@ export default class CreatePermission extends Vue {
             toast(`Created new permission`);
             this.$router.push({ name: 'permissions' });
         } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
+            displayError(err);
         }
     }
 }

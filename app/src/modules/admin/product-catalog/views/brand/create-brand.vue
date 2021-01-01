@@ -51,11 +51,7 @@ export default class CreateBrand extends Vue {
             toast(`Created new brand ${create.name}`);
             this.$router.push({ name: 'brands' });
         } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
+            displayError(err);
         }
     }
 }

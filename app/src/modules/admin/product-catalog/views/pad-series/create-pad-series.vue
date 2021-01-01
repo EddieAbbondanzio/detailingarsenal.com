@@ -184,11 +184,7 @@ export default class CreatePadSeries extends Vue {
             toast(`Created new pad series ${create.name}`);
             this.$router.push({ name: 'padSeries' });
         } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
+            displayError(err);
         }
     }
 

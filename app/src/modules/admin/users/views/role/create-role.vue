@@ -74,11 +74,7 @@ export default class CreateRole extends Vue {
             toast(`Created new role ${role.name}`);
             this.$router.push({ name: 'roles' });
         } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
+            throw err;
         }
     }
 }

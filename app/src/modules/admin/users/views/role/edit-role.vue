@@ -90,11 +90,7 @@ export default class EditRole extends Vue {
             toast(`Updated role ${role.name}`);
             this.$router.push({ name: 'roles' });
         } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
+            displayError(err);
         }
     }
 }

@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { PadColor, PadCut, PadFinish, Stars } from '@/api';
-import { displayLoading } from '@/core';
+import { displayError, displayLoading } from '@/core';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import padStore from '../store/pad/pad-store';
 import PadCutInput from '@/modules/product-catalog/pads/components/pad-cut-input.vue';
@@ -73,14 +73,18 @@ export default class WriteReview extends Vue {
 
     @displayLoading
     async onSubmit() {
-        await reviewStore.create({
-            padId: this.value!.id,
-            stars: this.stars!,
-            cut: this.cut,
-            finish: this.finish,
-            title: this.title!,
-            body: this.body!,
-        });
+        try {
+            await reviewStore.create({
+                padId: this.value!.id,
+                stars: this.stars!,
+                cut: this.cut,
+                finish: this.finish,
+                title: this.title!,
+                body: this.body!,
+            });
+        } catch (e) {
+            displayError(e);
+        }
     }
 }
 </script>
