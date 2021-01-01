@@ -5,17 +5,17 @@
                 title="Business"
                 description="Name, address, and contact info"
                 icon="domain"
-                :backButtonTo="{name: 'settings'}"
+                :backButtonTo="{ name: 'settings' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb name="Business" :to="{name: 'business'}" :active="true" />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Business" :to="{ name: 'business' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <edit-button :to="{name: 'editBusiness'}" />
+                    <update-button :to="{ name: 'editBusiness' }" />
                 </template>
             </page-header>
         </template>
@@ -28,7 +28,7 @@
 
             <div class="has-margin-bottom-3">
                 <h5 class="is-size-4 title has-margin-bottom-2">Address</h5>
-                <span class="is-size-6 subtitle">{{ business.address}}</span>
+                <span class="is-size-6 subtitle">{{ business.address }}</span>
             </div>
 
             <div class="has-margin-bottom-3">
@@ -45,7 +45,7 @@ import settingsStore from '../../store/settings-store';
 import { displayLoading } from '@/core';
 
 @Component({
-    name: 'business'
+    name: 'business',
 })
 export default class BusinessView extends Vue {
     get business() {

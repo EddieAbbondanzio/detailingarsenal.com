@@ -16,7 +16,7 @@
                 </template>
 
                 <template v-slot:action>
-                    <edit-button :to="{ name: 'editRole', params: { id: $route.params.id } }" />
+                    <update-button :to="{ name: 'editRole', params: { id: $route.params.id } }" />
                 </template>
             </page-header>
         </template>

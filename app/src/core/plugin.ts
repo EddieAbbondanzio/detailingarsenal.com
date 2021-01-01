@@ -23,7 +23,7 @@ import InputImageUpload from '@/core/components/input/input-image-upload.vue';
 import InputTagger from '@/core/components/input/input-tagger.vue';
 import BackButton from './components/buttons/back-button.vue';
 import CreateButton from './components/buttons/create-button.vue';
-import EditButton from './components/buttons/edit-button.vue';
+import UpdateButton from './components/buttons/update-button.vue';
 import DeleteButton from './components/buttons/delete-button.vue';
 import Page from './components/page/page.vue';
 import PageHeader from './components/page/page-header.vue';
@@ -49,7 +49,7 @@ export default {
     install(vue: typeof Vue) {
         Vue.component(BackButton.name, BackButton);
         Vue.component('create-button', CreateButton);
-        Vue.component('edit-button', EditButton);
+        Vue.component('update-button', UpdateButton);
         Vue.component('delete-button', DeleteButton);
         Vue.component('page', Page);
         Vue.component('page-header', PageHeader);

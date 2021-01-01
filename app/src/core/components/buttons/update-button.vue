@@ -20,7 +20,8 @@
             :loading="loading"
             :to="to"
             :tag="tag"
-        >{{ text }}</b-button>
+            >{{ text }}</b-button
+        >
     </div>
 </template>
 
@@ -30,10 +31,10 @@ import { RawLocation } from 'vue-router';
 import ButtonMixin from '../../mixins/button-mixin';
 
 @Component({
-    name: 'edit-button'
+    name: 'update-button',
 })
-export default class EditButton extends ButtonMixin {
-    @Prop({ default: 'Edit' })
+export default class UpdateButton extends ButtonMixin {
+    @Prop({ default: 'Update' })
     text!: string;
 
     @Prop({ default: 'pencil' })

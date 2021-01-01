@@ -14,14 +14,19 @@ const productCatalogAdminRoutes: RouteConfig[] = [
         component: () => import('@/modules/admin/product-catalog/views/brand/brands.vue')
     },
     {
-        path: 'product-catalog/brands/create',
-        name: 'createBrand',
-        component: () => import('@/modules/admin/product-catalog/views/brand/create-brand.vue')
+        path: 'product-catalog/brands/:id',
+        name: 'brand',
+        component: () => import('@/modules/admin/product-catalog/views/brand/brand.vue')
     },
     {
-        path: 'product-catalog/brands/:id/edit',
-        name: 'editBrand',
-        component: () => import('@/modules/admin/product-catalog/views/brand/edit-brand.vue')
+        path: 'product-catalog/brands/create',
+        name: 'createBrand',
+        component: () => import('@/modules/admin/product-catalog/views/brand/create-or-update-brand.vue')
+    },
+    {
+        path: 'product-catalog/brands/:id/update',
+        name: 'updateBrand',
+        component: () => import('@/modules/admin/product-catalog/views/brand/create-or-update-brand.vue')
     },
     {
         path: 'product-catalog/pad-series',

@@ -5,12 +5,12 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="User" :to="{ name: 'user' }" />
-                        <breadcrumb name="Profile" :to="{ name: 'profile'}" active="true" />
+                        <breadcrumb name="Profile" :to="{ name: 'profile' }" active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <edit-button :to="{ name: 'editProfile' }" />
+                    <update-button :to="{ name: 'editProfile' }" />
                 </template>
             </page-header>
         </template>

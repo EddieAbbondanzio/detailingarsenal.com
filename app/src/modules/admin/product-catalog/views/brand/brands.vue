@@ -22,7 +22,7 @@
         </template>
 
         <list>
-            <list-item v-for="b in brands" :key="b.id" :title="b.name">
+            <list-item v-for="b in brands" :key="b.id" :title="b.name" :to="{ name: 'brand', params: { id: b.id } }">
                 <template v-slot:actions>
                     <edit-delete-dropdown @edit="onEdit(b)" @delete="onDelete(b)" />
                 </template>
@@ -50,7 +50,7 @@ export default class Brands extends Vue {
 
     async onEdit(brand: Brand) {
         this.$router.push({
-            name: 'editBrand',
+            name: 'updateBrand',
             params: {
                 id: brand.id,
             },

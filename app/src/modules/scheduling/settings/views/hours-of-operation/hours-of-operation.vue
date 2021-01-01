@@ -5,34 +5,24 @@
                 title="Hours of operation"
                 description="Hours the business is open"
                 icon="clock-outline"
-                :backButtonTo="{name: 'settings'}"
+                :backButtonTo="{ name: 'settings' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb
-                            name="Hours of operation"
-                            :to="{name: 'hoursOfOperation'}"
-                            :active="true"
-                        />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Hours of operation" :to="{ name: 'hoursOfOperation' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <edit-button :to="{name: 'editHoursOfOperation'}" />
+                    <update-button :to="{ name: 'editHoursOfOperation' }" />
                 </template>
             </page-header>
         </template>
 
         <div class="box is-shadowless">
-            <div
-                class="is-flex is-flex-row is-align-items-center"
-                v-for="day in days"
-                :key="day.name"
-            >
-                <span
-                    class="time-label-short is-hidden-tablet"
-                >{{ dayName(day.day).substring(0,3) }}</span>
+            <div class="is-flex is-flex-row is-align-items-center" v-for="day in days" :key="day.name">
+                <span class="time-label-short is-hidden-tablet">{{ dayName(day.day).substring(0, 3) }}</span>
                 <span class="time-label is-hidden-mobile">{{ dayName(day.day) }}</span>
                 <div grouped class="is-flex is-flex-row is-align-items-center">
                     <span>{{ day.open | twelveHourFormat }}</span>
@@ -64,7 +54,7 @@ import settingsStore from '../../store/settings-store';
 import { displayLoading } from '@/core';
 
 @Component({
-    name: 'hours-of-operation'
+    name: 'hours-of-operation',
 })
 export default class HoursOfOperation extends Vue {
     get days() {

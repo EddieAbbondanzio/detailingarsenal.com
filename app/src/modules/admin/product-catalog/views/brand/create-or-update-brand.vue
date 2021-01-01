@@ -1,19 +1,20 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header title="Edit brand" :description="`Edit brand`">
+            <page-header title="Create brand" :description="`Create brand`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
                         <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
                         <breadcrumb name="Brands" :to="{ name: 'brands' }" />
-                        <breadcrumb name="Edit" :to="{ name: 'editBrand', params: $route.params }" active="true" />
+                        <breadcrumb v-if="mode == 'update'" :name="name" :to="{ name: 'brand' }" />
+                        <breadcrumb :name="verb" :to="$route" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" submitText="Save changes">
+        <input-form @submit="onSubmit" :submitText="verb">
             <input-text-field
                 label="Name"
                 rules="required|max:32"
@@ -34,40 +35,46 @@ import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
 import { ValidationError, SpecificationError } from '@/api';
 import brandStore from '../../store/brand-store';
+import InputViewMixin from '@/core/mixins/input-view-mixin';
 
 @Component
-export default class EditBrand extends Vue {
-    public name: string = '';
+export default class CreateOrUpdateBrand extends InputViewMixin {
+    name: string = '';
 
     @displayLoading
     async created() {
-        const id = this.$route.params.id;
-        await brandStore.init();
+        if (this.id != null) {
+            await brandStore.init();
 
-        const brand = brandStore.brands.find((b) => b.id == id);
+            const brand = brandStore.brands.find((b) => b.id == this.id);
 
-        if (brand == null) {
-            throw new Error(`Brand with id ${id} does not exist.`);
+            if (brand == null) {
+                this.$router.go(-1);
+                return;
+            }
+
+            this.name = brand.name;
         }
-
-        this.name = brand.name;
     }
 
     @displayLoading
-    public async onSubmit() {
-        const update = { id: this.$route.params.id, name: this.name };
-
+    async onSubmit() {
         try {
-            await brandStore.update(update);
+            if (this.mode == 'create') {
+                await brandStore.create({
+                    name: this.name,
+                });
+            } else {
+                await brandStore.update({
+                    id: this.id,
+                    name: this.name,
+                });
+            }
 
-            toast(`Updated brand ${update.name}`);
+            toast(`${this.verb}d brand ${this.name}`);
             this.$router.push({ name: 'brands' });
         } catch (err) {
-            if (err instanceof SpecificationError) {
-                displayError(err);
-            } else {
-                throw err;
-            }
+            displayError(err);
         }
     }
 }
