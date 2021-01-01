@@ -104,6 +104,7 @@
                             </b-table-column>
                             <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
                                 {{ props.row.thickness | measurement }}
+                                <b-tag type="is-info" v-if="isThin(props.row)" size="is-small">Thin</b-tag>
                             </b-table-column>
                             <b-table-column v-slot="props" label="Part Number" field="partNumber">
                                 {{ props.row.partNumber }}
@@ -219,6 +220,10 @@ export default class PadView extends Vue {
         this.sizes = this.value.series.sizes;
 
         reviewStore.loadReviews(this.id);
+    }
+
+    isThin(size: PadSize) {
+        return PadSize.isThin(size);
     }
 }
 </script>
