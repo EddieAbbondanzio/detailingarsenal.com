@@ -14,7 +14,7 @@
                 </template>
 
                 <template v-slot:action>
-                    <update-delete-dropdown @edit="onEdit" @delete="onDelete" />
+                    <update-delete-dropdown @update="onUpdate" @delete="onDelete" />
                 </template>
             </page-header>
         </template>
@@ -89,7 +89,7 @@ export default class Client extends Vue {
         await clientsStore.init();
     }
 
-    onEdit() {
+    onUpdate() {
         this.$router.push({ name: 'editClient', params: { id: this.client.id } });
     }
 

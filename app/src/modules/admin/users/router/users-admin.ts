@@ -31,7 +31,7 @@ const usersAdminRoutes: RouteConfig[] = [
     {
         path: 'users/roles/create',
         name: 'createRole',
-        component: () => import('@/modules/admin/users/views/role/create-role.vue')
+        component: () => import('@/modules/admin/users/views/role/create-or-update-role.vue')
     },
     {
         path: 'users/roles/:id',
@@ -39,9 +39,9 @@ const usersAdminRoutes: RouteConfig[] = [
         component: () => import('@/modules/admin/users/views/role/role.vue')
     },
     {
-        path: 'users/roles/:id/edit',
-        name: 'editRole',
-        component: () => import('@/modules/admin/users/views/role/edit-role.vue')
+        path: 'users/roles/:id/update',
+        name: 'updateRole',
+        component: () => import('@/modules/admin/users/views/role/create-or-update-role.vue')
     },
 
 ];

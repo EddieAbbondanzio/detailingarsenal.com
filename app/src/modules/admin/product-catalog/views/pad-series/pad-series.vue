@@ -30,7 +30,7 @@
                 :to="{ name: 'padSeriesDetails', params: { id: s.id } }"
             >
                 <template v-slot:actions>
-                    <update-delete-dropdown @edit="onEdit(s)" @delete="onDelete(s)" />
+                    <update-delete-dropdown @update="onUpdate(s)" @delete="onDelete(s)" />
                 </template>
             </list-item>
         </list>
@@ -54,7 +54,7 @@ export default class Pads extends Vue {
         await adminPadStore.init();
     }
 
-    async onEdit(pad: PadSeries) {
+    async onUpdate(pad: PadSeries) {
         this.$router.push({
             name: 'editPad',
             params: {

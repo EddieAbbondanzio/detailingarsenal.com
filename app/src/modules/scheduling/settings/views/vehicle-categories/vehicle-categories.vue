@@ -29,7 +29,7 @@
                 height="124px"
             >
                 <template v-slot:actions>
-                    <update-delete-dropdown @edit="onEdit(vc)" @delete="onDelete(vc)" />
+                    <update-delete-dropdown @update="onUpdate(vc)" @delete="onDelete(vc)" />
                 </template>
             </list-item>
         </list>
@@ -62,7 +62,7 @@ export default class VehicleCategories extends Vue {
         await settingsStore.init();
     }
 
-    async onEdit(vc: VehicleCategory) {
+    async onUpdate(vc: VehicleCategory) {
         this.$router.push({ name: 'editVehicleCategory', params: { id: vc.id } });
     }
 

@@ -35,7 +35,7 @@
                 :to="{ name: 'subscriptionPlan', params: { id: p.id } }"
             >
                 <template v-slot:actions>
-                    <update-delete-dropdown @edit="onEdit(p)" @delete="onDelete(p)" />
+                    <update-delete-dropdown @update="onUpdate(p)" @delete="onDelete(p)" />
                 </template>
             </list-item>
         </list>
@@ -66,7 +66,7 @@ export default class SubscriptionPlans extends Vue {
         await subscriptionPlanStore.refreshSubscriptionPlans();
     }
 
-    onEdit(p: SubscriptionPlan) {
+    onUpdate(p: SubscriptionPlan) {
         this.$router.push({ name: 'editSubscriptionPlan', params: { id: p.id } });
     }
 

@@ -7,7 +7,7 @@
         <b-dropdown-item
             aria-role="listitem"
             class="is-flex is-flex-row is-align-items-center"
-            @click.native="onEdit($event)"
+            @click.native="onUpdate($event)"
         >
             <b-icon icon="pencil" type="is-dark" class="has-margin-right-2" />Update
         </b-dropdown-item>
@@ -44,10 +44,10 @@ export default class UpdateDeleteDropdown extends Vue {
         this.dropdown.toggle();
     }
 
-    onEdit(event: Event) {
+    onUpdate(event: Event) {
         event.preventDefault();
         event.stopPropagation();
-        this.$emit('edit');
+        this.$emit('update');
     }
 
     onDelete(event: Event) {

@@ -24,7 +24,7 @@
         <list>
             <list-item v-for="r in roles" :key="r.id" :title="r.name" :to="{ name: 'role', params: { id: r.id } }">
                 <template v-slot:actions>
-                    <update-delete-dropdown @edit="onEdit(r)" @delete="onDelete(r)" />
+                    <update-delete-dropdown @update="onUpdate(r)" @delete="onDelete(r)" />
                 </template>
             </list-item>
         </list>
@@ -51,8 +51,8 @@ export default class Roles extends Vue {
         await securityStore.init();
     }
 
-    async onEdit(r: Role) {
-        this.$router.push({ name: 'editRole', params: { id: r.id } });
+    async onUpdate(r: Role) {
+        this.$router.push({ name: 'updateRole', params: { id: r.id } });
     }
 
     @displayLoading

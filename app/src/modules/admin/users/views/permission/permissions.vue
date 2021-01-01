@@ -25,7 +25,7 @@
             }}</b-table-column>
             <b-table-column v-slot="props" label="Scope" field="scope" sortable>{{ props.row.scope }}</b-table-column>
             <b-table-column v-slot="props">
-                <update-delete-dropdown @edit="onEdit(props.row)" @delete="onDelete(props.row)" size="is-small" />
+                <update-delete-dropdown @update="onUpdate(props.row)" @delete="onDelete(props.row)" size="is-small" />
             </b-table-column>
 
             <template slot="empty">
@@ -54,7 +54,7 @@ export default class Permissions extends Vue {
         await securityStore.init();
     }
 
-    async onEdit(p: Permission) {
+    async onUpdate(p: Permission) {
         this.$router.push({ name: 'updatePermission', params: { id: p.id } });
     }
 

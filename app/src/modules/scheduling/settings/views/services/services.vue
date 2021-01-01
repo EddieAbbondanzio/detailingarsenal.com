@@ -30,7 +30,7 @@
                 height="124px"
             >
                 <template v-slot:actions>
-                    <update-delete-dropdown @edit="onEdit(s)" @delete="onDelete(s)" />
+                    <update-delete-dropdown @update="onUpdate(s)" @delete="onDelete(s)" />
                 </template>
             </list-item>
         </list>
@@ -60,7 +60,7 @@ export default class Services extends Vue {
         await settingsStore.init();
     }
 
-    async onEdit(s: Service) {
+    async onUpdate(s: Service) {
         this.$router.push({ name: 'editService', params: { id: s.id } });
     }
 

@@ -7,7 +7,11 @@
                         <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
                         <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
                         <breadcrumb name="Brands" :to="{ name: 'brands' }" />
-                        <breadcrumb v-if="mode == 'update'" :name="name" :to="{ name: 'brand' }" />
+                        <breadcrumb
+                            v-if="mode == 'update'"
+                            :name="name"
+                            :to="{ name: 'brand', params: $route.params }"
+                        />
                         <breadcrumb :name="verb" :to="$route" :active="true" />
                     </breadcrumb-trail>
                 </template>

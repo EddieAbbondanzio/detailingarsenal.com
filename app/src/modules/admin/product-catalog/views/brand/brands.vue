@@ -24,7 +24,7 @@
         <list>
             <list-item v-for="b in brands" :key="b.id" :title="b.name" :to="{ name: 'brand', params: { id: b.id } }">
                 <template v-slot:actions>
-                    <update-delete-dropdown @edit="onEdit(b)" @delete="onDelete(b)" />
+                    <update-delete-dropdown @update="onUpdate(b)" @delete="onDelete(b)" />
                 </template>
             </list-item>
         </list>
@@ -48,7 +48,7 @@ export default class Brands extends Vue {
         await brandStore.init();
     }
 
-    async onEdit(brand: Brand) {
+    async onUpdate(brand: Brand) {
         this.$router.push({
             name: 'updateBrand',
             params: {
