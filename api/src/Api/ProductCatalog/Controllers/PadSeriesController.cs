@@ -50,7 +50,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
                     create.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
                     sizes,
                     create.Colors.Select(
-                        c => new PadColor(
+                        c => new PadColorCreate(
                             c.Name,
                             PadCategoryUtils.Parse(c.Category),
                             c.Image != null ? imageProcessor.Process(c.Image.Name, c.Image.Data) : null,
@@ -77,6 +77,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
                     update.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
                     update.Sizes.Select(
                         s => new PadSize(
+                            s.Id,
                             new Measurement(s.Diameter.Amount, MeasurementUnitUtils.Parse(s.Diameter.Unit)),
                             s.Thickness != null ? new Measurement(s.Thickness.Amount, MeasurementUnitUtils.Parse(s.Thickness.Unit)) : null
                         )).ToList(),
@@ -84,6 +85,8 @@ namespace DetailingArsenal.Api.ProductCatalog {
                         c => new PadColor(
                             c.Name,
                             PadCategoryUtils.Parse(c.Category),
+
+
                             c.Image != null ? imageProcessor.Process(c.Image.Name, c.Image.Data) : null,
                             c.Options.Select(o => new PadOption(o.PadSizeId, o.PartNumber)).ToList()
                         )

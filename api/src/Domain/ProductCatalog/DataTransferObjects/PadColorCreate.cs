@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using DetailingArsenal.Api.Shared;
 using DetailingArsenal.Domain.ProductCatalog;
+using DetailingArsenal.Domain.Shared;
 
-namespace DetailingArsenal.Api.ProductCatalog {
+namespace DetailingArsenal.Domain.ProductCatalog {
     /// <summary>
     /// Enum free raw variant so we can deserialize our dirty snake 
     /// case enums ourselves.

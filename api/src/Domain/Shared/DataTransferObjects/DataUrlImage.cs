@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
 
-namespace DetailingArsenal.Api.Shared {
+namespace DetailingArsenal.Domain.Shared {
     /// <summary>
     /// DataURL encoded image from the front end.
     /// </summary>
