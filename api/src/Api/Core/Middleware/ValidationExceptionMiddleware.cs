@@ -16,7 +16,7 @@ namespace DetailingArsenal.Api {
                 var dto = new ValidationExceptionDto() {
                     Valid = validationException.Result.IsValid,
                     Errors = validationException.Result.Errors.Select(e => new ValidationFailureDto() {
-                        Field = StringUtils.LowerCaseFirstLetter(e.Field)
+                        Field = StringUtils.LowerCaseFirstChar(e.Field)
                     ,
                         Message = e.Message
                     }).ToList()

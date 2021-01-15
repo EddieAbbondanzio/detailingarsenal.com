@@ -19,11 +19,9 @@ namespace DetailingArsenal.Api.ProductCatalog {
     [Route("product-catalog/pad-series")]
     public class PadSeriesController : ControllerBase {
         IMediator mediator;
-        IImageProcessor imageProcessor;
 
-        public PadSeriesController(IMediator mediator, IImageProcessor imageProcessor) {
+        public PadSeriesController(IMediator mediator) {
             this.mediator = mediator;
-            this.imageProcessor = imageProcessor;
         }
 
         [AllowAnonymous]
@@ -35,64 +33,60 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
-            var sizes = create.Sizes.Select(
-                s => new PadSize(
-                    new Measurement(s.Diameter.Amount, MeasurementUnitUtils.Parse(s.Diameter.Unit)),
-                    s.Thickness != null ? new Measurement(s.Thickness.Amount, MeasurementUnitUtils.Parse(s.Thickness.Unit)) : null
-            )).ToList();
+            // var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(
+            //     new PadSeriesCreateCommand(
+            //         create.Name,
+            //         create.BrandId,
+            //         PadTextureUtils.Parse(create.Texture),
+            //         PadMaterialUtils.Parse(create.Material),
+            //         create.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
+            //         create.Sizes.Select(s => new PadSizeCreate(
+            //             new Measurement(s.Diameter.Amount, s.Diameter.Unit),
+            //             s.Thickness != null ? new Measurement(s.Thickness.Amount, s.Thickness.Unit) : null
+            //         )).ToList(),
+            //         create.Colors.Select(
+            //             c => new PadColorCreate(
+            //                 c.Name,
+            //                 PadCategoryUtils.Parse(c.Category),
+            //                 c.Image,
+            //                 c.Options.Select(o => new PadOptionCreate(o.PadSizeIndex, o.PartNumber)).ToList()
+            //             )
+            //         ).ToList()),
+            //     User
+            // );
 
-            var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(
-                new PadSeriesCreateCommand(
-                    create.Name,
-                    create.BrandId,
-                    PadTextureUtils.Parse(create.Texture),
-                    PadMaterialUtils.Parse(create.Material),
-                    create.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
-                    sizes,
-                    create.Colors.Select(
-                        c => new PadColorCreate(
-                            c.Name,
-                            PadCategoryUtils.Parse(c.Category),
-                            c.Image != null ? imageProcessor.Process(c.Image.Name, c.Image.Data) : null,
-                            c.Options.Select(o => new PadOption(sizes[o.PadSizeIndex].Id, o.PartNumber)).ToList()
-                        )
-                    ).ToList()),
-                User
-            );
+            // var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
 
-            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
-
-            return Ok(ps);
+            // return Ok(ps);
+            return Ok();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateRequest update) {
-            await mediator.Dispatch<PadSeriesUpdateCommand>(
-                new PadSeriesUpdateCommand(
-                    id,
-                    update.Name,
-                    update.BrandId,
-                    PadTextureUtils.Parse(update.Texture),
-                    PadMaterialUtils.Parse(update.Material),
-                    update.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
-                    update.Sizes.Select(
-                        s => new PadSize(
-                            s.Id,
-                            new Measurement(s.Diameter.Amount, MeasurementUnitUtils.Parse(s.Diameter.Unit)),
-                            s.Thickness != null ? new Measurement(s.Thickness.Amount, MeasurementUnitUtils.Parse(s.Thickness.Unit)) : null
-                        )).ToList(),
-                    update.Colors.Select(
-                        c => new PadColor(
-                            c.Name,
-                            PadCategoryUtils.Parse(c.Category),
-
-
-                            c.Image != null ? imageProcessor.Process(c.Image.Name, c.Image.Data) : null,
-                            c.Options.Select(o => new PadOption(o.PadSizeId, o.PartNumber)).ToList()
-                        )
-                    ).ToList()),
-                User
-            );
+            // await mediator.Dispatch<PadSeriesUpdateCommand>(
+            //     new PadSeriesUpdateCommand(
+            //         id,
+            //         update.Name,
+            //         update.BrandId,
+            //         PadTextureUtils.Parse(update.Texture),
+            //         PadMaterialUtils.Parse(update.Material),
+            //         update.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
+            //         update.Sizes.Select(
+            //             s => new PadSizeUpdate(
+            //                 s.Id,
+            //                 new Measurement(s.Diameter.Amount, s.Diameter.Unit),
+            //                 s.Thickness != null ? new Measurement(s.Thickness.Amount, s.Thickness.Unit) : null
+            //             )).ToList(),
+            //         update.Colors.Select(
+            //             c => new PadColorUpdate(
+            //                 c.Name,
+            //                 PadCategoryUtils.Parse(c.Category),
+            //                 c.Image,
+            //                 c.Options.Select(o => new PadOptionUpdate(o.PadSizeId, o.PartNumber)).ToList()
+            //             )
+            //         ).ToList()),
+            //     User
+            // );
 
             var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
 
@@ -100,7 +94,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVehicleCategory(Guid id) {
+        public async Task<IActionResult> Delete(Guid id) {
             await mediator.Dispatch<PadSeriesDeleteCommand>(new(id), User);
             return Ok();
         }

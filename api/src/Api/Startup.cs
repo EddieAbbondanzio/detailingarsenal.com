@@ -92,7 +92,8 @@ namespace DetailingArsenal.Api {
                 cfg.Filters.Add(typeof(AuthorizationExceptionMiddlware));
                 cfg.Filters.Add(typeof(SpecificationExceptionMiddleware));
             }).AddJsonOptions(opts => {
-                opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                opts.JsonSerializerOptions.Converters.Add(new EnumSnakeCaseConverter());
+                // opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 opts.JsonSerializerOptions.IgnoreNullValues = true;
             });
 

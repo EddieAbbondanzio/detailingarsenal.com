@@ -9,10 +9,10 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public PadTexture Texture { get; }
         public PadMaterial Material { get; }
         public List<PolisherType> PolisherTypes { get; }
-        public List<PadSize> Sizes { get; }
-        public List<PadColorUpdate> Colors { get; }
+        public List<PadSizeCreateOrUpdate> Sizes { get; }
+        public List<PadColorCreateOrUpdate> Colors { get; }
 
-        public PadSeriesUpdateCommand(Guid id, string name, Guid brandId, PadTexture texture, PadMaterial material, List<PolisherType> polisherTypes, List<PadSize> sizes, List<PadColorUpdate> colors) {
+        public PadSeriesUpdateCommand(Guid id, string name, Guid brandId, PadTexture texture, PadMaterial material, List<PolisherType> polisherTypes, List<PadSizeCreateOrUpdate> sizes, List<PadColorCreateOrUpdate> colors) {
             Id = id;
             Name = name;
             BrandId = brandId;

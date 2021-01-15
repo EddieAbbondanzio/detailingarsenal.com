@@ -9,7 +9,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
         public string Texture { get; set; } = null!;
         public string Material { get; set; } = null!;
         public List<string> PolisherTypes { get; set; } = new();
-        public List<PadSizeRaw> Sizes { get; set; } = new();
-        public List<PadColorCreate> Colors { get; set; } = new();
+        public List<PadSizeCreateRaw> Sizes { get; set; } = new();
+        public List<PadColorCreateRaw> Colors { get; set; } = new();
     }
 }

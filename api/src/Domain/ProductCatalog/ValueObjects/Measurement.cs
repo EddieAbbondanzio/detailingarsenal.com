@@ -8,6 +8,8 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public float Amount { get; }
         public MeasurementUnit Unit { get; }
 
+        public Measurement(float amount, string unit) : this(amount, MeasurementUnitUtils.Parse(unit)) { }
+
         public Measurement(float amount, MeasurementUnit unit) {
             if (amount <= 0) {
                 throw new ArgumentOutOfRangeException("Amount must be greater than 0");

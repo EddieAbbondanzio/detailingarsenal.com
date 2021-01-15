@@ -18,7 +18,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         @"  select * from pad_series where id = @Id;
                             select * from pad_series_polisher_types where pad_series_id = @Id;
                             select * from pad_sizes where pad_series_id = @Id;
-                            select * from images i join pad_colors pc on i.id = pc.image_id where pad_series_id = @Id;
+                            select i.* from images i join pad_colors pc on i.id = pc.image_id where pad_series_id = @Id;
                             select * from pad_colors where pad_series_id = @Id;
                             select * from pad_options po left join pad_colors pc on po.pad_color_id = pc.id where pad_series_id = @Id;
                         ",
@@ -173,9 +173,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", old);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_color_id = @Id;", old.Colors);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", old);
-                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", old.Colors);
                     await conn.ExecuteAsync(@"delete from pad_colors where pad_series_id = @Id;", old);
-                    await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", old);
+                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", old.Colors);
 
                     await conn.ExecuteAsync(
                         @"update pad_series set brand_id = @BrandId, name = @Name, material = @Material, texture = @Texture where id = @Id;",
@@ -224,11 +223,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             imageRows
                         );
                     }
-
-                    await conn.ExecuteAsync(
-                        @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
-                        imageRows
-                    );
 
                     await conn.ExecuteAsync(
                         @"insert into pad_colors (id, pad_series_id, category, name, image_id) values (@Id, @PadSeriesId, @Category, @Name, @ImageId);",
