@@ -32,33 +32,15 @@ namespace DetailingArsenal.Api.ProductCatalog {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(PadSeriesCreateRequest create) {
-            // var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(
-            //     new PadSeriesCreateCommand(
-            //         create.Name,
-            //         create.BrandId,
-            //         PadTextureUtils.Parse(create.Texture),
-            //         PadMaterialUtils.Parse(create.Material),
-            //         create.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
-            //         create.Sizes.Select(s => new PadSizeCreate(
-            //             new Measurement(s.Diameter.Amount, s.Diameter.Unit),
-            //             s.Thickness != null ? new Measurement(s.Thickness.Amount, s.Thickness.Unit) : null
-            //         )).ToList(),
-            //         create.Colors.Select(
-            //             c => new PadColorCreate(
-            //                 c.Name,
-            //                 PadCategoryUtils.Parse(c.Category),
-            //                 c.Image,
-            //                 c.Options.Select(o => new PadOptionCreate(o.PadSizeIndex, o.PartNumber)).ToList()
-            //             )
-            //         ).ToList()),
-            //     User
-            // );
+        public async Task<IActionResult> Create(PadSeriesCreateCommand create) {
+            var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(
+                create,
+                User
+            );
 
-            // var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
+            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
 
-            // return Ok(ps);
-            return Ok();
+            return Ok(ps);
         }
 
         [HttpPut("{id}")]

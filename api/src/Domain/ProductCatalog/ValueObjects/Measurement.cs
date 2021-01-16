@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
     /// <summary>
@@ -8,25 +9,23 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public float Amount { get; }
         public MeasurementUnit Unit { get; }
 
-        public Measurement(float amount, string unit) : this(amount, MeasurementUnitUtils.Parse(unit)) { }
-
+        [JsonConstructor]
         public Measurement(float amount, MeasurementUnit unit) {
             if (amount <= 0) {
-                throw new ArgumentOutOfRangeException("Amount must be greater than 0");
+                throw new ArgumentOutOfRangeException($"Amount must be greater than 0. Value was: {amount}");
             }
 
             Amount = amount;
             Unit = unit;
         }
 
-        public override bool Equals(object? obj) {
-            return obj is Measurement measurement &&
-                   Amount == measurement.Amount &&
-                   Unit == measurement.Unit;
-        }
+        public Measurement(float amount, string unit) : this(amount, MeasurementUnitUtils.Parse(unit)) { }
 
-        public override int GetHashCode() {
-            return HashCode.Combine(Amount, Unit);
-        }
+
+        public override bool Equals(object? obj) => obj is Measurement measurement &&
+            Amount == measurement.Amount &&
+            Unit == measurement.Unit;
+
+        public override int GetHashCode() => HashCode.Combine(Amount, Unit);
     }
 }
