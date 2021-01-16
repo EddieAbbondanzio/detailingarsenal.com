@@ -18,8 +18,6 @@ namespace DetailingArsenal.Domain {
         /// </summary>
         public Guid Id { get; set; }
 
-        public List<IDomainEvent> DomainEvents { get; set; } = new List<IDomainEvent>();
-
         /// <summary>
         /// Check to see if the entity is equal to another object.
         /// </summary>
