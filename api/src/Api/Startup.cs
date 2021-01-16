@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DetailingArsenal.Domain;
-using AutoMapper;
 using DetailingArsenal.Infrastructure;
 using System.Text.Json.Serialization;
 using Npgsql.Logging;
@@ -101,21 +100,6 @@ namespace DetailingArsenal.Api {
             services.AddScoped<IMediator, Mediator>();
             services.AddTransient<ActionMiddleware, AuthorizationMiddleware>();
             services.AddTransient<ActionMiddleware, ValidationMiddleware>();
-
-            // Mapping DON'T USE! LEGACY
-            var mapperConfiguration = new MapperConfiguration(config => {
-                config.CreateMap<Client, ClientView>();
-                config.CreateMap<Business, BusinessView>();
-                config.CreateMap<VehicleCategory, VehicleCategoryView>();
-                config.CreateMap<Service, ServiceView>();
-                config.CreateMap<ServiceConfiguration, ServiceConfigurationView>();
-                config.CreateMap<HoursOfOperation, HoursOfOperationView>();
-                config.CreateMap<HoursOfOperationDay, HoursOfOperationDayView>();
-                config.CreateMap<Appointment, AppointmentView>();
-                config.CreateMap<AppointmentBlock, AppointmentBlockView>();
-                config.CreateMap<Role, RoleReadModel>();
-            });
-            services.AddSingleton<Domain.IMapper>(new AutoMapperAdapter(mapperConfiguration.CreateMapper()));
 
             // Common
             services.AddTransient<ActionHandler<StartupCommand>, StartupHandler>();
