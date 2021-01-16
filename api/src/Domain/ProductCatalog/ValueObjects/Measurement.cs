@@ -19,7 +19,19 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             Unit = unit;
         }
 
-        public Measurement(float amount, string unit) : this(amount, MeasurementUnitUtils.Parse(unit)) { }
+        public Measurement(float amount, string unit) {
+            if (amount <= 0) {
+                throw new ArgumentOutOfRangeException($"Amount must be greater than 0. Value was: {amount}");
+            }
+
+            Amount = amount;
+
+            Unit = unit switch {
+                "in" => MeasurementUnit.Inches,
+                "mm" => MeasurementUnit.Millimeters,
+                _ => throw new ArgumentOutOfRangeException("WHAT")
+            };
+        }
 
 
         public override bool Equals(object? obj) => obj is Measurement measurement &&
