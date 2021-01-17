@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
     public record PadSeriesUpdateCommand : IAction {
@@ -12,6 +13,7 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public List<PadSizeCreateOrUpdate> Sizes { get; }
         public List<PadColorCreateOrUpdate> Colors { get; }
 
+        [JsonConstructor]
         public PadSeriesUpdateCommand(Guid id, string name, Guid brandId, PadTexture texture, PadMaterial material, List<PolisherType> polisherTypes, List<PadSizeCreateOrUpdate> sizes, List<PadColorCreateOrUpdate> colors) {
             Id = id;
             Name = name;

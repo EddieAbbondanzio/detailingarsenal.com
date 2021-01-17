@@ -40,22 +40,32 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         ps.ThicknessAmount != null ? new Measurement(ps.ThicknessAmount ?? 0, MeasurementUnitUtils.Parse(ps.ThicknessUnit!)) : null
                     )).ToList();
 
-                    var images = reader.Read<ImageRow>().Select(i => new ProcessedImage(
-                        i.Id,
-                        new ImageParentReference(i.ParentId, ImageParentTypeUtils.Parse(i.ParentType)),
-                        i.FileName,
-                        i.MimeType,
-                        ImageUtils.LoadFromBinary(i.ImageData),
-                        ImageUtils.LoadFromBinary(i.ThumbnailData)
-                    ));
+                    var images = reader.Read<ImageRow>();
 
                     var colors = new Dictionary<Guid, PadColor>(
-                        reader.Read<PadColorRow>().Select(c => new PadColor(
-                            c.Id,
-                            c.Name,
-                            PadCategoryUtils.Parse(c.Category),
-                            images.Where(i => i.Parent.ParentId == c.Id).FirstOrDefault()
-                        )).Select(c => new KeyValuePair<Guid, PadColor>(c.Id, c))
+                        reader.Read<PadColorRow>().Select(c => {
+                            var imageRow = images.Where(i => i.ParentId == c.Id).FirstOrDefault();
+                            ProcessedImage? processedImage = null;
+
+                            if (imageRow != null) {
+                                processedImage = new ProcessedImage(
+                                    imageRow.Id,
+                                    imageRow.FileName,
+                                    imageRow.MimeType,
+                                    ImageUtils.LoadFromBinary(imageRow.ImageData),
+                                    ImageUtils.LoadFromBinary(imageRow.ThumbnailData)
+                                );
+                            }
+
+                            var color = new PadColor(
+                                c.Id,
+                                c.Name,
+                                PadCategoryUtils.Parse(c.Category),
+                                processedImage
+                            );
+
+                            return color;
+                        }).Select(c => new KeyValuePair<Guid, PadColor>(c.Id, c))
                     );
 
                     var options = reader.Read<PadOptionRow>();
@@ -118,7 +128,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     var imageRows = series.Colors.Where(c => c.Image != null).Select(c => new ImageRow() {
                         Id = c.Image!.Id,
                         ParentId = c.Id,
-                        ParentType = ImageParentType.PadColor.Serialize(),
                         FileName = c.Image.FileName,
                         MimeType = c.Image.MimeType,
                         ImageData = ImageUtils.ToBinary(c.Image.Full),
@@ -127,7 +136,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     if (imageRows.Count() > 0) {
                         await conn.ExecuteAsync(
-                            @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                            @"insert into images(id, parent_id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
                             imageRows
                         );
                     }
@@ -210,7 +219,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     var imageRows = series.Colors.Where(c => c.Image != null).Select(c => new ImageRow() {
                         Id = c.Image!.Id,
                         ParentId = c.Id,
-                        ParentType = ImageParentType.PadColor.Serialize(),
                         FileName = c.Image.FileName,
                         MimeType = c.Image.MimeType,
                         ImageData = ImageUtils.ToBinary(c.Image.Full),
@@ -219,7 +227,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     if (imageRows.Count() > 0) {
                         await conn.ExecuteAsync(
-                            @"insert into images(id, parent_id, parent_type, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @ParentType, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                            @"insert into images(id, parent_id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
                             imageRows
                         );
                     }

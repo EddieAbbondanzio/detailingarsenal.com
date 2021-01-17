@@ -56,13 +56,6 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 colors
             );
 
-            // TOOD: Delete this crap
-            foreach (var color in series.Colors) {
-                if (color.Image != null) {
-                    color.Image.Parent = new ImageParentReference(color.Id, ImageParentType.PadColor);
-                }
-            }
-
             await spec.CheckAndThrow(series);
             await repo.Add(series);
             return series.Id;
