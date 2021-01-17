@@ -30,40 +30,8 @@ namespace DetailingArsenal.Application.ProductCatalog {
             series.Texture = command.Texture;
 
             series.Sizes = UpdatePadSizes(series.Sizes, command.Sizes);
+            series.Colors = UpdatePadColors(series.Colors, command.Colors);
 
-            // series.Colors = command.Colors.Select(c => new PadColor(
-            //     c.Name,
-            //     c.Category,
-            //         null,
-            //     c.Options.Select(o => new PadOption(
-            //         o.PadSizeId,
-            //         o.PartNumber
-
-            //     )).ToList()
-            //     )).ToList();
-
-            for (int i = 0; i < series.Colors.Count; i++) {
-                var color = series.Colors[i] ?? throw new NullReferenceException();
-                var colorUpdate = command.Colors[i] ?? throw new NullReferenceException();
-
-                // Don't need to worry about pad colors with no images after updating.
-                if (colorUpdate.Image == null) {
-                    continue;
-                }
-
-                // #pragma warning disable 8602 // Losing my mind. Compiler keeps saying possible null dereference. Unless it's really right ...
-                //                 switch (colorUpdate.Image.Action) {
-                //                     case PadColorImageUpdateAction.ReplaceImage:
-                //                         color.Image = imageProcessor.Process(colorUpdate!.Image!.NewImage.Name, colorUpdate!.Image.NewImage.Data);
-                //                         color.Image.Parent = new ImageParentReference(color.Id, ImageParentType.PadColor);
-                //                         break;
-
-                //                     case PadColorImageUpdateAction.DoNothing:
-                //                         color.Image = origColors.Find(c => c.Name == colorUpdate.Name)!.Image;
-                //                         break;
-                //                 }
-                // #pragma warning restore 8602
-            }
 
             await spec.CheckAndThrow(series);
             await repo.Update(series);
@@ -110,10 +78,36 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
                 color.Name = update.Name;
                 color.Category = update.Category;
-                // color.Image = imageProcessor.Process(update.Image!.NewImage.Name, update.Image.NewImage.Data);
+
+                color.Image = update.Image?.Match(id => color.Image, image => imageProcessor.Process(image.Name, image.Data));
+
+
+                color.Options.Clear();
+                foreach (var option in update.Options) {
+                    color.Options.Add(new PadOption(option.PadSizeId!.Value, option.PartNumber));
+                }
+
+                colors.Add(color);
             }
 
-            throw new NotImplementedException();
+            // Add new
+            var newColors = updates.Where(u => u.Id == null);
+            foreach (var update in newColors) {
+
+                var color = new PadColor(
+                    update.Name,
+                    update.Category,
+                    update.Image?.Match(
+                        id => throw new InvalidOperationException($"Cannot reference an existing image on a new pad color"),
+                        image => imageProcessor.Process(image.Name, image.Data)
+                    ),
+                    update.Options.Select(option => new PadOption(option.PadSizeId!.Value, option.PartNumber)).ToList()
+                );
+
+                colors.Add(color);
+            }
+
+            return colors;
         }
     }
 }

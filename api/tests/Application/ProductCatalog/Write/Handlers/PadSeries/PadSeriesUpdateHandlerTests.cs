@@ -82,5 +82,74 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             Assert.AreEqual(1, updated.Count);
             Assert.AreEqual(existing[0].Id, updated[0].Id);
         }
+
+        [TestMethod]
+        public void UpdatePadColorsExistingColorsAreUpdated() {
+            var h = new PadSeriesUpdateHandler(
+                            Mock.Of<IPadSeriesRepo>(),
+                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                            Mock.Of<IImageProcessor>()
+            );
+
+            var existing = new PadColor[] {
+                new PadColor("ColorA", PadCategory.Cutting, null, new PadOption[] {
+                    new PadOption(Guid.NewGuid(), "part_number"),
+                }.ToList())
+            }.ToList();
+
+            var updates = new PadColorCreateOrUpdate[]{
+                new PadColorCreateOrUpdate(existing[0].Id, "ColorAA", PadCategory.Finishing, null!, new PadOptionCreateOrUpdate[] {
+                    new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
+                }.ToList())
+                }.ToList();
+
+            var updated = h.UpdatePadColors(existing, updates);
+            Assert.AreEqual(1, updated.Count);
+
+            Assert.AreEqual(existing[0].Id, updated[0].Id);
+            Assert.AreEqual("ColorAA", updated[0].Name);
+            Assert.AreEqual(PadCategory.Finishing, updated[0].Category);
+            Assert.AreEqual(1, updated[0].Options.Count);
+        }
+
+        [TestMethod]
+        public void UpdatePadColorsAddsNewColors() {
+            var h = new PadSeriesUpdateHandler(
+                                        Mock.Of<IPadSeriesRepo>(),
+                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                        Mock.Of<IImageProcessor>()
+                        );
+
+            List<PadColor> existing = new();
+
+            var updates = new PadColorCreateOrUpdate[]{
+                new PadColorCreateOrUpdate(null, "ColorB", PadCategory.Finishing, null!, new PadOptionCreateOrUpdate[] {
+                    new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
+                }.ToList())
+                }.ToList();
+
+            var updated = h.UpdatePadColors(existing, updates);
+            Assert.AreEqual(1, updated.Count);
+            Assert.AreEqual("ColorB", updated[0].Name);
+            Assert.AreEqual(PadCategory.Finishing, updated[0].Category);
+        }
+
+        [TestMethod]
+        public void UpdatePadColorsDeletesAsNeeded() {
+            var h = new PadSeriesUpdateHandler(
+                                        Mock.Of<IPadSeriesRepo>(),
+                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                        Mock.Of<IImageProcessor>()
+                        );
+
+            var existing = new PadColor[] {
+                new PadColor("ColorA", PadCategory.Cutting, null, new PadOption[] {
+                    new PadOption(Guid.NewGuid(), "part_number"),
+                }.ToList())
+            }.ToList();
+
+            var updated = h.UpdatePadColors(existing, new());
+            Assert.AreEqual(0, updated.Count);
+        }
     }
 }
