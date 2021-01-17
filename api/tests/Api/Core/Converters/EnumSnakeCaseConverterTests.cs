@@ -39,29 +39,18 @@ namespace DetailingArsenal.Tests.Api {
         }
 
 
-        // [TestMethod]
-        // public void ReadHandlesNull() {
-        //     var c = new EnumSnakeCaseConverterInner();
+        [TestMethod]
+        public void ReadReturnsEnum() {
+            var fc = new EnumSnakeCaseConverter();
+            var c = fc.CreateConverter(typeof(Cartoon), null!) as EnumSnakeCaseConverterInner<Cartoon>;
 
-        //     var rawBytes = new ReadOnlySpan<byte>(Encoding.UTF8.GetBytes("null"));
-        //     var reader = new Utf8JsonReader(rawBytes);
+            var rawBytes = new ReadOnlySpan<byte>(Encoding.UTF8.GetBytes("\"cat_dog\""));
+            var reader = new Utf8JsonReader(rawBytes);
 
-        //     reader.Read(); // Read always starts at none. See: https://stackoverflow.com/questions/59028159/exception-when-testing-custom-jsonconverter
-        //     var e = c.Read(ref reader, typeof(SampleEnum), null!);
-        //     Assert.AreEqual(null, e);
-        // }
-
-        // [TestMethod]
-        // public void ReadReturnsEnum() {
-        //     var c = new EnumSnakeCaseConverterInner();
-
-        //     var rawBytes = new ReadOnlySpan<byte>(Encoding.UTF8.GetBytes("\"cat_dog\""));
-        //     var reader = new Utf8JsonReader(rawBytes);
-
-        //     reader.Read(); // Read always starts at none. See: https://stackoverflow.com/questions/59028159/exception-when-testing-custom-jsonconverter
-        //     var e = c.Read(ref reader, typeof(SampleEnum), null!);
-        //     Assert.AreEqual(SampleEnum.CatDog, e);
-        // }
+            reader.Read(); // Read always starts at none. See: https://stackoverflow.com/questions/59028159/exception-when-testing-custom-jsonconverter
+            var e = c!.Read(ref reader, typeof(Cartoon), null!);
+            Assert.AreEqual(Cartoon.CatDog, e);
+        }
 
         [TestMethod]
         public void WriteWritesEnumValueAsSnakeCase() {
