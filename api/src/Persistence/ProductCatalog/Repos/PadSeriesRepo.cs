@@ -271,8 +271,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", series);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_color_id = @Id;", series.Colors);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", series);
-                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", series.Colors);
                     await conn.ExecuteAsync(@"delete from pad_colors where pad_series_id = @Id;", series);
+                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", series.Colors);
                     await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
                     t.Commit();
                 }
