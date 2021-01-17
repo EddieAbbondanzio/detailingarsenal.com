@@ -2,13 +2,13 @@
     <b-field :label="label" grouped :class="required ? 'is-required' : ''">
         <input-text-field
             style="width: 120px"
-            v-model.number="value.amount"
+            v-model.number="safeValue.amount"
             @input="onInput()"
             :rules="valRules"
             label="Amount"
             :hideLabel="true"
         />
-        <input-select v-model="value.unit" @input="onInput()" label="Unit" :hideLabel="true">
+        <input-select v-model="safeValue.unit" @input="onInput()" label="Unit" :hideLabel="true">
             <option v-for="unit in units" :key="unit" :value="unit">{{ unit }}</option>
         </input-select>
     </b-field>
@@ -18,7 +18,7 @@
 import { Measurement, MeasurementUnit } from '@/api';
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
+import { Prop, Watch } from 'vue-property-decorator';
 
 @Component
 export default class MeasurementInput extends Vue {
@@ -34,6 +34,15 @@ export default class MeasurementInput extends Vue {
         }
     }
 
+    get safeValue() {
+        if (this.value == null) {
+            this.$emit('input', { amount: null, unit: MeasurementUnit.Inches });
+            return { amount: null, unit: MeasurementUnit.Inches }; //hack
+        }
+
+        return this.value;
+    }
+
     @Prop()
     rules!: string | null;
 
@@ -43,8 +52,8 @@ export default class MeasurementInput extends Vue {
     @Prop()
     required!: boolean;
 
-    @Prop({ default: () => ({ amount: null, unit: 'in' }) })
-    value!: Measurement;
+    @Prop()
+    value!: Measurement | null;
 
     onInput() {
         this.$emit('input', this.value);

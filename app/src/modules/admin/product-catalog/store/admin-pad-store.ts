@@ -3,7 +3,7 @@ import { InitableModule } from '@/core/store/initable-module';
 import { api } from '@/api/api';
 import store from '@/core/store/index';
 // import { Pad, Brand, PadSeriesCreate, PadSeriesUpdateRequest } from '@/api';
-import { PadSeries, PadSeriesCreateRequest } from '@/api';
+import { PadSeries, PadSeriesCreateRequest, PadSeriesUpdateRequest } from '@/api';
 import { PadSeriesService } from '@/api/product-catalog/services/pad-series-service';
 
 @Module({ namespaced: true, name: 'admin-pad', dynamic: true, store })
@@ -21,10 +21,10 @@ class AdminPadStore extends InitableModule {
         this.series.push(series);
     }
 
-    // @Mutation
-    // UPDATE_SERIES(series: PadSeries) {
-    //     this.series = [...this.series.filter(ps => ps.id != series.id), series];
-    // }
+    @Mutation
+    UPDATE_SERIES(series: PadSeries) {
+        this.series = [...this.series.filter(ps => ps.id != series.id), series];
+    }
 
     @Mutation
     DELETE_SERIES(series: PadSeries) {
@@ -37,7 +37,6 @@ class AdminPadStore extends InitableModule {
     @Action({ rawError: true })
     async _init() {
         const [series] = await Promise.all([api.productCatalog.padSeries.get()]);
-
         this.context.commit('SET_SERIES', series);
     }
 
@@ -47,11 +46,11 @@ class AdminPadStore extends InitableModule {
         this.context.commit('ADD_SERIES', series);
     }
 
-    // @Action({ rawError: true })
-    // async update(update: PadSeriesUpdateRequest) {
-    //     const series = await api.productCatalog.padSeries.update(update);
-    //     this.context.commit('UPDATE_SERIES', series);
-    // }
+    @Action({ rawError: true })
+    async update(update: PadSeriesUpdateRequest) {
+        const series = await api.productCatalog.padSeries.update(update);
+        this.context.commit('UPDATE_SERIES', series);
+    }
 
     @Action({ rawError: true })
     async delete(padSeries: PadSeries) {

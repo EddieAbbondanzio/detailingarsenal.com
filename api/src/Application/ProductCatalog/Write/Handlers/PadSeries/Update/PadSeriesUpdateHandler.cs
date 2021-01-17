@@ -98,7 +98,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                     update.Name,
                     update.Category,
                     update.Image?.Match(
-                        id => throw new InvalidOperationException($"Cannot reference an existing image on a new pad color"),
+                        id => existing.Find(c => c.Image?.Id == id)?.Image,
                         image => imageProcessor.Process(image.Name, image.Data)
                     ),
                     update.Options.Select(option => new PadOption(option.PadSizeId!.Value, option.PartNumber)).ToList()

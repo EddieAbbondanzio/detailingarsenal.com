@@ -56,7 +56,7 @@ export default class Pads extends Vue {
 
     async onUpdate(pad: PadSeries) {
         this.$router.push({
-            name: 'editPad',
+            name: 'updatePadSeries',
             params: {
                 id: pad.id,
             },

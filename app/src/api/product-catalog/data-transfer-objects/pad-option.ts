@@ -1,4 +1,4 @@
 export interface PadOption {
-    padSizeDiameter: number;
+    padSizeId: string;
     partNumber: string | null;
 }

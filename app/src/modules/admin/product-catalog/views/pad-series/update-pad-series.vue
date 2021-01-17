@@ -1,19 +1,20 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header title="Create pad series" :description="`Create a new pad series`">
+            <page-header :title="`Update ${name}`" :description="`Update a pad series`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Admin panel" :to="{ name: 'adminPanel' }" />
                         <breadcrumb name="Product catalog panel" :to="{ name: 'productCatalogPanel' }" />
                         <breadcrumb name="Pad series" :to="{ name: 'padSeries' }" />
-                        <breadcrumb name="Create" :to="{ name: 'createPadSeries' }" :active="true" />
+                        <breadcrumb :name="name" :to="{ name: 'padSeries', params: $route.params }" :active="true" />
+                        <breadcrumb name="Update" :to="$route" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
-        <input-form @submit="onSubmit" submitText="Create">
+        <input-form @submit="onSubmit" submitText="Update">
             <input-text-field
                 label="Name"
                 rules="required|max:32"
@@ -54,7 +55,7 @@
                 <measurement-input label="Thickness" v-model="value.thickness" />
             </input-array>
 
-            <input-array title="Colors" :factory="padColorCreateFactory" v-model="colors">
+            <input-array title="Colors" :factory="padColorUpdateFactory" v-model="colors">
                 <template v-slot="{ value }">
                     <input-text-field
                         class="has-margin-x-1 has-margin-y-0"
@@ -76,18 +77,22 @@
                         </option>
                     </input-select>
 
-                    <input-image-upload label="Image" v-model="value.image" />
+                    <input-image-upload v-if="!isExistingImage(value.image)" label="Image" v-model="value.image" />
+                    <div class="has-margin-top-4 is-align-self-center" v-else>
+                        <img style="max-height: 40px !important" :src="getThumbnailUrl(value.image)" />
+                        <a class="delete" @click="onDeleteImage(value)"></a>
+                    </div>
                 </template>
 
                 <template v-slot:detail="{ value: color }">
                     <input-array title="Options" v-model="color.options">
                         <template v-slot="{ value }">
-                            <input-select label="Size" v-model="value.padSizeIndex" rules="required">
+                            <input-select label="Size" v-model="value.padSizeId" rules="required">
                                 <option :value="null">Select a size</option>
                                 <option
                                     v-for="(size, i) in sizes"
                                     :key="i"
-                                    :value="i"
+                                    :value="size.id"
                                     :disabled="isSizeDisabled(size, value, color)"
                                 >
                                     {{ size.diameter.amount.toString() + size.diameter.unit }}
@@ -120,9 +125,11 @@ import {
     PolisherType,
     SpecificationError,
     PadOption,
-    PadColorCreateOrUpdate,
     PadSizeCreateOrUpdate,
     PadSize,
+    PadSeriesUpdateRequest,
+    PadColor,
+    PadColorCreateOrUpdate,
     PadOptionCreateOrUpdate,
 } from '@/api';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
@@ -134,7 +141,7 @@ import MeasurementInput from '@/modules/shared/components/measurement-input.vue'
         MeasurementInput,
     },
 })
-export default class CreatePadSeries extends Vue {
+export default class UpdatePadSeries extends Vue {
     get brands() {
         return brandStore.brands;
     }
@@ -163,19 +170,54 @@ export default class CreatePadSeries extends Vue {
     sizes: PadSizeCreateOrUpdate[] = [];
     colors: PadColorCreateOrUpdate[] = [];
 
+    @displayLoading
     async created() {
         await brandStore.init();
+        await adminPadStore.init();
+
+        const padSeries = adminPadStore.series.find((s) => s.id == this.$route.params.id);
+
+        if (padSeries == null) {
+            this.$router.go(-1);
+            return;
+        }
+
+        this.name = padSeries.name;
+        this.brand = padSeries.brand;
+        this.material = padSeries.material;
+        this.texture = padSeries.texture;
+        this.polisherTypes = padSeries.polisherTypes;
+        this.sizes = padSeries.sizes.map((s) => ({
+            id: s.id,
+            diameter: s.diameter,
+            thickness: s.thickness!,
+        }));
+        this.colors = padSeries.colors.map((c) => ({
+            id: null,
+            name: c.name,
+            category: c.category,
+            image: c.image, // Existing images are just ids to real images.
+            options: c.options.map((o) => ({
+                padSizeIndex: null,
+                padSizeId: o.padSizeId,
+                partNumber: o.partNumber,
+            })),
+        }));
+
+        console.log(this.sizes);
     }
 
     @displayLoading
     public async onSubmit() {
-        const create = {
+        const update: PadSeriesUpdateRequest = {
+            id: this.$route.params.id,
             name: this.name,
             texture: this.texture!,
             material: this.material!,
             polisherTypes: this.polisherTypes,
             brandId: this.brand!.id,
             sizes: this.sizes.map((s) => ({
+                id: s.id,
                 diameter: s.diameter,
                 thickness: s.thickness?.amount != null ? s.thickness : null,
             })),
@@ -183,15 +225,15 @@ export default class CreatePadSeries extends Vue {
         };
 
         try {
-            await adminPadStore.create(create);
-            toast(`Created new pad series ${create.name}`);
+            await adminPadStore.update(update);
+            toast(`Updated pad series ${update.name}`);
             this.$router.push({ name: 'padSeries' });
         } catch (err) {
             displayError(err);
         }
     }
 
-    padColorCreateFactory(): PadColorCreateOrUpdate {
+    padColorUpdateFactory(): PadColorCreateOrUpdate {
         return {
             id: null,
             name: '',
@@ -209,6 +251,18 @@ export default class CreatePadSeries extends Vue {
         const sizesUsedAlready = color.options.map((o) => o.padSizeIndex!).map((i) => this.sizes[i]);
 
         return !sizesUsedAlready.every((s) => s != size);
+    }
+
+    isExistingImage(image: Image | string | null) {
+        return image != null && !(image instanceof Image);
+    }
+
+    onDeleteImage(value: PadColorCreateOrUpdate) {
+        value.image = null;
+    }
+
+    getThumbnailUrl(id: string) {
+        return `${process.env.VUE_APP_API_DOMAIN}/image/${id}/thumb`;
     }
 }
 </script>

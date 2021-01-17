@@ -16,7 +16,7 @@
                 </template>
 
                 <template v-slot:action>
-                    <update-button :to="{ name: 'editPadSeries', params: { id: $route.params.id } }" />
+                    <update-button :to="{ name: 'updatePadSeries', params: { id: $route.params.id } }" />
                 </template>
             </page-header>
         </template>
@@ -91,7 +91,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import appStore from '@/core/store/app-store';
-import { PadSize, Permission, Role } from '@/api';
+import { Image, PadSize, Permission, Role } from '@/api';
 import { displayLoading } from '@/core';
 import adminPadStore from '../../store/admin-pad-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';

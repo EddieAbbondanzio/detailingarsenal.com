@@ -1,7 +1,7 @@
 import { PadMaterial } from '../pad-material';
 import { PadTexture } from '../pad-texture';
 import { PolisherType } from '../polisher-type';
-import { PadColorUpdate } from './pad-color-update';
+import { PadColorCreateOrUpdate } from './pad-color-create-or-update';
 import { PadSizeCreateOrUpdate } from './pad-size-create-or-update';
 
 export interface PadSeriesUpdateRequest {
@@ -12,5 +12,5 @@ export interface PadSeriesUpdateRequest {
     material: PadMaterial;
     polisherTypes: PolisherType[];
     sizes: PadSizeCreateOrUpdate[];
-    colors: PadColorUpdate[];
+    colors: PadColorCreateOrUpdate[];
 }

@@ -2,24 +2,30 @@
     <div class="is-flex is-flex-column">
         <div>
             <b-field :label="title">
-                <div class="is-flex is-flex-column" v-for="(v, i) in value" :key="i">
-                    <div class="is-flex is-flex-row">
-                        <slot :value="v"></slot>
-                        <b-button class="has-margin-left-1 is-justify-self-center" type="is-danger" @click="onDelete(i)"
-                            >Delete</b-button
+                <div class="is-flex is-flex-column">
+                    <div v-for="(v, i) in value" :key="i">
+                        <div class="is-flex is-flex-row">
+                            <slot :value="v"></slot>
+
+                            <b-button
+                                class="has-margin-left-2 is-justify-self-center has-margin-top-4"
+                                type="is-danger"
+                                @click="onDelete(i)"
+                                >Delete</b-button
+                            >
+                        </div>
+
+                        <!-- Nested detail row. Allows for input arrays in input arrays and more -->
+                        <div
+                            class="is-flex is-flex-row has-padding-left-3 has-border-left-1-light"
+                            v-if="!$slots['detail']"
                         >
+                            <slot :value="v" name="detail"></slot>
+                        </div>
                     </div>
 
-                    <!-- Nested detail row. Allows for input arrays in input arrays and more -->
-                    <div
-                        class="is-flex is-flex-row has-padding-left-3 has-border-left-1-light"
-                        v-if="!$slots['detail']"
-                    >
-                        <slot :value="v" name="detail"></slot>
-                    </div>
+                    <b-button type="is-text" class="is-align-self-start" @click="onAddAnother">Add another</b-button>
                 </div>
-
-                <b-button type="is-text" class="is-align-self-start" @click="onAddAnother">Add another</b-button>
             </b-field>
         </div>
     </div>
