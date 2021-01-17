@@ -2,11 +2,11 @@ using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain {
     public abstract class Specification<T> {
-        public async Task<SpecificationResult> Check(T entity) {
+        public virtual async Task<SpecificationResult> Check(T entity) {
             return await IsSatisfied(entity);
         }
 
-        public async Task<SpecificationResult> CheckAndThrow(T entity) {
+        public virtual async Task<SpecificationResult> CheckAndThrow(T entity) {
             var result = await IsSatisfied(entity);
 
             if (!result.IsSatisfied) {

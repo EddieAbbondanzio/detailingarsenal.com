@@ -33,10 +33,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpPost]
         public async Task<IActionResult> Create(PadSeriesCreateCommand create) {
-            var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(
-                create,
-                User
-            );
+            var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(create, User);
 
             var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
 
@@ -44,31 +41,8 @@ namespace DetailingArsenal.Api.ProductCatalog {
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateRequest update) {
-            // await mediator.Dispatch<PadSeriesUpdateCommand>(
-            //     new PadSeriesUpdateCommand(
-            //         id,
-            //         update.Name,
-            //         update.BrandId,
-            //         PadTextureUtils.Parse(update.Texture),
-            //         PadMaterialUtils.Parse(update.Material),
-            //         update.PolisherTypes.Select(pt => PolisherTypeUtils.Parse(pt)).ToList(),
-            //         update.Sizes.Select(
-            //             s => new PadSizeUpdate(
-            //                 s.Id,
-            //                 new Measurement(s.Diameter.Amount, s.Diameter.Unit),
-            //                 s.Thickness != null ? new Measurement(s.Thickness.Amount, s.Thickness.Unit) : null
-            //             )).ToList(),
-            //         update.Colors.Select(
-            //             c => new PadColorUpdate(
-            //                 c.Name,
-            //                 PadCategoryUtils.Parse(c.Category),
-            //                 c.Image,
-            //                 c.Options.Select(o => new PadOptionUpdate(o.PadSizeId, o.PartNumber)).ToList()
-            //             )
-            //         ).ToList()),
-            //     User
-            // );
+        public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateCommand update) {
+            await mediator.Dispatch<PadSeriesUpdateCommand>(update, User);
 
             var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
 
