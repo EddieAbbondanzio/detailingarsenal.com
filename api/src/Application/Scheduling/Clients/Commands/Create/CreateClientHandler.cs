@@ -8,11 +8,9 @@ namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "create", Scope = "clients")]
     public class CreateClientHandler : ActionHandler<CreateClientCommand, ClientView> {
         IClientService service;
-        private IMapper mapper;
 
-        public CreateClientHandler(IClientService service, IMapper mapper) {
+        public CreateClientHandler(IClientService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<ClientView> Execute(CreateClientCommand input, User? user) {
@@ -25,7 +23,7 @@ namespace DetailingArsenal.Application.Clients {
                 user!
             );
 
-            return mapper.Map<Client, ClientView>(c);
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,11 +9,9 @@ namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "update", Scope = "clients")]
     public class UpdateClientHandler : ActionHandler<UpdateClientCommand, ClientView> {
         IClientService service;
-        private IMapper mapper;
 
-        public UpdateClientHandler(IClientService service, IMapper mapper) {
+        public UpdateClientHandler(IClientService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<ClientView> Execute(UpdateClientCommand input, User? user) {
@@ -29,7 +27,8 @@ namespace DetailingArsenal.Application.Clients {
                 input.Email
             ));
 
-            return mapper.Map<Client, ClientView>(c);
+            throw new NotImplementedException();
+            // return mapper.Map<Client, ClientView>(c);
         }
     }
 }

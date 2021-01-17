@@ -24,7 +24,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
             var json = JsonSerializer.Serialize(new Measurement(1.2f, MeasurementUnit.Inches));
             var m = JsonSerializer.Deserialize<Measurement>(json);
 
-            Assert.AreEqual(1.2, m.Amount);
+            Assert.AreEqual(1.2, m!.Amount, 0.001);
             Assert.AreEqual(MeasurementUnit.Inches, m.Unit);
         }
     }

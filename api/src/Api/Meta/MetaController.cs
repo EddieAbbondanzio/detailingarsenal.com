@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -14,6 +15,11 @@ namespace DetailingArsenal.Api.Meta {
         [HttpGet]
         public IActionResult Get() {
             return Ok("420 blaze it");
+        }
+
+        [HttpPost("test")]
+        public IActionResult Test(Either<int, string> r) {
+            return r.Match((i) => Ok($"left: {i}"), (s) => Ok($"right: {s}"));
         }
     }
 }

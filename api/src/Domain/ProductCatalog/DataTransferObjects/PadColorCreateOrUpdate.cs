@@ -9,10 +9,10 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public Guid? Id { get; }
         public string Name { get; }
         public PadCategory Category { get; }
-        public DataUrlImage? Image { get; }
+        public Either<Guid, DataUrlImage>? Image { get; }
         public List<PadOptionCreateOrUpdate> Options { get; }
 
-        public PadColorCreateOrUpdate(Guid? id, string name, PadCategory category, DataUrlImage? image, List<PadOptionCreateOrUpdate> options) {
+        public PadColorCreateOrUpdate(Guid? id, string name, PadCategory category, Either<Guid, DataUrlImage>? image, List<PadOptionCreateOrUpdate> options) {
             Id = id;
             Name = name;
             Category = category;

@@ -11,11 +11,9 @@ namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateServiceValidator))]
     public class UpdateServiceHandler : ActionHandler<UpdateServiceCommand, ServiceView> {
         IServiceService service;
-        private IMapper mapper;
 
-        public UpdateServiceHandler(IServiceService service, IMapper mapper) {
+        public UpdateServiceHandler(IServiceService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<ServiceView> Execute(UpdateServiceCommand input, User? user) {
@@ -39,7 +37,8 @@ namespace DetailingArsenal.Application.Settings {
                 )
             );
 
-            return mapper.Map<Service, ServiceView>(service);
+            throw new NotImplementedException();
+            // return mapper.Map<Service, ServiceView>(service);
         }
     }
 }

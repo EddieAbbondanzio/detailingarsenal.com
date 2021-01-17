@@ -11,11 +11,9 @@ namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateHoursOfOperationValidator))]
     public class UpdateHoursOfOperationHandler : ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationView> {
         private IHoursOfOperationService service;
-        private IMapper mapper;
 
-        public UpdateHoursOfOperationHandler(IHoursOfOperationService service, IMapper mapper) {
+        public UpdateHoursOfOperationHandler(IHoursOfOperationService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<HoursOfOperationView> Execute(UpdateHoursOfOperationCommand input, User? user) {
@@ -34,7 +32,8 @@ namespace DetailingArsenal.Application.Settings {
                 )).ToList()
             ));
 
-            return mapper.Map<HoursOfOperation, HoursOfOperationView>(hours);
+            throw new NotImplementedException();
+            // return mapper.Map<HoursOfOperation, HoursOfOperationView>(hours);
         }
     }
 }

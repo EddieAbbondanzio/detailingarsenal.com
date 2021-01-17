@@ -9,11 +9,9 @@ namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(CreateVehicleCategoryValidator))]
     public class CreateVehicleCategoryHandler : ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryView> {
         private IVehicleCategoryService service;
-        private IMapper mapper;
 
-        public CreateVehicleCategoryHandler(IVehicleCategoryService service, IMapper mapper) {
+        public CreateVehicleCategoryHandler(IVehicleCategoryService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<VehicleCategoryView> Execute(CreateVehicleCategoryCommand command, User? user) {
@@ -25,7 +23,8 @@ namespace DetailingArsenal.Application.Settings {
                 user!
             );
 
-            return mapper.Map<VehicleCategory, VehicleCategoryView>(cat);
+            throw new NotImplementedException();
+            // return mapper.Map<VehicleCategory, VehicleCategoryView>(cat);
         }
     }
 }

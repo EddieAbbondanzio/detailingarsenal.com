@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -9,7 +11,6 @@ using System.Threading.Tasks;
 public class Either<TL, TR> {
     public bool IsLeft => isLeft;
 
-    #region Fields
     /// <summary>
     /// Value on the left.
     /// </summary>
@@ -24,9 +25,7 @@ public class Either<TL, TR> {
     /// If the either holds a left value.
     /// </summary>
     private readonly bool isLeft;
-    #endregion
 
-    #region Constructor(s)
     /// <summary>
     /// Create a new left either.
     /// </summary>
@@ -51,9 +50,24 @@ public class Either<TL, TR> {
         this.isLeft = false;
         this.left = (default(TL))!;
     }
-    #endregion
 
-    #region Publics
+    [JsonConstructor]
+    public Either(TL? left, TR? right) {
+        if (left == null && right != null) {
+            this.left = default(TL)!;
+            this.right = right;
+            this.isLeft = true;
+        }
+
+        if (right == null && left != null) {
+            this.right = default(TR)!;
+            this.left = left;
+            this.isLeft = true;
+        }
+
+        throw new ArgumentException("Both values are null!");
+    }
+
     /// <summary>
     /// Pattern match the stored value of the either.
     /// </summary>
@@ -72,7 +86,18 @@ public class Either<TL, TR> {
 
     public TL Left() => isLeft ? left : throw new InvalidOperationException();
     public TR Right() => !isLeft ? right : throw new InvalidOperationException();
-    #endregion
+
+    public override bool Equals(object? obj) {
+        return obj is Either<TL, TR> either &&
+               IsLeft == either.IsLeft &&
+               EqualityComparer<TL>.Default.Equals(left, either.left) &&
+               EqualityComparer<TR>.Default.Equals(right, either.right) &&
+               isLeft == either.isLeft;
+    }
+
+    public override int GetHashCode() {
+        return HashCode.Combine(IsLeft, left, right, isLeft);
+    }
 
     public static implicit operator Either<TL, TR>(TL left) => new Either<TL, TR>(left);
 

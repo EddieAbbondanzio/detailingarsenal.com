@@ -3,17 +3,15 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
+using System;
 
 namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateVehicleCategoryValidator))]
     [Authorization(Action = "update", Scope = "vehicle-categories")]
     public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryView> {
         private IVehicleCategoryService service;
-        private IMapper mapper;
-
-        public UpdateVehicleCategoryHandler(IVehicleCategoryService service, IMapper mapper) {
+        public UpdateVehicleCategoryHandler(IVehicleCategoryService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<VehicleCategoryView> Execute(UpdateVehicleCategoryCommand command, User? user) {
@@ -31,7 +29,8 @@ namespace DetailingArsenal.Application.Settings {
                 )
             );
 
-            return mapper.Map<VehicleCategory, VehicleCategoryView>(cat);
+            throw new NotImplementedException();
+            // return mapper.Map<VehicleCategory, VehicleCategoryView>(cat);
         }
     }
 }

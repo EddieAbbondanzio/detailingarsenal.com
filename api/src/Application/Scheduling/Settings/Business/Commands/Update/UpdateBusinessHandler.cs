@@ -3,17 +3,16 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
+using System;
 
 namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateBusinessValidator))]
     [Authorization(Action = "update", Scope = "businesses")]
     public class UpdateBusinessHandler : ActionHandler<UpdateBusinessCommand, BusinessView> {
         IBusinessService service;
-        private IMapper mapper;
 
-        public UpdateBusinessHandler(IBusinessService service, IMapper mapper) {
+        public UpdateBusinessHandler(IBusinessService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<BusinessView> Execute(UpdateBusinessCommand command, User? user) {
@@ -29,7 +28,8 @@ namespace DetailingArsenal.Application.Settings {
                 command.Phone
             ));
 
-            return mapper.Map<Business, BusinessView>(b);
+            throw new NotImplementedException();
+            // return mapper.Map<Business, BusinessView>(b);
         }
     }
 }

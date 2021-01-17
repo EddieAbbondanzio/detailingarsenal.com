@@ -9,11 +9,9 @@ namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "delete", Scope = "clients")]
     public class DeleteClientHandler : ActionHandler<DeleteClientCommand, ClientView> {
         IClientService service;
-        private IMapper mapper;
 
-        public DeleteClientHandler(IClientService service, IMapper mapper) {
+        public DeleteClientHandler(IClientService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<ClientView> Execute(DeleteClientCommand input, User? user) {
@@ -24,7 +22,8 @@ namespace DetailingArsenal.Application.Clients {
             }
 
             await service.Delete(c);
-            return mapper.Map<Client, ClientView>(c);
+            throw new NotImplementedException();
+            // return mapper.Map<Client, ClientView>(c);
         }
     }
 }

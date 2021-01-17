@@ -11,11 +11,9 @@ namespace DetailingArsenal.Application.Settings {
     public class CreateServiceHandler : ActionHandler<CreateServiceCommand, ServiceView> {
 
         private IServiceService service;
-        private IMapper mapper;
 
-        public CreateServiceHandler(IServiceService service, IMapper mapper) {
+        public CreateServiceHandler(IServiceService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<ServiceView> Execute(CreateServiceCommand input, User? user) {
@@ -34,7 +32,8 @@ namespace DetailingArsenal.Application.Settings {
                 user!
             );
 
-            return mapper.Map<Service, ServiceView>(s);
+            throw new NotImplementedException();
+            // return mapper.Map<Service, ServiceView>(s);
         }
     }
 }

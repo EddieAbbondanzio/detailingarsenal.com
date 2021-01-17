@@ -11,11 +11,9 @@ namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "update", Scope = "appointments")]
     public class UpdateAppointmentHandler : ActionHandler<UpdateAppointmentCommand, AppointmentView> {
         IAppointmentService service;
-        IMapper mapper;
 
-        public UpdateAppointmentHandler(IAppointmentService service, IMapper mapper) {
+        public UpdateAppointmentHandler(IAppointmentService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<AppointmentView> Execute(UpdateAppointmentCommand input, User? user) {
@@ -38,7 +36,8 @@ namespace DetailingArsenal.Application.Calendar {
             )).ToList();
 
             await service.Update(appointment, update);
-            return mapper.Map<Appointment, AppointmentView>(appointment);
+            throw new NotImplementedException();
+            // return mapper.Map<Appointment, AppointmentView>(appointment);
         }
     }
 }

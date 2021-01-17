@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
@@ -8,16 +9,15 @@ namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "read", Scope = "clients")]
     public class GetClientsHandler : ActionHandler<GetClientsQuery, List<ClientView>> {
         IClientService service;
-        private IMapper mapper;
 
-        public GetClientsHandler(IClientService service, IMapper mapper) {
+        public GetClientsHandler(IClientService service) {
             this.service = service;
-            this.mapper = mapper;
         }
 
         public async override Task<List<ClientView>> Execute(GetClientsQuery input, User? user) {
             List<Client> clients = await service.GetByUser(user!);
-            return mapper.Map<List<Client>, List<ClientView>>(clients);
+            throw new NotImplementedException();
+            // return mapper.Map<List<Client>, List<ClientView>>(clients);
         }
     }
 }
