@@ -28,16 +28,16 @@ namespace DetailingArsenal.Api.ProductCatalog {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(BrandCreateRequest create) {
-            var id = await mediator.Dispatch<BrandCreateCommand, Guid>(new(create.Name), User);
+        public async Task<IActionResult> Create(BrandCreateCommand create) {
+            var id = await mediator.Dispatch<BrandCreateCommand, Guid>(create, User);
             var brand = await mediator.Dispatch<GetBrandByIdQuery, BrandReadModel>(new(id));
 
             return Ok(brand);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] BrandUpdateRequest update) {
-            await mediator.Dispatch<BrandUpdateCommand>(new(id, update.Name), User);
+        public async Task<IActionResult> Update(Guid id, [FromBody] BrandUpdateCommand update) {
+            await mediator.Dispatch<BrandUpdateCommand>(update, User);
             var brand = await mediator.Dispatch<GetBrandByIdQuery, BrandReadModel>(new(id));
 
             return Ok(brand);
