@@ -122,6 +122,7 @@ export default class PadSeriesDetails extends Vue {
     @displayLoading
     async created() {
         await adminPadStore.init();
+        console.log(this.value?.colors.filter((c) => c.image != null).map((c) => c.image));
     }
 
     getPadSize(id: string) {

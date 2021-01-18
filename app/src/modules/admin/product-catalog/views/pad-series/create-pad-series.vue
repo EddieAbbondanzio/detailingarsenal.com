@@ -176,6 +176,7 @@ export default class CreatePadSeries extends Vue {
             polisherTypes: this.polisherTypes,
             brandId: this.brand!.id,
             sizes: this.sizes.map((s) => ({
+                id: null,
                 diameter: s.diameter,
                 thickness: s.thickness?.amount != null ? s.thickness : null,
             })),
