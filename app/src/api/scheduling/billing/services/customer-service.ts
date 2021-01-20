@@ -40,7 +40,6 @@ export class CustomerService {
             }
         }
 
-        console.log(c);
         return c;
     }
 

@@ -203,8 +203,6 @@ export default class UpdatePadSeries extends Vue {
                 partNumber: o.partNumber,
             })),
         }));
-
-        console.log(this.sizes);
     }
 
     @displayLoading

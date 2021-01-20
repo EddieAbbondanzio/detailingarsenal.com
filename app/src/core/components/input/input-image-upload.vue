@@ -76,7 +76,6 @@ export default class InputImageUpload extends Vue {
     }
 
     async onInput(val: File) {
-        console.log('input brah');
         var data = await toBase64(val);
         this.$emit('input', new Image(val.name, data));
     }
