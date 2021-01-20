@@ -82,6 +82,9 @@ export default class WriteReview extends Vue {
                 title: this.title!,
                 body: this.body!,
             });
+
+            // Redirect to the pad they just wrote a review for.
+            this.$router.push({ name: 'pad', params: { id: this.value!.id } });
         } catch (e) {
             displayError(e);
         }
