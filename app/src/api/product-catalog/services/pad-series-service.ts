@@ -52,7 +52,7 @@ export class PadSeriesService {
                 c.category,
                 c.cut,
                 c.finish,
-                new Rating(c.stars, c.reviewCount), c.imageId,
+                new Rating(c.rating.stars, c.rating.reviewCount), c.imageId,
                 (c.options ?? [] as any[]).map((o: any) => ({
                     padSizeId: o.padSizeId,
                     partNumber: o.partNumber

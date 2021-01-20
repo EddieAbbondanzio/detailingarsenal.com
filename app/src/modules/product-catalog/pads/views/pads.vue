@@ -53,11 +53,7 @@
                 <pad-finish-bar :value="props.row.finish" />
             </b-table-column>
             <b-table-column v-slot="props" label="Rating" field="rating" sortable>
-                <stars
-                    v-if="props.row.rating != null"
-                    :value="props.row.rating.stars"
-                    :count="props.row.rating.reviewCount"
-                />
+                <stars v-if="props.row.rating != null" :value="props.row.rating.stars" :count="1" />
                 <span class="has-text-grey" v-else>N/A</span>
             </b-table-column>
             <b-table-column v-slot="props" label="Polisher Type(s)" field="polisherTypes" sortable>
