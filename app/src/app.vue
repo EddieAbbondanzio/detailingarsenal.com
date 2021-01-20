@@ -40,8 +40,8 @@ import { loadStripeJs } from '@/plugins/stripe';
 @Component({
     name: 'app',
     components: {
-        LoadingSplash
-    }
+        LoadingSplash,
+    },
 })
 export default class App extends Vue {
     get isLoggingIn() {
