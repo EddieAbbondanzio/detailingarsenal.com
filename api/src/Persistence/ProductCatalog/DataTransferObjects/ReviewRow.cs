@@ -4,7 +4,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
     internal class ReviewRow : IDataTransferObject {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public Guid PadId { get; set; }
+        public Guid PadColorId { get; set; }
         public DateTime CreatedDate { get; set; }
         public int Stars { get; set; }
         public int? Cut { get; set; }

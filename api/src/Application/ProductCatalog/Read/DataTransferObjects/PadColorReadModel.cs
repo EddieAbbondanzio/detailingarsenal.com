@@ -11,11 +11,11 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
         public Guid? ImageId { get; }
         public List<PadOptionReadModel> Options { get; }
-        public int? Cut { get; }
-        public int? Finish { get; }
+        public decimal? Cut { get; }
+        public decimal? Finish { get; }
         public RatingReadModel Rating { get; }
 
-        public PadColorReadModel(Guid id, string name, string category, Guid? image, List<PadOptionReadModel> options, int? cut, int? finish, RatingReadModel rating) {
+        public PadColorReadModel(Guid id, string name, string category, Guid? image, List<PadOptionReadModel> options, decimal? cut, decimal? finish, RatingReadModel rating) {
             Id = id;
             Name = name;
             Category = category;

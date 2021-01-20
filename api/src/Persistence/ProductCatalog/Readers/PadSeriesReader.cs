@@ -153,6 +153,12 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             imageId = null;
                         }
 
+                        Guid id = raw.id;
+                        string name = raw.name;
+                        string category = raw.category;
+                        decimal? cut = raw.cut;
+                        decimal? finish = raw.finish;
+
                         var color = new PadColorReadModel(
                             raw.id,
                             raw.name,

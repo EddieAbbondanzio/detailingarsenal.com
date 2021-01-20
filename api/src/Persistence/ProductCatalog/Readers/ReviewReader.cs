@@ -15,7 +15,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 var r = await conn.QueryFirstOrDefaultAsync(
                     @"select r.*, u.username from reviews r
                         join users u on r.user_id = u.id 
-                        where id = @Id;",
+                        where r.id = @Id;",
                         new { Id = id }
                 );
 

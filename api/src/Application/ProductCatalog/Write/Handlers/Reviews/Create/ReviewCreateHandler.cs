@@ -4,7 +4,7 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    [Validation(typeof(ReviewCreateHandler))]
+    [Validation(typeof(ReviewCreateValidator))]
     [Authorization(Scope = "reviews", Action = "create")]
     public class ReviewCreateHandler : ActionHandler<ReviewCreateCommand, Guid> {
         IReviewRepo repo;
