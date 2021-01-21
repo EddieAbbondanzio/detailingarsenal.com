@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "tests\Api\Tests.Api.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "src\Persistence\Persistence.csproj", "{723C92F7-90BB-49EE-BA81-CDB4C188948C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "tests\Persistence\Persistence.csproj", "{3F3D2E32-9BF7-4B39-85F7-C6378F3C3C0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "tests\Persistence\Tests.Persistence.csproj", "{3F3D2E32-9BF7-4B39-85F7-C6378F3C3C0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
