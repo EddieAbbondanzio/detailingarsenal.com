@@ -19,7 +19,7 @@ jobs:
       run: dotnet build ./api/Backend.sln --configuration Release
     - name: dotnet publish 
       run: |
-        dotnet publish --configuration Release -o outputDirectory
+        dotnet publish ./api/Backend.sln --configuration Release -o outputDirectory
     - name: Push code to Digital Ocean
       uses: appleboy/scp-action@master
       env:
