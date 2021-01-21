@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
-    [Migration(2020_07_08_0, "Alter subscription add price billing id.")]
+    [Migration(2020_07_08_00, "Alter subscription add price billing id.")]
     public class AlterSubscriptionTableAddPriceBillingId : Migration {
         public override void Up() {
             Alter.Table("subscriptions").AddColumn("price_billing_id").AsString(255);

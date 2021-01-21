@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
-    [Migration(2020_06_28_2, "Alter subscription plan table to reference new billing reference table")]
+    [Migration(2020_06_28_02, "Alter subscription plan table to reference new billing reference table")]
     public class AlterSubscriptionPlanTableAddBillingReference : Migration {
         public override void Up() {
             Delete.Column("external_id").FromTable("subscription_plans");

@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
-    [Migration(2020_06_11_0, "Alter customers table add user id column")]
+    [Migration(2020_06_11_00, "Alter customers table add user id column")]
     public class AlterCustomerTableAddUserId : Migration {
         public override void Up() {
             Alter.Table("customers")

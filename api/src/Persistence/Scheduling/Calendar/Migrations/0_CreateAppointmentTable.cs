@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Calendar.Migrations {
-    [Migration(2020_03_29_0, "Create appointments table")]
+    [Migration(2020_03_29_00, "Create appointments table")]
     public class CreateAppointmentTable : Migration {
         public override void Up() {
             Create.Table("appointments")

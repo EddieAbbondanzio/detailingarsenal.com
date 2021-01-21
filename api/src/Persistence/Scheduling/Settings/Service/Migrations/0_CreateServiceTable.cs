@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Settings.Migrations {
-    [Migration(2020_03_22_0, "Create services table")]
+    [Migration(2020_03_22_00, "Create services table")]
     public class CreateServicesTable : Migration {
         public override void Up() {
             Create.Table("services")

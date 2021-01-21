@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Calendar.Migrations {
-    [Migration(2020_04_22_0, "Alter appointment_blocks to store using start, and end date.")]
+    [Migration(2020_04_22_00, "Alter appointment_blocks to store using start, and end date.")]
     public class StartAndEndDateAppointmentBlocks : Migration {
         public override void Up() {
             Alter.Table("appointment_blocks").AddColumn("start").AsDate();

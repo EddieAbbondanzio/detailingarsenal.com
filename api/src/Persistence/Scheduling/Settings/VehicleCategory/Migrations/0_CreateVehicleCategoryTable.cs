@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Settings.Migrations {
-    [Migration(2020_02_24_0, "Create vehicle_categories table")]
+    [Migration(2020_02_24_00, "Create vehicle_categories table")]
     public class CreateVehicleCategoryTable : Migration {
         public override void Up() {
             Create.Table("vehicle_categories")

@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing.Migrations {
-    [Migration(2020_06_08_0, "Create subscription plans table")]
+    [Migration(2020_06_08_00, "Create subscription plans table")]
     public class CreateSubscriptionPlansTable : Migration {
         public override void Up() {
             Create.Table("subscription_plans")
