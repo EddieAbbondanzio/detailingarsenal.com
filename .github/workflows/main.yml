@@ -27,7 +27,6 @@ jobs:
         USERNAME: ${{ secrets.REMOTE_USER }}
         PORT: ${{ secrets.REMOTE_PORT }}
         KEY: ${{ secrets.SERVER_SSH_KEY }}
-        PASSHPHRASE: ${{ secrets.SERVER_SSH_PASSPHRASE }}  
       with:
         source: "outputDirectory"
         target: "/var/www"
