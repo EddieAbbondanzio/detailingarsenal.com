@@ -5,7 +5,7 @@ using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_06_02_0, "Insert remove role from users permission")]
+    [Migration(2020_06_02_00, "Insert remove role from users permission")]
     public class InsertRemoveRolePermission : Migration {
         public override void Up() {
             Execute.WithConnection((c, t) => {

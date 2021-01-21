@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_1_14_0, "Insert crud review permissions")]
+    [Migration(2021_01_14_00, "Insert crud review permissions")]
     public class InsertCrudReviewPermissions : Migration {
         const string Scope = "reviews";
 

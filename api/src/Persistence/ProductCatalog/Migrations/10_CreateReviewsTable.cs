@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
-    [Migration(2020_11_17_0, "Create reviews table")]
+    [Migration(2020_11_17_00, "Create reviews table")]
     public class CreateReviewsTable : Migration {
         public override void Up() {
             Create.Table("reviews")

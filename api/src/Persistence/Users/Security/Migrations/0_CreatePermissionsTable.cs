@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_05_28_0, "Create permissions table")]
+    [Migration(2020_05_28_00, "Create permissions table")]
     public class CreatePermissionsTable : Migration {
         public override void Up() {
             Create.Table("permissions")

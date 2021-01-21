@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_06_02_2, "Insert crud permission permissions")]
+    [Migration(2020_06_02_02, "Insert crud permission permissions")]
     public class InsertCrudPermissionPermissions : Migration {
         public override void Up() {
             Execute.WithConnection((c, t) => {

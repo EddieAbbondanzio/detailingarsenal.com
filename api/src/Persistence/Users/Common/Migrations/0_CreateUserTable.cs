@@ -2,7 +2,7 @@ using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Migrations {
     // Needs to be ran first since other tables reference it.
-    [Migration(2020_00_00_0, "Create users table")]
+    [Migration(0000_00_00_00, "Create users table")]
     public class CreateUserTable : Migration {
         public override void Up() {
             Create.Table("users")

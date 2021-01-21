@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_08_24_2, "Insert crud pad series permissions")]
+    [Migration(2020_08_24_02, "Insert crud pad series permissions")]
     public class InsertCrudPadSeriesPermissions : Migration {
         const string Scope = "pad-series";
 

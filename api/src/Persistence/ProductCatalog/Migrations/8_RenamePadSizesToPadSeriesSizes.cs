@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
-    [Migration(2020_10_18_0, "Rename pad_sizes table to pad_series_sizes.")]
+    [Migration(2020_10_18_00, "Rename pad_sizes table to pad_series_sizes.")]
     public class RenamePadSizesToPadSeriesSizes : Migration {
         public override void Up() {
             Rename.Table("pad_sizes").To("pad_series_sizes");

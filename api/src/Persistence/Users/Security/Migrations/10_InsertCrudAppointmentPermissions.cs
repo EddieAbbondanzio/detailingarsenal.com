@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_06_02_4, "Insert crud appointment permissions")]
+    [Migration(2020_06_02_04, "Insert crud appointment permissions")]
     public class InsertCrudAppointmentPermissions : Migration {
         const string Scope = "appointments";
 

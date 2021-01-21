@@ -5,7 +5,7 @@ using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_06_01_0, "Insert add role to users permission")]
+    [Migration(2020_06_01_00, "Insert add role to users permission")]
     public class InsertAddRolePermission : Migration {
         public override void Up() {
             Execute.WithConnection((c, t) => {

@@ -5,7 +5,7 @@ using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_05_31_0, "Create admin role")]
+    [Migration(2020_05_31_00, "Create admin role")]
     public class InsertAdminRole : Migration {
         public override void Up() {
             Execute.WithConnection((c, t) => {

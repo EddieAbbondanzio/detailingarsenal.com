@@ -6,7 +6,7 @@ using DetailingArsenal.Domain.Users.Security;
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.Users.Security.Migrations {
-    [Migration(2020_06_02_9, "Insert crud businesses permissions")]
+    [Migration(2020_06_02_09, "Insert crud businesses permissions")]
     public class InsertCrudHoursOfOperationPermissions : Migration {
         const string Scope = "hours-of-operations";
 

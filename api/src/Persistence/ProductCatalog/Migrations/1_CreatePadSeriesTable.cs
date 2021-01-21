@@ -1,7 +1,7 @@
 using FluentMigrator;
 
 namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
-    [Migration(2020_08_24_0, "Create pad_series table")]
+    [Migration(2020_08_24_00, "Create pad_series table")]
     public class CreatePadSeriesTable : Migration {
         public override void Up() {
             Create.Table("pad_series")
