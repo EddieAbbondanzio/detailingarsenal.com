@@ -21,8 +21,11 @@ namespace DetailingArsenal.Persistence.Users.Security {
         public static void RemovePermissions(this Migration migration, string scope, string action) {
             migration.Execute.WithConnection((c, t) => {
                 var permission = c.QueryFirst<PermissionRow>(
-                    $@"select * from permissions where scope = '{scope}' 
-                    and action = '{action}';"
+                    $@"select * from permissions where scope = @Scope 
+                    and action = @Action;", new {
+                        Scope = scope,
+                        Action = action
+                    }
                 );
 
                 c.Execute("delete from role_permissions where permission_id = @Id", permission);

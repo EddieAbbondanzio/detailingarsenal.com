@@ -31,7 +31,7 @@ namespace DetailingArsenal.Persistence.Users.Security.Migrations {
                 );
 
                 // Add new permission to admin
-                var adminRole = c.QueryFirst<Role>("select * from roles where name = 'Admin';");
+                var adminRole = c.QueryFirst<RoleRow>("select * from roles where name = 'Admin';");
                 c.Execute(
                     "insert into role_permissions (role_id, permission_id) values (@RoleId, @PermissionId);",
                     permissions.Select(p => new {
@@ -44,7 +44,7 @@ namespace DetailingArsenal.Persistence.Users.Security.Migrations {
 
         public override void Down() {
             Execute.WithConnection((c, t) => {
-                var permission = c.QueryFirst<Permission>(
+                var permission = c.QueryFirst<PermissionRow>(
                     $@"select * from permissions where scope = '{Scope}' 
                     and (action = 'read' or action = 'refresh' or action = 'update');"
                 );

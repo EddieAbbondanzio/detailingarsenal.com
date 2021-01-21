@@ -23,7 +23,7 @@ namespace DetailingArsenal.Persistence.Users.Security.Migrations {
 
         public override void Down() {
             Execute.WithConnection((c, t) => {
-                var role = c.QueryFirst<Role>("select * from roles where name = 'Admin';");
+                var role = c.QueryFirst<RoleRow>("select * from roles where name = 'Admin';");
 
                 c.Execute("delete from roles where id = @Id", role);
             });
