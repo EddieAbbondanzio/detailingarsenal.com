@@ -18,6 +18,6 @@ namespace DetailingArsenal.Domain.Scheduling.Billing {
             // RuleFor(c => c.CancelUrl).NotEmpty().WithMessage("No cancel url");
 
             // RuleFor(c => c.WebhookSecret).NotNull().WithMessage("No webhook secret set");
-        }
+        }//
     }
 }
