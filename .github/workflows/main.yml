@@ -19,7 +19,7 @@ jobs:
       run: dotnet build ./api/Backend.sln --configuration Release
     - name: dotnet publish 
       run: |
-        dotnet publish ./api/Backend.sln --configuration Release -o outputDirectory
+        dotnet publish ./api/Backend.sln --configuration Release -o public
     - name: Push code to Digital Ocean
       uses: appleboy/scp-action@master
       env:
@@ -28,8 +28,8 @@ jobs:
         PORT: ${{ secrets.REMOTE_PORT }}
         KEY: ${{ secrets.SERVER_SSH_KEY }}
       with:
-        source: "outputDirectory"
-        target: "/var/www"
+        source: "public"
+        target: "~/detailingarsenal-api"
           
           
           
