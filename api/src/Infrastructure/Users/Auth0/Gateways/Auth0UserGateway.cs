@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 using Auth0.ManagementApi.Models;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
+using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Infrastructure.Users {
     public class Auth0UserGateway : IUserGateway {
         private IAuth0ApiClientBuilder tokenGenerator;
 
-        public Auth0UserGateway(IAuth0ApiClientBuilder tokenGenerator) {
+        public Auth0Config Config { get; }
+
+        public Auth0UserGateway(Auth0Config config, IAuth0ApiClientBuilder tokenGenerator) {
+            Config = config;
             this.tokenGenerator = tokenGenerator;
         }
 
@@ -36,7 +40,7 @@ namespace DetailingArsenal.Infrastructure.Users {
                 UserName = "Admin",
                 Email = email,
                 Password = password,
-                Connection = "email-pass-auth"
+                Connection = Config.Connection
             });
 
             var user = new Domain.Users.User(
@@ -54,7 +58,7 @@ namespace DetailingArsenal.Infrastructure.Users {
 
             await managementApiClient.Users.UpdateAsync(user.Auth0Id, new UserUpdateRequest() {
                 Password = newPassword,
-                Connection = "email-pass-auth"
+                Connection = Config.Connection
             });
         }
     }

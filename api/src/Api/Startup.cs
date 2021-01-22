@@ -227,8 +227,7 @@ namespace DetailingArsenal.Api {
             var raw = Configuration.GetSection("Database");
 
             Log.Information($"Database host: {raw["Host"]} {raw["Port"]}");
-
-            var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(raw);
+            var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
             services.AddScoped<IDatabaseMigrationRunner, FluentMigratorMigrationRunner>();
             services.AddSingleton<IDatabase, PostgresDatabase>();
             services.AddDatabaseMigrations(dbConfig.GetConnectionString(), typeof(MigrationsFlag).Assembly);
@@ -236,7 +235,7 @@ namespace DetailingArsenal.Api {
             // User
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
-            services.AddTransient<IUserReader, UserReader>();
+            services.AddTransient<IUserReader, UserReader>();/*  */
             services.AddTransient<ActionHandler<UserUpdateCommand>, UserUpdateHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserReadModel>, GetUserByAuth0IdHandler>();
 
