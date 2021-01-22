@@ -48,6 +48,7 @@ using DetailingArsenal.Persistence.Users.Security;
 using DetailingArsenal.Application.Shared;
 using DetailingArsenal.Persistence.Shared;
 using DetailingArsenal.Domain.Shared;
+using Serilog;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -223,7 +224,11 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
 
             // Database
-            var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
+            var raw = Configuration.GetSection("Database");
+
+            Log.Information($"Database host: {raw["Host"]} {raw["Port"]}");
+
+            var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(raw);
             services.AddScoped<IDatabaseMigrationRunner, FluentMigratorMigrationRunner>();
             services.AddSingleton<IDatabase, PostgresDatabase>();
             services.AddDatabaseMigrations(dbConfig.GetConnectionString(), typeof(MigrationsFlag).Assembly);
