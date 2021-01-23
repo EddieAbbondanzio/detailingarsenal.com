@@ -22,12 +22,11 @@ jobs:
         dotnet publish ./api/Backend.sln --configuration Release -o public
     - name: Push code to Digital Ocean
       uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ secrets.REMOTE_HOST }}
-        USERNAME: ${{ secrets.REMOTE_USER }}
-        PORT: ${{ secrets.REMOTE_PORT }}
-        KEY: ${{ secrets.SERVER_SSH_KEY }}
       with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        port: ${{ secrets.REMOTE_PORT }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
         source: "public"
         target: "/var/www/detailingarsenal-api"
           
