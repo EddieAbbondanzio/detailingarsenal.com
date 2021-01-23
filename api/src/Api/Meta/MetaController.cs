@@ -18,8 +18,8 @@ namespace DetailingArsenal.Api.Meta {
         }
 
         [HttpPost("test")]
-        public IActionResult Test(Either<int, string> r) {
-            return r.Match((i) => Ok($"left: {i}"), (s) => Ok($"right: {s}"));
+        public IActionResult Test() {
+            return Ok("FUCK");
         }
     }
 }
