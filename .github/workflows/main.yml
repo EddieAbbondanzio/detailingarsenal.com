@@ -17,6 +17,8 @@ jobs:
         dotnet-version: '5.0.x'
     - name: Build with dotnet
       run: dotnet build ./api/Backend.sln --configuration Release
+    - name: Run Tests
+      run: dotnet test ./api/Backend.sln
     - name: dotnet publish 
       run: |
         dotnet publish ./api/Backend.sln --configuration Release -o public
@@ -29,7 +31,7 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         source: "public"
         target: "/var/www/detailingarsenal-api"
-    - name: Push to server
+    - name: Reload kestrel service running API project
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.REMOTE_HOST }}
