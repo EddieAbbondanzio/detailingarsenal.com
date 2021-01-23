@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using System.Data.Common;
 
-namespace DetailingArsenal.Persistence {
+namespace DetailingArsenal.Domain {
     /// <summary>
     /// Database for data persistence.
     /// </summary>

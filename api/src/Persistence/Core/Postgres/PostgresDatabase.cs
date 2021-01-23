@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
+using DetailingArsenal.Domain;
 using Npgsql;
 
 namespace DetailingArsenal.Persistence {
@@ -17,7 +18,7 @@ namespace DetailingArsenal.Persistence {
         /// Create a new database.
         /// </summary>
         /// <param name="connection">The connection config.</param>
-        public PostgresDatabase(IDatabaseConfig config) {
+        public PostgresDatabase(DatabaseConfig config) {
             connection = config.GetConnectionString();
         }
 

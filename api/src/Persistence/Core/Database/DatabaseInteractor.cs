@@ -1,5 +1,6 @@
 using System;
 using System.Data.Common;
+using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Persistence {
     public abstract class DatabaseInteractor {

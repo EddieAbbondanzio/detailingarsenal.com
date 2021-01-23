@@ -2,7 +2,7 @@ namespace DetailingArsenal.Domain {
     public class SynchronizationSaga : Saga {
         public SynchronizationSaga(
             RunDatabaseMigrationsStep runDatabaseMigrations,
-            ValidateBillingConfigStep validateSubscriptionConfig,
+            ValidateConfigFile validateSubscriptionConfig,
             RefreshSubscriptionPlansStep refreshSubscriptionPlans,
             CreateOrUpdateAdminStep createOrUpdateAdmin,
             CreateRolesStep createProRoleStep,

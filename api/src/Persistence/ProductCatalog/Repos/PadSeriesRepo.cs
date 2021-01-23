@@ -6,6 +6,7 @@ using Dapper;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Shared;
 using DetailingArsenal.Persistence.Shared;
+using DetailingArsenal.Domain;
 using DetailingArsenal.Shared;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {

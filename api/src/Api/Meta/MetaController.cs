@@ -16,10 +16,5 @@ namespace DetailingArsenal.Api.Meta {
         public IActionResult Get() {
             return Ok("420 blaze it");
         }
-
-        [HttpGet("test")]
-        public IActionResult Test() {
-            return Ok("Yeah test works mate");
-        }
     }
 }

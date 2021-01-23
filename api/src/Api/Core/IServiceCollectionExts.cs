@@ -3,6 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 public static class IServiceCollectionExts {
+    /*
+    *
+    * While these may seem redundant to services.Configure<TConfig>() it doesn't return
+    * a wrapped config like the other one (IOptions<TConfig>)
+    *
+    */
+
     public static TImplementation AddConfig<TImplementation>(this IServiceCollection services, IConfiguration config) where TImplementation : class, new() {
         if (services == null) {
             throw new ArgumentNullException("config");

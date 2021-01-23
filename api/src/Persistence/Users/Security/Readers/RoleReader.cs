@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using System.Linq;
+using DetailingArsenal.Domain;
 using DetailingArsenal.Application.Users.Security;
 
 namespace DetailingArsenal.Persistence.Users.Security {

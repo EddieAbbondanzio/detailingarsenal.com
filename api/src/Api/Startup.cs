@@ -112,7 +112,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<RefreshSubscriptionPlansStep>();
             services.AddTransient<CreateOrUpdateAdminStep>();
             services.AddTransient<CreateRolesStep>();
-            services.AddTransient<ValidateBillingConfigStep>();
+            services.AddTransient<ValidateConfigFile>();
             services.AddTransient<GiveAdminAllPermissionsStep>();
 
             services.AddTransient<NewUserSaga>();
@@ -226,9 +226,7 @@ namespace DetailingArsenal.Api {
 
             // Database
             var raw = Configuration.GetSection("Database");
-
-            Log.Information($"Database host: {raw["Host"]} {raw["Port"]}");
-            var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
+            var dbConfig = services.AddConfig<DatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
             services.AddScoped<IDatabaseMigrationRunner, FluentMigratorMigrationRunner>();
             services.AddSingleton<IDatabase, PostgresDatabase>();
             services.AddDatabaseMigrations(dbConfig.GetConnectionString(), typeof(MigrationsFlag).Assembly);

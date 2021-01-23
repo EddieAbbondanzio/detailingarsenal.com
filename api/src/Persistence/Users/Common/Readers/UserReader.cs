@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using DetailingArsenal.Domain;
 using DetailingArsenal.Application.Users;
 
 namespace DetailingArsenal.Persistence.Users {

@@ -2,11 +2,11 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Domain {
-    public class ValidateBillingConfigStep : SagaStep {
+    public class ValidateConfigFile : SagaStep {
         BillingConfigValidator configValidator;
         IBillingConfig config;
 
-        public ValidateBillingConfigStep(BillingConfigValidator configValidator, IBillingConfig config) {
+        public ValidateConfigFile(BillingConfigValidator configValidator, IBillingConfig config) {
             this.configValidator = configValidator;
             this.config = config;
         }

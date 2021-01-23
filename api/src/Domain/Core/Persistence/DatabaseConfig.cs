@@ -1,34 +1,34 @@
-namespace DetailingArsenal.Persistence {
+namespace DetailingArsenal.Domain {
     /// <summary>
     /// Information used to connect to a database.
     /// </summary>
-    public interface IDatabaseConfig {
+    public abstract class DatabaseConfig {
         /// <summary>
         /// The IP address.
         /// </summary>
         /// <value></value>
-        string Host { get; set; }
+        public string Host { get; set; } = null!;
 
         /// <summary>
         /// The port number of the IP.
         /// </summary>
-        int Port { get; set; }
+        public int Port { get; set; }
 
         /// <summary>
         /// The username to authenticate under.
         /// </summary>
-        string User { get; set; }
+        public string User { get; set; } = null!;
 
         /// <summary>
         /// The secret password for authentication.
         /// </summary>
-        string Password { get; set; }
+        public string Password { get; set; } = null!;
 
         /// <summary>
         /// The name of the database.
         /// </summary>
-        string Database { get; set; }
+        public string Database { get; set; } = null!;
 
-        string GetConnectionString();
+        public abstract string GetConnectionString();
     }
 }

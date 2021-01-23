@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Application.Scheduling.Billing;
+using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing {

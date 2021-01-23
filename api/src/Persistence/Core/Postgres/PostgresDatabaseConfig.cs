@@ -1,3 +1,4 @@
+using DetailingArsenal.Domain;
 using Npgsql;
 
 namespace DetailingArsenal.Persistence {
