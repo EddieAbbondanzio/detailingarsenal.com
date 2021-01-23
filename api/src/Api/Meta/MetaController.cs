@@ -17,9 +17,9 @@ namespace DetailingArsenal.Api.Meta {
             return Ok("420 blaze it");
         }
 
-        [HttpPost("test")]
+        [HttpGet("test")]
         public IActionResult Test() {
-            return Ok("FUCK");
+            return Ok("Yeah test works mate");
         }
     }
 }
