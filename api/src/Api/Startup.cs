@@ -48,6 +48,8 @@ using DetailingArsenal.Persistence.Users.Security;
 using DetailingArsenal.Application.Shared;
 using DetailingArsenal.Persistence.Shared;
 using DetailingArsenal.Domain.Shared;
+using Serilog;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace DetailingArsenal.Api {
     public class Startup {
@@ -67,6 +69,8 @@ namespace DetailingArsenal.Api {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            Console.WriteLine($"Running in production: {environment.IsProduction()}");
+
             services.AddCors();
 
             // Core
@@ -221,6 +225,9 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
 
             // Database
+            var raw = Configuration.GetSection("Database");
+
+            Log.Information($"Database host: {raw["Host"]} {raw["Port"]}");
             var dbConfig = services.AddConfig<IDatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
             services.AddScoped<IDatabaseMigrationRunner, FluentMigratorMigrationRunner>();
             services.AddSingleton<IDatabase, PostgresDatabase>();
@@ -229,7 +236,7 @@ namespace DetailingArsenal.Api {
             // User
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
-            services.AddTransient<IUserReader, UserReader>();
+            services.AddTransient<IUserReader, UserReader>();/*  */
             services.AddTransient<ActionHandler<UserUpdateCommand>, UserUpdateHandler>();
             services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserReadModel>, GetUserByAuth0IdHandler>();
 
@@ -298,6 +305,11 @@ namespace DetailingArsenal.Api {
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+            // Needed for NGINX
+            app.UseForwardedHeaders(new ForwardedHeadersOptions {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseRouting();
 
             app.UseExceptionLogger();

@@ -17,9 +17,9 @@ namespace DetailingArsenal.Api.Meta {
             return Ok("420 blaze it");
         }
 
-        [HttpPost("test")]
-        public IActionResult Test(Either<int, string> r) {
-            return r.Match((i) => Ok($"left: {i}"), (s) => Ok($"right: {s}"));
+        [HttpGet("test")]
+        public IActionResult Test() {
+            return Ok("Yeah test works mate");
         }
     }
 }
