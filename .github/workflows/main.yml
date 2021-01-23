@@ -29,7 +29,14 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         source: "public"
         target: "/var/www/detailingarsenal-api"
-          
+    - name: Push to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        port: ${{ secrets.REMOTE_PORT }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: systemctl restart detailingarsenal-api
           
           
           
