@@ -4,6 +4,7 @@ using Auth0.AuthenticationApi;
 using Auth0.AuthenticationApi.Models;
 using Auth0.ManagementApi;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Users;
 using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Infrastructure.Users {

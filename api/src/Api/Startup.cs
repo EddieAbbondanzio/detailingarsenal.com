@@ -129,6 +129,7 @@ namespace DetailingArsenal.Api {
             }
 
             // Email
+            services.AddTransient<EmailConfigValidator>();
             services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
             services.AddTransient<IEmailClient, SmtpEmailClient>();
 
@@ -226,12 +227,15 @@ namespace DetailingArsenal.Api {
 
             // Database
             var raw = Configuration.GetSection("Database");
+            services.AddTransient<DatabaseConfigValidator>();
             var dbConfig = services.AddConfig<DatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
             services.AddScoped<IDatabaseMigrationRunner, FluentMigratorMigrationRunner>();
             services.AddSingleton<IDatabase, PostgresDatabase>();
             services.AddDatabaseMigrations(dbConfig.GetConnectionString(), typeof(MigrationsFlag).Assembly);
 
             // User
+            services.AddTransient<Auth0ConfigValidator>();
+            services.AddTransient<AdminConfigValidator>();
             services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IUserReader, UserReader>();/*  */
