@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Data.Common;
 using DetailingArsenal.Domain;
 
@@ -10,7 +11,7 @@ namespace DetailingArsenal.Persistence {
             this.database = database;
         }
 
-        public DbConnection OpenConnection() {
+        public IDbConnection OpenConnection() {
             return database.OpenConnection();
         }
     }

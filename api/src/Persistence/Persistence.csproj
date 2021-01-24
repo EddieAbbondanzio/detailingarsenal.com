@@ -9,6 +9,10 @@
     <PackageReference Include="FluentMigrator.Runner.Postgres" Version="3.2.1" />
     <PackageReference Include="npgsql" Version="4.0.9" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
+
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Tests.Persistence</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
   <PropertyGroup>

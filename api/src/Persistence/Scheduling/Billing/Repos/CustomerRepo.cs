@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
@@ -204,7 +205,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
             return customer;
         }
 
-        async Task InsertPaymentMethods(DbConnection conn, Guid customerId, List<PaymentMethod> paymentMethods, bool deleteExisting = false) {
+        async Task InsertPaymentMethods(IDbConnection conn, Guid customerId, List<PaymentMethod> paymentMethods, bool deleteExisting = false) {
             if (deleteExisting) {
                 var oldPaymentMethods = await conn.QueryAsync<PaymentMethodRow>("select * from payment_methods where customer_id = @Id;", new { Id = customerId });
 
@@ -268,7 +269,7 @@ namespace DetailingArsenal.Persistence.Scheduling.Billing {
             }
         }
 
-        async Task InsertSubscription(DbConnection conn, Guid customerId, Subscription? subscription, bool deleteExisting = false) {
+        async Task InsertSubscription(IDbConnection conn, Guid customerId, Subscription? subscription, bool deleteExisting = false) {
             if (deleteExisting) {
                 var oldSubscription = await conn.QueryFirstOrDefaultAsync<SubscriptionRow>("select * from subscriptions where customer_id = @Id;", new { Id = customerId });
                 await conn.ExecuteAsync(@"delete from subscriptions where id = @Id;", oldSubscription);

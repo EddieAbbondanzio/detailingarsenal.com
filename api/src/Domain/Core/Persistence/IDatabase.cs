@@ -7,6 +7,6 @@ namespace DetailingArsenal.Domain {
     /// Database for data persistence.
     /// </summary>
     public interface IDatabase {
-        DbConnection OpenConnection();
+        IDbConnection OpenConnection();
     }
 }

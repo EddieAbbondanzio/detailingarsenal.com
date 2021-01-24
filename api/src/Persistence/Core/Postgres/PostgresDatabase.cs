@@ -22,7 +22,7 @@ namespace DetailingArsenal.Persistence {
             connection = config.GetConnectionString();
         }
 
-        public DbConnection OpenConnection() {
+        public IDbConnection OpenConnection() {
             var c = new NpgsqlConnection(this.connection);
             c.Open();
 

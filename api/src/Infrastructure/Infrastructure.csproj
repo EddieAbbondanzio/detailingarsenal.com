@@ -7,6 +7,10 @@
     <PackageReference Include="Auth0.ManagementApi" Version="7.0.1" />
     <PackageReference Include="Auth0.AuthenticationApi" Version="7.0.1" />
     <PackageReference Include="Stripe.net" Version="37.8.0" />
+
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Tests.Infrastructure</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
   <PropertyGroup>
