@@ -1,7 +1,7 @@
 <template>
     <div class="is-flex is-flex-column is-flex-grow-1">
         <navbar>
-            <b-navbar-item :to="{ name: 'pads' }">Pads</b-navbar-item>
+            <navbar-item :to="{ name: 'pads' }">Pads</navbar-item>
         </navbar>
         <div class="app-content">
             <router-view></router-view>
