@@ -2,15 +2,8 @@
     <div>
         <b-navbar class="app-navbar" type="is-primary" :mobile-burger="true" :fixed-top="true">
             <template slot="brand">
-                <b-navbar-item
-                    class="is-flex is-flex-row is-align-items-center"
-                    exact
-                    tag="a"
-                    :to="brandTo"
-                >
-                    <h1
-                        class="is-size-5-mobile is-size-4-tablet has-font-family-pacifico"
-                    >Detailing Arsenal</h1>
+                <b-navbar-item class="is-flex is-flex-row is-align-items-center" exact tag="a" :to="brandTo">
+                    <h1 class="is-size-5-mobile is-size-4-tablet has-font-family-pacifico">Detailing Arsenal</h1>
                 </b-navbar-item>
             </template>
 
@@ -27,10 +20,7 @@
 
             <!-- Hack.  -->
             <template slot="burger">
-                <user-widget
-                    class="is-hidden-desktop is-align-self-center"
-                    style="margin-left: auto;"
-                />
+                <user-widget class="is-hidden-desktop is-align-self-center" style="margin-left: auto" />
             </template>
         </b-navbar>
     </div>
@@ -56,8 +46,8 @@ import UserWidget from '@/modules/user/core/components/user-widget.vue';
 @Component({
     name: 'navbar',
     components: {
-        UserWidget
-    }
+        UserWidget,
+    },
 })
 export default class Navbar extends Vue {
     @Prop({ default: '/' })

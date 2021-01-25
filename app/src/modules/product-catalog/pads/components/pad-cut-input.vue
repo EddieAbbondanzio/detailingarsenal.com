@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="is-flex is-flex-row is-justify-content-space-between has-margin-bottom-3"
-        v-if="value != null"
-    >
+    <div class="is-flex is-flex-row is-justify-content-space-between has-margin-bottom-3" v-if="value != null">
         <input-slider
             class="is-flex-grow-1"
             label="Cut"
@@ -11,18 +8,18 @@
             :min="0"
             :max="10"
             :ticks="[
-                {value: 0, label: '0 (Least)'},
-                {value: 1, label: 1},
-                {value: 2, label: 2},
-                {value: 3, label: 3},
-                {value: 4, label: 4},
-                {value: 5, label: 5},
-                {value: 6, label: 6},
-                {value: 7, label: 7},
-                {value: 8, label: 8},
-                {value: 9, label: 9},
-                {value: 10, label: '10 (Most)'},
-                ]"
+                { value: 0, label: '0 (Least)' },
+                { value: 1, label: 1 },
+                { value: 2, label: 2 },
+                { value: 3, label: 3 },
+                { value: 4, label: 4 },
+                { value: 5, label: 5 },
+                { value: 6, label: 6 },
+                { value: 7, label: 7 },
+                { value: 8, label: 8 },
+                { value: 9, label: 9 },
+                { value: 10, label: '10 (Most)' },
+            ]"
         />
 
         <a class="delete" @click="onDelete"></a>
@@ -44,7 +41,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
  * Input to allow user to select a level or pad cut, or leave it empty
  * for creating, or updating a review.
  */
-@Component
+@Component({ name: 'pad-cut-input' })
 export default class PadCutInput extends Vue {
     @Prop({ default: 0 })
     value!: PadCut | null;

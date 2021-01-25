@@ -8,7 +8,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 
-@Component
+@Component({ name: 'polisher-type-tag' })
 export default class PolisherTypeTag extends Vue {
     @Prop()
     value!: PolisherType;

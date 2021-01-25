@@ -9,7 +9,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Stars } from '@/api';
 
-@Component
+@Component({ name: 'stars' })
 export default class StarsComponent extends Vue {
     @Prop()
     value!: Stars | null;

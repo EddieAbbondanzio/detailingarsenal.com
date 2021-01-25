@@ -7,7 +7,7 @@
             :min="0"
             :max="10"
         ></progress>
-        <span class="has-text-grey" style="white-space: nowrap;">{{ value }} / 10</span>
+        <span class="has-text-grey" style="white-space: nowrap">{{ value }} / 10</span>
     </div>
     <span class="has-text-grey" v-else>N/A</span>
 </template>
@@ -21,7 +21,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { PadFinish } from '@/api';
 
-@Component
+@Component({ name: 'pad-finish-bar' })
 export default class PadFinishBar extends Vue {
     get type() {
         switch (this.value) {

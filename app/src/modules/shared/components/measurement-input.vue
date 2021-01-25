@@ -20,7 +20,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop, Watch } from 'vue-property-decorator';
 
-@Component
+@Component({ name: 'measurement-input' })
 export default class MeasurementInput extends Vue {
     get units() {
         return [MeasurementUnit.Inches, MeasurementUnit.Millimeters];

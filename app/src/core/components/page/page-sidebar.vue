@@ -22,7 +22,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-@Component({})
+@Component({ name: 'page-sidebar' })
 export default class PageSidebar extends Vue {
     @Prop({ default: false })
     overlay!: boolean;
