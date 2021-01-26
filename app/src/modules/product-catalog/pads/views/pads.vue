@@ -16,7 +16,7 @@
                 <router-link
                     :to="{
                         name: 'pad',
-                        params: { id: props.row.id },
+                        params: { id: props.row.id }
                     }"
                 >
                     <img
@@ -34,7 +34,7 @@
                     class="label-link has-text-weight-bold"
                     :to="{
                         name: 'pad',
-                        params: { id: props.row.id },
+                        params: { id: props.row.id }
                     }"
                     >{{ props.row.name }}
                     <b-tag type="is-info" v-if="props.row.isThin" size="is-small">Thin</b-tag>
@@ -53,7 +53,11 @@
                 <pad-finish-bar :value="props.row.finish" />
             </b-table-column>
             <b-table-column v-slot="props" label="Rating" field="rating" sortable>
-                <stars v-if="props.row.rating != null" :value="props.row.rating.stars" :count="1" />
+                <stars
+                    v-if="props.row.rating != null"
+                    :value="props.row.rating.stars"
+                    :count="props.row.rating.reviewCount"
+                />
                 <span class="has-text-grey" v-else>N/A</span>
             </b-table-column>
             <b-table-column v-slot="props" label="Polisher Type(s)" field="polisherTypes" sortable>
@@ -110,8 +114,8 @@ import appStore from '@/core/store/app-store';
         PadCutBar,
         PadFinishBar,
         Stars,
-        PolisherTypeTag,
-    },
+        PolisherTypeTag
+    }
 })
 export default class Pads extends Vue {
     get summaries(): PadSummary[] {
@@ -128,7 +132,7 @@ export default class Pads extends Vue {
                 finish: pad.finish,
                 rating: pad.rating,
                 polisherTypes: pad.series.polisherTypes,
-                isThin: PadSize.isThin(pad.series.sizes[0]),
+                isThin: PadSize.isThin(pad.series.sizes[0])
             });
         }
 
