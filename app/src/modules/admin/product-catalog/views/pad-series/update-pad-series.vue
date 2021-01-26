@@ -199,7 +199,7 @@ export default class UpdatePadSeries extends Vue {
             thickness: s.thickness!
         }));
         this.colors = padSeries.colors.map(c => ({
-            id: null,
+            id: c.id,
             name: c.name,
             category: c.category,
             material: c.material,
