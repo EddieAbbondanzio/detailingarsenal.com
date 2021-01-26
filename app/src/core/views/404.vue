@@ -6,13 +6,9 @@
 </template>
 
 <script lang="ts">
+import userStore from '@/modules/user/core/store/user-store';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({})
-export default class FourOhFour extends Vue {
-    created() {
-        // on 404 redirect to pads
-        this.$router.push({ name: 'pads' });
-    }
-}
+export default class FourOhFour extends Vue {}
 </script>
