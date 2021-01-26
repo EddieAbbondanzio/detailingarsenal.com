@@ -7,35 +7,31 @@
 
             <b-dropdown-item aria-role="listitem" custom>
                 <router-link
-                    :to="{name: 'user' }"
+                    :to="{ name: 'user' }"
                     class="is-flex is-flex-column is-align-items-center has-text-dark has-padding-y-3"
                 >
-                    <b-icon
-                        icon="account"
-                        size="is-large"
-                        type="is-dark"
-                        class="has-padding-bottom-3"
-                    ></b-icon>
+                    <b-icon icon="account" size="is-large" type="is-dark" class="has-padding-bottom-3"></b-icon>
                     {{ username }}
                 </router-link>
             </b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" has-link v-if="isAdmin">
+                <router-link :to="{ name: 'adminPanel' }" class="is-flex is-flex-row">
+                    <b-icon icon="anchor" type="is-danger" class="has-padding-right-3" />Admin Panel
+                </router-link>
+            </b-dropdown-item>
             <b-dropdown-item aria-role="listitem" has-link>
-                <router-link :to="{name: 'profile'}" class="is-flex is-flex-row">
+                <router-link :to="{ name: 'profile' }" class="is-flex is-flex-row">
                     <b-icon icon="account" type="is-dark" class="has-padding-right-3" />Profile
                 </router-link>
             </b-dropdown-item>
 
             <b-dropdown-item aria-role="listitem" has-link>
-                <router-link :to="{name: 'subscription'}" class="is-flex is-flex-row">
+                <router-link :to="{ name: 'subscription' }" class="is-flex is-flex-row">
                     <b-icon icon="currency-usd" type="is-dark" class="has-padding-right-3" />Subscription
                 </router-link>
             </b-dropdown-item>
 
-            <b-dropdown-item
-                aria-role="listitem"
-                @click="onLogoutClick"
-                class="is-flex is-flex-row"
-            >
+            <b-dropdown-item aria-role="listitem" @click="onLogoutClick" class="is-flex is-flex-row">
                 <b-icon icon="logout" type="is-danger" class="has-padding-right-3" />Log out
             </b-dropdown-item>
         </b-dropdown>
@@ -56,6 +52,10 @@ import userStore from '../store/user-store';
 export default class UserWidget extends Vue {
     get isAuthenticated() {
         return userStore.isAuthenticated;
+    }
+
+    get isAdmin() {
+        return userStore.user.isAdmin;
     }
 
     get username() {
