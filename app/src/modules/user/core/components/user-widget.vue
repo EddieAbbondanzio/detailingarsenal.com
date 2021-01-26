@@ -25,11 +25,11 @@
                 </router-link>
             </b-dropdown-item>
 
-            <b-dropdown-item aria-role="listitem" has-link>
+            <!-- <b-dropdown-item aria-role="listitem" has-link>
                 <router-link :to="{ name: 'subscription' }" class="is-flex is-flex-row">
                     <b-icon icon="currency-usd" type="is-dark" class="has-padding-right-3" />Subscription
                 </router-link>
-            </b-dropdown-item>
+            </b-dropdown-item> -->
 
             <b-dropdown-item aria-role="listitem" @click="onLogoutClick" class="is-flex is-flex-row">
                 <b-icon icon="logout" type="is-danger" class="has-padding-right-3" />Log out

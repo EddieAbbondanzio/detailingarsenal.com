@@ -19,3 +19,7 @@ $dimensions: (48)
 $calendar-border-color: $grey-lighter
 
 // $navbar-breakpoint: 0
+
+// Bulma bug. Page loses margin to protect navbar on redirect.
+body:not(.has-navbar-fixed-top)
+    padding-top: 52px
