@@ -21,7 +21,9 @@
 
     // nav footer
     .app-footer
-        position: absolute
+        clear: both
+        position: fixed
+        height: 50px
         left: 0
         right: 0
         bottom: 0
@@ -40,8 +42,8 @@ import { loadStripeJs } from '@/plugins/stripe';
 @Component({
     name: 'app',
     components: {
-        LoadingSplash,
-    },
+        LoadingSplash
+    }
 })
 export default class App extends Vue {
     get isLoggingIn() {

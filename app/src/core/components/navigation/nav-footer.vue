@@ -1,10 +1,8 @@
 <template>
-    <div class="is-hidden-desktop">
-        <div class="app-footer box has-padding-all-1">
-            <nav class="level is-mobile">
-                <slot></slot>
-            </nav>
-        </div>
+    <div class="app-footer box has-padding-all-1 is-hidden-desktop">
+        <nav class="level is-mobile">
+            <slot></slot>
+        </nav>
     </div>
 </template>
 
