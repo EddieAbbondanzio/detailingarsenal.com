@@ -7,8 +7,6 @@ import { PadSizeCreateOrUpdate } from './pad-size-create-or-update';
 export interface PadSeriesCreateRequest {
     name: string;
     brandId: string;
-    texture: PadTexture;
-    material: PadMaterial;
     polisherTypes: PolisherType[];
     sizes: PadSizeCreateOrUpdate[];
     colors: PadColorCreateOrUpdate[];

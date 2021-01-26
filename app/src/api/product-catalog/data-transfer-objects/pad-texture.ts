@@ -1,5 +1,6 @@
 export enum PadTexture {
     Flat = 'flat',
     Grooved = 'grooved',
-    Dimpled = 'dimpled'
+    Dimpled = 'dimpled',
+    Pile = 'pile'
 }

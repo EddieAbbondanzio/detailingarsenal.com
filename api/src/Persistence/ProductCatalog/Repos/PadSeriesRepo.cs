@@ -96,7 +96,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     await conn.ExecuteAsync(
-                        @"insert into pad_series (id, brand_id, name, material, texture) values (@Id, @BrandId, @Name, @Material, @Texture);",
+                        @"insert into pad_series (id, brand_id, name) values (@Id, @BrandId, @Name);",
                         new PadSeriesRow() {
                             Id = series.Id,
                             BrandId = series.BrandId,
@@ -141,7 +141,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_colors (id, pad_series_id, category, name, image_id) values (@Id, @PadSeriesId, @Category, @Name, @ImageId);",
+                        @"insert into pad_colors (id, pad_series_id, category, material, texture, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Name, @ImageId);",
                         series.Colors.Select(c => new PadColorRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
@@ -187,7 +187,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", old.Colors);
 
                     await conn.ExecuteAsync(
-                        @"update pad_series set brand_id = @BrandId, name = @Name, material = @Material, texture = @Texture where id = @Id;",
+                        @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;",
                         new PadSeriesRow() {
                             Id = series.Id,
                             BrandId = series.BrandId,
@@ -232,11 +232,13 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_colors (id, pad_series_id, category, name, image_id) values (@Id, @PadSeriesId, @Category, @Name, @ImageId);",
+                        @"insert into pad_colors (id, pad_series_id, category, material, texture, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Name, @ImageId);",
                         series.Colors.Select(c => new PadColorRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
                             Category = c.Category.Serialize(),
+                            Material = c.Material.Serialize(),
+                            Texture = c.Texture.Serialize(),
                             Name = c.Name,
                             ImageId = c.Image?.Id
                         }).ToList()

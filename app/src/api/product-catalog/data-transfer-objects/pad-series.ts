@@ -10,8 +10,6 @@ export class PadSeries {
         public id: string,
         public name: string,
         public brand: Brand,
-        public material: PadMaterial,
-        public texture: PadTexture,
         public polisherTypes: PolisherType[],
         public sizes: PadSize[] = [],
         public colors: PadColor[] = []

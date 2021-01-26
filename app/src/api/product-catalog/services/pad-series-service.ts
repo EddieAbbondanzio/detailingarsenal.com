@@ -37,8 +37,6 @@ export class PadSeriesService {
             ps.id,
             ps.name,
             new Brand(ps.brand.id, ps.brand.name),
-            ps.material,
-            ps.texture,
             ps.polisherTypes,
             (ps.sizes ?? [] as any[]).map((s: any) => new PadSize(
                 s.id,
@@ -50,6 +48,8 @@ export class PadSeriesService {
                 ps,
                 c.name,
                 c.category,
+                c.material,
+                c.texture,
                 c.cut,
                 c.finish,
                 new Rating(c.rating.stars, c.rating.reviewCount), c.imageId,
