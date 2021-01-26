@@ -28,20 +28,6 @@
                 <option v-for="brand in brands" :key="brand.id" :value="brand">{{ brand.name }}</option>
             </input-select>
 
-            <input-select class="has-margin-x-1 has-margin-y-0" label="Material" rules="required" v-model="material">
-                <option :value="null">Select a material</option>
-                <option v-for="m in materials" :key="m[1]" :value="m[1]">
-                    {{ m[0] }}
-                </option>
-            </input-select>
-
-            <input-select class="has-margin-x-1 has-margin-y-0" label="Texture" rules="required" v-model="texture">
-                <option :value="null">Select a texture</option>
-                <option v-for="t in textures" :key="t[1]" :value="t[1]">
-                    {{ t[0] }}
-                </option>
-            </input-select>
-
             <b-field label="Polisher Type(s)">
                 <input-checkbox v-model="polisherTypes" native-value="dual_action" label="Dual Action" />
                 <input-checkbox v-model="polisherTypes" native-value="long_throw" label="Long Throw" />
@@ -74,6 +60,30 @@
                         <option :value="null">Select a category</option>
                         <option v-for="category in categories" :key="category[1]" :value="category[1]">
                             {{ category[0] }}
+                        </option>
+                    </input-select>
+
+                    <input-select
+                        class="has-margin-x-1 has-margin-y-0"
+                        label="Material"
+                        rules="required"
+                        v-model="value.material"
+                    >
+                        <option :value="null">Select a material</option>
+                        <option v-for="m in materials" :key="m[1]" :value="m[1]">
+                            {{ m[0] }}
+                        </option>
+                    </input-select>
+
+                    <input-select
+                        class="has-margin-x-1 has-margin-y-0"
+                        label="Texture"
+                        rules="required"
+                        v-model="value.texture"
+                    >
+                        <option :value="null">Select a texture</option>
+                        <option v-for="t in textures" :key="t[1]" :value="t[1]">
+                            {{ t[0] }}
                         </option>
                     </input-select>
 
@@ -130,7 +140,7 @@ import {
     PadSeriesUpdateRequest,
     PadColor,
     PadColorCreateOrUpdate,
-    PadOptionCreateOrUpdate,
+    PadOptionCreateOrUpdate
 } from '@/api';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStore from '../../store/admin-pad-store';
@@ -138,8 +148,8 @@ import MeasurementInput from '@/modules/shared/components/measurement-input.vue'
 
 @Component({
     components: {
-        MeasurementInput,
-    },
+        MeasurementInput
+    }
 })
 export default class UpdatePadSeries extends Vue {
     get brands() {
@@ -164,8 +174,6 @@ export default class UpdatePadSeries extends Vue {
 
     name: string = '';
     brand: Brand | null = null;
-    material: PadMaterial | null = null;
-    texture: PadTexture | null = null;
     polisherTypes: PolisherType[] = [];
     sizes: PadSizeCreateOrUpdate[] = [];
     colors: PadColorCreateOrUpdate[] = [];
@@ -175,7 +183,7 @@ export default class UpdatePadSeries extends Vue {
         await brandStore.init();
         await adminPadStore.init();
 
-        const padSeries = adminPadStore.series.find((s) => s.id == this.$route.params.id);
+        const padSeries = adminPadStore.series.find(s => s.id == this.$route.params.id);
 
         if (padSeries == null) {
             this.$router.go(-1);
@@ -184,24 +192,24 @@ export default class UpdatePadSeries extends Vue {
 
         this.name = padSeries.name;
         this.brand = padSeries.brand;
-        this.material = padSeries.material;
-        this.texture = padSeries.texture;
         this.polisherTypes = padSeries.polisherTypes;
-        this.sizes = padSeries.sizes.map((s) => ({
+        this.sizes = padSeries.sizes.map(s => ({
             id: s.id,
             diameter: s.diameter,
-            thickness: s.thickness!,
+            thickness: s.thickness!
         }));
-        this.colors = padSeries.colors.map((c) => ({
+        this.colors = padSeries.colors.map(c => ({
             id: null,
             name: c.name,
             category: c.category,
+            material: c.material,
+            texture: c.texture,
             image: c.image, // Existing images are just ids to real images.
-            options: c.options.map((o) => ({
+            options: c.options.map(o => ({
                 padSizeIndex: null,
                 padSizeId: o.padSizeId,
-                partNumber: o.partNumber,
-            })),
+                partNumber: o.partNumber
+            }))
         }));
     }
 
@@ -210,16 +218,14 @@ export default class UpdatePadSeries extends Vue {
         const update: PadSeriesUpdateRequest = {
             id: this.$route.params.id,
             name: this.name,
-            texture: this.texture!,
-            material: this.material!,
             polisherTypes: this.polisherTypes,
             brandId: this.brand!.id,
-            sizes: this.sizes.map((s) => ({
+            sizes: this.sizes.map(s => ({
                 id: s.id,
                 diameter: s.diameter,
-                thickness: s.thickness?.amount != null ? s.thickness : null,
+                thickness: s.thickness?.amount != null ? s.thickness : null
             })),
-            colors: this.colors,
+            colors: this.colors
         };
 
         try {
@@ -236,8 +242,10 @@ export default class UpdatePadSeries extends Vue {
             id: null,
             name: '',
             category: null!,
+            material: null!,
+            texture: null!,
             options: [],
-            image: null,
+            image: null
         };
     }
 
@@ -246,9 +254,9 @@ export default class UpdatePadSeries extends Vue {
      * option on the same color.
      */
     isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreateOrUpdate, color: PadColorCreateOrUpdate) {
-        const sizesUsedAlready = color.options.map((o) => o.padSizeIndex!).map((i) => this.sizes[i]);
+        const sizesUsedAlready = color.options.map(o => o.padSizeIndex!).map(i => this.sizes[i]);
 
-        return !sizesUsedAlready.every((s) => s != size);
+        return !sizesUsedAlready.every(s => s != size);
     }
 
     isExistingImage(image: Image | string | null) {

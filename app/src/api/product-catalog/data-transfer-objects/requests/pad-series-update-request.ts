@@ -8,8 +8,6 @@ export interface PadSeriesUpdateRequest {
     id: string;
     name: string;
     brandId: string;
-    texture: PadTexture;
-    material: PadMaterial;
     polisherTypes: PolisherType[];
     sizes: PadSizeCreateOrUpdate[];
     colors: PadColorCreateOrUpdate[];
