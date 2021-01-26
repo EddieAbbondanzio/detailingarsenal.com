@@ -4,7 +4,8 @@ namespace DetailingArsenal.Domain.ProductCatalog {
     public enum PadTexture {
         Flat,
         Grooved,
-        Dimpled
+        Dimpled,
+        Pile
     }
 
 }

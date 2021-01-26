@@ -8,6 +8,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             "flat" => PadTexture.Flat,
             "grooved" => PadTexture.Grooved,
             "dimpled" => PadTexture.Dimpled,
+            "pile" => PadTexture.Pile,
             _ => throw new NotSupportedException()
         };
 
@@ -15,6 +16,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             PadTexture.Flat => "flat",
             PadTexture.Grooved => "grooved",
             PadTexture.Dimpled => "dimpled",
+            PadTexture.Pile => "pile",
             _ => throw new NotSupportedException()
         };
     }
