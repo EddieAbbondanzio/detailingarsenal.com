@@ -26,8 +26,6 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
             series.Name = command.Name;
             series.BrandId = command.BrandId;
-            series.Material = command.Material;
-            series.Texture = command.Texture;
 
             series.Sizes = UpdatePadSizes(series.Sizes, command.Sizes);
             series.Colors = UpdatePadColors(series.Colors, command.Colors);
@@ -97,6 +95,8 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 var color = new PadColor(
                     update.Name,
                     update.Category,
+                    update.Material,
+                    update.Texture,
                     update.Image?.Match(
                         id => existing.Find(c => c.Image?.Id == id)?.Image,
                         image => imageProcessor.Process(image.Name, image.Data)

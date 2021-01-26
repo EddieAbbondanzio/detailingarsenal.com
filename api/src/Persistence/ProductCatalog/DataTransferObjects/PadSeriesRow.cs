@@ -7,7 +7,5 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public Guid Id { get; set; }
         public Guid BrandId { get; set; }
         public string Name { get; set; } = null!;
-        public string Material { get; set; } = null!;
-        public string Texture { get; set; } = null!;
     }
 }

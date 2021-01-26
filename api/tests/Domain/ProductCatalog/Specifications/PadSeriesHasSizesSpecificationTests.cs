@@ -13,7 +13,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
     public class PadSeriesHasSizesSpecificationTests {
         [TestMethod]
         public async Task RejectsNoSizes() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled);
+            var s = new PadSeries("Name", Guid.NewGuid());
 
             var res = await new PadSeriesHasSizesSpecification().Check(s);
             Assert.IsFalse(res.IsSatisfied);
@@ -21,7 +21,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
 
         [TestMethod]
         public async Task AcceptsSizes() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled);
+            var s = new PadSeries("Name", Guid.NewGuid());
             s.Sizes.Add(new PadSize(new Measurement(1, MeasurementUnit.Inches)));
 
             var res = await new PadSeriesHasSizesSpecification().Check(s);

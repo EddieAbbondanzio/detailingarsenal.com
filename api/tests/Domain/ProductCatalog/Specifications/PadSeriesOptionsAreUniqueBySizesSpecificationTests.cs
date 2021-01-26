@@ -13,8 +13,8 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
     public class PadSeriesOptionsAreUniqueBySizesSpecificationTests {
         [TestMethod]
         public async Task RejectsOptionsOnSameColorWithTheSameSize() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled);
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting));
+            var s = new PadSeries("Name", Guid.NewGuid());
+            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
 
             var sizeId = Guid.NewGuid();
 
@@ -27,8 +27,8 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
 
         [TestMethod]
         public async Task AcceptsOptionsWithDifferentSizes() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled);
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting));
+            var s = new PadSeries("Name", Guid.NewGuid());
+            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
 
             s.Colors[0].Options.Add(new PadOption(Guid.NewGuid()));
             s.Colors[0].Options.Add(new PadOption(Guid.NewGuid()));
@@ -39,9 +39,9 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
 
         [TestMethod]
         public async Task AcceptsOptionsWithSameSizeOnDifferentColors() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled);
-            s.Colors.Add(new PadColor("Color1", PadCategory.Cutting));
-            s.Colors.Add(new PadColor("Color2", PadCategory.Finishing));
+            var s = new PadSeries("Name", Guid.NewGuid());
+            s.Colors.Add(new PadColor("Color1", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
+            s.Colors.Add(new PadColor("Color2", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled));
 
             var sizeId = Guid.NewGuid();
 

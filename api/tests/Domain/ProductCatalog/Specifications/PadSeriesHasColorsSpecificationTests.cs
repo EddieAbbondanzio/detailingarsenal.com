@@ -13,7 +13,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
     public class PadSeriesHasColorsSpecificationTests {
         [TestMethod]
         public async Task RejectsNoColors() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled, new(), new(), new());
+            var s = new PadSeries("Name", Guid.NewGuid(), new(), new(), new());
             var satisified = await new PadSeriesHasColorsSpecification().Check(s);
 
             Assert.IsFalse(satisified.IsSatisfied);
@@ -21,8 +21,8 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
 
         [TestMethod]
         public async Task AcceptsColors() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled, new(), new(), new());
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting));
+            var s = new PadSeries("Name", Guid.NewGuid(), new(), new(), new());
+            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
 
             var satisified = await new PadSeriesHasColorsSpecification().Check(s);
             Assert.IsTrue(satisified.IsSatisfied);

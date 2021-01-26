@@ -13,8 +13,8 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
     public class PadSeriesHasOptionsForEveryColorSpecificationTests {
         [TestMethod]
         public async Task RejectsColorWithNoOptions() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled);
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting));
+            var s = new PadSeries("Name", Guid.NewGuid());
+            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
 
             var satisified = await new PadSeriesHasOptionsForEveryColorSpecification().Check(s);
             Assert.IsFalse(satisified.IsSatisfied);
@@ -22,8 +22,8 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
 
         [TestMethod]
         public async Task AcceptsColorWithOption() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled);
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting));
+            var s = new PadSeries("Name", Guid.NewGuid());
+            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
             s.Colors[0].Options.Add(new PadOption(Guid.NewGuid()));
 
             var res = await new PadSeriesHasOptionsForEveryColorSpecification().Check(s);
@@ -32,9 +32,9 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
 
         [TestMethod]
         public async Task RejectsColorWithNoOptionsWhenSeveralColors() {
-            var s = new PadSeries("Name", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled);
-            s.Colors.Add(new PadColor("Color2", PadCategory.Cutting));
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting));
+            var s = new PadSeries("Name", Guid.NewGuid());
+            s.Colors.Add(new PadColor("Color2", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
+            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
             s.Colors[0].Options.Add(new PadOption(Guid.NewGuid()));
 
             var res = await new PadSeriesHasOptionsForEveryColorSpecification().Check(s);

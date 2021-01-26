@@ -17,7 +17,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
             sizes.Add(new PadSize(new Measurement(1, MeasurementUnit.Inches)));
             sizes.Add(new PadSize(new Measurement(1, MeasurementUnit.Inches)));
 
-            var series = new PadSeries("test", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled, new(),
+            var series = new PadSeries("test", Guid.NewGuid(), new(),
             sizes, new()
             );
 
@@ -31,7 +31,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
             sizes.Add(new PadSize(new Measurement(1, MeasurementUnit.Inches)));
             sizes.Add(new PadSize(new Measurement(1, MeasurementUnit.Millimeters)));
 
-            var series = new PadSeries("test", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled, new(),
+            var series = new PadSeries("test", Guid.NewGuid(), new(),
             sizes, new()
             );
 
@@ -45,7 +45,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
             sizes.Add(new PadSize(new Measurement(1, MeasurementUnit.Inches)));
             sizes.Add(new PadSize(new Measurement(2, MeasurementUnit.Inches)));
 
-            var series = new PadSeries("test", Guid.NewGuid(), PadMaterial.Foam, PadTexture.Dimpled, new(),
+            var series = new PadSeries("test", Guid.NewGuid(), new(),
             sizes, new()
             );
 

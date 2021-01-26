@@ -62,6 +62,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 c.Id,
                                 c.Name,
                                 PadCategoryUtils.Parse(c.Category),
+                                PadMaterialUtils.Parse(c.Material),
+                                PadTextureUtils.Parse(c.Texture),
                                 processedImage
                             );
 
@@ -82,8 +84,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         seriesRow.Id,
                         seriesRow.Name,
                         seriesRow.BrandId,
-                        PadMaterialUtils.Parse(seriesRow.Material),
-                        PadTextureUtils.Parse(seriesRow.Texture),
                         polisherTypes,
                         sizes,
                         colors.Values.ToList()
@@ -100,9 +100,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         new PadSeriesRow() {
                             Id = series.Id,
                             BrandId = series.BrandId,
-                            Name = series.Name,
-                            Material = series.Material.Serialize(),
-                            Texture = series.Texture.Serialize()
+                            Name = series.Name
                         }
                     );
 
@@ -148,6 +146,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             Id = c.Id,
                             PadSeriesId = series.Id,
                             Category = c.Category.Serialize(),
+                            Material = c.Material.Serialize(),
+                            Texture = c.Texture.Serialize(),
                             Name = c.Name,
                             ImageId = c.Image?.Id
                         }).ToList()
@@ -179,7 +179,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     // pull in old one, and nuke records
-                    var old = await FindById(series.Id)!;
+                    var old = (await FindById(series.Id))!;
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", old);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_color_id = @Id;", old.Colors);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", old);
@@ -191,9 +191,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         new PadSeriesRow() {
                             Id = series.Id,
                             BrandId = series.BrandId,
-                            Name = series.Name,
-                            Material = series.Material.Serialize(),
-                            Texture = series.Texture.Serialize()
+                            Name = series.Name
                         }
                     );
 

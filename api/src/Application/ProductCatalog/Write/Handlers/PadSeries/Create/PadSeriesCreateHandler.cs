@@ -42,15 +42,13 @@ namespace DetailingArsenal.Application.ProductCatalog {
                     }
                 }).ToList();
 
-                return new PadColor(c.Name, c.Category, image, options);
+                return new PadColor(c.Name, c.Category, c.Material, c.Texture, image, options);
             }).ToList();
 
 
             var series = new PadSeries(
                 command.Name,
                 command.BrandId,
-                command.Material,
-                command.Texture,
                 command.PolisherTypes,
                 sizes,
                 colors

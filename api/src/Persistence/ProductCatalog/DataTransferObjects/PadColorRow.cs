@@ -8,6 +8,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public Guid PadSeriesId { get; set; }
         public string Name { get; set; } = null!;
         public string Category { get; set; } = null!;
+        public string Material { get; set; } = null!;
+        public string Texture { get; set; } = null!;
         public Guid? ImageId { get; set; }
     }
 }

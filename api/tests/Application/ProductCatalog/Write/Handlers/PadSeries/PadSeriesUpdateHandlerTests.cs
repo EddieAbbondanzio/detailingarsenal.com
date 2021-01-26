@@ -92,13 +92,13 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             );
 
             var existing = new PadColor[] {
-                new PadColor("ColorA", PadCategory.Cutting, null, new PadOption[] {
+                new PadColor("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, null, new PadOption[] {
                     new PadOption(Guid.NewGuid(), "part_number"),
                 }.ToList())
             }.ToList();
 
             var updates = new PadColorCreateOrUpdate[]{
-                new PadColorCreateOrUpdate(existing[0].Id, "ColorAA", PadCategory.Finishing, null!, new PadOptionCreateOrUpdate[] {
+                new PadColorCreateOrUpdate(existing[0].Id, "ColorAA", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList())
                 }.ToList();
@@ -123,7 +123,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             List<PadColor> existing = new();
 
             var updates = new PadColorCreateOrUpdate[]{
-                new PadColorCreateOrUpdate(null, "ColorB", PadCategory.Finishing, null!, new PadOptionCreateOrUpdate[] {
+                new PadColorCreateOrUpdate(null, "ColorB", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList())
                 }.ToList();
@@ -143,7 +143,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                         );
 
             var existing = new PadColor[] {
-                new PadColor("ColorA", PadCategory.Cutting, null, new PadOption[] {
+                new PadColor("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOption[] {
                     new PadOption(Guid.NewGuid(), "part_number"),
                 }.ToList())
             }.ToList();

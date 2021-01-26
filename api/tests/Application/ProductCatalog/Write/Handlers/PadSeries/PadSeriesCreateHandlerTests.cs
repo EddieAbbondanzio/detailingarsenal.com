@@ -34,14 +34,12 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                PadTexture.Dimpled,
-                PadMaterial.Foam,
                 new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
                 new PadColorCreateOrUpdate[] {
-                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, null, new PadOptionCreateOrUpdate[] {
+                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, null, new PadOptionCreateOrUpdate[] {
                         new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
                     }.ToList())
                 }.ToList()
@@ -54,8 +52,6 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
             Assert.AreEqual("Name", s.Name);
             Assert.AreEqual(brandId, s.BrandId);
-            Assert.AreEqual(PadTexture.Dimpled, s.Texture);
-            Assert.AreEqual(PadMaterial.Foam, s.Material);
             Assert.AreEqual(2, s.PolisherTypes.Count);
             Assert.AreEqual(PolisherType.DualAction, s.PolisherTypes[0]);
             Assert.AreEqual(PolisherType.ForcedRotation, s.PolisherTypes[1]);
@@ -64,6 +60,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
             Assert.AreEqual("Color", s.Colors[0].Name);
             Assert.AreEqual(PadCategory.Cutting, s.Colors[0].Category);
+            Assert.AreEqual(PadTexture.Dimpled, s.Colors[0].Texture);
+            Assert.AreEqual(PadMaterial.Foam, s.Colors[0].Material);
             Assert.AreEqual(1, s.Colors[0].Options.Count);
             Assert.AreEqual("part_number", s.Colors[0].Options[0].PartNumber);
         }
@@ -88,14 +86,12 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                PadTexture.Dimpled,
-                PadMaterial.Foam,
                 new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
                 new PadColorCreateOrUpdate[] {
-                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, null, new PadOptionCreateOrUpdate[] {
+                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, null, new PadOptionCreateOrUpdate[] {
                         new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
                     }.ToList())
                 }.ToList()
@@ -125,14 +121,12 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                PadTexture.Dimpled,
-                PadMaterial.Foam,
                 new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
                 new PadColorCreateOrUpdate[] {
-                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, null, new PadOptionCreateOrUpdate[] {
+                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOptionCreateOrUpdate[] {
                         new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
                     }.ToList())
                 }.ToList()
@@ -162,14 +156,12 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                PadTexture.Dimpled,
-                PadMaterial.Foam,
                 new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
                 new PadColorCreateOrUpdate[] {
-                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, null, new PadOptionCreateOrUpdate[] {
+                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOptionCreateOrUpdate[] {
                         new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
                     }.ToList())
                 }.ToList()

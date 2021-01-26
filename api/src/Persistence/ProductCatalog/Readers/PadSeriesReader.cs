@@ -37,9 +37,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             new BrandReadModel(
                                 b.Id,
                                 b.Name
-                            ),
-                            ps.Material,
-                            ps.Texture
+                            )
                         )).ElementAt(0);
 
                     series.PolisherTypes.AddRange(reader.Read<PadSeriesPolisherTypeRow>()
@@ -62,6 +60,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 c.id,
                                 c.name,
                                 c.category,
+                                c.material,
+                                c.texture,
                                 images.Where(i => i.PadColorId == c.id).FirstOrDefault().ImageId,   //TODO: Fix this. Will leave Guid.Empty instead of null.
                                 new List<PadOptionReadModel>(),
                                 c.cut,
@@ -111,9 +111,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 new BrandReadModel(
                                     b.Id,
                                     b.Name
-                                ),
-                                ps.Material,
-                                ps.Texture
+                                )
                             )
                         ).Select(p => new KeyValuePair<Guid, PadSeriesReadModel>(p.Id, p))
                     );
@@ -164,6 +162,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             raw.id,
                             raw.name,
                             raw.category,
+                            raw.material,
+                            raw.texture,
                             imageId,
                             new List<PadOptionReadModel>(),
                             raw.cut,
