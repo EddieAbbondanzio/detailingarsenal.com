@@ -77,12 +77,12 @@
 
                             <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
                                 <p class="is-size-5 title">Material</p>
-                                <p class="is-size-6 subtitle">{{ value.series.material | uppercaseFirst }}</p>
+                                <p class="is-size-6 subtitle">{{ value.material | uppercaseFirst }}</p>
                             </div>
 
                             <div class="is-flex-grow-1 is-flex-basis-0">
                                 <p class="is-size-5 title">Texture</p>
-                                <p class="is-size-6 subtitle">{{ value.series.texture | uppercaseFirst }}</p>
+                                <p class="is-size-6 subtitle">{{ value.texture | uppercaseFirst }}</p>
                             </div>
                         </div>
                     </div>
@@ -176,11 +176,11 @@ import { measurement } from '@/modules/shared/filters/measurement';
         Stars,
         PadCutBar,
         PadFinishBar,
-        PolisherTypeTag,
+        PolisherTypeTag
     },
     filters: {
-        measurement,
-    },
+        measurement
+    }
 })
 export default class PadView extends Vue {
     get id() {

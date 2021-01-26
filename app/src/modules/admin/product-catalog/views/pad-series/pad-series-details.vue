@@ -26,9 +26,6 @@
                 <p class="is-size-4 title">{{ value.name }}</p>
                 <p class="is-size-4 subtitle">By {{ value.brand.name }}</p>
 
-                <p><span class="has-text-weight-bold">Material: </span>{{ value.material | uppercaseFirst }}</p>
-                <p><span class="has-text-weight-bold">Texture: </span>{{ value.texture | uppercaseFirst }}</p>
-
                 <div class="has-margin-bottom-3">
                     <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Recommended For Polisher Type(s)</p>
                     <b-taglist>
@@ -59,6 +56,12 @@
                     }}</b-table-column>
                     <b-table-column v-slot="props" label="Category" field="action" sortable>{{
                         props.row.category | uppercaseFirst
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Material" field="action" sortable>{{
+                        props.row.material | uppercaseFirst
+                    }}</b-table-column>
+                    <b-table-column v-slot="props" label="Texture" field="action" sortable>{{
+                        props.row.texture | uppercaseFirst
                     }}</b-table-column>
                     <b-table-column v-slot="props" label="Image" field="scope" sortable>
                         <a :href="props.row.imageUrl" target="_blank">
@@ -100,15 +103,15 @@ import { measurement } from '@/modules/shared/filters/measurement';
 @Component({
     name: 'role',
     components: {
-        PolisherTypeTag,
+        PolisherTypeTag
     },
     filters: {
-        measurement,
-    },
+        measurement
+    }
 })
 export default class PadSeriesDetails extends Vue {
     get value() {
-        return adminPadStore.series.find((s) => s.id == this.$route.params.id);
+        return adminPadStore.series.find(s => s.id == this.$route.params.id);
     }
 
     get title() {
@@ -125,7 +128,7 @@ export default class PadSeriesDetails extends Vue {
     }
 
     getPadSize(id: string) {
-        const s = this.value?.sizes.find((s) => s.id == id)!;
+        const s = this.value?.sizes.find(s => s.id == id)!;
 
         return `${s.diameter.amount}${s.diameter.unit}`;
     }

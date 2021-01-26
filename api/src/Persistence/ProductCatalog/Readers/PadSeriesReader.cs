@@ -53,23 +53,32 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     var reviewCount = reader.ReadFirstOrDefault<int>();
                     var images = reader.Read<(Guid PadColorId, Guid ImageId)>();
 
-                    var colors = new Dictionary<Guid, PadColorReadModel>(
-                        reader.Read().Select(c => new KeyValuePair<Guid, PadColorReadModel>(
-                            c.id,
+                    var keyValues = new List<KeyValuePair<Guid, PadColorReadModel>>();
+                    foreach (var color in reader.Read()) {
+                        Guid? imageId = images.Where(i => i.PadColorId == color.id).FirstOrDefault().ImageId;
+
+                        if (imageId == Guid.Empty) {
+                            imageId = null;
+                        }
+
+                        keyValues.Add(new KeyValuePair<Guid, PadColorReadModel>(
+                            color.id,
                             new PadColorReadModel(
-                                c.id,
-                                c.name,
-                                c.category,
-                                c.material,
-                                c.texture,
-                                images.Where(i => i.PadColorId == c.id).FirstOrDefault().ImageId,   //TODO: Fix this. Will leave Guid.Empty instead of null.
+                                color.id,
+                                color.name,
+                                color.category,
+                                color.material,
+                                color.texture,
+                                imageId,
                                 new List<PadOptionReadModel>(),
-                                c.cut,
-                                c.finish,
-                                new RatingReadModel(c.stars, reviewCount)
+                                color.cut,
+                                color.finish,
+                                new RatingReadModel(color.stars, reviewCount)
                             )
-                        )
-                    ));
+                        ));
+                    }
+
+                    var colors = new Dictionary<Guid, PadColorReadModel>(keyValues);
 
                     var options = reader.Read<PadOptionRow>();
                     foreach (var opt in options) {
