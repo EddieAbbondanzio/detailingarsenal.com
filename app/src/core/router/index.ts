@@ -18,6 +18,10 @@ const routes: RouteConfig[] = [
     ...adminRoutes,
     ...productCatalogRoutes,
     {
+        path: '/',
+        component: () => import('@/core/views/root.vue')
+    },
+    {
         // Wild card always has to go last.
         path: '*',
         component: () => import('@/core/views/404.vue')
