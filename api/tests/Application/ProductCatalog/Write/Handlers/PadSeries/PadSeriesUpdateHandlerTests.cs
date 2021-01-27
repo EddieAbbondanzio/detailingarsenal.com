@@ -151,5 +151,51 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var updated = h.UpdatePadColors(existing, new());
             Assert.AreEqual(0, updated.Count);
         }
+
+        [TestMethod]
+        public void UpdatePadColorsOrdersByName() {
+            var h = new PadSeriesUpdateHandler(
+                                        Mock.Of<IPadSeriesRepo>(),
+                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                        Mock.Of<IImageProcessor>()
+                        );
+
+            List<PadColor> existing = new();
+
+            var updates = new PadColorCreateOrUpdate[]{
+                new PadColorCreateOrUpdate(null, "B", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+                    new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
+                }.ToList()),
+                 new PadColorCreateOrUpdate(null, "A", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+                    new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
+                }.ToList())
+                }.ToList();
+
+            var updated = h.UpdatePadColors(existing, updates);
+            Assert.AreEqual("A", updated[0].Name);
+            Assert.AreEqual("B", updated[1].Name);
+        }
+
+        [TestMethod]
+        public void OrdersPadSizesByDiameter() {
+            var h = new PadSeriesUpdateHandler(
+                            Mock.Of<IPadSeriesRepo>(),
+                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                            Mock.Of<IImageProcessor>()
+                        );
+
+            var existing = new PadSize[] {
+                new PadSize(new Measurement(1.0f, MeasurementUnit.Inches)),
+            }.ToList();
+
+            var news = new PadSizeCreateOrUpdate[] {
+                new PadSizeCreateOrUpdate(existing[0].Id, new Measurement(1.0f, MeasurementUnit.Inches), new Measurement(2.5f, MeasurementUnit.Inches)),
+                new PadSizeCreateOrUpdate(null, new Measurement(4.0f, MeasurementUnit.Inches))
+            }.ToList();
+
+            var updated = h.UpdatePadSizes(existing, news);
+            Assert.AreEqual(updated[0].Diameter.Amount, 4f);
+            Assert.AreEqual(updated[1].Diameter.Amount, 1f);
+        }
     }
 }

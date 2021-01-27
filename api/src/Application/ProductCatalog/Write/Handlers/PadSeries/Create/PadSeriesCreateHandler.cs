@@ -22,7 +22,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
         }
 
         public async override Task<Guid> Execute(PadSeriesCreateCommand command, User? user) {
-            var sizes = command.Sizes.Select(s => new PadSize(s.Diameter, s.Thickness)).ToList();
+            var sizes = command.Sizes.Select(s => new PadSize(s.Diameter, s.Thickness)).OrderByDescending(s => s.Diameter).ToList();
 
             var colors = command.Colors.Select(c => {
                 ProcessedImage? image = null;
@@ -43,7 +43,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 }).ToList();
 
                 return new PadColor(c.Name, c.Category, c.Material, c.Texture, image, options);
-            }).ToList();
+            }).OrderBy(c => c.Name).ToList();
 
 
             var series = new PadSeries(

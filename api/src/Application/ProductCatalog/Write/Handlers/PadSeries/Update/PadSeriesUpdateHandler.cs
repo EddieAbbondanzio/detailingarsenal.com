@@ -24,6 +24,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             var series = await repo.FindById(command.Id) ?? throw new EntityNotFoundException();
             var origColors = series.Colors;
 
+
             series.Name = command.Name;
             series.BrandId = command.BrandId;
 
@@ -59,7 +60,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 sizes.Add(new PadSize(size.Diameter, size.Thickness));
             }
 
-            return sizes;
+            return sizes.OrderBy(s => s.Diameter).ToList();
         }
 
         public List<PadColor> UpdatePadColors(List<PadColor> existing, List<PadColorCreateOrUpdate> updates) {
@@ -107,7 +108,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 colors.Add(color);
             }
 
-            return colors;
+            return colors.OrderBy(c => c.Name).ToList();
         }
     }
 }

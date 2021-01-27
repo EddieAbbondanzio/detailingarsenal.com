@@ -170,5 +170,88 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var id = await h.Execute(c, null);
             Assert.AreEqual(series[0].Id, id);
         }
+
+        [TestMethod]
+        public async Task ExecuteOrdersSizesDescendingByDiameter() {
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
+
+            var mockRepo = new Mock<IPadSeriesRepo>();
+            List<PadSeries> series = new();
+            mockRepo.Setup(r => r.Add(Capture.In(series)));
+
+            var h = new PadSeriesCreateHandler(
+                mockSpec.Object,
+                mockRepo.Object,
+                Mock.Of<IImageProcessor>()
+            );
+
+            var brandId = Guid.NewGuid();
+
+            var c = new PadSeriesCreateCommand(
+                "Name",
+                brandId,
+                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                new PadSizeCreateOrUpdate[] {
+                    new PadSizeCreateOrUpdate(null, new Measurement(2f, "in")),
+                    new PadSizeCreateOrUpdate(null, new Measurement(1f, "in")),
+                    new PadSizeCreateOrUpdate(null, new Measurement(3f, "in"))
+                }.ToList(),
+                new PadColorCreateOrUpdate[] {
+                    new PadColorCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    }.ToList())
+                }.ToList()
+            );
+
+            await h.Execute(c, null);
+            Assert.AreEqual(1f, series[0].Sizes[0].Diameter.Amount);
+            Assert.AreEqual(2f, series[0].Sizes[1].Diameter.Amount);
+            Assert.AreEqual(3f, series[0].Sizes[2].Diameter.Amount);
+        }
+
+        [TestMethod]
+        public async Task ExecuteOrdersColorByName() {
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
+
+            var mockRepo = new Mock<IPadSeriesRepo>();
+            List<PadSeries> series = new();
+            mockRepo.Setup(r => r.Add(Capture.In(series)));
+
+            var h = new PadSeriesCreateHandler(
+                mockSpec.Object,
+                mockRepo.Object,
+                Mock.Of<IImageProcessor>()
+            );
+
+            var brandId = Guid.NewGuid();
+
+            var c = new PadSeriesCreateCommand(
+                "Name",
+                brandId,
+                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                new PadSizeCreateOrUpdate[] {
+                    new PadSizeCreateOrUpdate(null, new Measurement(1f, "in")),
+                }.ToList(),
+                new PadColorCreateOrUpdate[] {
+                    new PadColorCreateOrUpdate(null, "B", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    }.ToList()),
+                    new PadColorCreateOrUpdate(null, "A", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    }.ToList()),
+                    new PadColorCreateOrUpdate(null, "C", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    }.ToList())
+                }.ToList()
+            );
+
+            await h.Execute(c, null);
+            Assert.AreEqual("A", series[0].Colors[0].Name);
+            Assert.AreEqual("B", series[0].Colors[1].Name);
+            Assert.AreEqual("C", series[0].Colors[2].Name);
+        }
+
     }
 }

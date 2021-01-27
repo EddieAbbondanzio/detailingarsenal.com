@@ -5,7 +5,7 @@ namespace DetailingArsenal.Domain.ProductCatalog {
     /// <summary>
     /// Distance measurement that includes units.
     /// </summary>
-    public class Measurement : ValueObject<Measurement> {
+    public class Measurement : ValueObject<Measurement>, IComparable<Measurement> {
         public float Amount { get; }
         public MeasurementUnit Unit { get; }
 
@@ -39,5 +39,9 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             Unit == measurement.Unit;
 
         public override int GetHashCode() => HashCode.Combine(Amount, Unit);
+
+        public int CompareTo(Measurement? other) {
+            return other?.Amount.CompareTo(Amount) ?? 1;
+        }
     }
 }
