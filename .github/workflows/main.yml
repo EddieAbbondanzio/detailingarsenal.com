@@ -1,8 +1,9 @@
-name: Build and Deploy ASP.NET Core to Digital Ocean
+name: Build and Deploy ASP.NET Core API to Digital Ocean
 
 on: 
   push:
     branches: [ master ]
+    paths: 'api/**
 
   workflow_dispatch:
 
