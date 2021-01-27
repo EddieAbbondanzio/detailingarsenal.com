@@ -33,6 +33,21 @@ namespace DetailingArsenal.Domain.ProductCatalog {
             };
         }
 
+        public Measurement ToInches() {
+            if (Unit == MeasurementUnit.Inches) {
+                return this;
+            } else {
+                return new Measurement(Amount / 25.4f, MeasurementUnit.Inches);
+            }
+        }
+
+        public Measurement ToMillimeters() {
+            if (Unit == MeasurementUnit.Millimeters) {
+                return this;
+            } else {
+                return new Measurement(Amount * 25.4f, MeasurementUnit.Inches);
+            }
+        }
 
         public override bool Equals(object? obj) => obj is Measurement measurement &&
             Amount == measurement.Amount &&
@@ -41,7 +56,21 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public override int GetHashCode() => HashCode.Combine(Amount, Unit);
 
         public int CompareTo(Measurement? other) {
-            return other?.Amount.CompareTo(Amount) ?? 1;
+            if (other == null) {
+                return 1;
+            }
+
+            var thisInches = ToInches().Amount;
+            var thatInches = other.ToInches().Amount;
+
+            if (thisInches > thatInches) {
+                return 1;
+            } else if (thisInches == thatInches) {
+                return 0;
+            } else {
+                return -1;
+            }
+
         }
     }
 }
