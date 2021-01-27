@@ -3,7 +3,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
-    internal class PadColorRow : IDataTransferObject {
+    internal class PadRow : IDataTransferObject {
         public Guid Id { get; set; }
         public Guid PadSeriesId { get; set; }
         public string Name { get; set; } = null!;

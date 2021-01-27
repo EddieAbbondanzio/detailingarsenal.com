@@ -17,16 +17,16 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"  select * from pad_series ps join brands b on ps.brand_id = b.id where ps.id = @Id;
                         select * from pad_series_polisher_types where pad_series_id = @Id;
                         select * from pad_sizes where pad_series_id = @Id;
-                        select count(reviews.*) as count, pad_colors.id from pad_colors
-                            left join reviews on reviews.pad_color_id = pad_colors.id 
+                        select count(reviews.*) as count, pads.id from pads
+                            left join reviews on reviews.pad_id = pads.id 
                             where pad_series_id = @Id
-                            group by pad_colors.id;
-                        select pc.id as pad_color_id, i.id as image_id from images i
-                            join pad_colors pc on pc.image_id = i.id where pc.pad_series_id = @Id;
-                        select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pad_colors pc 
-                            left join reviews r on pc.id = r.pad_color_id 
+                            group by pads.id;
+                        select pc.id as pad_id, i.id as image_id from images i
+                            join pads pc on pc.image_id = i.id where pc.pad_series_id = @Id;
+                        select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads pc 
+                            left join reviews r on pc.id = r.pad_id 
                             where pad_series_id = @Id group by pc.id;
-                        select * from pad_options po left join pad_colors pc on po.pad_color_id = pc.id where pad_series_id = @Id;
+                        select * from pad_options po left join pads pc on po.pad_id = pc.id where pad_series_id = @Id;
                     ",
                     new { Id = id }
                 )) {
@@ -51,45 +51,45 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             )));
 
                     var reviewCount = reader.ReadFirstOrDefault<int>();
-                    var images = reader.Read<(Guid PadColorId, Guid ImageId)>();
+                    var images = reader.Read<(Guid PadId, Guid ImageId)>();
 
-                    var keyValues = new List<KeyValuePair<Guid, PadColorReadModel>>();
-                    foreach (var color in reader.Read()) {
-                        Guid? imageId = images.Where(i => i.PadColorId == color.id).FirstOrDefault().ImageId;
+                    var keyValues = new List<KeyValuePair<Guid, PadReadModel>>();
+                    foreach (var pad in reader.Read()) {
+                        Guid? imageId = images.Where(i => i.PadId == pad.id).FirstOrDefault().ImageId;
 
                         if (imageId == Guid.Empty) {
                             imageId = null;
                         }
 
-                        keyValues.Add(new KeyValuePair<Guid, PadColorReadModel>(
-                            color.id,
-                            new PadColorReadModel(
-                                color.id,
-                                color.name,
-                                color.category,
-                                color.material,
-                                color.texture,
+                        keyValues.Add(new KeyValuePair<Guid, PadReadModel>(
+                            pad.id,
+                            new PadReadModel(
+                                pad.id,
+                                pad.name,
+                                pad.category,
+                                pad.material,
+                                pad.texture,
                                 imageId,
                                 new List<PadOptionReadModel>(),
-                                color.cut,
-                                color.finish,
-                                new RatingReadModel(color.stars, reviewCount)
+                                pad.cut,
+                                pad.finish,
+                                new RatingReadModel(pad.stars, reviewCount)
                             )
                         ));
                     }
 
-                    var colors = new Dictionary<Guid, PadColorReadModel>(keyValues);
+                    var pads = new Dictionary<Guid, PadReadModel>(keyValues);
 
                     var options = reader.Read<PadOptionRow>();
                     foreach (var opt in options) {
-                        PadColorReadModel? color;
+                        PadReadModel? pad;
 
-                        if (colors.TryGetValue(opt.PadColorId, out color)) {
-                            color.Options.Add(new PadOptionReadModel(opt.PadSizeId, opt.PartNumber));
+                        if (pads.TryGetValue(opt.PadId, out pad)) {
+                            pad.Options.Add(new PadOptionReadModel(opt.PadSizeId, opt.PartNumber));
                         }
                     }
 
-                    series.Colors.AddRange(colors.Values);
+                    series.Pads.AddRange(pads.Values);
                     return series;
                 }
             }
@@ -101,15 +101,15 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"  select * from pad_series ps join brands b on ps.brand_id = b.id;
                         select * from pad_series_polisher_types;
                         select * from pad_sizes;
-                        select count(reviews.*) as count, pad_colors.id from pad_colors
-                            left join reviews on reviews.pad_color_id = pad_colors.id 
-                            group by pad_colors.id;
-                        select pc.id as pad_color_id, i.id as image_id from images i
-                            join pad_colors pc on pc.image_id = i.id;
-                        select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pad_colors pc 
-                            left join reviews r on pc.id = r.pad_color_id 
+                        select count(reviews.*) as count, pads.id from pads
+                            left join reviews on reviews.pad_id = pads.id 
+                            group by pads.id;
+                        select pc.id as pad_id, i.id as image_id from images i
+                            join pads pc on pc.image_id = i.id;
+                        select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads pc 
+                            left join reviews r on pc.id = r.pad_id 
                             group by pc.id;
-                        select * from pad_options po left join pad_colors pc on po.pad_color_id = pc.id;
+                        select * from pad_options po left join pads pc on po.pad_id = pc.id;
                         "
                 )) {
                     var series = new Dictionary<Guid, PadSeriesReadModel>(
@@ -150,12 +150,12 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     var reviewCounts = new Dictionary<Guid, int>(reader.Read<(int Count, Guid Id)>().Select(c => new KeyValuePair<Guid, int>(c.Id, c.Count)));
-                    var images = reader.Read<(Guid PadColorId, Guid ImageId)>();
+                    var images = reader.Read<(Guid PadId, Guid ImageId)>();
 
-                    var colors = new Dictionary<Guid, PadColorReadModel>();
+                    var pads = new Dictionary<Guid, PadReadModel>();
 
                     foreach (var raw in reader.Read()) {
-                        Guid? imageId = images.Where(i => i.PadColorId == raw.id).FirstOrDefault().ImageId;
+                        Guid? imageId = images.Where(i => i.PadId == raw.id).FirstOrDefault().ImageId;
 
                         if (imageId == Guid.Empty) {
                             imageId = null;
@@ -167,7 +167,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         decimal? cut = raw.cut;
                         decimal? finish = raw.finish;
 
-                        var color = new PadColorReadModel(
+                        var pad = new PadReadModel(
                             raw.id,
                             raw.name,
                             raw.category,
@@ -181,21 +181,21 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         );
 
 
-                        colors.Add(color.Id, color);
+                        pads.Add(pad.Id, pad);
 
                         PadSeriesReadModel? s;
 
                         if (series.TryGetValue(raw.pad_series_id, out s)) {
-                            s!.Colors.Add(color);
+                            s!.Pads.Add(pad);
                         }
                     }
 
                     var options = reader.Read<PadOptionRow>();
                     foreach (var opt in options) {
-                        PadColorReadModel? color;
+                        PadReadModel? pad;
 
-                        if (colors.TryGetValue(opt.PadColorId, out color)) {
-                            color.Options.Add(new PadOptionReadModel(opt.PadSizeId, opt.PartNumber));
+                        if (pads.TryGetValue(opt.PadId, out pad)) {
+                            pad.Options.Add(new PadOptionReadModel(opt.PadSizeId, opt.PartNumber));
                         }
                     }
 

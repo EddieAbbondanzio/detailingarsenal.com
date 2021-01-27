@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { PadColor, PadCut, PadFinish, Stars } from '@/api';
+import { Pad, PadCut, PadFinish, Stars } from '@/api';
 import { displayError, displayLoading } from '@/core';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import padStore from '../store/pad/pad-store';
@@ -50,15 +50,15 @@ import reviewStore from '../store/review/review-store';
 @Component({
     components: {
         PadCutInput,
-        PadFinishInput,
-    },
+        PadFinishInput
+    }
 })
 export default class WriteReview extends Vue {
     get description() {
         return this.value?.label ?? '';
     }
 
-    value: PadColor | null = null;
+    value: Pad | null = null;
 
     stars: Stars | null = null;
     cut: PadCut | null = null;
@@ -80,7 +80,7 @@ export default class WriteReview extends Vue {
                 cut: this.cut,
                 finish: this.finish,
                 title: this.title!,
-                body: this.body!,
+                body: this.body!
             });
 
             // Redirect to the pad they just wrote a review for.

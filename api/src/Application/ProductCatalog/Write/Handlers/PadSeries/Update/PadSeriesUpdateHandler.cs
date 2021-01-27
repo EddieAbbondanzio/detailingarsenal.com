@@ -22,14 +22,14 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
         public async override Task Execute(PadSeriesUpdateCommand command, User? user) {
             var series = await repo.FindById(command.Id) ?? throw new EntityNotFoundException();
-            var origColors = series.Colors;
+            var origColors = series.Pads;
 
 
             series.Name = command.Name;
             series.BrandId = command.BrandId;
 
             series.Sizes = UpdatePadSizes(series.Sizes, command.Sizes);
-            series.Colors = UpdatePadColors(series.Colors, command.Colors);
+            series.Pads = UpdatePadColors(series.Pads, command.Pads);
 
 
             await spec.CheckAndThrow(series);
@@ -63,8 +63,8 @@ namespace DetailingArsenal.Application.ProductCatalog {
             return sizes.OrderBy(s => s.Diameter).ToList();
         }
 
-        public List<PadColor> UpdatePadColors(List<PadColor> existing, List<PadColorCreateOrUpdate> updates) {
-            var colors = new List<PadColor>();
+        public List<Pad> UpdatePadColors(List<Pad> existing, List<PadCreateOrUpdate> updates) {
+            var colors = new List<Pad>();
 
             // Update any existing pad colors
             foreach (var color in existing) {
@@ -93,7 +93,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             var newColors = updates.Where(u => u.Id == null);
             foreach (var update in newColors) {
 
-                var color = new PadColor(
+                var color = new Pad(
                     update.Name,
                     update.Category,
                     update.Material,

@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { PadCategory, PadColor } from '@/api';
+import { PadCategory, Pad } from '@/api';
 import { padCategory } from '@/modules/product-catalog/pads/filters/pad-category';
 import { FilterType } from '../store/filter-type';
 import { Filter } from '../store/filter';
@@ -50,8 +50,8 @@ import { MutationPayload } from 'vuex';
 @Component({
     name: 'pad-filter-control',
     filters: {
-        padCategory,
-    },
+        padCategory
+    }
 })
 export default class PadFilterControl extends Vue {
     // /**

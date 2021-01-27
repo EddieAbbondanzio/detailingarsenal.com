@@ -130,7 +130,7 @@ import {
     PolisherType,
     SpecificationError,
     PadOption,
-    PadColorCreateOrUpdate,
+    PadCreateOrUpdate,
     PadSizeCreateOrUpdate,
     PadSize,
     PadOptionCreateOrUpdate
@@ -169,7 +169,7 @@ export default class CreatePadSeries extends Vue {
     brand: Brand | null = null;
     polisherTypes: PolisherType[] = [];
     sizes: PadSizeCreateOrUpdate[] = [];
-    colors: PadColorCreateOrUpdate[] = [];
+    colors: PadCreateOrUpdate[] = [];
 
     async created() {
         await brandStore.init();
@@ -186,7 +186,7 @@ export default class CreatePadSeries extends Vue {
                 diameter: s.diameter,
                 thickness: s.thickness?.amount != null ? s.thickness : null
             })),
-            colors: this.colors
+            pads: this.colors
         };
 
         try {
@@ -198,7 +198,7 @@ export default class CreatePadSeries extends Vue {
         }
     }
 
-    padColorCreateFactory(): PadColorCreateOrUpdate {
+    padColorCreateFactory(): PadCreateOrUpdate {
         return {
             id: null,
             name: '',
@@ -214,7 +214,7 @@ export default class CreatePadSeries extends Vue {
      * Don't allow a size to be picked on an option if it's already used by another
      * option on the same color.
      */
-    isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreateOrUpdate, color: PadColorCreateOrUpdate) {
+    isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreateOrUpdate, color: PadCreateOrUpdate) {
         const sizesUsedAlready = color.options.map(o => o.padSizeIndex!).map(i => this.sizes[i]);
 
         return !sizesUsedAlready.every(s => s != size);

@@ -40,7 +40,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading, confirmDelete, toast, displayError } from '@/core';
-import { PadColor, PadSeries } from '@/api';
+import { Pad, PadSeries } from '@/api';
 import adminPadStore from '../../store/admin-pad-store';
 
 @Component
@@ -58,8 +58,8 @@ export default class Pads extends Vue {
         this.$router.push({
             name: 'updatePadSeries',
             params: {
-                id: pad.id,
-            },
+                id: pad.id
+            }
         });
     }
 

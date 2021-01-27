@@ -14,12 +14,12 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
         [TestMethod]
         public async Task RejectsOptionsOnSameColorWithTheSameSize() {
             var s = new PadSeries("Name", Guid.NewGuid());
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
+            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
 
             var sizeId = Guid.NewGuid();
 
-            s.Colors[0].Options.Add(new PadOption(sizeId));
-            s.Colors[0].Options.Add(new PadOption(sizeId));
+            s.Pads[0].Options.Add(new PadOption(sizeId));
+            s.Pads[0].Options.Add(new PadOption(sizeId));
 
             var res = await new PadSeriesOptionsAreUniqueBySizesSpecification().Check(s);
             Assert.IsFalse(res.IsSatisfied);
@@ -28,10 +28,10 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
         [TestMethod]
         public async Task AcceptsOptionsWithDifferentSizes() {
             var s = new PadSeries("Name", Guid.NewGuid());
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
+            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
 
-            s.Colors[0].Options.Add(new PadOption(Guid.NewGuid()));
-            s.Colors[0].Options.Add(new PadOption(Guid.NewGuid()));
+            s.Pads[0].Options.Add(new PadOption(Guid.NewGuid()));
+            s.Pads[0].Options.Add(new PadOption(Guid.NewGuid()));
 
             var res = await new PadSeriesOptionsAreUniqueBySizesSpecification().Check(s);
             Assert.IsTrue(res.IsSatisfied);
@@ -40,13 +40,13 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
         [TestMethod]
         public async Task AcceptsOptionsWithSameSizeOnDifferentColors() {
             var s = new PadSeries("Name", Guid.NewGuid());
-            s.Colors.Add(new PadColor("Color1", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
-            s.Colors.Add(new PadColor("Color2", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled));
+            s.Pads.Add(new Pad("Color1", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
+            s.Pads.Add(new Pad("Color2", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled));
 
             var sizeId = Guid.NewGuid();
 
-            s.Colors[0].Options.Add(new PadOption(sizeId));
-            s.Colors[1].Options.Add(new PadOption(sizeId));
+            s.Pads[0].Options.Add(new PadOption(sizeId));
+            s.Pads[1].Options.Add(new PadOption(sizeId));
 
             var res = await new PadSeriesOptionsAreUniqueBySizesSpecification().Check(s);
             Assert.IsTrue(res.IsSatisfied);

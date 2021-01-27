@@ -4,7 +4,7 @@ import { PadOption } from "../pad-option";
 import { PadTexture } from "../pad-texture";
 import { PadOptionCreateOrUpdate } from "./pad-option-create-or-update";
 
-export interface PadColorCreateOrUpdate {
+export interface PadCreateOrUpdate {
     id: string | null,
     name: string,
     category: string,

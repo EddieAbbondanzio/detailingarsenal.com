@@ -7,9 +7,9 @@ import { PadOption } from './pad-option';
 import { PadMaterial } from './pad-material';
 import { PadTexture } from './pad-texture';
 
-export class PadColor {
+export class Pad {
     get label() {
-        return `${this.series.brand.name} ${this.series.name} ${this.name}`
+        return `${this.series.brand.name} ${this.series.name} ${this.name}`;
     }
 
     get imageUrl() {
@@ -32,5 +32,5 @@ export class PadColor {
         public rating: Rating,
         public image: string | null = null,
         public options: PadOption[] = []
-    ) { }
+    ) {}
 }

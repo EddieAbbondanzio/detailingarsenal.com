@@ -9,15 +9,15 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public BrandReadModel Brand { get; }
         public List<string> PolisherTypes { get; }
         public List<PadSizeReadModel> Sizes { get; }
-        public List<PadColorReadModel> Colors { get; }
+        public List<PadReadModel> Pads { get; }
 
-        public PadSeriesReadModel(Guid id, string name, BrandReadModel brand, List<string>? polisherTypes = null, List<PadSizeReadModel>? sizes = null, List<PadColorReadModel>? colors = null) {
+        public PadSeriesReadModel(Guid id, string name, BrandReadModel brand, List<string>? polisherTypes = null, List<PadSizeReadModel>? sizes = null, List<PadReadModel>? pads = null) {
             Id = id;
             Name = name;
             Brand = brand;
             PolisherTypes = polisherTypes ?? new();
             Sizes = sizes ?? new();
-            Colors = colors ?? new();
+            Pads = pads ?? new();
         }
     }
 }

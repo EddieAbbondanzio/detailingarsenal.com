@@ -10,21 +10,21 @@ using Moq;
 
 namespace DetailingArsenal.Tests.Domain.ProductCatalog {
     [TestClass]
-    public class PadSeriesHasColorsSpecificationTests {
+    public class PadSeriesHasPadsSpecificationTests {
         [TestMethod]
-        public async Task RejectsNoColors() {
+        public async Task RejectsNoPads() {
             var s = new PadSeries("Name", Guid.NewGuid(), new(), new(), new());
-            var satisified = await new PadSeriesHasColorsSpecification().Check(s);
+            var satisified = await new PadSeriesHasPadsSpecification().Check(s);
 
             Assert.IsFalse(satisified.IsSatisfied);
         }
 
         [TestMethod]
-        public async Task AcceptsColors() {
+        public async Task AcceptsPads() {
             var s = new PadSeries("Name", Guid.NewGuid(), new(), new(), new());
-            s.Colors.Add(new PadColor("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
+            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
 
-            var satisified = await new PadSeriesHasColorsSpecification().Check(s);
+            var satisified = await new PadSeriesHasPadsSpecification().Check(s);
             Assert.IsTrue(satisified.IsSatisfied);
         }
     }

@@ -11,9 +11,9 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         */
 
         public PadSeriesCreateOrUpdateCompositeSpecification(
-            PadSeriesHasColorsSpecification hasColors,
+            PadSeriesHasPadsSpecification hasColors,
             PadSeriesHasSizesSpecification hasSizes,
-            PadSeriesHasOptionsForEveryColorSpecification hasOptions,
+            PadSeriesHasOptionsForEveryPadSpecification hasOptions,
             PadSeriesOptionsAreUniqueBySizesSpecification optionsAreUnique,
             PadSeriesPadSizeDiametersAreUniqueSpecification sizeDiametersAreUnique) {
             groupedSpec = new AndSpecification<PadSeries>(

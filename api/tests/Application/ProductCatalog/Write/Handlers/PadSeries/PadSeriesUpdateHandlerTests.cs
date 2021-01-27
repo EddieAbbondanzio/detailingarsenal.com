@@ -91,14 +91,14 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                             Mock.Of<IImageProcessor>()
             );
 
-            var existing = new PadColor[] {
-                new PadColor("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, null, new PadOption[] {
+            var existing = new Pad[] {
+                new Pad("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, null, new PadOption[] {
                     new PadOption(Guid.NewGuid(), "part_number"),
                 }.ToList())
             }.ToList();
 
-            var updates = new PadColorCreateOrUpdate[]{
-                new PadColorCreateOrUpdate(existing[0].Id, "ColorAA", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+            var updates = new PadCreateOrUpdate[]{
+                new PadCreateOrUpdate(existing[0].Id, "ColorAA", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList())
                 }.ToList();
@@ -120,10 +120,10 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                                         Mock.Of<IImageProcessor>()
                         );
 
-            List<PadColor> existing = new();
+            List<Pad> existing = new();
 
-            var updates = new PadColorCreateOrUpdate[]{
-                new PadColorCreateOrUpdate(null, "ColorB", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+            var updates = new PadCreateOrUpdate[]{
+                new PadCreateOrUpdate(null, "ColorB", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList())
                 }.ToList();
@@ -142,8 +142,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                                         Mock.Of<IImageProcessor>()
                         );
 
-            var existing = new PadColor[] {
-                new PadColor("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOption[] {
+            var existing = new Pad[] {
+                new Pad("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOption[] {
                     new PadOption(Guid.NewGuid(), "part_number"),
                 }.ToList())
             }.ToList();
@@ -160,13 +160,13 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                                         Mock.Of<IImageProcessor>()
                         );
 
-            List<PadColor> existing = new();
+            List<Pad> existing = new();
 
-            var updates = new PadColorCreateOrUpdate[]{
-                new PadColorCreateOrUpdate(null, "B", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+            var updates = new PadCreateOrUpdate[]{
+                new PadCreateOrUpdate(null, "B", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList()),
-                 new PadColorCreateOrUpdate(null, "A", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+                 new PadCreateOrUpdate(null, "A", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList())
                 }.ToList();

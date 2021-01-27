@@ -2,10 +2,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
-    public class PadSeriesHasOptionsForEveryColorSpecification : Specification<PadSeries> {
+    public class PadSeriesHasOptionsForEveryPadSpecification : Specification<PadSeries> {
 #pragma warning disable 1998
         protected async override Task<SpecificationResult> IsSatisfied(PadSeries series) {
-            if (series.Colors.Any(c => c.Options.Count == 0)) {
+            if (series.Pads.Any(c => c.Options.Count == 0)) {
                 return new SpecificationResult(false, "Pad series has a color with no options");
             } else {
                 return new SpecificationResult(true);

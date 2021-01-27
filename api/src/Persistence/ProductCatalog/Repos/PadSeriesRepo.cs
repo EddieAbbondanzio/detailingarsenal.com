@@ -19,9 +19,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         @"  select * from pad_series where id = @Id;
                             select * from pad_series_polisher_types where pad_series_id = @Id;
                             select * from pad_sizes where pad_series_id = @Id;
-                            select i.* from images i join pad_colors pc on i.id = pc.image_id where pad_series_id = @Id;
-                            select * from pad_colors where pad_series_id = @Id;
-                            select * from pad_options po left join pad_colors pc on po.pad_color_id = pc.id where pad_series_id = @Id;
+                            select i.* from images i join pads pc on i.id = pc.image_id where pad_series_id = @Id;
+                            select * from pads where pad_series_id = @Id;
+                            select * from pad_options po left join pads pc on po.pad_id = pc.id where pad_series_id = @Id;
                         ",
                         new { Id = id }
                     )) {
@@ -43,8 +43,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     var images = reader.Read<ImageRow>();
 
-                    var colors = new Dictionary<Guid, PadColor>(
-                        reader.Read<PadColorRow>().Select(c => {
+                    var pads = new Dictionary<Guid, Pad>(
+                        reader.Read<PadRow>().Select(c => {
                             var imageRow = images.Where(i => i.ParentId == c.Id).FirstOrDefault();
                             ProcessedImage? processedImage = null;
 
@@ -58,7 +58,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 );
                             }
 
-                            var color = new PadColor(
+                            var pad = new Pad(
                                 c.Id,
                                 c.Name,
                                 PadCategoryUtils.Parse(c.Category),
@@ -67,16 +67,16 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 processedImage
                             );
 
-                            return color;
-                        }).Select(c => new KeyValuePair<Guid, PadColor>(c.Id, c))
+                            return pad;
+                        }).Select(c => new KeyValuePair<Guid, Pad>(c.Id, c))
                     );
 
                     var options = reader.Read<PadOptionRow>();
                     foreach (var opt in options) {
-                        PadColor? color;
+                        Pad? pad;
 
-                        if (colors.TryGetValue(opt.PadColorId, out color)) {
-                            color.Options.Add(new PadOption(opt.PadSizeId, opt.PartNumber));
+                        if (pads.TryGetValue(opt.PadId, out pad)) {
+                            pad.Options.Add(new PadOption(opt.PadSizeId, opt.PartNumber));
                         }
                     }
 
@@ -86,7 +86,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         seriesRow.BrandId,
                         polisherTypes,
                         sizes,
-                        colors.Values.ToList()
+                        pads.Values.ToList()
                     );
                 }
             }
@@ -124,7 +124,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }).ToList()
                     );
 
-                    var imageRows = series.Colors.Where(c => c.Image != null).Select(c => new ImageRow() {
+                    var imageRows = series.Pads.Where(c => c.Image != null).Select(c => new ImageRow() {
                         Id = c.Image!.Id,
                         ParentId = c.Id,
                         FileName = c.Image.FileName,
@@ -141,8 +141,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_colors (id, pad_series_id, category, material, texture, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Name, @ImageId);",
-                        series.Colors.Select(c => new PadColorRow() {
+                        @"insert into pads (id, pad_series_id, category, material, texture, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Name, @ImageId);",
+                        series.Pads.Select(c => new PadRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
                             Category = c.Category.Serialize(),
@@ -154,11 +154,11 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     );
 
                     var optionRows = new List<PadOptionRow>();
-                    foreach (var color in series.Colors) {
+                    foreach (var color in series.Pads) {
                         foreach (var option in color.Options) {
                             optionRows.Add(new PadOptionRow() {
                                 Id = Guid.NewGuid(),
-                                PadColorId = color.Id,
+                                PadId = color.Id,
                                 PadSizeId = option.PadSizeId,
                                 PartNumber = option.PartNumber
                             });
@@ -166,7 +166,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_options (id, pad_color_id, pad_size_id, part_number) values (@Id, @PadColorId, @PadSizeId, @PartNumber);",
+                        @"insert into pad_options (id, pad_id, pad_size_id, part_number) values (@Id, @PadId, @PadSizeId, @PartNumber);",
                         optionRows
                     );
 
@@ -181,10 +181,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     // pull in old one, and nuke records
                     var old = (await FindById(series.Id))!;
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", old);
-                    await conn.ExecuteAsync(@"delete from pad_options where pad_color_id = @Id;", old.Colors);
+                    await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", old.Pads);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", old);
-                    await conn.ExecuteAsync(@"delete from pad_colors where pad_series_id = @Id;", old);
-                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", old.Colors);
+                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", old);
+                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", old.Pads);
 
                     await conn.ExecuteAsync(
                         @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;",
@@ -215,7 +215,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }).ToList()
                     );
 
-                    var imageRows = series.Colors.Where(c => c.Image != null).Select(c => new ImageRow() {
+                    var imageRows = series.Pads.Where(c => c.Image != null).Select(c => new ImageRow() {
                         Id = c.Image!.Id,
                         ParentId = c.Id,
                         FileName = c.Image.FileName,
@@ -232,8 +232,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_colors (id, pad_series_id, category, material, texture, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Name, @ImageId);",
-                        series.Colors.Select(c => new PadColorRow() {
+                        @"insert into pads (id, pad_series_id, category, material, texture, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Name, @ImageId);",
+                        series.Pads.Select(c => new PadRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
                             Category = c.Category.Serialize(),
@@ -245,11 +245,11 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     );
 
                     var optionRows = new List<PadOptionRow>();
-                    foreach (var color in series.Colors) {
-                        foreach (var option in color.Options) {
+                    foreach (var pad in series.Pads) {
+                        foreach (var option in pad.Options) {
                             optionRows.Add(new PadOptionRow() {
                                 Id = Guid.NewGuid(),
-                                PadColorId = color.Id,
+                                PadId = pad.Id,
                                 PadSizeId = option.PadSizeId,
                                 PartNumber = option.PartNumber
                             });
@@ -257,7 +257,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pad_options (id, pad_color_id, pad_size_id, part_number) values (@Id, @PadColorId, @PadSizeId, @PartNumber);",
+                        @"insert into pad_options (id, pad_id, pad_size_id, part_number) values (@Id, @PadId, @PadSizeId, @PartNumber);",
                         optionRows
                     );
 
@@ -270,10 +270,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", series);
-                    await conn.ExecuteAsync(@"delete from pad_options where pad_color_id = @Id;", series.Colors);
+                    await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", series.Pads);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", series);
-                    await conn.ExecuteAsync(@"delete from pad_colors where pad_series_id = @Id;", series);
-                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", series.Colors);
+                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", series);
+                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", series.Pads);
                     await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
                     t.Commit();
                 }

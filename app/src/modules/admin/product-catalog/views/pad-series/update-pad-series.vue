@@ -41,7 +41,7 @@
                 <measurement-input label="Thickness" v-model="value.thickness" />
             </input-array>
 
-            <input-array title="Colors" :factory="padColorUpdateFactory" v-model="colors">
+            <input-array title="Pads" :factory="padUpdateFactory" v-model="pads">
                 <template v-slot="{ value }">
                     <input-text-field
                         class="has-margin-x-1 has-margin-y-0"
@@ -94,8 +94,8 @@
                     </div>
                 </template>
 
-                <template v-slot:detail="{ value: color }">
-                    <input-array title="Options" v-model="color.options">
+                <template v-slot:detail="{ value: pad }">
+                    <input-array title="Options" v-model="pad.options">
                         <template v-slot="{ value }">
                             <input-select label="Size" v-model="value.padSizeId" rules="required">
                                 <option :value="null">Select a size</option>
@@ -103,7 +103,7 @@
                                     v-for="(size, i) in sizes"
                                     :key="i"
                                     :value="size.id"
-                                    :disabled="isSizeDisabled(size, value, color)"
+                                    :disabled="isSizeDisabled(size, value, pad)"
                                 >
                                     {{ size.diameter.amount.toString() + size.diameter.unit }}
                                 </option>
@@ -138,8 +138,8 @@ import {
     PadSizeCreateOrUpdate,
     PadSize,
     PadSeriesUpdateRequest,
-    PadColor,
-    PadColorCreateOrUpdate,
+    Pad,
+    PadCreateOrUpdate,
     PadOptionCreateOrUpdate
 } from '@/api';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
@@ -176,7 +176,7 @@ export default class UpdatePadSeries extends Vue {
     brand: Brand | null = null;
     polisherTypes: PolisherType[] = [];
     sizes: PadSizeCreateOrUpdate[] = [];
-    colors: PadColorCreateOrUpdate[] = [];
+    pads: PadCreateOrUpdate[] = [];
 
     @displayLoading
     async created() {
@@ -198,7 +198,7 @@ export default class UpdatePadSeries extends Vue {
             diameter: s.diameter,
             thickness: s.thickness!
         }));
-        this.colors = padSeries.colors.map(c => ({
+        this.pads = padSeries.pads.map(c => ({
             id: c.id,
             name: c.name,
             category: c.category,
@@ -225,7 +225,7 @@ export default class UpdatePadSeries extends Vue {
                 diameter: s.diameter,
                 thickness: s.thickness?.amount != null ? s.thickness : null
             })),
-            colors: this.colors
+            pads: this.pads
         };
 
         try {
@@ -237,7 +237,7 @@ export default class UpdatePadSeries extends Vue {
         }
     }
 
-    padColorUpdateFactory(): PadColorCreateOrUpdate {
+    padUpdateFactory(): PadCreateOrUpdate {
         return {
             id: null,
             name: '',
@@ -251,10 +251,10 @@ export default class UpdatePadSeries extends Vue {
 
     /**
      * Don't allow a size to be picked on an option if it's already used by another
-     * option on the same color.
+     * option on the same pad.
      */
-    isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreateOrUpdate, color: PadColorCreateOrUpdate) {
-        const sizesUsedAlready = color.options.map(o => o.padSizeIndex!).map(i => this.sizes[i]);
+    isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreateOrUpdate, pad: PadCreateOrUpdate) {
+        const sizesUsedAlready = pad.options.map(o => o.padSizeIndex!).map(i => this.sizes[i]);
 
         return !sizesUsedAlready.every(s => s != size);
     }
@@ -263,7 +263,7 @@ export default class UpdatePadSeries extends Vue {
         return image != null && !(image instanceof Image);
     }
 
-    onDeleteImage(value: PadColorCreateOrUpdate) {
+    onDeleteImage(value: PadCreateOrUpdate) {
         value.image = null;
     }
 

@@ -2,7 +2,7 @@ import { Brand } from '../data-transfer-objects/brand';
 import { PadSeries } from '../data-transfer-objects/pad-series';
 import { http } from '@/api/core/http';
 import { PadSize } from '../data-transfer-objects/pad-size';
-import { PadColor } from '../data-transfer-objects/pad-color';
+import { Pad } from '../data-transfer-objects/pad';
 import { PadSeriesCreateRequest } from '../data-transfer-objects/requests/pad-series-create-request';
 import { PadSeriesUpdateRequest } from '../data-transfer-objects/requests/pad-series-update-request';
 import { Rating } from '../data-transfer-objects/rating';
@@ -38,25 +38,34 @@ export class PadSeriesService {
             ps.name,
             new Brand(ps.brand.id, ps.brand.name),
             ps.polisherTypes,
-            (ps.sizes ?? [] as any[]).map((s: any) => new PadSize(
-                s.id,
-                { amount: s.diameter.amount, unit: s.diameter.unit },
-                s.thickness != null ? { amount: s.thickness.amount, unit: s.thickness.unit } : null as any as Measurement
-            )),
-            (ps.colors ?? [] as any[]).map((c: any) => new PadColor(
-                c.id,
-                ps,
-                c.name,
-                c.category,
-                c.material,
-                c.texture,
-                c.cut,
-                c.finish,
-                new Rating(c.rating.stars, c.rating.reviewCount), c.imageId,
-                (c.options ?? [] as any[]).map((o: any) => ({
-                    padSizeId: o.padSizeId,
-                    partNumber: o.partNumber
-                })))
+            (ps.sizes ?? ([] as any[])).map(
+                (s: any) =>
+                    new PadSize(
+                        s.id,
+                        { amount: s.diameter.amount, unit: s.diameter.unit },
+                        s.thickness != null
+                            ? { amount: s.thickness.amount, unit: s.thickness.unit }
+                            : ((null as any) as Measurement)
+                    )
+            ),
+            (ps.pads ?? ([] as any[])).map(
+                (c: any) =>
+                    new Pad(
+                        c.id,
+                        ps,
+                        c.name,
+                        c.category,
+                        c.material,
+                        c.texture,
+                        c.cut,
+                        c.finish,
+                        new Rating(c.rating.stars, c.rating.reviewCount),
+                        c.imageId,
+                        (c.options ?? ([] as any[])).map((o: any) => ({
+                            padSizeId: o.padSizeId,
+                            partNumber: o.partNumber
+                        }))
+                    )
             )
         );
 

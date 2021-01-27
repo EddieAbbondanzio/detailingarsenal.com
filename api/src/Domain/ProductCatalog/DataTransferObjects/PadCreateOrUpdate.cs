@@ -5,7 +5,7 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Shared;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
-    public class PadColorCreateOrUpdate : IDataTransferObject {
+    public class PadCreateOrUpdate : IDataTransferObject {
         public Guid? Id { get; }
         public string Name { get; }
         public PadCategory Category { get; }
@@ -14,7 +14,7 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public Either<Guid, DataUrlImage>? Image { get; }
         public List<PadOptionCreateOrUpdate> Options { get; }
 
-        public PadColorCreateOrUpdate(Guid? id, string name, PadCategory category, PadMaterial material, PadTexture texture, Either<Guid, DataUrlImage>? image, List<PadOptionCreateOrUpdate> options) {
+        public PadCreateOrUpdate(Guid? id, string name, PadCategory category, PadMaterial material, PadTexture texture, Either<Guid, DataUrlImage>? image, List<PadOptionCreateOrUpdate> options) {
             Id = id;
             Name = name;
             Category = category;

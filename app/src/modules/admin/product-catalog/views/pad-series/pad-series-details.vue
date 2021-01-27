@@ -49,8 +49,8 @@
                 </b-table>
             </b-field>
 
-            <b-field label="Colors">
-                <b-table :data="value.colors" detailed>
+            <b-field label="Pads">
+                <b-table :data="value.pads" detailed>
                     <b-table-column v-slot="props" label="Name" field="label" sortable>{{
                         props.row.name
                     }}</b-table-column>
