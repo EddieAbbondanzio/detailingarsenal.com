@@ -72,6 +72,19 @@ namespace DetailingArsenal.Tests.Api {
             Assert.AreEqual(new(1), output);
         }
 
+        [TestMethod]
+        public void ReadReadsRightObject() {
+            var c = new EitherConverterInner<int, Foo>();
+
+            var rawBytes = new ReadOnlySpan<byte>(Encoding.UTF8.GetBytes("{\"Bar\": \"cat\", \"Baz\": 1}"));
+            var reader = new Utf8JsonReader(rawBytes);
+
+            reader.Read(); // Read always starts at none. See: https://stackoverflow.com/questions/59028159/exception-when-testing-custom-jsonconverter
+            var output = c.Read(ref reader, typeof(Either<int, Foo>), null!);
+            Assert.AreEqual("cat", output!.Right().Bar);
+            Assert.AreEqual(1, output!.Right().Baz);
+        }
+
 
         [TestMethod]
         public void WriteWritesLeft() {
@@ -105,6 +118,11 @@ namespace DetailingArsenal.Tests.Api {
                     Assert.AreEqual("\"cat\"", output);
                 }
             }
+        }
+
+        class Foo {
+            public string Bar { get; set; } = null!;
+            public int Baz { get; set; }
         }
     }
 }

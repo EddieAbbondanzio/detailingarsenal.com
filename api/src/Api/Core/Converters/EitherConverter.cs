@@ -47,12 +47,12 @@ namespace DetailingArsenal.Api {
             * and if that fails, then we'll try the right side.
             */
             try {
-                var l = JsonSerializer.Deserialize<TLeft>(ref reader)!;
+                var l = JsonSerializer.Deserialize<TLeft>(ref reader, options)!;
                 return new(l);
             } catch (JsonException) { }
 
             try {
-                var r = JsonSerializer.Deserialize<TRight>(ref reader)!;
+                var r = JsonSerializer.Deserialize<TRight>(ref reader, options)!;
                 return new(r);
             } catch (JsonException) { }
 
@@ -61,9 +61,9 @@ namespace DetailingArsenal.Api {
 
         public override void Write(Utf8JsonWriter writer, Either<TLeft, TRight> value, JsonSerializerOptions options) {
             if (value.IsLeft) {
-                JsonSerializer.Serialize(writer, value.Left());
+                JsonSerializer.Serialize(writer, value.Left(), options);
             } else {
-                JsonSerializer.Serialize(writer, value.Right());
+                JsonSerializer.Serialize(writer, value.Right(), options);
             }
         }
     }
