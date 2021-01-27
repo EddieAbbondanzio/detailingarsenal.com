@@ -29,7 +29,10 @@ export class AuthenticationService {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
 
-        await this.auth0.getTokenSilently(); // try to log in existing user
+        try {
+            await this.auth0.getTokenSilently(); // try to log in existing user
+        } catch {}
+
         var user = await this.auth0.getUser();
         this.isAuthed = user != null;
     }
