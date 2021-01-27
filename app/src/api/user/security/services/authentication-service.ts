@@ -29,6 +29,7 @@ export class AuthenticationService {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
 
+        await this.auth0.getTokenSilently(); // try to log in existing user
         var user = await this.auth0.getUser();
         this.isAuthed = user != null;
     }
@@ -42,7 +43,7 @@ export class AuthenticationService {
             redirect_uri: process.env.VUE_APP_AUTH0_CALLBACK_URI,
             appState: {
                 route
-            },
+            }
         });
     }
 
