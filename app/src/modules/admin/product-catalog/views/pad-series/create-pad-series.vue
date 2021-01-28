@@ -40,7 +40,7 @@
                 <measurement-input label="Thickness" v-model="value.thickness" />
             </input-array>
 
-            <input-array title="Colors" :factory="padColorCreateFactory" v-model="colors">
+            <input-array title="Pads" :factory="padCreateFactory" v-model="pads">
                 <template v-slot="{ value }">
                     <input-text-field
                         class="has-margin-x-1 has-margin-y-0"
@@ -62,27 +62,24 @@
                         </option>
                     </input-select>
 
-                    <input-select
-                        class="has-margin-x-1 has-margin-y-0"
-                        label="Material"
-                        rules="required"
-                        v-model="value.material"
-                    >
+                    <input-select class="has-margin-x-1 has-margin-y-0" label="Material" v-model="value.material">
                         <option :value="null">Select a material</option>
                         <option v-for="m in materials" :key="m[1]" :value="m[1]">
                             {{ m[0] }}
                         </option>
                     </input-select>
 
-                    <input-select
-                        class="has-margin-x-1 has-margin-y-0"
-                        label="Texture"
-                        rules="required"
-                        v-model="value.texture"
-                    >
+                    <input-select class="has-margin-x-1 has-margin-y-0" label="Texture" v-model="value.texture">
                         <option :value="null">Select a texture</option>
                         <option v-for="t in textures" :key="t[1]" :value="t[1]">
                             {{ t[0] }}
+                        </option>
+                    </input-select>
+
+                    <input-select class="has-margin-x-1 has-margin-y-0" label="Color" v-model="value.color">
+                        <option :value="null">Select a color</option>
+                        <option v-for="c in colors" :key="c[1]" :value="c[1]">
+                            {{ c[0] }}
                         </option>
                     </input-select>
 
@@ -138,6 +135,7 @@ import {
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
+import { PadColor } from '@/api/product-catalog/data-transfer-objects/pad-color';
 
 @Component({
     components: {
@@ -161,6 +159,10 @@ export default class CreatePadSeries extends Vue {
         return Object.entries(PadTexture);
     }
 
+    get colors() {
+        return Object.entries(PadColor);
+    }
+
     get allPolisherTypes() {
         return Object.values(PolisherType);
     }
@@ -169,7 +171,7 @@ export default class CreatePadSeries extends Vue {
     brand: Brand | null = null;
     polisherTypes: PolisherType[] = [];
     sizes: PadSizeCreateOrUpdate[] = [];
-    colors: PadCreateOrUpdate[] = [];
+    pads: PadCreateOrUpdate[] = [];
 
     async created() {
         await brandStore.init();
@@ -186,7 +188,7 @@ export default class CreatePadSeries extends Vue {
                 diameter: s.diameter,
                 thickness: s.thickness?.amount != null ? s.thickness : null
             })),
-            pads: this.colors
+            pads: this.pads
         };
 
         try {
@@ -198,12 +200,13 @@ export default class CreatePadSeries extends Vue {
         }
     }
 
-    padColorCreateFactory(): PadCreateOrUpdate {
+    padCreateFactory(): PadCreateOrUpdate {
         return {
             id: null,
             name: '',
             category: null!,
             material: null!,
+            color: null!,
             texture: null!,
             options: [],
             image: null
@@ -214,8 +217,8 @@ export default class CreatePadSeries extends Vue {
      * Don't allow a size to be picked on an option if it's already used by another
      * option on the same color.
      */
-    isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreateOrUpdate, color: PadCreateOrUpdate) {
-        const sizesUsedAlready = color.options.map(o => o.padSizeIndex!).map(i => this.sizes[i]);
+    isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreateOrUpdate, pad: PadCreateOrUpdate) {
+        const sizesUsedAlready = pad.options.map(o => o.padSizeIndex!).map(i => this.sizes[i]);
 
         return !sizesUsedAlready.every(s => s != size);
     }

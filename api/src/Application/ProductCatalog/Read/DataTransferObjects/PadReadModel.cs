@@ -8,21 +8,22 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public Guid Id { get; }
         public string Name { get; }
         public string Category { get; }
-        public string Material { get; }
-        public string Texture { get; }
-
+        public string? Material { get; }
+        public string? Texture { get; }
+        public string? Color { get; }
         public Guid? ImageId { get; }
         public List<PadOptionReadModel> Options { get; }
         public decimal? Cut { get; }
         public decimal? Finish { get; }
         public RatingReadModel Rating { get; }
 
-        public PadReadModel(Guid id, string name, string category, string material, string texture, Guid? image, List<PadOptionReadModel> options, decimal? cut, decimal? finish, RatingReadModel rating) {
+        public PadReadModel(Guid id, string name, string category, string? material, string? texture, string? color, Guid? image, List<PadOptionReadModel> options, decimal? cut, decimal? finish, RatingReadModel rating) {
             Id = id;
             Name = name;
             Category = category;
             Material = material;
             Texture = texture;
+            Color = color;
             ImageId = image;
             Options = options;
             Cut = cut;

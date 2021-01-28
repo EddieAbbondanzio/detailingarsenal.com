@@ -63,6 +63,9 @@
                     <b-table-column v-slot="props" label="Texture" field="action" sortable>{{
                         props.row.texture | uppercaseFirst
                     }}</b-table-column>
+                    <b-table-column v-slot="props" label="Color" field="action" sortable>{{
+                        props.row.color | uppercaseFirst
+                    }}</b-table-column>
                     <b-table-column v-slot="props" label="Image" field="scope" sortable>
                         <a :href="props.row.imageUrl" target="_blank">
                             <img :src="props.row.thumbnailUrl" style="max-height: 40px !important" />

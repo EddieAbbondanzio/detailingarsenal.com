@@ -14,7 +14,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 return (await conn.QueryAsync<ReviewRow>(
                     @"select * from reviews r where r.id = @Id;", new { Id = id }
-                )).Select(r => new Review(r.UserId, r.PadColorId, r.CreatedDate, r.Stars, r.Cut, r.Finish, r.Title, r.Body)).First();
+                )).Select(r => new Review(r.UserId, r.PadId, r.CreatedDate, r.Stars, r.Cut, r.Finish, r.Title, r.Body)).First();
             }
         }
 
@@ -28,14 +28,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 Finish = review.Finish,
                 Title = review.Title,
                 Body = review.Body,
-                PadColorId = review.PadColorId
+                PadId = review.PadId
             };
 
             using (var conn = OpenConnection()) {
                 await conn.ExecuteAsync(
                     @"insert into reviews 
-                        (id, user_id, pad_color_id, created_date, stars, cut, finish, title, body)
-                        values (@Id, @UserId, @PadColorId, @CreatedDate, @Stars, @Cut, @Finish, @Title, @Body);",
+                        (id, user_id, pad_id, created_date, stars, cut, finish, title, body)
+                        values (@Id, @UserId, @PadId, @CreatedDate, @Stars, @Cut, @Finish, @Title, @Body);",
                         row
                 );
             }

@@ -63,27 +63,24 @@
                         </option>
                     </input-select>
 
-                    <input-select
-                        class="has-margin-x-1 has-margin-y-0"
-                        label="Material"
-                        rules="required"
-                        v-model="value.material"
-                    >
+                    <input-select class="has-margin-x-1 has-margin-y-0" label="Material" v-model="value.material">
                         <option :value="null">Select a material</option>
                         <option v-for="m in materials" :key="m[1]" :value="m[1]">
                             {{ m[0] }}
                         </option>
                     </input-select>
 
-                    <input-select
-                        class="has-margin-x-1 has-margin-y-0"
-                        label="Texture"
-                        rules="required"
-                        v-model="value.texture"
-                    >
+                    <input-select class="has-margin-x-1 has-margin-y-0" label="Texture" v-model="value.texture">
                         <option :value="null">Select a texture</option>
                         <option v-for="t in textures" :key="t[1]" :value="t[1]">
                             {{ t[0] }}
+                        </option>
+                    </input-select>
+
+                    <input-select class="has-margin-x-1 has-margin-y-0" label="Color" v-model="value.color">
+                        <option :value="null">Select a color</option>
+                        <option v-for="c in colors" :key="c[1]" :value="c[1]">
+                            {{ c[0] }}
                         </option>
                     </input-select>
 
@@ -145,6 +142,7 @@ import {
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
+import { PadColor } from '@/api/product-catalog/data-transfer-objects/pad-color';
 
 @Component({
     components: {
@@ -166,6 +164,10 @@ export default class UpdatePadSeries extends Vue {
 
     get textures() {
         return Object.entries(PadTexture);
+    }
+
+    get colors() {
+        return Object.entries(PadColor);
     }
 
     get allPolisherTypes() {
@@ -204,6 +206,7 @@ export default class UpdatePadSeries extends Vue {
             category: c.category,
             material: c.material,
             texture: c.texture,
+            color: c.color,
             image: c.image, // Existing images are just ids to real images.
             options: c.options.map(o => ({
                 padSizeIndex: null,
@@ -243,6 +246,7 @@ export default class UpdatePadSeries extends Vue {
             name: '',
             category: null!,
             material: null!,
+            color: null!,
             texture: null!,
             options: [],
             image: null

@@ -67,26 +67,28 @@ namespace DetailingArsenal.Application.ProductCatalog {
             var colors = new List<Pad>();
 
             // Update any existing pad colors
-            foreach (var color in existing) {
-                var update = updates.Find(c => c.Id == color.Id);
+            foreach (var pad in existing) {
+                var update = updates.Find(c => c.Id == pad.Id);
 
                 // If no update exists, it was deleted.
                 if (update == null) {
                     continue;
                 }
 
-                color.Name = update.Name;
-                color.Category = update.Category;
+                pad.Name = update.Name;
+                pad.Category = update.Category;
+                pad.Material = update.Material;
+                pad.Texture = update.Texture;
+                pad.Color = update.Color;
+                pad.Image = update.Image?.Match(id => pad.Image, image => imageProcessor.Process(image.Name, image.Data));
 
-                color.Image = update.Image?.Match(id => color.Image, image => imageProcessor.Process(image.Name, image.Data));
 
-
-                color.Options.Clear();
+                pad.Options.Clear();
                 foreach (var option in update.Options) {
-                    color.Options.Add(new PadOption(option.PadSizeId!.Value, option.PartNumber));
+                    pad.Options.Add(new PadOption(option.PadSizeId!.Value, option.PartNumber));
                 }
 
-                colors.Add(color);
+                colors.Add(pad);
             }
 
             // Add new

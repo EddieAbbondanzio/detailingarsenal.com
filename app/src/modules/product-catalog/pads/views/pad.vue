@@ -38,6 +38,11 @@
 
                         <div class="columns">
                             <div class="column is-one-quarter">
+                                <p class="is-size-6 has-text-weight-bold">Category</p>
+                                <p class="is-size-6 subtitle">{{ value.category }}</p>
+                            </div>
+
+                            <div class="column is-one-quarter">
                                 <p class="is-size-6 has-text-weight-bold">Cut</p>
                                 <pad-cut-bar :value="value.cut" />
                             </div>
@@ -71,8 +76,8 @@
                     <div class="has-margin-bottom-3">
                         <div class="is-flex is-flex-column is-flex-row-tablet is-justify-content-space-around">
                             <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
-                                <p class="is-size-5 title">Category</p>
-                                <p class="is-size-6 subtitle">{{ value.category | uppercaseFirst }}</p>
+                                <p class="is-size-5 title">Color</p>
+                                <p class="is-size-6 subtitle">{{ value.color | uppercaseFirst }}</p>
                             </div>
 
                             <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">

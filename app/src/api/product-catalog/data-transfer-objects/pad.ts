@@ -6,6 +6,7 @@ import { Image } from './image';
 import { PadOption } from './pad-option';
 import { PadMaterial } from './pad-material';
 import { PadTexture } from './pad-texture';
+import { PadColor } from './pad-color';
 
 export class Pad {
     get label() {
@@ -25,8 +26,9 @@ export class Pad {
         public series: PadSeries, // Used for quick lookup of series info only
         public name: string,
         public category: PadCategory,
-        public material: PadMaterial,
-        public texture: PadTexture,
+        public material: PadMaterial | null,
+        public texture: PadTexture | null,
+        public color: PadColor | null,
         public cut: PadCut | null, // Comes from review
         public finish: PadFinish | null, // Comes from review
         public rating: Rating,
