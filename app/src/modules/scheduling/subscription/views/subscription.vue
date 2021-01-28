@@ -5,20 +5,14 @@
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
                         <breadcrumb name="Account" :to="{ name: 'account' }" />
-                        <breadcrumb
-                            name="Subscription"
-                            :to="{ name: 'subscription' }"
-                            active="true"
-                        />
+                        <breadcrumb name="Subscription" :to="{ name: 'subscription' }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
         <div class="box is-shadowless" v-if="customer != null">
-            <p
-                class="is-size-4 has-text-weight-bold has-text-centered has-margin-bottom-3"
-            >One plan, no confusion.</p>
+            <p class="is-size-4 has-text-weight-bold has-text-centered has-margin-bottom-3">One plan, no confusion.</p>
 
             <div class="card has-margin-top-3 has-margin-bottom-4">
                 <!-- Trial Banner -->
@@ -32,9 +26,9 @@
 
                 <!-- Title -->
                 <div class="has-background-primary has-padding-all-4">
-                    <p
-                        class="is-size-4 has-text-weight-bold has-text-white has-text-centered"
-                    >Detailing Arsenal {{ name }}</p>
+                    <p class="is-size-4 has-text-weight-bold has-text-white has-text-centered">
+                        Detailing Arsenal {{ name }}
+                    </p>
                 </div>
 
                 <div class="level has-padding-all-4">
@@ -50,10 +44,9 @@
                                     <small class="is-size-3" style="vertical-align: text-top;">$</small>
                                     {{ yearPrice }}
                                 </p>
-                                <p
-                                    class="is-size-5 has-text-grey is-uppercase"
-                                    style="align-self: bottom"
-                                >/ {{ showYearly ? 'year' : 'month' }}</p>
+                                <p class="is-size-5 has-text-grey is-uppercase" style="align-self: bottom">
+                                    / {{ showYearly ? 'year' : 'month' }}
+                                </p>
 
                                 <b-switch
                                     class="has-margin-y-3"
@@ -73,70 +66,53 @@
                         <div class="is-flex is-flex-column">
                             <ul class="has-margin-bottom-4">
                                 <li>
-                                    <b-icon
-                                        icon="check"
-                                        type="is-success"
-                                        class="has-padding-right-3"
-                                    />Unlimited
+                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Unlimited
                                     appointment bookings
                                 </li>
                                 <li>
-                                    <b-icon
-                                        icon="check"
-                                        type="is-success"
-                                        class="has-padding-right-3"
-                                    />Unlimited
+                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Unlimited
                                     contacts
                                 </li>
                                 <li>
-                                    <b-icon
-                                        icon="check"
-                                        type="is-success"
-                                        class="has-padding-right-3"
-                                    />Synchronized
+                                    <b-icon icon="check" type="is-success" class="has-padding-right-3" />Synchronized
                                     multi device support
                                 </li>
                             </ul>
 
                             <div class="is-flex is-flex-row is-align-items-center">
                                 <!-- Trialing -->
-                                <div
-                                    class="is-flex is-flex-row is-align-items-center"
-                                    v-if="state == 'trialing'"
-                                >
-                                    <b-button
-                                        type="is-success"
-                                        size="is-large"
-                                        @click="onSubscribeClick"
-                                    >Subscribe</b-button>
+                                <div class="is-flex is-flex-row is-align-items-center" v-if="state == 'trialing'">
+                                    <b-button type="is-success" size="is-large" @click="onSubscribeClick"
+                                        >Subscribe</b-button
+                                    >
 
                                     <span
                                         class="has-text-grey has-margin-left-1"
                                         v-if="customer.subscription.status == 'trialing'"
-                                    >Trial ends on {{ customer.subscription.trialPeriod.end | date }}</span>
+                                        >Trial ends on {{ customer.subscription.trialPeriod.end | date }}</span
+                                    >
 
-                                    <b-button
-                                        type="is-text"
-                                        v-if="customer.subscription.status == 'active'"
-                                    >Cancel my subscription</b-button>
+                                    <b-button type="is-text" v-if="customer.subscription.status == 'active'"
+                                        >Cancel my subscription</b-button
+                                    >
                                 </div>
                                 <!-- Trialing First Payment -->
-                                <div
-                                    class="has-margin-bottom-3"
-                                    v-else-if="state == 'trialing_will_upgrade'"
-                                >
+                                <div class="has-margin-bottom-3" v-else-if="state == 'trialing_will_upgrade'">
                                     <p class="is-size-5 has-text-weight-bold">Payment</p>
                                     <div>
                                         <div class="is-flex is-flex-row is-align-items-center">
-                                            <p
-                                                class="is-size-6"
-                                            >Your first bill for {{ (customer.subscription.price.amount / 100) | currency }} will be on {{ customer.subscription.period.end | date }}</p>
+                                            <p class="is-size-6">
+                                                Your first bill for
+                                                {{ (customer.subscription.price.amount / 100) | currency }} will be on
+                                                {{ customer.subscription.period.end | date }}
+                                            </p>
                                             <b-button
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
                                                 @click="onCancel"
                                                 title="Cancel my subscription"
-                                            >Cancel</b-button>
+                                                >Cancel</b-button
+                                            >
                                         </div>
 
                                         <div class="is-flex is-flex-row is-align-items-center">
@@ -144,13 +120,17 @@
                                                 v-for="paymentMethod in customer.paymentMethods"
                                                 :key="paymentMethod.id"
                                                 class="is-size-6"
-                                            >{{ paymentMethod.brand | uppercaseFirst }} ending in {{ paymentMethod.last4 }}</p>
+                                            >
+                                                {{ paymentMethod.brand | uppercaseFirst }} ending in
+                                                {{ paymentMethod.last4 }}
+                                            </p>
                                             <b-button
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
                                                 @click="onAddCard"
                                                 title="Update card on file"
-                                            >Update</b-button>
+                                                >Update</b-button
+                                            >
                                         </div>
                                     </div>
                                 </div>
@@ -159,15 +139,18 @@
                                     <p class="is-size-5 has-text-weight-bold">Payment</p>
                                     <div>
                                         <div class="is-flex is-flex-row is-align-items-center">
-                                            <p
-                                                class="is-size-6"
-                                            >Your next bill for {{ (customer.subscription.price.amount / 100) | currency }} will be on {{ customer.subscription.period.end | date }}</p>
+                                            <p class="is-size-6">
+                                                Your next bill for
+                                                {{ (customer.subscription.price.amount / 100) | currency }} will be on
+                                                {{ customer.subscription.period.end | date }}
+                                            </p>
                                             <b-button
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
                                                 @click="onCancel"
                                                 title="Cancel my subscription"
-                                            >Cancel</b-button>
+                                                >Cancel</b-button
+                                            >
                                         </div>
 
                                         <div class="is-flex is-flex-row is-align-items-center">
@@ -175,13 +158,17 @@
                                                 v-for="paymentMethod in customer.paymentMethods"
                                                 :key="paymentMethod.id"
                                                 class="is-size-6"
-                                            >{{ paymentMethod.brand | uppercaseFirst }} ending in {{ paymentMethod.last4 }}</p>
+                                            >
+                                                {{ paymentMethod.brand | uppercaseFirst }} ending in
+                                                {{ paymentMethod.last4 }}
+                                            </p>
                                             <b-button
                                                 class="has-padding-y-0 has-margin-y-0"
                                                 type="is-text"
                                                 @click="onAddCard"
                                                 title="Update card on file"
-                                            >Update</b-button>
+                                                >Update</b-button
+                                            >
                                         </div>
                                     </div>
                                 </div>
@@ -190,20 +177,17 @@
                                     <p class="is-size-5 has-text-weight-bold">Payment</p>
                                     <div>
                                         <div class="is-flex is-flex-row is-align-items-center">
-                                            <b-icon
-                                                icon="alert-circle"
-                                                type="is-danger"
-                                                class="has-margin-right-1"
-                                            />
-                                            <p
-                                                class="has-text-weight-bold"
-                                            >Error. There was an issue processing your payment.</p>
+                                            <b-icon icon="alert-circle" type="is-danger" class="has-margin-right-1" />
+                                            <p class="has-text-weight-bold">
+                                                Error. There was an issue processing your payment.
+                                            </p>
                                         </div>
 
                                         <div class="is-flex is-flex-row is-align-items-center">
-                                            <p
-                                                class="is-size-6 has-margin-bottom-3"
-                                            >Your membership will expire on {{ customer.subscription.period.end | date }}</p>
+                                            <p class="is-size-6 has-margin-bottom-3">
+                                                Your membership will expire on
+                                                {{ customer.subscription.period.end | date }}
+                                            </p>
                                         </div>
 
                                         <div class="is-flex is-flex-row is-align-items-center">
@@ -212,7 +196,8 @@
                                                 type="is-primary"
                                                 @click="onAddCard"
                                                 title="Update card on file"
-                                            >Update payment info</b-button>
+                                                >Update payment info</b-button
+                                            >
                                         </div>
                                     </div>
                                 </div>
@@ -220,11 +205,7 @@
                                 <!-- Cancelling -->
                                 <div v-else-if="state == 'cancelling'">
                                     <div class="is-flex is-flex-row is-align-items-center">
-                                        <b-icon
-                                            icon="alert"
-                                            type="is-warning"
-                                            class="has-margin-right-1"
-                                        />
+                                        <b-icon icon="alert" type="is-warning" class="has-margin-right-1" />
                                         <p class="has-text-weight-bold">Cancelling</p>
                                     </div>
 
@@ -235,19 +216,15 @@
                                             type="is-text"
                                             @click="onUndoCancel"
                                             title="Update card on file"
-                                        >Undo</b-button>
+                                            >Undo</b-button
+                                        >
                                     </div>
                                 </div>
                                 <!-- Inactive -->
-                                <div
-                                    class="is-flex is-flex-row is-align-items-center"
-                                    v-if="state == 'inactive'"
-                                >
-                                    <b-button
-                                        type="is-success"
-                                        size="is-large"
-                                        @click="onSubscribeClick"
-                                    >Subscribe</b-button>
+                                <div class="is-flex is-flex-row is-align-items-center" v-if="state == 'inactive'">
+                                    <b-button type="is-success" size="is-large" @click="onSubscribeClick"
+                                        >Subscribe</b-button
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -264,6 +241,7 @@ import { Subscription as SubscriptionObj, Customer } from '../../../../api';
 import moment from 'moment';
 import { displayLoading } from '../../../../core';
 import billingStore from '@/modules/scheduling/subscription/store/billing-store';
+import { loadStripeJs } from '@/plugins/stripe';
 
 @Component
 export default class Subscription extends Vue {
@@ -309,6 +287,7 @@ export default class Subscription extends Vue {
 
     @displayLoading
     async created() {
+        await loadStripeJs();
         await billingStore.init();
         this.customer = billingStore.customer;
         this.showYearly = this.customer.subscription?.price.interval == 'year';

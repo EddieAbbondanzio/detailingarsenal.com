@@ -52,8 +52,7 @@ export default class App extends Vue {
     }
 
     async created() {
-        await loadStripeJs();
-        await userStore.init();
+        userStore.init();
     }
 }
 </script>
