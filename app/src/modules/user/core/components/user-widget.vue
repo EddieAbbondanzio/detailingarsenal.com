@@ -37,8 +37,8 @@
         </b-dropdown>
     </div>
     <div class="has-margin-right-2-mobile" v-else>
-        <b-button type="is-success" class="has-margin-right-2" @click="signUp()">Sign up</b-button>
-        <b-button type="is-info" @click="login()">Login</b-button>
+        <b-button type="is-success" class="has-margin-right-2" @click="signUp()" :loading="loading">Sign up</b-button>
+        <b-button type="is-info" @click="login()" :loading="loading">Login</b-button>
     </div>
 </template>
 
@@ -64,6 +64,14 @@ export default class UserWidget extends Vue {
         }
 
         return userStore.user.username;
+    }
+
+    get loading() {
+        return userStore.isLoading;
+    }
+
+    async created() {
+        userStore.init();
     }
 
     async login() {
