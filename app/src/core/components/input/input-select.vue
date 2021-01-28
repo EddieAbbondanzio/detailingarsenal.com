@@ -4,17 +4,11 @@
             <slot name="label"></slot>
         </template>
 
-        <validation-provider
-            :vid="vid"
-            :name="label"
-            :rules="rules"
-            v-slot="{ errors, classes }"
-            ref="validator"
-        >
+        <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
             <b-select
                 :value="value"
                 @input="onInput"
-                :class="{...classes, 'is-fullwidth': true }"
+                :class="{ ...classes, 'is-fullwidth': true }"
                 :disabled="disabled"
             >
                 <slot></slot>

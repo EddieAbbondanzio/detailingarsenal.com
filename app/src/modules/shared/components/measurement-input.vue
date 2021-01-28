@@ -8,11 +8,16 @@
             label="Amount"
             :hideLabel="true"
         />
-        <input-select v-model="safeValue.unit" @input="onInput()" label="Unit" :hideLabel="true">
+        <input-select v-model="safeValue.unit" @input="onInput()" label="Unit" :hideLabel="true" class="unit-select">
             <option v-for="unit in units" :key="unit" :value="unit">{{ unit }}</option>
         </input-select>
     </b-field>
 </template>
+
+<style lang="sass">
+.unit-select
+    width: 70px!important
+</style>
 
 <script lang="ts">
 import { Measurement, MeasurementUnit } from '@/api';
