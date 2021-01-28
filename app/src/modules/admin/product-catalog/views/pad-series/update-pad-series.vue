@@ -252,7 +252,11 @@ export default class UpdatePadSeries extends Vue {
             material: null!,
             color: null!,
             texture: null!,
-            options: [],
+            options: this.sizes.map(s => ({
+                padSizeId: s.id,
+                partNumber: null,
+                padSizeIndex: null
+            })),
             image: null
         };
     }

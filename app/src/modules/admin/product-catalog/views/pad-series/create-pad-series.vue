@@ -212,7 +212,11 @@ export default class CreatePadSeries extends Vue {
             material: null!,
             color: null!,
             texture: null!,
-            options: [],
+            options: this.sizes.map((s, i) => ({
+                padSizeIndex: i,
+                padSizeId: null,
+                partNumber: null
+            })),
             image: null
         };
     }
