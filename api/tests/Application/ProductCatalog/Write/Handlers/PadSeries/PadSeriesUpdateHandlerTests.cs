@@ -57,8 +57,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var updated = h.UpdatePadSizes(existing, news);
 
             Assert.AreEqual(2, updated.Count);
-            Assert.AreEqual(new Measurement(4.0f, MeasurementUnit.Inches), updated[1].Diameter);
-            Assert.IsNotNull(updated[1].Id);
+            Assert.AreEqual(4.0f, updated[0].Diameter.Amount);
+            Assert.IsNotNull(updated[0].Id);
         }
 
         [TestMethod]
@@ -194,8 +194,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             }.ToList();
 
             var updated = h.UpdatePadSizes(existing, news);
-            Assert.AreEqual(updated[0].Diameter.Amount, 4f);
-            Assert.AreEqual(updated[1].Diameter.Amount, 1f);
+            Assert.AreEqual(4f, updated[0].Diameter.Amount);
+            Assert.AreEqual(1f, updated[1].Diameter.Amount);
         }
     }
 }

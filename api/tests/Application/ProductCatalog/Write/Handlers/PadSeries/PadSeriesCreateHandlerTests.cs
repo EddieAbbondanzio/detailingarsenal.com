@@ -205,9 +205,9 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             );
 
             await h.Execute(c, null);
-            Assert.AreEqual(1f, series[0].Sizes[0].Diameter.Amount);
+            Assert.AreEqual(3f, series[0].Sizes[0].Diameter.Amount);
             Assert.AreEqual(2f, series[0].Sizes[1].Diameter.Amount);
-            Assert.AreEqual(3f, series[0].Sizes[2].Diameter.Amount);
+            Assert.AreEqual(1f, series[0].Sizes[2].Diameter.Amount);
         }
 
         [TestMethod]

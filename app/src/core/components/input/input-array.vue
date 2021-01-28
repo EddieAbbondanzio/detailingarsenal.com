@@ -39,7 +39,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
  * list and a delete button for each item.
  */
 @Component({
-    name: 'input-array',
+    name: 'input-array'
 })
 export default class InputArray extends Vue {
     /**

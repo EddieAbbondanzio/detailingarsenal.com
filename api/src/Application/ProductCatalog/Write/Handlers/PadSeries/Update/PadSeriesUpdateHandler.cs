@@ -60,7 +60,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 sizes.Add(new PadSize(size.Diameter, size.Thickness));
             }
 
-            return sizes.OrderBy(s => s.Diameter).ToList();
+            return sizes.OrderByDescending(s => s.Diameter).ToList();
         }
 
         public List<Pad> UpdatePadColors(List<Pad> existing, List<PadCreateOrUpdate> updates) {
