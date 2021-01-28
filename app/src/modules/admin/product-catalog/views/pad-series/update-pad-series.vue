@@ -102,7 +102,11 @@
                                     :value="size.id"
                                     :disabled="isSizeDisabled(size, value, pad)"
                                 >
-                                    {{ size.diameter.amount.toString() + size.diameter.unit }}
+                                    {{
+                                        size.diameter.amount == null
+                                            ? ''
+                                            : size.diameter.amount.toString() + size.diameter.unit
+                                    }}
                                 </option>
                             </input-select>
 
