@@ -98,6 +98,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                     update.Category,
                     update.Material,
                     update.Texture,
+                    update.Color,
                     update.Image?.Match(
                         id => existing.Find(c => c.Image?.Id == id)?.Image,
                         image => imageProcessor.Process(image.Name, image.Data)

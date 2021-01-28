@@ -22,7 +22,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
         [TestMethod]
         public async Task AcceptsPads() {
             var s = new PadSeries("Name", Guid.NewGuid(), new(), new(), new());
-            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled));
+            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red));
 
             var satisified = await new PadSeriesHasPadsSpecification().Check(s);
             Assert.IsTrue(satisified.IsSatisfied);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Shared;
 
@@ -11,15 +12,18 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public PadCategory Category { get; }
         public PadMaterial Material { get; }
         public PadTexture Texture { get; }
+        public PadColor Color { get; }
         public Either<Guid, DataUrlImage>? Image { get; }
         public List<PadOptionCreateOrUpdate> Options { get; }
 
-        public PadCreateOrUpdate(Guid? id, string name, PadCategory category, PadMaterial material, PadTexture texture, Either<Guid, DataUrlImage>? image, List<PadOptionCreateOrUpdate> options) {
+        [JsonConstructor]
+        public PadCreateOrUpdate(Guid? id, string name, PadCategory category, PadMaterial material, PadTexture texture, PadColor color, Either<Guid, DataUrlImage>? image, List<PadOptionCreateOrUpdate> options) {
             Id = id;
             Name = name;
             Category = category;
             Material = material;
             Texture = texture;
+            Color = color;
             Image = image;
             Options = options;
         }

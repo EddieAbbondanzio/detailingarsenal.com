@@ -92,13 +92,13 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             );
 
             var existing = new Pad[] {
-                new Pad("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, null, new PadOption[] {
+                new Pad("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, null, new PadOption[] {
                     new PadOption(Guid.NewGuid(), "part_number"),
                 }.ToList())
             }.ToList();
 
             var updates = new PadCreateOrUpdate[]{
-                new PadCreateOrUpdate(existing[0].Id, "ColorAA", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+                new PadCreateOrUpdate(existing[0].Id, "ColorAA", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList())
                 }.ToList();
@@ -123,7 +123,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             List<Pad> existing = new();
 
             var updates = new PadCreateOrUpdate[]{
-                new PadCreateOrUpdate(null, "ColorB", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+                new PadCreateOrUpdate(null, "ColorB", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList())
                 }.ToList();
@@ -143,7 +143,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                         );
 
             var existing = new Pad[] {
-                new Pad("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled,null, new PadOption[] {
+                new Pad("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,null, new PadOption[] {
                     new PadOption(Guid.NewGuid(), "part_number"),
                 }.ToList())
             }.ToList();
@@ -163,10 +163,10 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             List<Pad> existing = new();
 
             var updates = new PadCreateOrUpdate[]{
-                new PadCreateOrUpdate(null, "B", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+                new PadCreateOrUpdate(null, "B", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList()),
-                 new PadCreateOrUpdate(null, "A", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, null!, new PadOptionCreateOrUpdate[] {
+                 new PadCreateOrUpdate(null, "A", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, null!, new PadOptionCreateOrUpdate[] {
                     new PadOptionCreateOrUpdate(Guid.NewGuid(), "part_number2")
                 }.ToList())
                 }.ToList();

@@ -42,7 +42,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                     }
                 }).ToList();
 
-                return new Pad(c.Name, c.Category, c.Material, c.Texture, image, options);
+                return new Pad(c.Name, c.Category, c.Material, c.Texture, c.Color, image, options);
             }).OrderBy(c => c.Name).ToList();
 
 

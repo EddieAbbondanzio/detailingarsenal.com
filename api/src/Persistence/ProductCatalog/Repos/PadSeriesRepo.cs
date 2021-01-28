@@ -62,8 +62,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 c.Id,
                                 c.Name,
                                 PadCategoryUtils.Parse(c.Category),
-                                PadMaterialUtils.Parse(c.Material),
-                                PadTextureUtils.Parse(c.Texture),
+                                c.Material != null ? PadMaterialUtils.Parse(c.Material) : null,
+                                c.Texture != null ? PadTextureUtils.Parse(c.Texture) : null,
+                                c.Color != null ? PadColorUtils.Parse(c.Color) : null,
                                 processedImage
                             );
 
@@ -141,13 +142,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, material, texture, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Name, @ImageId);",
+                        @"insert into pads (id, pad_series_id, category, material, texture, color, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @Name, @ImageId);",
                         series.Pads.Select(c => new PadRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
                             Category = c.Category.Serialize(),
-                            Material = c.Material.Serialize(),
-                            Texture = c.Texture.Serialize(),
+                            Material = c.Material?.Serialize(),
+                            Texture = c.Texture?.Serialize(),
+                            Color = c.Color?.Serialize(),
                             Name = c.Name,
                             ImageId = c.Image?.Id
                         }).ToList()
@@ -232,13 +234,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, material, texture, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Name, @ImageId);",
+                        @"insert into pads (id, pad_series_id, category, material, texture, color, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @Name, @ImageId);",
                         series.Pads.Select(c => new PadRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
                             Category = c.Category.Serialize(),
-                            Material = c.Material.Serialize(),
-                            Texture = c.Texture.Serialize(),
+                            Material = c.Material?.Serialize(),
+                            Texture = c.Texture?.Serialize(),
+                            Color = c.Color?.Serialize(),
                             Name = c.Name,
                             ImageId = c.Image?.Id
                         }).ToList()
