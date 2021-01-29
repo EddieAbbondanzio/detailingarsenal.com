@@ -1,4 +1,4 @@
-import { Auth0Client } from '@auth0/auth0-spa-js';
+import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
 import router from '@/core/router';
 import { Route, RawLocation } from 'vue-router';
 
@@ -11,7 +11,8 @@ export class AuthenticationService {
     private auth0!: Auth0Client;
 
     async init() {
-        this.auth0 = new Auth0Client({
+        // This will try to log in the user after a refresh
+        this.auth0 = await createAuth0Client({
             domain: process.env.VUE_APP_AUTH0_DOMAIN!,
             client_id: process.env.VUE_APP_AUTH0_CLIENT_ID!,
             audience: process.env.VUE_APP_AUTH0_AUDIENCE!
@@ -28,10 +29,6 @@ export class AuthenticationService {
             window.location.hash = window.location.hash; // eslint-disable-line no-self-assign
             window.history.replaceState({}, document.title, window.location.pathname);
         }
-
-        try {
-            await this.auth0.getTokenSilently(); // try to log in existing user
-        } catch {}
 
         var user = await this.auth0.getUser();
         this.isAuthed = user != null;

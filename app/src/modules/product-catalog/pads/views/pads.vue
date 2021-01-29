@@ -155,7 +155,7 @@ interface PadSummary {
     thumbnailUrl: string | null;
     name: string;
     category: PadCategory;
-    material?: PadMaterial;
+    material: PadMaterial | null;
     cut: PadCut | null;
     finish: PadFinish | null;
     rating: Rating;
