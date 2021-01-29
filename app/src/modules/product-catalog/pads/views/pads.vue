@@ -43,9 +43,10 @@
             <b-table-column v-slot="props" label="Category" field="category" sortable>{{
                 props.row.category | uppercaseFirst
             }}</b-table-column>
-            <b-table-column v-slot="props" label="Material" field="material" sortable>{{
-                props.row.material | uppercaseFirst
-            }}</b-table-column>
+            <b-table-column v-slot="props" label="Material" field="material" sortable>
+                <span v-if="props.row.material">{{ props.row.material | uppercaseFirst }}</span>
+                <span v-else class="has-text-grey">N/A</span>
+            </b-table-column>
             <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
                 <pad-cut-bar :value="props.row.cut" />
             </b-table-column>
@@ -127,7 +128,7 @@ export default class Pads extends Vue {
                 thumbnailUrl: pad.thumbnailUrl,
                 name: pad.label,
                 category: pad.category,
-                material: PadMaterial.Foam,
+                material: pad.material,
                 cut: pad.cut,
                 finish: pad.finish,
                 rating: pad.rating,
@@ -154,7 +155,7 @@ interface PadSummary {
     thumbnailUrl: string | null;
     name: string;
     category: PadCategory;
-    material: PadMaterial;
+    material?: PadMaterial;
     cut: PadCut | null;
     finish: PadFinish | null;
     rating: Rating;
