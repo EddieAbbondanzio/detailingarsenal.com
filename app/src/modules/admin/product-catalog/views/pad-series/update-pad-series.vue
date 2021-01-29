@@ -225,7 +225,7 @@ export default class UpdatePadSeries extends Vue {
         const update: PadSeriesUpdateRequest = {
             id: this.$route.params.id,
             name: this.name,
-        polisherTypes: this.polisherTypes,
+            polisherTypes: this.polisherTypes,
             brandId: this.brand!.id,
             sizes: this.sizes.map(s => ({
                 id: s.id,
@@ -238,7 +238,7 @@ export default class UpdatePadSeries extends Vue {
         try {
             await adminPadStore.update(update);
             toast(`Updated pad series ${update.name}`);
-            this.$router.push({ name: 'padSeries' });
+            this.$router.push({ name: 'padSeriesDetails' });
         } catch (err) {
             displayError(err);
         }

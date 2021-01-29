@@ -10,7 +10,6 @@ import { PadSeriesService } from '@/api/product-catalog/services/pad-series-serv
 class AdminPadStore extends InitableModule {
     series: PadSeries[] = [];
 
-
     @Mutation
     SET_SERIES(series: PadSeries[]) {
         this.series = series;
