@@ -156,8 +156,8 @@ interface PadSummary {
     name: string;
     category: PadCategory;
     material: PadMaterial | null;
-    cut: PadCut | null;
-    finish: PadFinish | null;
+    cut: number | null;
+    finish: number | null;
     rating: Rating;
     polisherTypes: PolisherType[];
     isThin: boolean;

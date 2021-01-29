@@ -29,8 +29,8 @@ export class Pad {
         public material: PadMaterial | null,
         public texture: PadTexture | null,
         public color: PadColor | null,
-        public cut: PadCut | null, // Comes from review
-        public finish: PadFinish | null, // Comes from review
+        public cut: number | null, // Comes from review
+        public finish: number | null, // Comes from review
         public rating: Rating,
         public image: string | null = null,
         public options: PadOption[] = []

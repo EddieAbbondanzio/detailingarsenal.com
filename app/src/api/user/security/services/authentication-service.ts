@@ -9,14 +9,18 @@ export class AuthenticationService {
 
     private isAuthed: boolean = true;
     private auth0!: Auth0Client;
+    private initPromise: Promise<any> | null = null;
 
     async init() {
-        // This will try to log in the user after a refresh
-        this.auth0 = await createAuth0Client({
+        this.initPromise = createAuth0Client({
             domain: process.env.VUE_APP_AUTH0_DOMAIN!,
             client_id: process.env.VUE_APP_AUTH0_CLIENT_ID!,
             audience: process.env.VUE_APP_AUTH0_AUDIENCE!
         });
+
+        // This will try to log in the user after a refresh
+        this.auth0 = await this.initPromise;
+        this.initPromise = null;
 
         if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
             const { appState } = await this.auth0.handleRedirectCallback();
@@ -66,7 +70,20 @@ export class AuthenticationService {
         this.isAuthed = false;
     }
 
-    async getToken(): Promise<string> {
-        return this.auth0.getTokenSilently();
+    async getToken(): Promise<string | null> {
+        if (this.initPromise != null) {
+            await this.initPromise;
+        }
+
+        if (!this.isAuthed) {
+            return null;
+        }
+
+        try {
+            var t = await this.auth0.getTokenSilently();
+            return t;
+        } catch (e) {
+            return null;
+        }
     }
 }
