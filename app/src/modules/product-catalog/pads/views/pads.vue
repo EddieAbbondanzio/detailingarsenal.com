@@ -12,7 +12,7 @@
             </page-header>
         </template>
         <b-table class="pads-table" :data="summaries" :loading="loading">
-            <b-table-column v-slot="props">
+            <b-table-column v-slot="props" centered>
                 <router-link
                     :to="{
                         name: 'pad',
