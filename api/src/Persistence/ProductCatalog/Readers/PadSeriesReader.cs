@@ -21,8 +21,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             left join reviews on reviews.pad_id = pads.id 
                             where pad_series_id = @Id
                             group by pads.id;
-                        select pc.id as pad_id, i.id as image_id from images i
-                            join pads pc on pc.image_id = i.id where pc.pad_series_id = @Id;
+                        select pi.* from pad_images pi join pads p on pi.pad_id = p.id where p.pad_series_id = @Id;
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads pc 
                             left join reviews r on pc.id = r.pad_id 
                             where pad_series_id = @Id group by pc.id;
@@ -105,8 +104,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         select count(reviews.*) as count, pads.id from pads
                             left join reviews on reviews.pad_id = pads.id 
                             group by pads.id;
-                        select pc.id as pad_id, i.id as image_id from images i
-                            join pads pc on pc.image_id = i.id;
+                        select pi.* from pad_images pi join pads p on pi.pad_id = p.id;
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads pc 
                             left join reviews r on pc.id = r.pad_id 
                             group by pc.id;

@@ -19,7 +19,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         @"  select * from pad_series where id = @Id;
                             select * from pad_series_polisher_types where pad_series_id = @Id;
                             select * from pad_sizes where pad_series_id = @Id;
-                            select i.* from images i join pads pc on i.id = pc.image_id where pad_series_id = @Id;
+                            select pi.*, i.* from images i join pad_images pi on i.id = pi.image_id join pads p on pi.pad_id = p.id where p.pad_series_id = @Id;
                             select * from pads where pad_series_id = @Id;
                             select * from pad_options po left join pads pc on po.pad_id = pc.id where pad_series_id = @Id;
                         ",
@@ -41,30 +41,30 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         ps.ThicknessAmount != null ? new Measurement(ps.ThicknessAmount ?? 0, MeasurementUnitUtils.Parse(ps.ThicknessUnit!)) : null
                     )).ToList();
 
-                    var images = reader.Read<ImageRow>();
+                    var images = reader.Read<Tuple<PadImageRow, ImageRow>>();
 
                     var pads = new Dictionary<Guid, Pad>(
-                        reader.Read<PadRow>().Select(c => {
-                            var imageRow = images.Where(i => i.ParentId == c.Id).FirstOrDefault();
+                        reader.Read<PadRow>().Select(p => {
+                            var i = images.Where(i => i.Item1.PadId == p.Id).FirstOrDefault();
                             ProcessedImage? processedImage = null;
 
-                            if (imageRow != null) {
+                            if (i != null) {
                                 processedImage = new ProcessedImage(
-                                    imageRow.Id,
-                                    imageRow.FileName,
-                                    imageRow.MimeType,
-                                    ImageUtils.LoadFromBinary(imageRow.ImageData),
-                                    ImageUtils.LoadFromBinary(imageRow.ThumbnailData)
+                                    i.Item2.Id,
+                                    i.Item2.FileName,
+                                    i.Item2.MimeType,
+                                    ImageUtils.LoadFromBinary(i.Item2.ImageData),
+                                    ImageUtils.LoadFromBinary(i.Item2.ThumbnailData)
                                 );
                             }
 
                             var pad = new Pad(
-                                c.Id,
-                                c.Name,
-                                PadCategoryUtils.Parse(c.Category),
-                                c.Material != null ? PadMaterialUtils.Parse(c.Material) : null,
-                                c.Texture != null ? PadTextureUtils.Parse(c.Texture) : null,
-                                c.Color != null ? PadColorUtils.Parse(c.Color) : null,
+                                p.Id,
+                                p.Name,
+                                PadCategoryUtils.Parse(p.Category),
+                                p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
+                                p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
+                                p.Color != null ? PadColorUtils.Parse(p.Color) : null,
                                 processedImage
                             );
 
@@ -125,19 +125,35 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }).ToList()
                     );
 
-                    var imageRows = series.Pads.Where(c => c.Image != null).Select(c => new ImageRow() {
-                        Id = c.Image!.Id,
-                        ParentId = c.Id,
-                        FileName = c.Image.FileName,
-                        MimeType = c.Image.MimeType,
-                        ImageData = ImageUtils.ToBinary(c.Image.Full),
-                        ThumbnailData = ImageUtils.ToBinary(c.Image.Thumbnail)
-                    });
+                    List<PadImageRow> imageRelations = new();
+                    List<ImageRow> images = new();
 
-                    if (imageRows.Count() > 0) {
+                    foreach (var pad in series.Pads) {
+                        if (pad.Image == null) {
+                            continue;
+                        }
+
+                        imageRelations.Add(new() { ImageId = pad.Image.Id, PadId = pad.Id });
+                        images.Add(new() {
+                            Id = pad.Image.Id,
+                            FileName = pad.Image.FileName,
+                            MimeType = pad.Image.MimeType,
+                            ImageData = ImageUtils.ToBinary(pad.Image.Full),
+                            ThumbnailData = ImageUtils.ToBinary(pad.Image.Thumbnail)
+                        });
+                    }
+
+                    if (images.Count > 0) {
                         await conn.ExecuteAsync(
                             @"insert into images(id, parent_id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
-                            imageRows
+                            images
+                        );
+                    }
+
+                    if (imageRelations.Count > 0) {
+                        await conn.ExecuteAsync(
+                            @"insert into pad_images (pad_id, image_id) values (@PadId, @ImageId);",
+                            imageRelations
                         );
                     }
 
@@ -186,7 +202,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", old.Pads);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", old);
                     await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", old);
-                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", old.Pads);
+                    await conn.ExecuteAsync(@"delete from pad_images where pad_id = @Id;", old.Pads);
+                    await conn.ExecuteAsync(@"delete from images where id = @Id;", old.Pads.Where(p => p.Image != null).ToList());
 
                     await conn.ExecuteAsync(
                         @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;",
@@ -217,19 +234,35 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }).ToList()
                     );
 
-                    var imageRows = series.Pads.Where(c => c.Image != null).Select(c => new ImageRow() {
-                        Id = c.Image!.Id,
-                        ParentId = c.Id,
-                        FileName = c.Image.FileName,
-                        MimeType = c.Image.MimeType,
-                        ImageData = ImageUtils.ToBinary(c.Image.Full),
-                        ThumbnailData = ImageUtils.ToBinary(c.Image.Thumbnail)
-                    });
+                    List<PadImageRow> imageRelations = new();
+                    List<ImageRow> images = new();
 
-                    if (imageRows.Count() > 0) {
+                    foreach (var pad in series.Pads) {
+                        if (pad.Image == null) {
+                            continue;
+                        }
+
+                        imageRelations.Add(new() { ImageId = pad.Image.Id, PadId = pad.Id });
+                        images.Add(new() {
+                            Id = pad.Image.Id,
+                            FileName = pad.Image.FileName,
+                            MimeType = pad.Image.MimeType,
+                            ImageData = ImageUtils.ToBinary(pad.Image.Full),
+                            ThumbnailData = ImageUtils.ToBinary(pad.Image.Thumbnail)
+                        });
+                    }
+
+                    if (images.Count > 0) {
                         await conn.ExecuteAsync(
                             @"insert into images(id, parent_id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
-                            imageRows
+                            images
+                        );
+                    }
+
+                    if (imageRelations.Count > 0) {
+                        await conn.ExecuteAsync(
+                            @"insert into pad_images (pad_id, image_id) values (@PadId, @ImageId);",
+                            imageRelations
                         );
                     }
 
