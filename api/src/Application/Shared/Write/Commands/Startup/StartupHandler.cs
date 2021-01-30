@@ -17,7 +17,7 @@ namespace DetailingArsenal.Application {
                 await saga.Execute();
             } catch (Exception e) {
                 Log.Fatal($"Failed to execuite startup saga: {e.Message}");
-                throw e;
+                throw;
             }
         }
     }

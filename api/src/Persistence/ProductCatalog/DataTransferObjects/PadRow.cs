@@ -11,6 +11,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public string? Material { get; set; }
         public string? Texture { get; set; }
         public string? Color { get; set; }
+        public bool? HasCenterHole { get; set; }
         public Guid? ImageId { get; set; }
     }
 }

@@ -13,17 +13,19 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         public PadMaterial? Material { get; }
         public PadTexture? Texture { get; }
         public PadColor? Color { get; }
+        public bool? HasCenterHole { get; }
         public Either<Guid, DataUrlImage>? Image { get; }
         public List<PadOptionCreateOrUpdate> Options { get; }
 
         [JsonConstructor]
-        public PadCreateOrUpdate(Guid? id, string name, PadCategory category, PadMaterial? material, PadTexture? texture, PadColor? color, Either<Guid, DataUrlImage>? image, List<PadOptionCreateOrUpdate> options) {
+        public PadCreateOrUpdate(Guid? id, string name, PadCategory category, PadMaterial? material, PadTexture? texture, PadColor? color, bool? hasCenterHole, Either<Guid, DataUrlImage>? image, List<PadOptionCreateOrUpdate> options) {
             Id = id;
             Name = name;
             Category = category;
             Material = material;
             Texture = texture;
             Color = color;
+            HasCenterHole = hasCenterHole;
             Image = image;
             Options = options;
         }

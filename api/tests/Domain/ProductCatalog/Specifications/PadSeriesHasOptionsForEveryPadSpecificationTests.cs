@@ -14,7 +14,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
         [TestMethod]
         public async Task RejectsPadsWithNoOptions() {
             var s = new PadSeries("Name", Guid.NewGuid());
-            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red));
+            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false));
 
             var satisified = await new PadSeriesHasOptionsForEveryPadSpecification().Check(s);
             Assert.IsFalse(satisified.IsSatisfied);
@@ -23,7 +23,7 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
         [TestMethod]
         public async Task AcceptsPadsWithOption() {
             var s = new PadSeries("Name", Guid.NewGuid());
-            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red));
+            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false));
             s.Pads[0].Options.Add(new PadOption(Guid.NewGuid()));
 
             var res = await new PadSeriesHasOptionsForEveryPadSpecification().Check(s);
@@ -33,8 +33,8 @@ namespace DetailingArsenal.Tests.Domain.ProductCatalog {
         [TestMethod]
         public async Task RejectsPadsWithNoOptionsWhenSeveralColors() {
             var s = new PadSeries("Name", Guid.NewGuid());
-            s.Pads.Add(new Pad("Color2", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red));
-            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red));
+            s.Pads.Add(new Pad("Color2", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false));
+            s.Pads.Add(new Pad("Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false));
             s.Pads[0].Options.Add(new PadOption(Guid.NewGuid()));
 
             var res = await new PadSeriesHasOptionsForEveryPadSpecification().Check(s);

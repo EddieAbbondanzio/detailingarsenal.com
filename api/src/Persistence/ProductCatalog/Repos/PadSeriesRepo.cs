@@ -22,6 +22,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             select pi.*, i.* from images i join pad_images pi on i.id = pi.image_id join pads p on pi.pad_id = p.id where p.pad_series_id = @Id;
                             select * from pads where pad_series_id = @Id;
                             select * from pad_options po left join pads pc on po.pad_id = pc.id where pad_series_id = @Id;
+                            select po.id as pad_option_id, pn.* from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id join pad_options po on po.id = popn.pad_option_id join pads p on po.pad_id = p.id where p.pad_series_id = @Id; 
                         ",
                         new { Id = id }
                     )) {
@@ -41,7 +42,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         ps.ThicknessAmount != null ? new Measurement(ps.ThicknessAmount ?? 0, MeasurementUnitUtils.Parse(ps.ThicknessUnit!)) : null
                     )).ToList();
 
-                    var images = reader.Read<Tuple<PadImageRow, ImageRow>>();
+                    var images = reader.Read<PadImageRow, ImageRow, Tuple<PadImageRow, ImageRow>>((pi, i) => new Tuple<PadImageRow, ImageRow>(pi, i));
 
                     var pads = new Dictionary<Guid, Pad>(
                         reader.Read<PadRow>().Select(p => {
@@ -65,6 +66,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
                                 p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
                                 p.Color != null ? PadColorUtils.Parse(p.Color) : null,
+                                p.HasCenterHole,
                                 processedImage
                             );
 
@@ -73,11 +75,23 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     );
 
                     var options = reader.Read<PadOptionRow>();
+                    var optionDict = new Dictionary<Guid, PadOption>();
                     foreach (var opt in options) {
                         Pad? pad;
 
                         if (pads.TryGetValue(opt.PadId, out pad)) {
-                            pad.Options.Add(new PadOption(opt.PadSizeId, opt.PartNumber));
+                            var po = new PadOption(opt.PadSizeId);
+                            pad.Options.Add(po);
+                            optionDict.Add(opt.Id, po);
+                        }
+                    }
+
+                    var partNumbers = reader.Read<(Guid PadOptionId, PartNumberRow PartNumber)>();
+                    foreach (var partNumber in partNumbers) {
+                        PadOption? option;
+
+                        if (optionDict.TryGetValue(partNumber.PadOptionId, out option)) {
+                            option.PartNumbers.Add(new PartNumber(partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
                         }
                     }
 
@@ -145,7 +159,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     if (images.Count > 0) {
                         await conn.ExecuteAsync(
-                            @"insert into images(id, parent_id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                            @"insert into images(id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @FileName, @MimeType, @ImageData, @ThumbnailData);",
                             images
                         );
                     }
@@ -158,7 +172,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, material, texture, color, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @Name, @ImageId);",
+                        @"insert into pads (id, pad_series_id, category, material, texture, color, has_center_hole, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @HasCenterHole, @Name, @ImageId);",
                         series.Pads.Select(c => new PadRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
@@ -166,27 +180,46 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             Material = c.Material?.Serialize(),
                             Texture = c.Texture?.Serialize(),
                             Color = c.Color?.Serialize(),
+                            HasCenterHole = c.HasCenterHole,
                             Name = c.Name,
                             ImageId = c.Image?.Id
                         }).ToList()
                     );
 
-                    var optionRows = new List<PadOptionRow>();
+                    List<PadOptionRow> padOptionRows = new();
+                    List<PadOptionPartNumberRow> padOptionPartNumberRows = new();
+                    List<PartNumberRow> partNumberRows = new();
+
                     foreach (var color in series.Pads) {
                         foreach (var option in color.Options) {
-                            optionRows.Add(new PadOptionRow() {
+                            var optionRow = new PadOptionRow() {
                                 Id = Guid.NewGuid(),
                                 PadId = color.Id,
                                 PadSizeId = option.PadSizeId,
-                                PartNumber = option.PartNumber
-                            });
+                            };
+
+                            padOptionRows.Add(optionRow);
+
+                            foreach (var partNumber in option.PartNumbers) {
+                                var partNumberRow = new PartNumberRow() {
+                                    Id = Guid.NewGuid(),
+                                    Value = partNumber.Value,
+                                    Notes = partNumber.Notes
+                                };
+
+                                padOptionPartNumberRows.Add(new PadOptionPartNumberRow() {
+                                    PadOptionId = optionRow.Id,
+                                    PartNumberId = partNumberRow.Id,
+                                });
+
+                                partNumberRows.Add(partNumberRow);
+                            }
                         }
                     }
 
-                    await conn.ExecuteAsync(
-                        @"insert into pad_options (id, pad_id, pad_size_id, part_number) values (@Id, @PadId, @PadSizeId, @PartNumber);",
-                        optionRows
-                    );
+                    await conn.ExecuteAsync(@"insert into pad_options (id, pad_id, pad_size_id) values (@Id, @PadId, @PadSizeId);", padOptionRows);
+                    await conn.ExecuteAsync(@"insert into part_numbers (id, value, notes) values (@Id, @Value, @Notes);", partNumberRows);
+                    await conn.ExecuteAsync(@"insert into pad_option_part_numbers (pad_option_id, part_number_id) values (@PadOptionId, @PartNumberId);", padOptionPartNumberRows);
 
                     t.Commit();
                 }
@@ -198,7 +231,13 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 using (var t = conn.BeginTransaction()) {
                     // pull in old one, and nuke records
                     var old = (await FindById(series.Id))!;
+
+                    // get part number ids
+                    var partNumberIds = await conn.QueryAsync<Guid>(@"select id from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id where po.id = any(@Options);", new { Options = old.Pads.SelectMany(p => p.Options).ToList() });
+
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", old);
+                    await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", old.Pads.SelectMany(p => p.Options).ToList());
+                    await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", old.Pads);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", old);
                     await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", old);
@@ -254,7 +293,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     if (images.Count > 0) {
                         await conn.ExecuteAsync(
-                            @"insert into images(id, parent_id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @ParentId, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                            @"insert into images(id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @FileName, @MimeType, @ImageData, @ThumbnailData);",
                             images
                         );
                     }
@@ -267,35 +306,54 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, material, texture, color, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @Name, @ImageId);",
-                        series.Pads.Select(c => new PadRow() {
-                            Id = c.Id,
+                        @"insert into pads (id, pad_series_id, category, material, texture, color, has_center_hole, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @HasCenterHole, @Name, @ImageId);",
+                        series.Pads.Select(p => new PadRow() {
+                            Id = p.Id,
                             PadSeriesId = series.Id,
-                            Category = c.Category.Serialize(),
-                            Material = c.Material?.Serialize(),
-                            Texture = c.Texture?.Serialize(),
-                            Color = c.Color?.Serialize(),
-                            Name = c.Name,
-                            ImageId = c.Image?.Id
+                            Category = p.Category.Serialize(),
+                            Material = p.Material?.Serialize(),
+                            Texture = p.Texture?.Serialize(),
+                            Color = p.Color?.Serialize(),
+                            HasCenterHole = p.HasCenterHole,
+                            Name = p.Name,
+                            ImageId = p.Image?.Id
                         }).ToList()
                     );
 
-                    var optionRows = new List<PadOptionRow>();
-                    foreach (var pad in series.Pads) {
-                        foreach (var option in pad.Options) {
-                            optionRows.Add(new PadOptionRow() {
+                    List<PadOptionRow> padOptionRows = new();
+                    List<PadOptionPartNumberRow> padOptionPartNumberRows = new();
+                    List<PartNumberRow> partNumberRows = new();
+
+                    foreach (var color in series.Pads) {
+                        foreach (var option in color.Options) {
+                            var optionRow = new PadOptionRow() {
                                 Id = Guid.NewGuid(),
-                                PadId = pad.Id,
+                                PadId = color.Id,
                                 PadSizeId = option.PadSizeId,
-                                PartNumber = option.PartNumber
-                            });
+                            };
+
+                            padOptionRows.Add(optionRow);
+
+                            foreach (var partNumber in option.PartNumbers) {
+                                var partNumberRow = new PartNumberRow() {
+                                    Id = Guid.NewGuid(),
+                                    Value = partNumber.Value,
+                                    Notes = partNumber.Notes
+                                };
+
+                                padOptionPartNumberRows.Add(new PadOptionPartNumberRow() {
+                                    PadOptionId = optionRow.Id,
+                                    PartNumberId = partNumberRow.Id,
+                                });
+
+                                partNumberRows.Add(partNumberRow);
+                            }
                         }
                     }
 
-                    await conn.ExecuteAsync(
-                        @"insert into pad_options (id, pad_id, pad_size_id, part_number) values (@Id, @PadId, @PadSizeId, @PartNumber);",
-                        optionRows
-                    );
+                    await conn.ExecuteAsync(@"insert into pad_options (id, pad_id, pad_size_id) values (@Id, @PadId, @PadSizeId);", padOptionRows);
+                    await conn.ExecuteAsync(@"insert into part_numbers (id, value, notes) values (@Id, @Value, @Notes);", partNumberRows);
+                    await conn.ExecuteAsync(@"insert into pad_option_part_numbers (pad_option_id, part_number_id) values (@PadOptionId, @PartNumberId);", padOptionPartNumberRows);
 
                     t.Commit();
                 }
@@ -305,11 +363,40 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public async Task Delete(PadSeries series) {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
+                    /*
+                    * Postgres doesn't support joins in deletes
+                    */
+
+                    var partNumberIds = (await conn.QueryAsync<Guid>(@"
+                        select pn.id from part_numbers pn 
+                            join pad_option_part_numbers popn on pn.id = popn.part_number_id 
+                            join pad_options po on popn.pad_option_id = po.id 
+                            join pads p on po.pad_id = p.id 
+                            where p.pad_series_id = @Id;",
+                        series
+                    )).Select(id => new { Id = id }).ToList();
+
+                    var padOptionIds = (await conn.QueryAsync<Guid>(@"
+                        select po.id from pad_options po
+                            join pads p on po.pad_id = p.id
+                            where p.pad_series_id = @Id;
+                    ", series)).Select(id => new { Id = id }).ToList();
+
+                    var padImageIds = (await conn.QueryAsync<Guid>(@"
+                        select i.id from images i
+                            join pad_images pi on pi.image_id = i.id
+                            join pads p on pi.pad_id = p.id
+                            where p.pad_series_id = @Id;
+                    ", series)).Select(id => new { Id = id }).ToList();
+
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", series);
+                    await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", padOptionIds);
+                    await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", series.Pads);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", series);
+                    await conn.ExecuteAsync(@"delete from pad_images where pad_id = @Id;", series.Pads);
+                    await conn.ExecuteAsync(@"delete from images where id = @Id;", padImageIds);
                     await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", series);
-                    await conn.ExecuteAsync(@"delete from images where parent_id = @Id;", series.Pads);
                     await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
                     t.Commit();
                 }

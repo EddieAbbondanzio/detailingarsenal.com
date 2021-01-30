@@ -1,5 +1,5 @@
 namespace DetailingArsenal.Application.ProductCatalog {
-    public class MeasurementReadModel : IDataTransferObject {
+    public record MeasurementReadModel : IDataTransferObject {
         /// <summary>
         /// Decimal amount
         /// </summary>

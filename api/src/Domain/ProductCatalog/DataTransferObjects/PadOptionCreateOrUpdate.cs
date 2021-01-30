@@ -1,23 +1,28 @@
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
     public class PadOptionCreateOrUpdate : IDataTransferObject {
-        public Guid? PadSizeId { get; set; }
-        public int? PadSizeIndex { get; set; }
-        public string? PartNumber { get; set; }
+        public Guid? PadSizeId { get; }
+        public int? PadSizeIndex { get; }
+        public List<PartNumber> PartNumbers { get; }
 
-        public PadOptionCreateOrUpdate() {
-            // used by asp.net 
-        }
-
-        public PadOptionCreateOrUpdate(int padSizeIndex, string? partNumber = null) {
-            PadSizeIndex = padSizeIndex;
-            PartNumber = partNumber;
-        }
-
-        public PadOptionCreateOrUpdate(Guid padSizeId, string? partNumber) {
+        [JsonConstructor]
+        public PadOptionCreateOrUpdate(Guid? padSizeId, int? padSizeIndex, List<PartNumber>? partNumbers = null) {
             PadSizeId = padSizeId;
-            PartNumber = partNumber;
+            PadSizeIndex = padSizeIndex;
+            PartNumbers = partNumbers ?? new();
+        }
+
+        public PadOptionCreateOrUpdate(int padSizeIndex, List<PartNumber>? partNumbers = null) {
+            PadSizeIndex = padSizeIndex;
+            PartNumbers = partNumbers ?? new();
+        }
+
+        public PadOptionCreateOrUpdate(Guid padSizeId, List<PartNumber>? partNumbers = null) {
+            PadSizeId = padSizeId;
+            PartNumbers = partNumbers = new();
         }
     }
 }

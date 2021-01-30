@@ -39,8 +39,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
                 new PadCreateOrUpdate[] {
-                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false, null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0, new PartNumber[] { new PartNumber("value", "NOTES")}.ToList())
                     }.ToList())
                 }.ToList()
             );
@@ -63,7 +63,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             Assert.AreEqual(PadTexture.Dimpled, s.Pads[0].Texture);
             Assert.AreEqual(PadMaterial.Foam, s.Pads[0].Material);
             Assert.AreEqual(1, s.Pads[0].Options.Count);
-            Assert.AreEqual("part_number", s.Pads[0].Options[0].PartNumber);
+            Assert.AreEqual("value", s.Pads[0].Options[0].PartNumbers[0].Value);
+            Assert.AreEqual("NOTES", s.Pads[0].Options[0].PartNumbers[0].Notes);
         }
 
         [TestMethod]
@@ -91,8 +92,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
                 new PadCreateOrUpdate[] {
-                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false, null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0)
                     }.ToList())
                 }.ToList()
             );
@@ -126,8 +127,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
                 new PadCreateOrUpdate[] {
-                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0)
                     }.ToList())
                 }.ToList()
             );
@@ -161,8 +162,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
                 new PadCreateOrUpdate[] {
-                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0)
                     }.ToList())
                 }.ToList()
             );
@@ -198,8 +199,8 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                     new PadSizeCreateOrUpdate(null, new Measurement(3f, "in"))
                 }.ToList(),
                 new PadCreateOrUpdate[] {
-                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0)
                     }.ToList())
                 }.ToList()
             );
@@ -235,14 +236,14 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                     new PadSizeCreateOrUpdate(null, new Measurement(1f, "in")),
                 }.ToList(),
                 new PadCreateOrUpdate[] {
-                    new PadCreateOrUpdate(null, "B", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    new PadCreateOrUpdate(null, "B", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0)
                     }.ToList()),
-                    new PadCreateOrUpdate(null, "A", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    new PadCreateOrUpdate(null, "A", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0)
                     }.ToList()),
-                    new PadCreateOrUpdate(null, "C", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate() { PadSizeIndex = 0, PartNumber = "part_number"}
+                    new PadCreateOrUpdate(null, "C", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0)
                     }.ToList())
                 }.ToList()
             );

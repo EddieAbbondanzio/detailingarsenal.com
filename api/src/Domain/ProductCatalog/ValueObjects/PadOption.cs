@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
     /// <summary>
@@ -6,11 +7,11 @@ namespace DetailingArsenal.Domain.ProductCatalog {
     /// </summary>
     public class PadOption : ValueObject<PadOption> {
         public Guid PadSizeId { get; }
-        public string? PartNumber { get; }
+        public List<PartNumber> PartNumbers { get; }
 
-        public PadOption(Guid padSizeId, string? partNumber = null) {
+        public PadOption(Guid padSizeId, List<PartNumber>? partNumbers = null) {
             PadSizeId = padSizeId;
-            PartNumber = partNumber;
+            PartNumbers = partNumbers ?? new();
         }
     }
 }

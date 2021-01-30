@@ -85,7 +85,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
                 pad.Options.Clear();
                 foreach (var option in update.Options) {
-                    pad.Options.Add(new PadOption(option.PadSizeId!.Value, option.PartNumber));
+                    pad.Options.Add(new PadOption(option.PadSizeId!.Value, option.PartNumbers));
                 }
 
                 colors.Add(pad);
@@ -101,11 +101,12 @@ namespace DetailingArsenal.Application.ProductCatalog {
                     update.Material,
                     update.Texture,
                     update.Color,
+                    update.HasCenterHole,
                     update.Image?.Match(
                         id => existing.Find(c => c.Image?.Id == id)?.Image,
                         image => imageProcessor.Process(image.Name, image.Data)
                     ),
-                    update.Options.Select(option => new PadOption(option.PadSizeId!.Value, option.PartNumber)).ToList()
+                    update.Options.Select(option => new PadOption(option.PadSizeId!.Value, option.PartNumbers)).ToList()
                 );
 
                 colors.Add(color);

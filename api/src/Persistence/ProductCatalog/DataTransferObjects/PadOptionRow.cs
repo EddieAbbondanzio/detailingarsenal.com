@@ -5,6 +5,5 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public Guid Id { get; set; }
         public Guid PadId { get; set; }
         public Guid PadSizeId { get; set; }
-        public string? PartNumber { get; set; }
     }
 }

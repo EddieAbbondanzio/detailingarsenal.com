@@ -28,21 +28,28 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 ProcessedImage? image = null;
 
                 if (c.Image != null) {
-                    var dataUrlImage = c.Image.Right(); // Crash and burn if Guid passed.
+                    var dataUrlImage = c.Image.Right(); // Crash and burn if Guid passed. (Theoretically) this should be impossible since they're new pads.
                     image = imageProcessor.Process(dataUrlImage.Name, dataUrlImage.Data);
                 }
 
-                var options = c.Options.Select(o => {
-                    if (o.PadSizeIndex.HasValue) {
-                        return new PadOption(sizes[o.PadSizeIndex.Value].Id, o.PartNumber);
-                    } else if (o.PadSizeId.HasValue) {
-                        return new PadOption(o.PadSizeId.Value, o.PartNumber);
+                List<PadOption> options = new();
+
+                foreach (var optionCreate in c.Options) {
+                    PadOption option;
+
+                    if (optionCreate.PadSizeIndex.HasValue) {
+                        option = new PadOption(sizes[optionCreate.PadSizeIndex.Value].Id);
+                    } else if (optionCreate.PadSizeId.HasValue) {
+                        option = new PadOption(optionCreate.PadSizeId.Value);
                     } else {
                         throw new InvalidOperationException($"Pad color {c.Name} has option without pad size id, or pad size index defined.");
                     }
-                }).ToList();
 
-                return new Pad(c.Name, c.Category, c.Material, c.Texture, c.Color, image, options);
+                    option.PartNumbers.AddRange(optionCreate.PartNumbers);
+                    options.Add(option);
+                }
+
+                return new Pad(c.Name, c.Category, c.Material, c.Texture, c.Color, c.HasCenterHole, image, options);
             }).OrderBy(c => c.Name).ToList();
 
 

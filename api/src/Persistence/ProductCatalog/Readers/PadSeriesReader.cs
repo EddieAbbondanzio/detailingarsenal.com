@@ -26,6 +26,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             left join reviews r on pc.id = r.pad_id 
                             where pad_series_id = @Id group by pc.id;
                         select * from pad_options po left join pads pc on po.pad_id = pc.id where pad_series_id = @Id;
+                        select po.id as pad_option_id, pn.* from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id join pad_options po on po.id = popn.pad_option_id join pads p on po.pad_id = p.id where p.pad_series_id = @Id; 
                     ",
                     new { Id = id }
                 )) {
@@ -69,6 +70,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 pad.material,
                                 pad.texture,
                                 pad.color,
+                                pad.has_center_hole,
                                 imageId,
                                 new List<PadOptionReadModel>(),
                                 pad.cut,
@@ -81,11 +83,23 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     var pads = new Dictionary<Guid, PadReadModel>(keyValues);
 
                     var options = reader.Read<PadOptionRow>();
+                    var optionDict = new Dictionary<Guid, PadOptionReadModel>();
                     foreach (var opt in options) {
                         PadReadModel? pad;
 
                         if (pads.TryGetValue(opt.PadId, out pad)) {
-                            pad.Options.Add(new PadOptionReadModel(opt.PadSizeId, opt.PartNumber));
+                            var po = new PadOptionReadModel(opt.PadSizeId);
+                            pad.Options.Add(po);
+                            optionDict.Add(opt.Id, po);
+                        }
+                    }
+
+                    var partNumbers = reader.Read<(Guid PadOptionId, PartNumberRow PartNumber)>();
+                    foreach (var partNumber in partNumbers) {
+                        PadOptionReadModel? option;
+
+                        if (optionDict.TryGetValue(partNumber.PadOptionId, out option)) {
+                            option.PartNumbers.Add(new PartNumberReadModel(partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
                         }
                     }
 
@@ -109,6 +123,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             left join reviews r on pc.id = r.pad_id 
                             group by pc.id;
                         select * from pad_options po left join pads pc on po.pad_id = pc.id;
+                        select po.id as pad_option_id, pn.* from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id join pad_options po on po.id = popn.pad_option_id; 
                         "
                 )) {
                     var series = new Dictionary<Guid, PadSeriesReadModel>(
@@ -173,6 +188,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             raw.material,
                             raw.texture,
                             raw.color,
+                            raw.has_center_hole,
                             imageId,
                             new List<PadOptionReadModel>(),
                             raw.cut,
@@ -191,11 +207,24 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
 
                     var options = reader.Read<PadOptionRow>();
+                    var optionDict = new Dictionary<Guid, PadOptionReadModel>();
+
                     foreach (var opt in options) {
                         PadReadModel? pad;
 
                         if (pads.TryGetValue(opt.PadId, out pad)) {
-                            pad.Options.Add(new PadOptionReadModel(opt.PadSizeId, opt.PartNumber));
+                            var po = new PadOptionReadModel(opt.PadSizeId);
+                            pad.Options.Add(po);
+                            optionDict.Add(opt.Id, po);
+                        }
+                    }
+
+                    var partNumbers = reader.Read<(Guid PadOptionId, PartNumberRow PartNumber)>();
+                    foreach (var partNumber in partNumbers) {
+                        PadOptionReadModel? option;
+
+                        if (optionDict.TryGetValue(partNumber.PadOptionId, out option)) {
+                            option.PartNumbers.Add(new PartNumberReadModel(partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
                         }
                     }
 
