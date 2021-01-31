@@ -78,6 +78,10 @@
                         {{ props.row.color | uppercaseFirst }}
                     </b-table-column>
 
+                    <b-table-column field="hasCenterHole" label="Center hole" v-slot="props">
+                        {{ props.row.hasCenterHole }}
+                    </b-table-column>
+
                     <b-table-column field="image" label="Image" v-slot="props">
                         {{ props.row.image }}
                     </b-table-column>
@@ -94,7 +98,7 @@
             <b-button type="is-text" @click="onPadAddAnother">Add another</b-button>
         </input-form>
 
-        <b-modal v-model="isPadModalActive" has-modal-card v-if="newPad != null">
+        <b-modal v-model="isPadModalActive" has-modal-card v-if="modalPad != null">
             <validation-observer ref="modalValidator" tag="div" class="modal-card">
                 <div class="modal-card-head">
                     <p class="modal-card-title">Enter new pad info</p>
@@ -104,7 +108,7 @@
                         class="has-margin-x-1 has-margin-y-0"
                         type="text"
                         label="Name"
-                        v-model="newPad.name"
+                        v-model="modalPad.name"
                         :required="true"
                         rules="required|max:32"
                     />
@@ -114,45 +118,45 @@
                         class="has-margin-x-1 has-margin-y-0"
                         rules="required"
                         :required="true"
-                        v-model="newPad.category"
+                        v-model="modalPad.category"
                     >
-                        <option :newPad="null">Select a category</option>
-                        <option v-for="category in categories" :key="category[1]" :newPad="category[1]">
+                        <option :modalPad="null">Select a category</option>
+                        <option v-for="category in categories" :key="category[1]" :modalPad="category[1]">
                             {{ category[0] }}
                         </option>
                     </input-select>
 
-                    <input-select label="Material" class="has-margin-x-1 has-margin-y-0" v-model="newPad.material">
-                        <option :newPad="null">Select a material</option>
-                        <option v-for="m in materials" :key="m[1]" :newPad="m[1]">
+                    <input-select label="Material" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.material">
+                        <option :modalPad="null">Select a material</option>
+                        <option v-for="m in materials" :key="m[1]" :modalPad="m[1]">
                             {{ m[0] }}
                         </option>
                     </input-select>
 
-                    <input-select label="Texture" class="has-margin-x-1 has-margin-y-0" v-model="newPad.texture">
-                        <option :newPad="null">Select a texture</option>
-                        <option v-for="t in textures" :key="t[1]" :newPad="t[1]">
+                    <input-select label="Texture" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.texture">
+                        <option :modalPad="null">Select a texture</option>
+                        <option v-for="t in textures" :key="t[1]" :modalPad="t[1]">
                             {{ t[0] }}
                         </option>
                     </input-select>
 
-                    <input-select label="Color" class="has-margin-x-1 has-margin-y-0" v-model="newPad.color">
-                        <option :newPad="null">Select a color</option>
-                        <option v-for="c in colors" :key="c[1]" :newPad="c[1]">
+                    <input-select label="Color" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.color">
+                        <option :modalPad="null">Select a color</option>
+                        <option v-for="c in colors" :key="c[1]" :modalPad="c[1]">
                             {{ c[0] }}
                         </option>
                     </input-select>
 
                     <input-checkbox
                         label="Has center hole"
-                        v-model="newPad.hasCenterHole"
+                        v-model="modalPad.hasCenterHole"
                         class="has-margin-all-2 has-margin-top-3"
                     />
 
-                    <input-image-upload label="Image" v-model="newPad.image" />
+                    <input-image-upload label="Image" v-model="modalPad.image" />
 
                     <b-field label="Options">
-                        <b-table :data="newPad.options" detailed>
+                        <b-table :data="modalPad.options" detailed>
                             <b-table-column label="Size" field="padSizeIndex" v-slot="props">
                                 <input-select
                                     v-model="props.row.padSizeIndex"
@@ -165,7 +169,7 @@
                                         v-for="(size, i) in sizes"
                                         :key="i"
                                         :value="i"
-                                        :disabled="isSizeDisabled(size, newPad)"
+                                        :disabled="isSizeDisabled(size, modalPad)"
                                     >
                                         {{
                                             size.diameter.amount == null
@@ -177,7 +181,7 @@
                             </b-table-column>
 
                             <b-table-column centered v-slot="{ index }">
-                                <b-button type="is-danger" @click="newPad.options.splice(index, 1)">Delete</b-button>
+                                <b-button type="is-danger" @click="modalPad.options.splice(index, 1)">Delete</b-button>
                             </b-table-column>
 
                             <template #detail="props">
@@ -293,7 +297,7 @@ export default class CreatePadSeries extends Vue {
     pads: PadCreateOrUpdate[] = [];
     isPadModalActive: boolean = false;
     isPadModalInEditMode: boolean = false;
-    newPad: PadCreateOrUpdate | null = null;
+    modalPad: PadCreateOrUpdate | null = null;
 
     async created() {
         await brandStore.init();
@@ -330,14 +334,14 @@ export default class CreatePadSeries extends Vue {
     }
 
     onPadEdit(index: number) {
-        this.newPad = this.pads[index];
+        this.modalPad = this.pads[index];
         this.isPadModalActive = true;
         this.isPadModalInEditMode = true;
     }
 
     onPadAddAnother() {
         this.isPadModalActive = true;
-        this.newPad = {
+        this.modalPad = {
             id: null,
             name: null!,
             category: null!,
@@ -351,7 +355,7 @@ export default class CreatePadSeries extends Vue {
     }
 
     onOptionAddAnother() {
-        this.newPad?.options.push({
+        this.modalPad?.options.push({
             padSizeIndex: null,
             padSizeId: null,
             partNumbers: []
@@ -359,7 +363,7 @@ export default class CreatePadSeries extends Vue {
     }
 
     onPadAddCancel() {
-        this.newPad = null;
+        this.modalPad = null;
         this.isPadModalActive = false;
     }
 
@@ -374,11 +378,11 @@ export default class CreatePadSeries extends Vue {
         if (this.isPadModalInEditMode) {
             this.isPadModalInEditMode = false;
         } else {
-            this.pads.push(this.newPad!);
+            this.pads.push(this.modalPad!);
         }
 
         this.isPadModalActive = false;
-        this.newPad = null;
+        this.modalPad = null;
     }
 
     /**
