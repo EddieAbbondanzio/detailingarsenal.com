@@ -99,11 +99,15 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
             var updates = new PadCreateOrUpdate[]{
                 new PadCreateOrUpdate(existing[0].Id, "ColorAA", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,  false,null!, new PadOptionCreateOrUpdate[] {
-                    new PadOptionCreateOrUpdate(Guid.NewGuid())
+                    new PadOptionCreateOrUpdate(0)
                 }.ToList())
                 }.ToList();
 
-            var updated = h.UpdatePadColors(existing, updates);
+            var sizes = new PadSize[] {
+                new PadSize(new Measurement(1, "in")),
+            }.ToList();
+
+            var updated = h.UpdatePadColors(sizes, existing, updates);
             Assert.AreEqual(1, updated.Count);
 
             Assert.AreEqual(existing[0].Id, updated[0].Id);
@@ -124,11 +128,15 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
             var updates = new PadCreateOrUpdate[]{
                 new PadCreateOrUpdate(null, "ColorB", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,  false,null!, new PadOptionCreateOrUpdate[] {
-                    new PadOptionCreateOrUpdate(Guid.NewGuid())
+                    new PadOptionCreateOrUpdate(0)
                 }.ToList())
                 }.ToList();
 
-            var updated = h.UpdatePadColors(existing, updates);
+            var sizes = new PadSize[] {
+                new PadSize(new Measurement(1, "in")),
+            }.ToList();
+
+            var updated = h.UpdatePadColors(sizes, existing, updates);
             Assert.AreEqual(1, updated.Count);
             Assert.AreEqual("ColorB", updated[0].Name);
             Assert.AreEqual(PadCategory.Finishing, updated[0].Category);
@@ -148,7 +156,11 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList())
             }.ToList();
 
-            var updated = h.UpdatePadColors(existing, new());
+            var sizes = new PadSize[] {
+                new PadSize(new Measurement(1, "in")),
+            }.ToList();
+
+            var updated = h.UpdatePadColors(sizes, existing, new());
             Assert.AreEqual(0, updated.Count);
         }
 
@@ -164,14 +176,18 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
             var updates = new PadCreateOrUpdate[]{
                 new PadCreateOrUpdate(null, "B", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red,  false,null!, new PadOptionCreateOrUpdate[] {
-                    new PadOptionCreateOrUpdate(Guid.NewGuid())
+                    new PadOptionCreateOrUpdate(0)
                 }.ToList()),
                  new PadCreateOrUpdate(null, "A", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false, null!, new PadOptionCreateOrUpdate[] {
-                    new PadOptionCreateOrUpdate(Guid.NewGuid())
+                    new PadOptionCreateOrUpdate(0)
                 }.ToList())
                 }.ToList();
 
-            var updated = h.UpdatePadColors(existing, updates);
+            var sizes = new PadSize[] {
+                new PadSize(new Measurement(1, "in")),
+            }.ToList();
+
+            var updated = h.UpdatePadColors(sizes, existing, updates);
             Assert.AreEqual("A", updated[0].Name);
             Assert.AreEqual("B", updated[1].Name);
         }

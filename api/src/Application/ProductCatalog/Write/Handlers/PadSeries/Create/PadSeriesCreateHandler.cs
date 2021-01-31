@@ -37,14 +37,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 foreach (var optionCreate in c.Options) {
                     PadOption option;
 
-                    if (optionCreate.PadSizeIndex.HasValue) {
-                        option = new PadOption(sizes[optionCreate.PadSizeIndex.Value].Id);
-                    } else if (optionCreate.PadSizeId.HasValue) {
-                        option = new PadOption(optionCreate.PadSizeId.Value);
-                    } else {
-                        throw new InvalidOperationException($"Pad color {c.Name} has option without pad size id, or pad size index defined.");
-                    }
-
+                    option = new PadOption(sizes[optionCreate.PadSizeIndex].Id);
                     option.PartNumbers.AddRange(optionCreate.PartNumbers);
                     options.Add(option);
                 }
