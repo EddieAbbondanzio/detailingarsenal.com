@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Shared;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
+    [Validation(typeof(PadSeriesCreateValidator))]
     [Authorization(Action = "create", Scope = "pad-series")]
     public class PadSeriesCreateHandler : ActionHandler<PadSeriesCreateCommand, Guid> {
         PadSeriesCreateOrUpdateCompositeSpecification spec;

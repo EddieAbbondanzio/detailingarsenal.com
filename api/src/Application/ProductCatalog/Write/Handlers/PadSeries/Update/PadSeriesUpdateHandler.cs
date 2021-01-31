@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Shared;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
+    [Validation(typeof(PadSeriesUpdateValidator))]
     [Authorization(Action = "update", Scope = "pad-series")]
     public class PadSeriesUpdateHandler : ActionHandler<PadSeriesUpdateCommand> {
         IPadSeriesRepo repo;
