@@ -38,7 +38,6 @@ import Navbar from '@/core/components/navigation/navbar.vue';
 import NavbarItem from '@/core/components/navigation/navbar-item.vue';
 import NavFooter from '@/core/components/navigation/nav-footer.vue';
 import NavFooterItem from '@/core/components/navigation/nav-footer-item.vue';
-import Helptip from '@/core/components/elements/helptip.vue';
 
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { disableAll } from '@/core/directives/disable-all';
@@ -86,7 +85,6 @@ export default {
         Vue.component('navbar-item', NavbarItem);
         Vue.component('nav-footer', NavFooter);
         Vue.component('nav-footer-item', NavFooterItem);
-        Vue.component('helptip', Helptip);
 
         Vue.filter('currency', currency);
         Vue.filter('duration', duration);

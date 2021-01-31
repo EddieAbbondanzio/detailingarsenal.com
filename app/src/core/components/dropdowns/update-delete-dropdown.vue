@@ -1,7 +1,13 @@
 <template>
     <b-dropdown position="is-bottom-left" ref="dropdown">
         <template v-slot:trigger>
-            <b-button type="is-text" icon-left="dots-vertical" :size="size" @click.native="show($event)" />
+            <b-button
+                class="has-padding-top-0 has-padding-x-2 has-padding-bottom-0"
+                type="is-text"
+                icon-left="dots-vertical"
+                :size="size"
+                @click.native="show($event)"
+            />
         </template>
 
         <b-dropdown-item
@@ -25,7 +31,7 @@
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 
 @Component({
-    name: 'update-delete-dropdown',
+    name: 'update-delete-dropdown'
 })
 export default class UpdateDeleteDropdown extends Vue {
     @Ref('dropdown')

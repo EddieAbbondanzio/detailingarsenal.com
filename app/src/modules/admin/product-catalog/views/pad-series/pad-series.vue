@@ -21,19 +21,24 @@
             </page-header>
         </template>
 
-        <list>
-            <list-item
-                v-for="s in series"
-                :key="s.id"
-                :title="s.name"
-                :description="s.brand.name"
-                :to="{ name: 'padSeriesDetails', params: { id: s.id } }"
-            >
-                <template v-slot:actions>
-                    <update-delete-dropdown @update="onUpdate(s)" @delete="onDelete(s)" />
-                </template>
-            </list-item>
-        </list>
+        <b-table :data="series">
+            <b-table-column label="Name" field="brand" sortable v-slot="props" cell-class="has-vertical-align-middle">
+                <router-link
+                    class="is-inline-block has-text-weight-bold has-text-black"
+                    :to="{ name: 'padSeriesDetails', params: { id: props.row.id } }"
+                    >{{ props.row.brand.name + ' ' + props.row.name }}</router-link
+                >
+            </b-table-column>
+            <b-table-column label="Sizes" sortable v-slot="props" cell-class="has-vertical-align-middle" numeric>
+                {{ props.row.sizes.length }}
+            </b-table-column>
+            <b-table-column label="Pads" sortable v-slot="props" cell-class="has-vertical-align-middle" numeric>
+                {{ props.row.pads.length }}
+            </b-table-column>
+            <b-table-column v-slot="props" cell-class="has-vertical-align-middle">
+                <update-delete-dropdown @update="onUpdate(props.row)" @delete="onDelete(props.row)" />
+            </b-table-column>
+        </b-table>
     </page>
 </template>
 
