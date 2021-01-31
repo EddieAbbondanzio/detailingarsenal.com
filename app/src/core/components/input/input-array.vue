@@ -5,7 +5,7 @@
                 <div class="is-flex is-flex-column">
                     <div v-for="(v, i) in value" :key="i">
                         <div class="is-flex is-flex-row">
-                            <slot :value="v"></slot>
+                            <slot :value="v" :index="i"></slot>
 
                             <b-button
                                 class="has-margin-left-2 is-justify-self-center has-margin-top-4"

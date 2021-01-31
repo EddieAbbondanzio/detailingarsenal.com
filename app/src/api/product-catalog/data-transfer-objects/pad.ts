@@ -29,6 +29,7 @@ export class Pad {
         public material: PadMaterial | null,
         public texture: PadTexture | null,
         public color: PadColor | null,
+        public hasCenterHole: boolean | null,
         public cut: number | null, // Comes from review
         public finish: number | null, // Comes from review
         public rating: Rating,

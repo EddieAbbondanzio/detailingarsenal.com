@@ -58,6 +58,7 @@ export class PadSeriesService {
                         c.material,
                         c.texture,
                         c.color,
+                        c.hasCenterHole,
                         c.cut,
                         c.finish,
                         new Rating(c.rating.stars, c.rating.reviewCount),

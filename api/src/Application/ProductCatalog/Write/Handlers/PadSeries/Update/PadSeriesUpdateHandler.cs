@@ -80,6 +80,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 pad.Material = update.Material;
                 pad.Texture = update.Texture;
                 pad.Color = update.Color;
+                pad.HasCenterHole = update.HasCenterHole;
                 pad.Image = update.Image?.Match(id => pad.Image, image => imageProcessor.Process(image.Name, image.Data));
 
 

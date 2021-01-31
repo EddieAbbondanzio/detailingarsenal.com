@@ -8,7 +8,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
         public PadOptionReadModel(Guid padSizeId, List<PartNumberReadModel>? partNumbers = null) {
             PadSizeId = padSizeId;
-            partNumbers = partNumbers ?? new();
+            PartNumbers = partNumbers ?? new();
         }
     }
 }

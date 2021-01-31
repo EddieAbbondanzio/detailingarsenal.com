@@ -12,6 +12,7 @@ export interface PadCreateOrUpdate {
     material: PadMaterial | null;
     texture: PadTexture | null;
     color: PadColor | null;
+    hasCenterHole: boolean | null;
     image: Image | string | null;
     options: PadOptionCreateOrUpdate[];
 }

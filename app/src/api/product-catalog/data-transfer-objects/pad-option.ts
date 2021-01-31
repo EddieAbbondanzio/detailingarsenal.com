@@ -1,4 +1,6 @@
+import { PartNumber } from './part-number';
+
 export interface PadOption {
     padSizeId: string;
-    partNumber: string | null;
+    partNumbers: PartNumber[];
 }

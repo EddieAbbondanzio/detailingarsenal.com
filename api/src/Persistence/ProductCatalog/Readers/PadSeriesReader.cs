@@ -25,7 +25,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads pc 
                             left join reviews r on pc.id = r.pad_id 
                             where pad_series_id = @Id group by pc.id;
-                        select * from pad_options po left join pads pc on po.pad_id = pc.id where pad_series_id = @Id;
+                        select po.* from pad_options po left join pads pc on po.pad_id = pc.id where pad_series_id = @Id;
                         select po.id as pad_option_id, pn.* from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id join pad_options po on po.id = popn.pad_option_id join pads p on po.pad_id = p.id where p.pad_series_id = @Id; 
                     ",
                     new { Id = id }
@@ -94,7 +94,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     }
 
-                    var partNumbers = reader.Read<(Guid PadOptionId, PartNumberRow PartNumber)>();
+                    var partNumbers = reader.Read<Guid, PartNumberRow, (Guid PadOptionId, PartNumberRow PartNumber)>((id, pn) => (id, pn));
                     foreach (var partNumber in partNumbers) {
                         PadOptionReadModel? option;
 
@@ -122,7 +122,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads pc 
                             left join reviews r on pc.id = r.pad_id 
                             group by pc.id;
-                        select * from pad_options po left join pads pc on po.pad_id = pc.id;
+                        select po.* from pad_options po left join pads pc on po.pad_id = pc.id;
                         select po.id as pad_option_id, pn.* from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id join pad_options po on po.id = popn.pad_option_id; 
                         "
                 )) {
@@ -219,7 +219,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     }
 
-                    var partNumbers = reader.Read<(Guid PadOptionId, PartNumberRow PartNumber)>();
+                    var partNumbers = reader.Read<Guid, PartNumberRow, (Guid PadOptionId, PartNumberRow PartNumber)>((id, pn) => (id, pn));
                     foreach (var partNumber in partNumbers) {
                         PadOptionReadModel? option;
 
