@@ -140,6 +140,7 @@
                         v-model="modalPad.name"
                         :required="true"
                         rules="required|max:32"
+                        v-focus
                     />
 
                     <input-select
@@ -389,11 +390,6 @@ export default class CreatePadSeries extends Vue {
             image: null!,
             options: []
         };
-
-        // Focus first textbox to save user a click
-        this.$nextTick(() => {
-            (this.$refs.nameTextField as any).focus();
-        });
     }
 
     onOptionAddAnother() {

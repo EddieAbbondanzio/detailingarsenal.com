@@ -47,7 +47,7 @@
                 <span v-if="props.row.material">{{ props.row.material | uppercaseFirst }}</span>
                 <span v-else class="has-text-grey">N/A</span>
             </b-table-column>
-            <b-table-column v-slot="props" label="Cut" field="cut" width="120px" sortable>
+            <b-table-column label="Cut" field="cut" width="120px" sortable v-slot="props">
                 <pad-cut-bar :value="props.row.cut" />
             </b-table-column>
             <b-table-column v-slot="props" label="Finish" field="finish" width="120px" sortable>

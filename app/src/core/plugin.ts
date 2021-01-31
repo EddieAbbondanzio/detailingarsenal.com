@@ -38,11 +38,13 @@ import Navbar from '@/core/components/navigation/navbar.vue';
 import NavbarItem from '@/core/components/navigation/navbar-item.vue';
 import NavFooter from '@/core/components/navigation/nav-footer.vue';
 import NavFooterItem from '@/core/components/navigation/nav-footer-item.vue';
+import Helptip from '@/core/components/elements/helptip.vue';
 
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { disableAll } from '@/core/directives/disable-all';
 import { mouse } from '@/core/directives/mouse/mouse';
 import { uppercase_first as uppercaseFirst } from '@/core/filters/uppercase_first';
+import { focusDirective } from './directives/focus';
 
 export default {
     install(vue: typeof Vue) {
@@ -84,6 +86,7 @@ export default {
         Vue.component('navbar-item', NavbarItem);
         Vue.component('nav-footer', NavFooter);
         Vue.component('nav-footer-item', NavFooterItem);
+        Vue.component('helptip', Helptip);
 
         Vue.filter('currency', currency);
         Vue.filter('duration', duration);
@@ -95,5 +98,6 @@ export default {
 
         Vue.directive('disable-all', disableAll);
         Vue.directive('mouse', mouse);
+        Vue.directive('focus', focusDirective);
     }
 };
