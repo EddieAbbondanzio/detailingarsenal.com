@@ -86,7 +86,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     }
 
-                    var partNumbers = reader.Read<(Guid PadOptionId, PartNumberRow PartNumber)>();
+                    var partNumbers = reader.Read<Guid, PartNumberRow, (Guid PadOptionId, PartNumberRow PartNumber)>((id, pn) => (id, pn));
                     foreach (var partNumber in partNumbers) {
                         PadOption? option;
 
