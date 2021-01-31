@@ -45,8 +45,8 @@
                     <b-table-column field="thickness" label="Thickness" v-slot="props">
                         <measurement-input :value="props.row.thickness" />
                     </b-table-column>
-                    <b-table-column v-slot="props">
-                        <b-button type="is-danger" @click="onDeleteSize(props.index)">Delete</b-button>
+                    <b-table-column v-slot="props" class="has-vertical-align-middle">
+                        <b-button type="is-danger" @click="onDeleteSize(props.index)" size="is-small">Delete</b-button>
                     </b-table-column>
                 </b-table>
             </b-field>
@@ -85,12 +85,18 @@
                     <b-table-column field="image" label="Image" v-slot="props">
                         {{ props.row.image }}
                     </b-table-column>
-                    <b-table-column v-slot="props" centered>
+                    <b-table-column v-slot="props" centered class="has-vertical-align-middle">
                         <div class="is-flex is-flex-row">
-                            <b-button class="has-margin-right-2" type="is-primary" @click="onPadEdit(props.index)"
+                            <b-button
+                                class="has-margin-right-2"
+                                type="is-primary"
+                                @click="onPadEdit(props.index)"
+                                size="is-small"
                                 >Edit</b-button
                             >
-                            <b-button type="is-danger" @click="pads.splice(props.index, 1)">Delete</b-button>
+                            <b-button type="is-danger" @click="pads.splice(props.index, 1)" size="is-small"
+                                >Delete</b-button
+                            >
                         </div>
                     </b-table-column>
                 </b-table>
