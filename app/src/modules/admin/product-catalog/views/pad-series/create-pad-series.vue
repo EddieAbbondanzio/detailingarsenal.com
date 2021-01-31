@@ -135,6 +135,7 @@
                     <input-text-field
                         class="has-margin-x-1 has-margin-y-0"
                         type="text"
+                        ref="nameTextField"
                         label="Name"
                         v-model="modalPad.name"
                         :required="true"
@@ -388,6 +389,11 @@ export default class CreatePadSeries extends Vue {
             image: null!,
             options: []
         };
+
+        // Focus first textbox to save user a click
+        this.$nextTick(() => {
+            (this.$refs.nameTextField as any).focus();
+        });
     }
 
     onOptionAddAnother() {

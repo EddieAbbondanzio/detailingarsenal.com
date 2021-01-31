@@ -16,6 +16,7 @@
                 @input="onInput"
                 @focus="$emit('focus')"
                 @blur="$emit('blur')"
+                ref="bInput"
             ></b-input>
             <input-error-message v-if="!hideErrors" :text="errors[0]" />
         </validation-provider>
@@ -29,7 +30,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
  * Text field that supports validation, and can have a required * indicator.
  */
 @Component({
-    name: 'input-text-field',
+    name: 'input-text-field'
 })
 export default class InputTextField extends Vue {
     /**
@@ -90,8 +91,12 @@ export default class InputTextField extends Vue {
         (this.$refs.validator as any).applyResult({
             errors: [error],
             valid: false,
-            failedRules: {},
+            failedRules: {}
         });
+    }
+
+    focus() {
+        (this.$refs.bInput as any).focus();
     }
 }
 </script>
