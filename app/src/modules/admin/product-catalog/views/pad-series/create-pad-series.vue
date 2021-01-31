@@ -57,7 +57,7 @@
 
             <!-- Pad Table -->
             <b-field label="Pads">
-                <b-table :data="pads" narrowed class="pad-table">
+                <b-table :data="pads" narrowed class="pad-table" detailed>
                     <b-table-column label="Name" field="name" v-slot="props">
                         {{ props.row.name }}
                     </b-table-column>
@@ -99,6 +99,27 @@
                             >
                         </div>
                     </b-table-column>
+
+                    <template #detail="props">
+                        <ul v-for="option in props.row.options" :key="option.padSizeIndex">
+                            <li>
+                                <span class="has-text-weight-bold">{{
+                                    sizes[option.padSizeIndex].diameter | measurement
+                                }}</span>
+                                <span>:&nbsp;</span>
+
+                                <p
+                                    class="is-inline-block"
+                                    v-for="(partNumber, i) in option.partNumbers"
+                                    :key="partNumber.value"
+                                >
+                                    <span>{{ partNumber.value }}</span
+                                    ><span class="has-text-grey" v-if="partNumber.notes">({{ partNumber.notes }})</span>
+                                    <span class="has-margin-right-1" v-if="i < option.partNumbers.length - 1">,</span>
+                                </p>
+                            </li>
+                        </ul>
+                    </template>
                 </b-table>
             </b-field>
             <b-button type="is-text" @click="onPadAddAnother">Add another</b-button>
@@ -268,10 +289,14 @@ import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
 import { PadColor } from '@/api/product-catalog/data-transfer-objects/pad-color';
+import { measurement } from '@/modules/shared/filters/measurement';
 
 @Component({
     components: {
         MeasurementInput
+    },
+    filters: {
+        measurement
     }
 })
 export default class CreatePadSeries extends Vue {
