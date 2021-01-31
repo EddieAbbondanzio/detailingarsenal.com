@@ -233,12 +233,18 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     var old = (await FindById(series.Id))!;
 
                     // get part number ids
-                    var partNumberIds = await conn.QueryAsync<Guid>(@"select id from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id where po.id = any(@Options);", new { Options = old.Pads.SelectMany(p => p.Options).ToList() });
+                    var partNumberIds = await conn.QueryAsync<Guid>(@"select pn.id from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id join pad_options po on popn.pad_option_id = po.id join pads p on po.pad_id = p.id where p.pad_series_id = @Id;", old);
+
+                    var padOptionIds = (await conn.QueryAsync<Guid>(@"
+                        select po.id from pad_options po
+                            join pads p on po.pad_id = p.id
+                            where p.pad_series_id = @Id;
+                    ", series)).Select(id => new { Id = id }).ToList();
 
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", old);
-                    await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", old.Pads.SelectMany(p => p.Options).ToList());
-                    await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
+                    await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", padOptionIds);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", old.Pads);
+                    await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", old);
                     await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", old);
                     await conn.ExecuteAsync(@"delete from pad_images where pad_id = @Id;", old.Pads);
