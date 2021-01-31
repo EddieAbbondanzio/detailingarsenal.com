@@ -35,7 +35,7 @@
                 <input-checkbox v-model="polisherTypes" native-value="mini" label="Mini" />
             </b-field>
 
-            <!-- Pad Size Table -->
+            <!-- Size Table -->
             <b-field label="Sizes">
                 <b-table :data="sizes" class="is-flex" narrowed>
                     <b-table-column field="diameter" label="Diameter" v-slot="props">
@@ -55,7 +55,7 @@
                 >Add another</b-button
             >
 
-            <!-- Pads -->
+            <!-- Pad Table -->
             <b-field label="Pads">
                 <b-table :data="pads" narrowed class="pad-table">
                     <b-table-column label="Name" field="name" v-slot="props">
@@ -98,6 +98,7 @@
             <b-button type="is-text" @click="onPadAddAnother">Add another</b-button>
         </input-form>
 
+        <!-- Pad Modal -->
         <b-modal v-model="isPadModalActive" has-modal-card v-if="modalPad != null">
             <validation-observer ref="modalValidator" tag="div" class="modal-card">
                 <div class="modal-card-head">
@@ -192,11 +193,15 @@
                                             placeholder="PART-NUMBER-123"
                                             label="Part number"
                                             :hideLabel="true"
-                                            rules="required"
+                                            rules="required|max:64"
                                         />
                                     </b-table-column>
                                     <b-table-column label="Notes" v-slot="props">
-                                        <input-text-field v-model="props.row.notes" placeholder="2 pack" />
+                                        <input-text-field
+                                            v-model="props.row.notes"
+                                            placeholder="2 pack"
+                                            rules="max:128"
+                                        />
                                     </b-table-column>
                                     <b-table-column centered v-slot="{ index }">
                                         <b-button type="is-danger" @click="props.row.partNumbers.splice(index, 1)"
@@ -357,7 +362,6 @@ export default class CreatePadSeries extends Vue {
     onOptionAddAnother() {
         this.modalPad?.options.push({
             padSizeIndex: null,
-            padSizeId: null,
             partNumbers: []
         });
     }

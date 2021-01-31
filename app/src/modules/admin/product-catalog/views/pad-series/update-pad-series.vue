@@ -36,86 +36,196 @@
                 <input-checkbox v-model="polisherTypes" native-value="mini" label="Mini" />
             </b-field>
 
-            <input-array title="Sizes" :factory="() => ({})" v-model="sizes" v-slot="{ value }">
-                <measurement-input label="Diameter" v-model="value.diameter" rules="required" :required="true" />
-                <measurement-input label="Thickness" v-model="value.thickness" />
-            </input-array>
+            <!-- Size Table -->
+            <b-field label="Sizes">
+                <b-table :data="sizes" class="is-flex" narrowed>
+                    <b-table-column field="diameter" label="Diameter" v-slot="props">
+                        <measurement-input :value="props.row.diameter" rules="required" :required="true" />
+                    </b-table-column>
+                    <b-table-column field="thickness" label="Thickness" v-slot="props">
+                        <measurement-input :value="props.row.thickness" />
+                    </b-table-column>
+                    <b-table-column v-slot="props">
+                        <b-button type="is-danger" @click="onDeleteSize(props.index)">Delete</b-button>
+                    </b-table-column>
+                </b-table>
+            </b-field>
+            <b-button
+                type="is-text"
+                @click="sizes.push({ id: null, diameter: { amount: null, unit: 'in' }, thickness: null })"
+                >Add another</b-button
+            >
+            <!-- Pad Table -->
+            <b-field label="Pads">
+                <b-table :data="pads" narrowed class="pad-table">
+                    <b-table-column label="Name" field="name" v-slot="props">
+                        {{ props.row.name }}
+                    </b-table-column>
 
-            <input-array title="Pads" :factory="padUpdateFactory" v-model="pads">
-                <template v-slot="{ value }">
+                    <b-table-column label="Category" field="category" v-slot="props">
+                        {{ props.row.category | uppercaseFirst }}
+                    </b-table-column>
+
+                    <b-table-column field="material" label="Material" v-slot="props">
+                        {{ props.row.material | uppercaseFirst }}
+                    </b-table-column>
+
+                    <b-table-column field="texture" label="Texture" v-slot="props">
+                        {{ props.row.texture | uppercaseFirst }}
+                    </b-table-column>
+
+                    <b-table-column field="color" label="Color" v-slot="props">
+                        {{ props.row.color | uppercaseFirst }}
+                    </b-table-column>
+
+                    <b-table-column field="hasCenterHole" label="Center hole" v-slot="props">
+                        {{ props.row.hasCenterHole }}
+                    </b-table-column>
+
+                    <b-table-column field="image" label="Image" v-slot="props">
+                        {{ props.row.image }}
+                    </b-table-column>
+                    <b-table-column v-slot="props" centered>
+                        <div class="is-flex is-flex-row">
+                            <b-button class="has-margin-right-2" type="is-primary" @click="onPadEdit(props.index)"
+                                >Edit</b-button
+                            >
+                            <b-button type="is-danger" @click="pads.splice(props.index, 1)">Delete</b-button>
+                        </div>
+                    </b-table-column>
+                </b-table>
+            </b-field>
+            <b-button type="is-text" @click="onPadAddAnother">Add another</b-button>
+        </input-form>
+
+        <!-- Pad Modal -->
+        <b-modal v-model="isPadModalActive" has-modal-card v-if="modalPad != null">
+            <validation-observer ref="modalValidator" tag="div" class="modal-card">
+                <div class="modal-card-head">
+                    <p class="modal-card-title">Enter new pad info</p>
+                </div>
+                <div class="modal-card-body has-padding-bottom-3">
                     <input-text-field
                         class="has-margin-x-1 has-margin-y-0"
                         type="text"
-                        v-model="value.name"
                         label="Name"
+                        v-model="modalPad.name"
+                        :required="true"
                         rules="required|max:32"
                     />
 
                     <input-select
-                        class="has-margin-x-1 has-margin-y-0"
                         label="Category"
+                        class="has-margin-x-1 has-margin-y-0"
                         rules="required"
-                        v-model="value.category"
+                        :required="true"
+                        v-model="modalPad.category"
                     >
-                        <option :value="null">Select a category</option>
-                        <option v-for="category in categories" :key="category[1]" :value="category[1]">
+                        <option :modalPad="null">Select a category</option>
+                        <option v-for="category in categories" :key="category[1]" :modalPad="category[1]">
                             {{ category[0] }}
                         </option>
                     </input-select>
 
-                    <input-select class="has-margin-x-1 has-margin-y-0" label="Material" v-model="value.material">
-                        <option :value="null">Select a material</option>
-                        <option v-for="m in materials" :key="m[1]" :value="m[1]">
+                    <input-select label="Material" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.material">
+                        <option :modalPad="null">Select a material</option>
+                        <option v-for="m in materials" :key="m[1]" :modalPad="m[1]">
                             {{ m[0] }}
                         </option>
                     </input-select>
 
-                    <input-select class="has-margin-x-1 has-margin-y-0" label="Texture" v-model="value.texture">
-                        <option :value="null">Select a texture</option>
-                        <option v-for="t in textures" :key="t[1]" :value="t[1]">
+                    <input-select label="Texture" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.texture">
+                        <option :modalPad="null">Select a texture</option>
+                        <option v-for="t in textures" :key="t[1]" :modalPad="t[1]">
                             {{ t[0] }}
                         </option>
                     </input-select>
 
-                    <input-select class="has-margin-x-1 has-margin-y-0" label="Color" v-model="value.color">
-                        <option :value="null">Select a color</option>
-                        <option v-for="c in colors" :key="c[1]" :value="c[1]">
+                    <input-select label="Color" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.color">
+                        <option :modalPad="null">Select a color</option>
+                        <option v-for="c in colors" :key="c[1]" :modalPad="c[1]">
                             {{ c[0] }}
                         </option>
                     </input-select>
 
-                    <input-image-upload v-if="!isExistingImage(value.image)" label="Image" v-model="value.image" />
-                    <div class="has-margin-top-4 is-align-self-center" v-else>
-                        <img style="max-height: 40px !important" :src="getThumbnailUrl(value.image)" />
-                        <a class="delete" @click="onDeleteImage(value)"></a>
-                    </div>
-                </template>
+                    <input-checkbox
+                        label="Has center hole"
+                        v-model="modalPad.hasCenterHole"
+                        class="has-margin-all-2 has-margin-top-3"
+                    />
 
-                <template v-slot:detail="{ value: pad }">
-                    <input-array title="Options" v-model="pad.options">
-                        <template v-slot="{ value }">
-                            <input-select label="Size" v-model="value.padSizeId" rules="required">
-                                <option :value="null">Select a size</option>
-                                <option
-                                    v-for="(size, i) in sizes"
-                                    :key="i"
-                                    :value="size.id"
-                                    :disabled="isSizeDisabled(size, value, pad)"
+                    <input-image-upload label="Image" v-model="modalPad.image" />
+
+                    <b-field label="Options">
+                        <b-table :data="modalPad.options" detailed>
+                            <b-table-column label="Size" field="padSizeIndex" v-slot="props">
+                                <input-select
+                                    v-model="props.row.padSizeIndex"
+                                    rules="required"
+                                    label="Size"
+                                    :hideLabel="true"
                                 >
-                                    {{
-                                        size.diameter.amount == null
-                                            ? ''
-                                            : size.diameter.amount.toString() + size.diameter.unit
-                                    }}
-                                </option>
-                            </input-select>
+                                    <option :value="null">Select a size</option>
+                                    <option
+                                        v-for="(size, i) in sizes"
+                                        :key="i"
+                                        :value="i"
+                                        :disabled="isSizeDisabled(size, modalPad)"
+                                    >
+                                        {{
+                                            size.diameter.amount == null
+                                                ? ''
+                                                : size.diameter.amount.toString() + size.diameter.unit
+                                        }}
+                                    </option>
+                                </input-select>
+                            </b-table-column>
 
-                            <input-text-field label="Part Number" v-model="value.partNumber" />
-                        </template>
-                    </input-array>
-                </template>
-            </input-array>
-        </input-form>
+                            <b-table-column centered v-slot="{ index }">
+                                <b-button type="is-danger" @click="modalPad.options.splice(index, 1)">Delete</b-button>
+                            </b-table-column>
+
+                            <template #detail="props">
+                                <b-table :data="props.row.partNumbers">
+                                    <b-table-column label="Part Number" v-slot="props">
+                                        <input-text-field
+                                            v-model="props.row.value"
+                                            placeholder="PART-NUMBER-123"
+                                            label="Part number"
+                                            :hideLabel="true"
+                                            rules="required|max:64"
+                                        />
+                                    </b-table-column>
+                                    <b-table-column label="Notes" v-slot="props">
+                                        <input-text-field
+                                            v-model="props.row.notes"
+                                            placeholder="2 pack"
+                                            rules="max:128"
+                                        />
+                                    </b-table-column>
+                                    <b-table-column centered v-slot="{ index }">
+                                        <b-button type="is-danger" @click="props.row.partNumbers.splice(index, 1)"
+                                            >Delete</b-button
+                                        >
+                                    </b-table-column>
+                                </b-table>
+                                <b-button
+                                    type="is-text"
+                                    @click="props.row.partNumbers.push({ value: null, notes: null })"
+                                    >Add another</b-button
+                                >
+                            </template>
+                        </b-table>
+                    </b-field>
+                    <b-button type="is-text" @click="onOptionAddAnother">Add another</b-button>
+                </div>
+
+                <footer class="modal-card-foot">
+                    <b-button label="Done" type="is-success" @click="onPadAddDone" />
+                    <b-button label="Cancel" @click="onPadAddCancel" />
+                </footer>
+            </validation-observer>
+        </b-modal>
     </page>
 </template>
 
@@ -183,6 +293,9 @@ export default class UpdatePadSeries extends Vue {
     polisherTypes: PolisherType[] = [];
     sizes: PadSizeCreateOrUpdate[] = [];
     pads: PadCreateOrUpdate[] = [];
+    isPadModalActive: boolean = false;
+    isPadModalInEditMode: boolean = false;
+    modalPad: PadCreateOrUpdate | null = null;
 
     @displayLoading
     async created() {
@@ -211,11 +324,12 @@ export default class UpdatePadSeries extends Vue {
             material: c.material,
             texture: c.texture,
             color: c.color,
+            hasCenterHole: c.hasCenterHole,
             image: c.image, // Existing images are just ids to real images.
             options: c.options.map(o => ({
                 padSizeIndex: null,
                 padSizeId: o.padSizeId,
-                partNumber: o.partNumber
+                partNumbers: o.partNumbers
             }))
         }));
     }
@@ -244,39 +358,69 @@ export default class UpdatePadSeries extends Vue {
         }
     }
 
-    padUpdateFactory(): PadCreateOrUpdate {
-        return {
+    onDeleteSize(index: number) {
+        this.sizes.splice(index, 1);
+    }
+
+    onPadEdit(index: number) {
+        this.modalPad = this.pads[index];
+        this.isPadModalActive = true;
+        this.isPadModalInEditMode = true;
+    }
+
+    onPadAddAnother() {
+        this.isPadModalActive = true;
+        this.modalPad = {
             id: null,
-            name: '',
+            name: null!,
             category: null!,
             material: null!,
-            color: null!,
             texture: null!,
-            options: this.sizes.map(s => ({
-                padSizeId: s.id,
-                partNumber: null,
-                padSizeIndex: null
-            })),
-            image: null
+            color: null!,
+            hasCenterHole: null!,
+            image: null!,
+            options: []
         };
+    }
+
+    onOptionAddAnother() {
+        this.modalPad?.options.push({
+            padSizeIndex: null,
+            partNumbers: []
+        });
+    }
+
+    onPadAddCancel() {
+        this.modalPad = null;
+        this.isPadModalActive = false;
+    }
+
+    async onPadAddDone() {
+        const valid = await (this.$refs.modalValidator as any).validate();
+
+        if (!valid) {
+            return;
+        }
+
+        // Editted existing pad
+        if (this.isPadModalInEditMode) {
+            this.isPadModalInEditMode = false;
+        } else {
+            this.pads.push(this.modalPad!);
+        }
+
+        this.isPadModalActive = false;
+        this.modalPad = null;
     }
 
     /**
      * Don't allow a size to be picked on an option if it's already used by another
-     * option on the same pad.
+     * option on the same color.
      */
-    isSizeDisabled(size: PadSizeCreateOrUpdate, option: PadOptionCreateOrUpdate, pad: PadCreateOrUpdate) {
+    isSizeDisabled(size: PadSizeCreateOrUpdate, pad: PadCreateOrUpdate) {
         const sizesUsedAlready = pad.options.map(o => o.padSizeIndex!).map(i => this.sizes[i]);
 
         return !sizesUsedAlready.every(s => s != size);
-    }
-
-    isExistingImage(image: Image | string | null) {
-        return image != null && !(image instanceof Image);
-    }
-
-    onDeleteImage(value: PadCreateOrUpdate) {
-        value.image = null;
     }
 
     getThumbnailUrl(id: string) {

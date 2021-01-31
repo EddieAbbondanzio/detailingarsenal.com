@@ -147,6 +147,8 @@ namespace DetailingArsenal.Api {
             services.AddTransient<IBrandRepo, BrandRepo>();
             services.AddTransient<IPadSeriesRepo, PadSeriesRepo>();
             services.AddTransient<IPadSeriesReader, PadSeriesReader>();
+            services.AddTransient<PadSeriesCreateValidator>();
+            services.AddTransient<PadSeriesUpdateValidator>();
             services.AddTransient<ActionHandler<GetPadSeriesByIdQuery, PadSeriesReadModel?>, GetPadSeriesByIdHandler>();
             services.AddTransient<ActionHandler<GetAllPadSeriesQuery, List<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
             services.AddTransient<ActionHandler<PadSeriesCreateCommand, Guid>, PadSeriesCreateHandler>();

@@ -17,7 +17,6 @@ import InputGroup from './components/input/input-group.vue';
 import InputErrorMessage from './components/input/input-error-message.vue';
 import InputDatepicker from '@/core/components/input/input-datepicker.vue';
 import InputTimepicker from '@/core/components/input/input-timepicker.vue';
-import InputArray from '@/core/components/input/input-array.vue';
 import InputSlider from '@/core/components/input/input-slider.vue';
 import InputImageUpload from '@/core/components/input/input-image-upload.vue';
 import InputTagger from '@/core/components/input/input-tagger.vue';
@@ -73,7 +72,6 @@ export default {
         Vue.component('input-checkbox', InputCheckbox);
         Vue.component('input-group', InputGroup);
         Vue.component('input-error-message', InputErrorMessage);
-        Vue.component('input-array', InputArray);
         Vue.component('input-image-upload', InputImageUpload);
         Vue.component('input-datepicker', InputDatepicker);
         Vue.component('input-timepicker', InputTimepicker);
