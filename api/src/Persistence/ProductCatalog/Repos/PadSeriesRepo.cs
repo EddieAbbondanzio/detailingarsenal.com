@@ -246,14 +246,21 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             where p.pad_series_id = @Id;
                     ", series)).Select(id => new { Id = id }).ToList();
 
+                    var padImageIds = (await conn.QueryAsync<Guid>(@"
+                        select i.id from images i
+                            join pad_images pi on pi.image_id = i.id
+                            join pads p on pi.pad_id = p.id
+                            where p.pad_series_id = @Id;
+                    ", series)).Select(id => new { Id = id }).ToList();
+
                     await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", old);
                     await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", padOptionIds);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", old.Pads);
                     await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
                     await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", old);
-                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", old);
                     await conn.ExecuteAsync(@"delete from pad_images where pad_id = @Id;", old.Pads);
-                    await conn.ExecuteAsync(@"delete from images where id = @Id;", old.Pads.Where(p => p.Image != null).ToList());
+                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", old);
+                    await conn.ExecuteAsync(@"delete from images where id = @Id;", padImageIds);
 
                     await conn.ExecuteAsync(
                         @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;",
