@@ -188,7 +188,6 @@ export default class PadView extends Vue {
 
     async created() {
         this.value = await padStore.getPadById(this.id);
-        console.log(this.value?.series);
 
         if (this.value == null) {
             return;

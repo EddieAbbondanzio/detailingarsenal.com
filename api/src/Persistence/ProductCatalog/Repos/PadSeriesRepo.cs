@@ -233,7 +233,13 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     var old = (await FindById(series.Id))!;
 
                     // get part number ids
-                    var partNumberIds = await conn.QueryAsync<Guid>(@"select pn.id from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id join pad_options po on popn.pad_option_id = po.id join pads p on po.pad_id = p.id where p.pad_series_id = @Id;", old);
+                    var partNumberIds = (await conn.QueryAsync<Guid>(@"
+                        select pn.id from part_numbers pn 
+                            join pad_option_part_numbers popn on pn.id = popn.part_number_id 
+                            join pad_options po on popn.pad_option_id = po.id 
+                            join pads p on po.pad_id = p.id 
+                            where p.pad_series_id = @Id;
+                        ", old)).Select(id => new { Id = id }).ToList();
 
                     var padOptionIds = (await conn.QueryAsync<Guid>(@"
                         select po.id from pad_options po

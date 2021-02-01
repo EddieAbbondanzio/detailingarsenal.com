@@ -13,7 +13,6 @@ export const focusDirective = {
          */
         function recursiveCheck(el: HTMLElement) {
             if (el.tagName == 'INPUT') {
-                console.log('found it!');
                 el.focus();
             } else {
                 for (let child of el.children) {

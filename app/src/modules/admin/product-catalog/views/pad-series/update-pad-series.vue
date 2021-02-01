@@ -149,29 +149,29 @@
                         :required="true"
                         v-model="modalPad.category"
                     >
-                        <option :modalPad="null">Select a category</option>
-                        <option v-for="category in categories" :key="category[1]" :modalPad="category[1]">
+                        <option :value="null">Select a category</option>
+                        <option v-for="category in categories" :key="category[1]" :value="category[1]">
                             {{ category[0] }}
                         </option>
                     </input-select>
 
                     <input-select label="Material" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.material">
-                        <option :modalPad="null">Select a material</option>
-                        <option v-for="m in materials" :key="m[1]" :modalPad="m[1]">
+                        <option :value="null">Select a material</option>
+                        <option v-for="m in materials" :key="m[1]" :value="m[1]">
                             {{ m[0] }}
                         </option>
                     </input-select>
 
                     <input-select label="Texture" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.texture">
-                        <option :modalPad="null">Select a texture</option>
-                        <option v-for="t in textures" :key="t[1]" :modalPad="t[1]">
+                        <option :value="null">Select a texture</option>
+                        <option v-for="t in textures" :key="t[1]" :value="t[1]">
                             {{ t[0] }}
                         </option>
                     </input-select>
 
                     <input-select label="Color" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.color">
-                        <option :modalPad="null">Select a color</option>
-                        <option v-for="c in colors" :key="c[1]" :modalPad="c[1]">
+                        <option :value="null">Select a color</option>
+                        <option v-for="c in colors" :key="c[1]" :value="c[1]">
                             {{ c[0] }}
                         </option>
                     </input-select>
@@ -394,7 +394,7 @@ export default class UpdatePadSeries extends Vue {
     }
 
     onPadEdit(index: number) {
-        this.modalPad = this.pads[index];
+        this.modalPad = Object.assign({}, this.pads[index]);
         this.isPadModalActive = true;
         this.isPadModalInEditMode = true;
     }
@@ -436,6 +436,9 @@ export default class UpdatePadSeries extends Vue {
         // Editted existing pad
         if (this.isPadModalInEditMode) {
             this.isPadModalInEditMode = false;
+            const old = this.pads.findIndex(p => this.modalPad?.id == p.id);
+            this.pads.splice(old, 1);
+            this.pads.push(this.modalPad!);
         } else {
             this.pads.push(this.modalPad!);
         }
