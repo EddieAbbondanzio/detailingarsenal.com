@@ -164,15 +164,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         );
                     }
 
-                    if (imageRelations.Count > 0) {
-                        await conn.ExecuteAsync(
-                            @"insert into pad_images (pad_id, image_id) values (@PadId, @ImageId);",
-                            imageRelations
-                        );
-                    }
-
                     await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, material, texture, color, has_center_hole, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @HasCenterHole, @Name, @ImageId);",
+                        @"insert into pads (id, pad_series_id, category, material, texture, color, has_center_hole, name) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @HasCenterHole, @Name);",
                         series.Pads.Select(c => new PadRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
@@ -182,9 +175,15 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             Color = c.Color?.Serialize(),
                             HasCenterHole = c.HasCenterHole,
                             Name = c.Name,
-                            ImageId = c.Image?.Id
                         }).ToList()
                     );
+
+                    if (imageRelations.Count > 0) {
+                        await conn.ExecuteAsync(
+                            @"insert into pad_images (pad_id, image_id) values (@PadId, @ImageId);",
+                            imageRelations
+                        );
+                    }
 
                     List<PadOptionRow> padOptionRows = new();
                     List<PadOptionPartNumberRow> padOptionPartNumberRows = new();
@@ -310,15 +309,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         );
                     }
 
-                    if (imageRelations.Count > 0) {
-                        await conn.ExecuteAsync(
-                            @"insert into pad_images (pad_id, image_id) values (@PadId, @ImageId);",
-                            imageRelations
-                        );
-                    }
-
                     await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, material, texture, color, has_center_hole, name, image_id) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @HasCenterHole, @Name, @ImageId);",
+                        @"insert into pads (id, pad_series_id, category, material, texture, color, has_center_hole, name) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @HasCenterHole, @Name);",
                         series.Pads.Select(p => new PadRow() {
                             Id = p.Id,
                             PadSeriesId = series.Id,
@@ -328,9 +320,15 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             Color = p.Color?.Serialize(),
                             HasCenterHole = p.HasCenterHole,
                             Name = p.Name,
-                            ImageId = p.Image?.Id
                         }).ToList()
                     );
+
+                    if (imageRelations.Count > 0) {
+                        await conn.ExecuteAsync(
+                            @"insert into pad_images (pad_id, image_id) values (@PadId, @ImageId);",
+                            imageRelations
+                        );
+                    }
 
                     List<PadOptionRow> padOptionRows = new();
                     List<PadOptionPartNumberRow> padOptionPartNumberRows = new();

@@ -83,7 +83,7 @@
                     </b-table-column>
 
                     <b-table-column field="image" label="Image" v-slot="props">
-                        {{ props.row.image }}
+                        {{ props.row.image != null ? props.row.image.name : '' }}
                     </b-table-column>
                     <b-table-column v-slot="props" centered class="has-vertical-align-middle">
                         <div class="is-flex is-flex-row">
@@ -386,6 +386,7 @@ export default class UpdatePadSeries extends Vue {
             this.$router.push({ name: 'padSeriesDetails' });
         } catch (err) {
             displayError(err);
+            throw err;
         }
     }
 
