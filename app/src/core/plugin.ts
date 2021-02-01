@@ -42,7 +42,7 @@ import NavFooterItem from '@/core/components/navigation/nav-footer-item.vue';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { disableAll } from '@/core/directives/disable-all';
 import { mouse } from '@/core/directives/mouse/mouse';
-import { uppercase_first as uppercaseFirst } from '@/core/filters/uppercase_first';
+import { uppercaseFirst } from '@/core/filters/uppercase-first';
 import { focusDirective } from './directives/focus';
 
 export default {

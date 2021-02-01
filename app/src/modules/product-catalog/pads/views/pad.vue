@@ -31,95 +31,53 @@
 
                 <div class="is-flex-grow-1">
                     <div class="has-margin-bottom-3">
-                        <p class="is-size-4 is-size-3-desktop">{{ value.label }}</p>
-                        <div class="is-flex is-flex-row">
-                            <stars :value="value.rating.stars" :count="value.rating.reviewCount" />
+                        <!-- Name + Rating -->
+                        <div class="has-margin-bottom-3">
+                            <p class="is-size-4 is-size-3-desktop">{{ value.label }}</p>
+                            <div class="is-flex is-flex-row">
+                                <stars :value="value.rating.stars" :count="value.rating.reviewCount" />
+                            </div>
                         </div>
 
+                        <!-- Specs -->
                         <div class="columns">
-                            <div class="column is-one-quarter">
-                                <p class="is-size-6 has-text-weight-bold">Category</p>
-                                <p class="is-size-6 subtitle">{{ value.category }}</p>
+                            <div class="column is-4 has-text-weight-bold">
+                                <p class="has-margin-bottom-1" v-for="(spec, i) in specs" :key="i">{{ spec.label }}</p>
                             </div>
-
-                            <div class="column is-one-quarter">
-                                <p class="is-size-6 has-text-weight-bold">Cut</p>
-                                <pad-cut-bar :value="value.cut" />
-                            </div>
-
-                            <div class="column is-one-quarter">
-                                <p class="is-size-6 has-text-weight-bold">Finish</p>
-                                <pad-finish-bar :value="value.finish" />
+                            <div class="column">
+                                <p class="has-margin-bottom-1" v-for="(spec, i) in specs" :key="i">{{ spec.value }}</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="has-margin-bottom-3">
-                        <div class="is-flex is-flex-column is-flex-row-tablet is-justify-content-space-around">
-                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
-                                <p class="is-size-5 title">Brand</p>
-                                <p class="is-size-6 subtitle">{{ value.series.brand.name }}</p>
-                            </div>
-
-                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
-                                <p class="is-size-5 title">Series</p>
-                                <p class="is-size-6 subtitle">{{ value.series.name }}</p>
-                            </div>
-
-                            <div class="is-flex-grow-1 is-flex-basis-0">
-                                <p class="is-size-5 title">Name</p>
-                                <p class="is-size-6 subtitle">{{ value.name }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="has-margin-bottom-3">
-                        <div class="is-flex is-flex-column is-flex-row-tablet is-justify-content-space-around">
-                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
-                                <p class="is-size-5 title">Color</p>
-                                <p class="is-size-6 subtitle">{{ value.color | uppercaseFirst }}</p>
-                            </div>
-
-                            <div class="is-flex-grow-1 is-flex-basis-0 has-margin-bottom-3-mobile">
-                                <p class="is-size-5 title">Material</p>
-                                <p class="is-size-6 subtitle">{{ value.material | uppercaseFirst }}</p>
-                            </div>
-
-                            <div class="is-flex-grow-1 is-flex-basis-0">
-                                <p class="is-size-5 title">Texture</p>
-                                <p class="is-size-6 subtitle">{{ value.texture | uppercaseFirst }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="has-margin-bottom-3">
-                        <p class="is-size-5 title has-margin-bottom-1">Recommended For Polisher Type(s)</p>
+                        <p class="has-text-weight-bold has-margin-bottom-1">Recommended For Polisher Type(s)</p>
 
                         <b-taglist>
                             <polisher-type-tag v-for="t in polisherTypes" :key="t" :value="t" />
                         </b-taglist>
                     </div>
-
-                    <div class="has-margin-bottom-3">
-                        <p class="is-size-5 title has-margin-bottom-1">Sizes</p>
-
-                        <b-table :data="sizes">
-                            <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>
-                                {{ props.row.diameter | measurement }}
-                            </b-table-column>
-                            <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
-                                {{ props.row.thickness | measurement }}
-                                <b-tag type="is-info" v-if="isThin(props.row)" size="is-small">Thin</b-tag>
-                            </b-table-column>
-                            <b-table-column v-slot="props" label="Part Number" field="partNumber">
-                                {{ props.row.partNumber }}
-                            </b-table-column>
-                        </b-table>
-                    </div>
                 </div>
             </div>
 
             <div>
+                <div class="has-margin-bottom-3">
+                    <p class="is-size-5 title has-margin-bottom-1">Sizes</p>
+
+                    <b-table :data="sizes">
+                        <b-table-column v-slot="props" label="Diameter" field="diameter" sortable>
+                            {{ props.row.diameter | measurement }}
+                        </b-table-column>
+                        <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
+                            {{ props.row.thickness | measurement }}
+                            <b-tag type="is-info" v-if="isThin(props.row)" size="is-small">Thin</b-tag>
+                        </b-table-column>
+                        <b-table-column v-slot="props" label="Part Number" field="partNumber">
+                            {{ props.row.partNumber }}
+                        </b-table-column>
+                    </b-table>
+                </div>
+
                 <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-2">
                     <p class="is-size-5 title has-margin-bottom-0">Reviews</p>
                     <b-button
@@ -175,6 +133,7 @@ import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-b
 import reviewStore from '../store/review/review-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import { measurement } from '@/modules/shared/filters/measurement';
+import { uppercaseFirst } from '@/core/filters/uppercase-first';
 
 @Component({
     components: {
@@ -212,11 +171,24 @@ export default class PadView extends Vue {
         return reviewStore.reviews;
     }
 
+    get specs(): { label: string; value: string }[] {
+        return [
+            { label: 'Manufacturer', value: this.value?.series.brand.name! },
+            { label: 'Series', value: this.value?.series.name! },
+            { label: 'Category', value: uppercaseFirst(this.value?.category!)! },
+            { label: 'Material', value: uppercaseFirst(this.value?.material!) ?? 'N/A' },
+            { label: 'Texture', value: uppercaseFirst(this.value?.texture!) ?? 'N/A' },
+            { label: 'Color', value: uppercaseFirst(this.value?.color!) ?? 'N/A' },
+            { label: 'Center hole', value: this.value?.hasCenterHole ? 'Yes' : 'No' }
+        ];
+    }
+
     value: Pad | null = null;
     sizes: PadOption[] = [];
 
     async created() {
         this.value = await padStore.getPadById(this.id);
+        console.log(this.value?.series);
 
         if (this.value == null) {
             return;

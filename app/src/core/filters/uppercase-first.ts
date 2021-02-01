@@ -1,6 +1,6 @@
-export function uppercase_first(word: string) {
+export function uppercaseFirst(word: string) {
     if (word == null) {
-        return '';
+        return null;
     }
 
     return word.charAt(0).toUpperCase() + word.slice(1);
