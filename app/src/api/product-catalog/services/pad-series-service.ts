@@ -65,7 +65,7 @@ export class PadSeriesService {
                         c.imageId,
                         (c.options ?? ([] as any[])).map((o: any) => ({
                             padSizeId: o.padSizeId,
-                            partNumber: o.partNumber
+                            partNumbers: o.partNumbers
                         }))
                     )
             )

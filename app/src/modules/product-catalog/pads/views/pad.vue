@@ -73,7 +73,7 @@
                             <b-tag type="is-info" v-if="isThin(props.row)" size="is-small">Thin</b-tag>
                         </b-table-column>
                         <b-table-column v-slot="props" label="Part Number" field="partNumber">
-                            {{ props.row.partNumber }}
+                            {{ props.row.partNumbers }}
                         </b-table-column>
                     </b-table>
                 </div>
@@ -194,8 +194,8 @@ export default class PadView extends Vue {
         }
 
         this.sizes = this.value.options.map(o => {
+            console.log(o.partNumbers);
             var size = this.value?.series.sizes.find(s => s.id == o.padSizeId)!;
-
             return {
                 diameter: size.diameter,
                 thickness: size.thickness,

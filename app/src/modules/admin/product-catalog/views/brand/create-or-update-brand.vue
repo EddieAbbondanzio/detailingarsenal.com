@@ -25,6 +25,7 @@
                 :required="true"
                 v-model="name"
                 placeholder="Rupes"
+                v-focus
             />
         </input-form>
     </page>
@@ -50,7 +51,7 @@ export default class CreateOrUpdateBrand extends InputViewMixin {
         if (this.mode == 'update') {
             await brandStore.init();
 
-            const brand = brandStore.brands.find((b) => b.id == this.id);
+            const brand = brandStore.brands.find(b => b.id == this.id);
 
             if (brand == null) {
                 this.$router.go(-1);
@@ -66,12 +67,12 @@ export default class CreateOrUpdateBrand extends InputViewMixin {
         try {
             if (this.mode == 'create') {
                 await brandStore.create({
-                    name: this.name,
+                    name: this.name
                 });
             } else {
                 await brandStore.update({
                     id: this.id,
-                    name: this.name,
+                    name: this.name
                 });
             }
 
