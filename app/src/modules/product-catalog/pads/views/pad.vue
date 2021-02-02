@@ -73,7 +73,12 @@
                             <b-tag type="is-info" v-if="isThin(props.row)" size="is-small">Thin</b-tag>
                         </b-table-column>
                         <b-table-column v-slot="props" label="Part Number" field="partNumber">
-                            {{ props.row.partNumbers }}
+                            <ul>
+                                <li v-for="pn in props.row.partNumbers" :key="pn.value">
+                                    <span>{{ pn.value }}</span
+                                    ><span class="has-text-grey" v-if="pn.notes">({{ pn.notes }})</span>
+                                </li>
+                            </ul>
                         </b-table-column>
                     </b-table>
                 </div>
