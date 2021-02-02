@@ -83,7 +83,12 @@
                                     {{ getPadSize(props.row.padSizeId) }}
                                 </b-table-column>
                                 <b-table-column v-slot="props" label="Part number">
-                                    {{ props.row.partNumber }}
+                                    <ul>
+                                        <li v-for="pn in props.row.partNumbers" :key="pn.value">
+                                            <span>{{ pn.value }}</span
+                                            ><span class="has-text-grey" v-if="pn.notes">({{ pn.notes }})</span>
+                                        </li>
+                                    </ul>
                                 </b-table-column>
                             </b-table>
                         </b-field>
