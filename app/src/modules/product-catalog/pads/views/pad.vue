@@ -215,7 +215,6 @@ export default class PadView extends Vue {
         }
 
         this.sizes = this.value.options.map(o => {
-            console.log(o.partNumbers);
             var size = this.value?.series.sizes.find(s => s.id == o.padSizeId)!;
             return {
                 diameter: size.diameter,
