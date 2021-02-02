@@ -18,7 +18,7 @@ export class Pad {
     }
 
     get thumbnailUrl() {
-        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/image/${this.image}/thumb` : null;
+        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/image/${this.image}/thumbnail` : null;
     }
 
     constructor(

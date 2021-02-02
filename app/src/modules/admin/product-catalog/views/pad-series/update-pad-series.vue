@@ -83,7 +83,7 @@
                     </b-table-column>
 
                     <b-table-column field="image" label="Image" v-slot="props">
-                        {{ props.row.image != null ? props.row.image.name : '' }}
+                        <image-thumbnail :value="props.row.image" />
                     </b-table-column>
                     <b-table-column v-slot="props" centered class="has-vertical-align-middle">
                         <div class="is-flex is-flex-row">
@@ -343,7 +343,7 @@ export default class UpdatePadSeries extends Vue {
 
         this.name = padSeries.name;
         this.brand = padSeries.brand;
-        this.polisherTypes = padSeries.polisherTypes;
+        this.polisherTypes = padSeries.polisherTypes ?? [];
         this.sizes = padSeries.sizes.map(s => ({
             id: s.id,
             diameter: s.diameter,
@@ -386,7 +386,6 @@ export default class UpdatePadSeries extends Vue {
             this.$router.push({ name: 'padSeriesDetails' });
         } catch (err) {
             displayError(err);
-            throw err;
         }
     }
 
@@ -459,7 +458,7 @@ export default class UpdatePadSeries extends Vue {
     }
 
     getThumbnailUrl(id: string) {
-        return `${process.env.VUE_APP_API_DOMAIN}/image/${id}/thumb`;
+        return `${process.env.VUE_APP_API_DOMAIN}/image/${id}/thumbnail`;
     }
 }
 </script>

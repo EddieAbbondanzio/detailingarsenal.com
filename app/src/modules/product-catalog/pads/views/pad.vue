@@ -125,7 +125,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Pad, PadOption, PadSeries, PadSize, PolisherType } from '@/api';
+import { Measurement, Pad, PadOption, PadSeries, PadSize, PartNumber, PolisherType } from '@/api';
 import padStore from '../store/pad/pad-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
@@ -184,7 +184,7 @@ export default class PadView extends Vue {
     }
 
     value: Pad | null = null;
-    sizes: PadOption[] = [];
+    sizes: PadSizeInfo[] = [];
 
     async created() {
         this.value = await padStore.getPadById(this.id);
@@ -193,7 +193,15 @@ export default class PadView extends Vue {
             return;
         }
 
-        this.sizes = this.value.options;
+        this.sizes = this.value.options.map(o => {
+            var size = this.value?.series.sizes.find(s => s.id == o.padSizeId)!;
+
+            return {
+                diameter: size.diameter,
+                thickness: size.thickness,
+                partNumbers: o.partNumbers
+            };
+        });
 
         reviewStore.loadReviews(this.id);
     }
@@ -201,5 +209,11 @@ export default class PadView extends Vue {
     isThin(size: PadSize) {
         return PadSize.isThin(size);
     }
+}
+
+interface PadSizeInfo {
+    diameter: Measurement;
+    thickness?: Measurement;
+    partNumbers: PartNumber[];
 }
 </script>

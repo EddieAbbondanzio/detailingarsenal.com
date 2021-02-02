@@ -34,7 +34,7 @@ namespace DetailingArsenal.Api.Shared {
             return File(image.Data, image.MimeType);
         }
 
-        [HttpGet("{id}/thumb")]
+        [HttpGet("{id}/thumbnail")]
         public async Task<IActionResult> GetThumbnail(Guid id) {
             var image = await mediator.Dispatch<GetThumbnailByIdQuery, SerializedImage?>(new(id));
 

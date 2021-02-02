@@ -83,7 +83,7 @@
                     </b-table-column>
 
                     <b-table-column field="image" label="Image" v-slot="props">
-                        {{ props.row.image != null ? props.row.image.name : '' }}
+                        <image-thumbnail :value="props.row.image" />
                     </b-table-column>
                     <b-table-column v-slot="props" centered class="has-vertical-align-middle">
                         <div class="is-flex is-flex-row">
