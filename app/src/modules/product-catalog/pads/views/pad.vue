@@ -19,7 +19,7 @@
             <div class="is-flex is-flex-row-desktop is-flex-column">
                 <div
                     class="has-margin-right-3-desktop is-align-self-center is-align-self-start-desktop"
-                    style="max-width: 50%"
+                    style="max-width: 500px"
                 >
                     <img
                         class="img is-square"
@@ -34,8 +34,24 @@
                         <!-- Name + Rating -->
                         <div class="has-margin-bottom-3">
                             <p class="is-size-4 is-size-3-desktop">{{ value.label }}</p>
-                            <div class="is-flex is-flex-row">
-                                <stars :value="value.rating.stars" :count="value.rating.reviewCount" />
+                            <div class="is-flex is-flex-row is-align-items-center">
+                                <stars
+                                    class="has-margin-right-1"
+                                    :value="value.rating.stars"
+                                    :count="value.rating.reviewCount"
+                                />
+
+                                <div class="has-margin-right-1">
+                                    <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
+                                    <span v-if="value.cut">{{ value.cut }} / 10</span>
+                                    <span v-else>N/A</span>
+                                </div>
+
+                                <div class="has-margin-left-1">
+                                    <span class="has-margin-right-1 has-text-weight-bold">Finish:</span>
+                                    <span v-if="value.finish">{{ value.finish }} / 10</span>
+                                    <span v-else>N/A</span>
+                                </div>
                             </div>
                         </div>
 
