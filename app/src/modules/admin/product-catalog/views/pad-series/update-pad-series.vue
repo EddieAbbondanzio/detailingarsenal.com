@@ -21,6 +21,7 @@
                 :required="true"
                 v-model="name"
                 placeholder="Rupes"
+                v-focus
             />
 
             <input-select label="Brand" v-model="brand" rules="required">
@@ -222,6 +223,7 @@
                                             label="Part number"
                                             :hideLabel="true"
                                             rules="required|max:64"
+                                            v-focus
                                         />
                                     </b-table-column>
                                     <b-table-column label="Notes" v-slot="props">
