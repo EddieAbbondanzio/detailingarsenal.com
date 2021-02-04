@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DetailingArsenal.Tests.Persistence {
     [TestClass]
     public static class DatabaseManager {
-        public static IDatabase Database { get; private set; }
+        public static IDatabase Database { get; private set; } = null!;
 
         [AssemblyInitialize]
         public static void Configure(TestContext context) {

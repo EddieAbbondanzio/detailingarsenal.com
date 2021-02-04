@@ -15,6 +15,9 @@
 <style lang="sass" scoped>
 .pad-cut-bar
     max-width: 190px
+
+    progress
+        height: 12px!important
 </style>
 
 <script lang="ts">

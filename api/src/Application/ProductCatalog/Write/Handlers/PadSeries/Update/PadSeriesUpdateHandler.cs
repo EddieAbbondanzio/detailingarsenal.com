@@ -30,7 +30,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             series.BrandId = command.BrandId;
 
             series.Sizes = UpdatePadSizes(series.Sizes, command.Sizes);
-            series.Pads = UpdatePadColors(series.Sizes, series.Pads, command.Pads);
+            series.Pads = UpdatePads(series.Sizes, series.Pads, command.Pads);
 
 
             await spec.CheckAndThrow(series);
@@ -64,7 +64,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             return sizes.OrderByDescending(s => s.Diameter).ToList();
         }
 
-        public List<Pad> UpdatePadColors(List<PadSize> sizes, List<Pad> existing, List<PadCreateOrUpdate> updates) {
+        public List<Pad> UpdatePads(List<PadSize> sizes, List<Pad> existing, List<PadCreateOrUpdate> updates) {
             var colors = new List<Pad>();
 
             // Update any existing pad colors
@@ -110,6 +110,9 @@ namespace DetailingArsenal.Application.ProductCatalog {
                     ),
                     update.Options.Select(option => new PadOption(sizes[option.PadSizeIndex].Id, option.PartNumbers)).ToList()
                 );
+
+                // Sort options
+                color.Options = color.Options.OrderByDescending(o => sizes.Find(s => s.Id == o.PadSizeId)!.Diameter).ToList();
 
                 colors.Add(color);
             }

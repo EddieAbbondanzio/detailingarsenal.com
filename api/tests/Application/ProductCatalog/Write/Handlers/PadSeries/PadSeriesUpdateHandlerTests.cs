@@ -84,7 +84,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         }
 
         [TestMethod]
-        public void UpdatePadColorsExistingColorsAreUpdated() {
+        public void UpdatePadsExistingColorsAreUpdated() {
             var h = new PadSeriesUpdateHandler(
                             Mock.Of<IPadSeriesRepo>(),
                             new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
@@ -107,7 +107,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 new PadSize(new Measurement(1, "in")),
             }.ToList();
 
-            var updated = h.UpdatePadColors(sizes, existing, updates);
+            var updated = h.UpdatePads(sizes, existing, updates);
             Assert.AreEqual(1, updated.Count);
 
             Assert.AreEqual(existing[0].Id, updated[0].Id);
@@ -117,7 +117,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         }
 
         [TestMethod]
-        public void UpdatePadColorsAddsNewColors() {
+        public void UpdatePadsAddsNewColors() {
             var h = new PadSeriesUpdateHandler(
                                         Mock.Of<IPadSeriesRepo>(),
                                         new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
@@ -136,14 +136,14 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 new PadSize(new Measurement(1, "in")),
             }.ToList();
 
-            var updated = h.UpdatePadColors(sizes, existing, updates);
+            var updated = h.UpdatePads(sizes, existing, updates);
             Assert.AreEqual(1, updated.Count);
             Assert.AreEqual("ColorB", updated[0].Name);
             Assert.AreEqual(PadCategory.Finishing, updated[0].Category);
         }
 
         [TestMethod]
-        public void UpdatePadColorsDeletesAsNeeded() {
+        public void UpdatePadsDeletesAsNeeded() {
             var h = new PadSeriesUpdateHandler(
                                         Mock.Of<IPadSeriesRepo>(),
                                         new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
@@ -160,12 +160,12 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 new PadSize(new Measurement(1, "in")),
             }.ToList();
 
-            var updated = h.UpdatePadColors(sizes, existing, new());
+            var updated = h.UpdatePads(sizes, existing, new());
             Assert.AreEqual(0, updated.Count);
         }
 
         [TestMethod]
-        public void UpdatePadColorsOrdersByName() {
+        public void UpdatePadsOrdersByName() {
             var h = new PadSeriesUpdateHandler(
                                         Mock.Of<IPadSeriesRepo>(),
                                         new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
@@ -187,7 +187,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 new PadSize(new Measurement(1, "in")),
             }.ToList();
 
-            var updated = h.UpdatePadColors(sizes, existing, updates);
+            var updated = h.UpdatePads(sizes, existing, updates);
             Assert.AreEqual("A", updated[0].Name);
             Assert.AreEqual("B", updated[1].Name);
         }
@@ -212,6 +212,42 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var updated = h.UpdatePadSizes(existing, news);
             Assert.AreEqual(4f, updated[0].Diameter.Amount);
             Assert.AreEqual(1f, updated[1].Diameter.Amount);
+        }
+
+        /// <summary>
+        /// Test to check that options on pads are ordered in descending order based
+        /// on the diameter of the size they are for.
+        /// </summary>
+        [TestMethod]
+        public void UpdatePadsOrdersPadOptionsByDiameter() {
+            var h = new PadSeriesUpdateHandler(
+                                                    Mock.Of<IPadSeriesRepo>(),
+                                                    new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                                    Mock.Of<IImageProcessor>()
+                                    );
+
+            List<Pad> existing = new();
+
+            var updates = new PadCreateOrUpdate[]{
+
+                 new PadCreateOrUpdate(null, "A", PadCategory.Finishing, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false, null!, new PadOptionCreateOrUpdate[] {
+                    new PadOptionCreateOrUpdate(0),
+                    new PadOptionCreateOrUpdate(1),
+                    new PadOptionCreateOrUpdate(2)
+                }.ToList())
+                }.ToList();
+
+            var sizes = new PadSize[] {
+                new PadSize(new Measurement(1, "in")),
+                new PadSize(new Measurement(2, "in")),
+                new PadSize(new Measurement(3, "in")),
+            }.ToList();
+
+            var pads = h.UpdatePads(sizes, existing, updates);
+            Assert.AreEqual(3, sizes.Find(s => s.Id == pads[0].Options[0].PadSizeId)!.Diameter.Amount);
+            Assert.AreEqual(2, sizes.Find(s => s.Id == pads[0].Options[1].PadSizeId)!.Diameter.Amount);
+            Assert.AreEqual(1, sizes.Find(s => s.Id == pads[0].Options[2].PadSizeId)!.Diameter.Amount);
+
         }
     }
 }

@@ -254,5 +254,46 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             Assert.AreEqual("C", series[0].Pads[2].Name);
         }
 
+        [TestMethod]
+        public async Task ExecuteOrdersOptionsByDiameterDescending() {
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
+
+            var mockRepo = new Mock<IPadSeriesRepo>();
+            List<PadSeries> series = new();
+            mockRepo.Setup(r => r.Add(Capture.In(series)));
+
+            var h = new PadSeriesCreateHandler(
+                mockSpec.Object,
+                mockRepo.Object,
+                Mock.Of<IImageProcessor>()
+            );
+
+            var brandId = Guid.NewGuid();
+
+            var c = new PadSeriesCreateCommand(
+                "Name",
+                brandId,
+                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                new PadSizeCreateOrUpdate[] {
+                    new PadSizeCreateOrUpdate(null, new Measurement(1f, "in")),
+                    new PadSizeCreateOrUpdate(null, new Measurement(2f, "in")),
+                    new PadSizeCreateOrUpdate(null, new Measurement(3f, "in")),
+                }.ToList(),
+                new PadCreateOrUpdate[] {
+                    new PadCreateOrUpdate(null, "B", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
+                        new PadOptionCreateOrUpdate(0),
+                        new PadOptionCreateOrUpdate(2),
+                        new PadOptionCreateOrUpdate(1),
+                    }.ToList())
+                }.ToList()
+            );
+
+            await h.Execute(c, null);
+
+            Assert.AreEqual(3f, series[0].Sizes.Find(s => s.Id == series[0].Pads[0].Options[0].PadSizeId)!.Diameter.Amount);
+            Assert.AreEqual(2f, series[0].Sizes.Find(s => s.Id == series[0].Pads[0].Options[1].PadSizeId)!.Diameter.Amount);
+            Assert.AreEqual(1f, series[0].Sizes.Find(s => s.Id == series[0].Pads[0].Options[2].PadSizeId)!.Diameter.Amount);
+        }
     }
 }
