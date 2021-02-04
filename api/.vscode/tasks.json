@@ -33,7 +33,14 @@
       },
     {
       "label": "api:test",
-      "command": "dotnet test ./Backend.sln",
+      "command": "dotnet test ./Backend.sln --filter TestCategory!=Integration",
+      "type": "shell",
+      "group": "test",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "api:test:integration",
+      "command": "dotnet test ./Backend.sln --filter TestCategory=Integration",
       "type": "shell",
       "group": "test",
       "problemMatcher": "$msCompile"

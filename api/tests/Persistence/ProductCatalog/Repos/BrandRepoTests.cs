@@ -15,6 +15,7 @@ namespace DetailingArsenal.Tests.Persistence.ProductCatalog {
     [TestClass, TestCategory("Integration")]
     public class BrandRepoTests : DatabaseIntegrationTests {
         [TestMethod]
+        // ignore
         public async Task FindByIdFinds() {
             using (var conn = OpenConnection()) {
                 var b = new Brand("Name");
