@@ -15,6 +15,10 @@
 <style lang="sass" scoped>
 .pad-finish-bar
     max-width: 190px
+
+
+    progress
+        height: 12px!important
 </style>
 
 <script lang="ts">
