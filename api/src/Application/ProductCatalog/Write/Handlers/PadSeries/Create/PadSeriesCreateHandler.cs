@@ -43,6 +43,9 @@ namespace DetailingArsenal.Application.ProductCatalog {
                     options.Add(option);
                 }
 
+                // Sort options
+                options = options.OrderByDescending(o => sizes.Find(s => s.Id == o.PadSizeId)!.Diameter).ToList();
+
                 return new Pad(c.Name, c.Category, c.Material, c.Texture, c.Color, c.HasCenterHole, image, options);
             }).OrderBy(c => c.Name).ToList();
 
