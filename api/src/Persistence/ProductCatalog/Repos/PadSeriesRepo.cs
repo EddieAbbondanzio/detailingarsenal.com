@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Shared;
 using DetailingArsenal.Persistence.Shared;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Shared;
+using System.Data;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
     public class PadSeriesRepo : DatabaseInteractor, IPadSeriesRepo {
@@ -228,8 +229,13 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public async Task Update(PadSeries series) {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
-                    // pull in old one, and nuke records
+                    // Pull in the OG record. useful to see what was created or updated.
                     var old = (await FindById(series.Id))!;
+
+                    // Update polisher types
+
+
+
 
                     // get part number ids
                     var partNumberIds = (await conn.QueryAsync<Guid>(@"
@@ -246,6 +252,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             where p.pad_series_id = @Id;
                     ", series)).Select(id => new { Id = id }).ToList();
 
+                    await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", padOptionIds);
+                    await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
+
                     var padImageIds = (await conn.QueryAsync<Guid>(@"
                         select i.id from images i
                             join pad_images pi on pi.image_id = i.id
@@ -253,13 +262,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             where p.pad_series_id = @Id;
                     ", series)).Select(id => new { Id = id }).ToList();
 
-                    await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", old);
-                    await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", padOptionIds);
                     await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", old.Pads);
-                    await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
-                    await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", old);
                     await conn.ExecuteAsync(@"delete from pad_images where pad_id = @Id;", old.Pads);
-                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", old);
                     await conn.ExecuteAsync(@"delete from images where id = @Id;", padImageIds);
 
                     await conn.ExecuteAsync(
@@ -377,43 +381,106 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             }
         }
 
+        /// <summary>
+        /// Update the recommended polisher types for a pad series.
+        /// </summary>
+        /// <param name="conn">Active database connection.</param>
+        /// <param name="padSeriesId">Id of the pad series parent record.</param>
+        /// <param name="polisherTypes">The list of polisher types to save.</param>
+        async Task UpdatePolisherTypes(IDbConnection conn, Guid padSeriesId, List<PolisherType> polisherTypes) {
+            await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", new { Id = padSeriesId });
+            await conn.ExecuteAsync(
+                @"insert into pad_series_polisher_types (pad_series_id, polisher_type) values (@PadSeriesId, @PolisherType);",
+                polisherTypes.Select(pt => new PadSeriesPolisherTypeRow() {
+                    PadSeriesId = padSeriesId,
+                    PolisherType = pt.Serialize()
+                }).ToList()
+            );
+        }
+
+        /// <summary>
+        /// Update the pad sizes of a pad series.
+        /// </summary>
+        /// <param name="conn">The active database connection.</param>
+        /// <param name="padSeriesId">Id of the pad series parent record.</param>
+        /// <param name="oldSizes">The (not yet updated) sizes we pulled from the database.</param>
+        /// <param name="newSizes">The new sizes to be stored.</param>
+        async Task UpdatePadSizes(IDbConnection conn, Guid padSeriesId, List<PadSize> oldSizes, List<PadSize> newSizes) {
+            // Remove sizes that were deleted from the pad series, but are still in the database.
+            var deletedSizes = oldSizes.Where(s => !newSizes.Any(ns => ns.Id == s.Id)).ToList();
+            await conn.ExecuteAsync(@"delete from pad_sizes where id = @Id;", deletedSizes);
+
+            // Insert, or update remaining sizes
+            await conn.ExecuteAsync(@"
+                insert into pad_sizes (
+                    id,
+                    pad_series_id,
+                    diameter_amount,
+                    diameter_unit,
+                    thickness_amount,
+                    thickness_unit
+                ) values (
+                    @Id,
+                    @PadSeriesId,
+                    @DiameterAmount,
+                    @DiameterUnit,
+                    @ThicknessAmount,
+                    @ThicknessUnit
+                ) on conflict (id) do update set
+                    pad_series_id = @PadSeriesId,
+                    diameter_amount = @DiameterAmount,
+                    diameter_unit = @DiameterUnit,
+                    thickness_amount = @ThicknessAmount,
+                    thickness_unit = @ThicknessUnit;
+                ",
+                newSizes
+            );
+        }
+
+        async Task UpdatePads(IDbConnection conn, Guid padSeriesId, List<Pad> oldPads, List<Pad> newPads) {
+            // Remove pads that were deleted from the pad series, but are still in the database.
+            var deletedPads = oldPads.Where(s => !newPads.Any(np => np.Id == s.Id)).ToList();
+            // TODO: delete pad_images
+            // TODO: delete images
+            await conn.ExecuteAsync(@"delete from pads where id = @Id;", deletedPads); //TODO: This will break if a pad has reviews
+
+            // Upsert remaining pads
+            await conn.ExecuteAsync(@"
+                insert into pads (
+                        id, 
+                        pad_series_id, 
+                        category, 
+                        material, 
+                        texture, 
+                        color, 
+                        has_center_hole, 
+                        name
+                    ) values (
+                        @Id, 
+                        @PadSeriesId, 
+                        @Category, 
+                        @Material, 
+                        @Texture, 
+                        @Color, 
+                        @HasCenterHole, 
+                        @Name
+                    ) on conflict (id) do update set
+                        pad_series_id = @PadSeriesId,
+                        category = @Category,
+                        material = @Material,
+                        texture = @Texture,
+                        color = @Color,
+                        has_center_hole = @HasCenterHole,
+                        name = @Name;
+                ",
+                newPads
+            );
+        }
+
         public async Task Delete(PadSeries series) {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
-                    /*
-                    * Postgres doesn't support joins in deletes
-                    */
-
-                    var partNumberIds = (await conn.QueryAsync<Guid>(@"
-                        select pn.id from part_numbers pn 
-                            join pad_option_part_numbers popn on pn.id = popn.part_number_id 
-                            join pad_options po on popn.pad_option_id = po.id 
-                            join pads p on po.pad_id = p.id 
-                            where p.pad_series_id = @Id;",
-                        series
-                    )).Select(id => new { Id = id }).ToList();
-
-                    var padOptionIds = (await conn.QueryAsync<Guid>(@"
-                        select po.id from pad_options po
-                            join pads p on po.pad_id = p.id
-                            where p.pad_series_id = @Id;
-                    ", series)).Select(id => new { Id = id }).ToList();
-
-                    var padImageIds = (await conn.QueryAsync<Guid>(@"
-                        select i.id from images i
-                            join pad_images pi on pi.image_id = i.id
-                            join pads p on pi.pad_id = p.id
-                            where p.pad_series_id = @Id;
-                    ", series)).Select(id => new { Id = id }).ToList();
-
-                    await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", series);
-                    await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", padOptionIds);
-                    await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
-                    await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", series.Pads);
-                    await conn.ExecuteAsync(@"delete from pad_sizes where pad_series_id = @Id;", series);
-                    await conn.ExecuteAsync(@"delete from pad_images where pad_id = @Id;", series.Pads);
-                    await conn.ExecuteAsync(@"delete from images where id = @Id;", padImageIds);
-                    await conn.ExecuteAsync(@"delete from pads where pad_series_id = @Id;", series);
+                    // Thank you cascade
                     await conn.ExecuteAsync(@"delete from pad_series where id = @Id;", series);
                     t.Commit();
                 }
