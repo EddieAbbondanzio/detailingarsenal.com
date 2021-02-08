@@ -40,7 +40,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList(),
                 new PadCreateOrUpdate[] {
                     new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false, null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0, new PartNumber[] { new PartNumber("value", "NOTES")}.ToList())
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0, new PartNumber[] { new PartNumber("value", "NOTES")}.ToList())
                     }.ToList())
                 }.ToList()
             );
@@ -93,7 +93,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList(),
                 new PadCreateOrUpdate[] {
                     new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false, null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0)
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0)
                     }.ToList())
                 }.ToList()
             );
@@ -128,7 +128,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList(),
                 new PadCreateOrUpdate[] {
                     new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0)
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0)
                     }.ToList())
                 }.ToList()
             );
@@ -163,7 +163,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList(),
                 new PadCreateOrUpdate[] {
                     new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0)
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0)
                     }.ToList())
                 }.ToList()
             );
@@ -200,7 +200,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList(),
                 new PadCreateOrUpdate[] {
                     new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0)
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0)
                     }.ToList())
                 }.ToList()
             );
@@ -237,13 +237,13 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList(),
                 new PadCreateOrUpdate[] {
                     new PadCreateOrUpdate(null, "B", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0)
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0)
                     }.ToList()),
                     new PadCreateOrUpdate(null, "A", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0)
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0)
                     }.ToList()),
                     new PadCreateOrUpdate(null, "C", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0)
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0)
                     }.ToList())
                 }.ToList()
             );
@@ -282,9 +282,9 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList(),
                 new PadCreateOrUpdate[] {
                     new PadCreateOrUpdate(null, "B", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(0),
-                        new PadOptionCreateOrUpdate(2),
-                        new PadOptionCreateOrUpdate(1),
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0),
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),2),
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),1),
                     }.ToList())
                 }.ToList()
             );
