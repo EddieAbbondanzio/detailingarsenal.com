@@ -232,40 +232,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     // Pull in the OG record. useful to see what was created or updated.
                     var old = (await FindById(series.Id))!;
 
-                    // Update polisher types
-
-
-
-
-                    // get part number ids
-                    var partNumberIds = (await conn.QueryAsync<Guid>(@"
-                        select pn.id from part_numbers pn 
-                            join pad_option_part_numbers popn on pn.id = popn.part_number_id 
-                            join pad_options po on popn.pad_option_id = po.id 
-                            join pads p on po.pad_id = p.id 
-                            where p.pad_series_id = @Id;
-                        ", old)).Select(id => new { Id = id }).ToList();
-
-                    var padOptionIds = (await conn.QueryAsync<Guid>(@"
-                        select po.id from pad_options po
-                            join pads p on po.pad_id = p.id
-                            where p.pad_series_id = @Id;
-                    ", series)).Select(id => new { Id = id }).ToList();
-
-                    await conn.ExecuteAsync(@"delete from pad_option_part_numbers where pad_option_id = @Id", padOptionIds);
-                    await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", partNumberIds);
-
-                    var padImageIds = (await conn.QueryAsync<Guid>(@"
-                        select i.id from images i
-                            join pad_images pi on pi.image_id = i.id
-                            join pads p on pi.pad_id = p.id
-                            where p.pad_series_id = @Id;
-                    ", series)).Select(id => new { Id = id }).ToList();
-
-                    await conn.ExecuteAsync(@"delete from pad_options where pad_id = @Id;", old.Pads);
-                    await conn.ExecuteAsync(@"delete from pad_images where pad_id = @Id;", old.Pads);
-                    await conn.ExecuteAsync(@"delete from images where id = @Id;", padImageIds);
-
+                    // Update parent record.
                     await conn.ExecuteAsync(
                         @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;",
                         new PadSeriesRow() {
@@ -275,106 +242,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     );
 
-                    await conn.ExecuteAsync(
-                        @"insert into pad_series_polisher_types (pad_series_id, polisher_type) values (@PadSeriesId, @PolisherType);",
-                        series.PolisherTypes.Select(pt => new PadSeriesPolisherTypeRow() {
-                            PadSeriesId = series.Id,
-                            PolisherType = pt.Serialize()
-                        }).ToList()
-                    );
-
-                    await conn.ExecuteAsync(
-                        @"insert into pad_sizes (id, pad_series_id, diameter_amount, diameter_unit, thickness_amount, thickness_unit) values (@Id, @PadSeriesId, @DiameterAmount, @DiameterUnit, @ThicknessAmount, @ThicknessUnit);",
-                        series.Sizes.Select(s => new PadSizeRow() {
-                            Id = s.Id,
-                            PadSeriesId = series.Id,
-                            DiameterAmount = s.Diameter.Amount,
-                            DiameterUnit = s.Diameter.Unit.Serialize(),
-                            ThicknessAmount = s.Thickness?.Amount,
-                            ThicknessUnit = s.Thickness?.Unit.Serialize()
-                        }).ToList()
-                    );
-
-                    List<PadImageRow> imageRelations = new();
-                    List<ImageRow> images = new();
-
-                    foreach (var pad in series.Pads) {
-                        if (pad.Image == null) {
-                            continue;
-                        }
-
-                        imageRelations.Add(new() { ImageId = pad.Image.Id, PadId = pad.Id });
-                        images.Add(new() {
-                            Id = pad.Image.Id,
-                            FileName = pad.Image.FileName,
-                            MimeType = pad.Image.MimeType,
-                            ImageData = ImageUtils.ToBinary(pad.Image.Full),
-                            ThumbnailData = ImageUtils.ToBinary(pad.Image.Thumbnail)
-                        });
-                    }
-
-                    if (images.Count > 0) {
-                        await conn.ExecuteAsync(
-                            @"insert into images(id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @FileName, @MimeType, @ImageData, @ThumbnailData);",
-                            images
-                        );
-                    }
-
-                    await conn.ExecuteAsync(
-                        @"insert into pads (id, pad_series_id, category, material, texture, color, has_center_hole, name) values (@Id, @PadSeriesId, @Category, @Material, @Texture, @Color, @HasCenterHole, @Name);",
-                        series.Pads.Select(p => new PadRow() {
-                            Id = p.Id,
-                            PadSeriesId = series.Id,
-                            Category = p.Category.Serialize(),
-                            Material = p.Material?.Serialize(),
-                            Texture = p.Texture?.Serialize(),
-                            Color = p.Color?.Serialize(),
-                            HasCenterHole = p.HasCenterHole,
-                            Name = p.Name,
-                        }).ToList()
-                    );
-
-                    if (imageRelations.Count > 0) {
-                        await conn.ExecuteAsync(
-                            @"insert into pad_images (pad_id, image_id) values (@PadId, @ImageId);",
-                            imageRelations
-                        );
-                    }
-
-                    List<PadOptionRow> padOptionRows = new();
-                    List<PadOptionPartNumberRow> padOptionPartNumberRows = new();
-                    List<PartNumberRow> partNumberRows = new();
-
-                    foreach (var color in series.Pads) {
-                        foreach (var option in color.Options) {
-                            var optionRow = new PadOptionRow() {
-                                Id = Guid.NewGuid(),
-                                PadId = color.Id,
-                                PadSizeId = option.PadSizeId,
-                            };
-
-                            padOptionRows.Add(optionRow);
-
-                            foreach (var partNumber in option.PartNumbers) {
-                                var partNumberRow = new PartNumberRow() {
-                                    Id = Guid.NewGuid(),
-                                    Value = partNumber.Value,
-                                    Notes = partNumber.Notes
-                                };
-
-                                padOptionPartNumberRows.Add(new PadOptionPartNumberRow() {
-                                    PadOptionId = optionRow.Id,
-                                    PartNumberId = partNumberRow.Id,
-                                });
-
-                                partNumberRows.Add(partNumberRow);
-                            }
-                        }
-                    }
-
-                    await conn.ExecuteAsync(@"insert into pad_options (id, pad_id, pad_size_id) values (@Id, @PadId, @PadSizeId);", padOptionRows);
-                    await conn.ExecuteAsync(@"insert into part_numbers (id, value, notes) values (@Id, @Value, @Notes);", partNumberRows);
-                    await conn.ExecuteAsync(@"insert into pad_option_part_numbers (pad_option_id, part_number_id) values (@PadOptionId, @PartNumberId);", padOptionPartNumberRows);
+                    await UpdatePolisherTypes(conn, series.Id, series.PolisherTypes);
+                    await UpdatePadSizes(conn, series.Id, old.Sizes, series.Sizes);
+                    await UpdatePads(conn, series.Id, old.Pads, series.Pads);
 
                     t.Commit();
                 }
@@ -433,7 +303,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     thickness_amount = @ThicknessAmount,
                     thickness_unit = @ThicknessUnit;
                 ",
-                newSizes
+                newSizes.Select(s => new PadSizeRow() {
+                    Id = s.Id,
+                    DiameterAmount = s.Diameter.Amount,
+                    DiameterUnit = s.Diameter.Unit.Serialize(),
+                    ThicknessAmount = s.Thickness?.Amount,
+                    ThicknessUnit = s.Thickness?.Unit.Serialize(),
+                    PadSeriesId = padSeriesId
+                }).ToList()
             );
         }
 
@@ -451,8 +328,17 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 
                 ", deletedPads);
 
-            await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", deletedPartNumberIds.Select(i => new { Id = i }).ToList());
+            // Can't leave image orhpans
+            var deletedImageIds = await conn.QueryAsync<Guid>(@"
+                select i.id from images i
+                    join pad_images pi on i.id = pi.image_id
+                    where pi.pad_id = @Id;"
+                    , deletedPads
+            );
+
             await conn.ExecuteAsync(@"delete from pads where id = @Id;", deletedPads); //TODO: This will break if a pad has reviews
+            await conn.ExecuteAsync(@"delete from part_numbers where id = @Id;", deletedPartNumberIds.Select(i => new { Id = i }).ToList());
+            await conn.ExecuteAsync(@"delete from images where id = @Id;", deletedImageIds.Select(i => new { Id = i }).ToList());
 
             // Upsert remaining pads
             await conn.ExecuteAsync(@"
@@ -483,7 +369,16 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         has_center_hole = @HasCenterHole,
                         name = @Name;
                 ",
-                newPads
+                newPads.Select(p => new PadRow() {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Category = p.Category.Serialize(),
+                    Color = p.Color?.Serialize(),
+                    HasCenterHole = p.HasCenterHole,
+                    Material = p.Material?.Serialize(),
+                    PadSeriesId = padSeriesId,
+                    Texture = p.Texture?.Serialize(),
+                })
             );
 
             List<PadImageRow> imageRelations = new();
@@ -491,18 +386,23 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
             // Upsert pad options
             foreach (var pad in newPads) {
-                if (pad.Image == null) {
-                    continue;
+                // On image change, we gotta kill the orphan.
+                var oldImageId = oldPads.Find(p => p.Id == pad.Id)?.Image?.Id;
+                if (oldImageId != null && oldImageId != pad.Image?.Id) {
+                    // Cascade will handle pad_images record.
+                    await conn.ExecuteAsync(@"delete from images where id = @Id;", new { Id = oldImageId });
                 }
 
-                imageRelations.Add(new() { ImageId = pad.Image.Id, PadId = pad.Id });
-                images.Add(new() {
-                    Id = pad.Image.Id,
-                    FileName = pad.Image.FileName,
-                    MimeType = pad.Image.MimeType,
-                    ImageData = ImageUtils.ToBinary(pad.Image.Full),
-                    ThumbnailData = ImageUtils.ToBinary(pad.Image.Thumbnail)
-                });
+                if (pad.Image != null) {
+                    imageRelations.Add(new() { ImageId = pad.Image.Id, PadId = pad.Id });
+                    images.Add(new() {
+                        Id = pad.Image.Id,
+                        FileName = pad.Image.FileName,
+                        MimeType = pad.Image.MimeType,
+                        ImageData = ImageUtils.ToBinary(pad.Image.Full),
+                        ThumbnailData = ImageUtils.ToBinary(pad.Image.Thumbnail)
+                    });
+                }
 
                 foreach (var option in pad.Options) {
                     await conn.ExecuteAsync(@"
@@ -518,7 +418,11 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             pad_id = @PadId,
                             pad_size_id = @PadSizeId;
                         ",
-                        option
+                        new PadOptionRow() {
+                            Id = option.Id,
+                            PadId = pad.Id,
+                            PadSizeId = option.PadSizeId
+                        }
                     );
 
                     foreach (var partNumber in option.PartNumbers) {
@@ -535,7 +439,11 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         value = @Value,
                         notes = @Notes;
                         ",
-                        partNumber);
+                        new PartNumberRow() {
+                            Id = partNumber.Id,
+                            Notes = partNumber.Notes,
+                            Value = partNumber.Value
+                        });
 
                         await conn.ExecuteAsync(@"
                         insert into pad_option_part_numbers (
@@ -557,8 +465,35 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
             if (images.Count > 0) {
                 await conn.ExecuteAsync(
-                    @"insert into images(id, file_name, mime_type, image_data, thumbnail_data) values (@Id, @FileName, @MimeType, @ImageData, @ThumbnailData);",
+                    @"insert into images(
+                        id, 
+                        file_name, 
+                        mime_type, 
+                        image_data, 
+                        thumbnail_data
+                    ) values (
+                        @Id, 
+                        @FileName, 
+                        @MimeType, 
+                        @ImageData, 
+                        @ThumbnailData
+                    ) on conflict (id) do update set
+                        file_name = @FileName,
+                        mime_type = @MimeType,
+                        image_data = @ImageData,
+                        thumbnail_data = @ThumbnailData;",
                     images
+                );
+
+                await conn.ExecuteAsync(
+                    @"insert into pad_images(
+                        pad_id,
+                        image_id
+                    ) values (
+                        @PadId,
+                        @ImageId
+                    ) on conflict do nothing;",
+                    imageRelations
                 );
             }
         }
