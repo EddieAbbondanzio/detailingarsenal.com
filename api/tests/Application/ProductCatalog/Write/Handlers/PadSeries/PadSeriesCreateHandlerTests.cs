@@ -40,7 +40,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
                 }.ToList(),
                 new PadCreateOrUpdate[] {
                     new PadCreateOrUpdate(null, "Color", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false, null, new PadOptionCreateOrUpdate[] {
-                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0, new PartNumber[] { new PartNumber("value", "NOTES")}.ToList())
+                        new PadOptionCreateOrUpdate(Guid.NewGuid(),0, new PartNumberCreateOrUpdate[] { new PartNumberCreateOrUpdate(null, "value", "NOTES")}.ToList())
                     }.ToList())
                 }.ToList()
             );

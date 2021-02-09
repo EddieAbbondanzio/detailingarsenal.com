@@ -88,7 +88,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         PadReadModel? pad;
 
                         if (pads.TryGetValue(opt.PadId, out pad)) {
-                            var po = new PadOptionReadModel(opt.PadSizeId);
+                            var po = new PadOptionReadModel(opt.Id, opt.PadSizeId);
                             pad.Options.Add(po);
                             optionDict.Add(opt.Id, po);
                         }
@@ -99,7 +99,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         PadOptionReadModel? option;
 
                         if (optionDict.TryGetValue(partNumber.PadOptionId, out option)) {
-                            option.PartNumbers.Add(new PartNumberReadModel(partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
+                            option.PartNumbers.Add(new PartNumberReadModel(partNumber.PartNumber.Id, partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
                         }
                     }
 
@@ -213,7 +213,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         PadReadModel? pad;
 
                         if (pads.TryGetValue(opt.PadId, out pad)) {
-                            var po = new PadOptionReadModel(opt.PadSizeId);
+                            var po = new PadOptionReadModel(opt.Id, opt.PadSizeId);
                             pad.Options.Add(po);
                             optionDict.Add(opt.Id, po);
                         }
@@ -224,7 +224,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         PadOptionReadModel? option;
 
                         if (optionDict.TryGetValue(partNumber.PadOptionId, out option)) {
-                            option.PartNumbers.Add(new PartNumberReadModel(partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
+                            option.PartNumbers.Add(new PartNumberReadModel(partNumber.PartNumber.Id, partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
                         }
                     }
 

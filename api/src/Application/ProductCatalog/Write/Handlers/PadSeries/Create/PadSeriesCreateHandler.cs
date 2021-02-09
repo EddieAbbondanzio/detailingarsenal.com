@@ -39,7 +39,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                     PadOption option;
 
                     option = new PadOption(sizes[optionCreate.PadSizeIndex].Id);
-                    option.PartNumbers.AddRange(optionCreate.PartNumbers);
+                    option.PartNumbers.AddRange(optionCreate.PartNumbers.Select(pn => new PartNumber(pn.Id, pn.Value, pn.Notes)));
                     options.Add(option);
                 }
 

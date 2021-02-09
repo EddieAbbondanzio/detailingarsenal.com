@@ -13,8 +13,8 @@ namespace DetailingArsenal.Domain.ProductCatalog {
         }
 
         [JsonConstructor]
-        public PartNumber(Guid id, string value, string? notes = null) {
-            Id = id;
+        public PartNumber(Guid? id, string value, string? notes = null) {
+            Id = id ?? Guid.NewGuid();
             Value = value;
             Notes = notes;
         }

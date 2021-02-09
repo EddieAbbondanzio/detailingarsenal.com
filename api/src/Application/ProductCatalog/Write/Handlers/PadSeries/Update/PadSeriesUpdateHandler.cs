@@ -87,7 +87,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
                 pad.Options.Clear();
                 foreach (var option in update.Options) {
-                    pad.Options.Add(new PadOption(sizes[option.PadSizeIndex].Id, option.PartNumbers));
+                    pad.Options.Add(new PadOption(option.Id, sizes[option.PadSizeIndex].Id, option.PartNumbers.Select(pn => new PartNumber(pn.Id, pn.Value, pn.Notes)).ToList()));
                 }
 
                 colors.Add(pad);
@@ -108,7 +108,11 @@ namespace DetailingArsenal.Application.ProductCatalog {
                         id => existing.Find(c => c.Image?.Id == id)?.Image,
                         image => imageProcessor.Process(image.Name, image.Data)
                     ),
-                    update.Options.Select(option => new PadOption(sizes[option.PadSizeIndex].Id, option.PartNumbers)).ToList()
+                    update.Options.Select(option => new PadOption(
+                        option.Id,
+                        sizes[option.PadSizeIndex].Id,
+                        option.PartNumbers.Select(pn => new PartNumber(pn.Id, pn.Value, pn.Notes)).ToList()
+                    )).ToList()
                 );
 
                 // Sort options

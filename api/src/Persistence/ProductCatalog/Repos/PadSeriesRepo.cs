@@ -92,7 +92,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         PadOption? option;
 
                         if (optionDict.TryGetValue(partNumber.PadOptionId, out option)) {
-                            option.PartNumbers.Add(new PartNumber(partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
+                            option.PartNumbers.Add(new PartNumber(partNumber.PartNumber.Id, partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
                         }
                     }
 
@@ -321,19 +321,19 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             // Can't leave part_number oprhans
             var deletedPartNumberIds = await conn.QueryAsync<Guid>(@"
                 select pn.id from part_numbers pn 
-                    join pad_option_part_numbers pnpc on pn.part_number_id
+                    join pad_option_part_numbers pnpc on pnpc.part_number_id = pn.id
                     join pad_options po on pnpc.pad_option_id = po.id
                     join pads p on po.pad_id = p.id
-                    where p.id = @Id;
+                    where p.id = any(@Ids);
                 
-                ", deletedPads);
+                ", new { Ids = deletedPads.Select(dp => dp.Id).ToArray() });
 
             // Can't leave image orhpans
             var deletedImageIds = await conn.QueryAsync<Guid>(@"
                 select i.id from images i
                     join pad_images pi on i.id = pi.image_id
-                    where pi.pad_id = @Id;"
-                    , deletedPads
+                    where pi.pad_id = any(@Ids);"
+                    , new { Ids = deletedPads.Select(dp => dp.Id).ToArray() }
             );
 
             await conn.ExecuteAsync(@"delete from pads where id = @Id;", deletedPads); //TODO: This will break if a pad has reviews
@@ -391,6 +391,19 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 if (oldImageId != null && oldImageId != pad.Image?.Id) {
                     // Cascade will handle pad_images record.
                     await conn.ExecuteAsync(@"delete from images where id = @Id;", new { Id = oldImageId });
+                }
+
+                List<Guid> deletedPartNumbers = new();
+                IEnumerable<PartNumber> newPartNumbers = newPads.SelectMany(p => p.Options.SelectMany(o => o.PartNumbers));
+
+                foreach (var pn in oldPads.SelectMany(p => p.Options.SelectMany(o => o.PartNumbers))) {
+                    if (!newPartNumbers.Any(newPn => newPn.Id == pn.Id)) {
+                        deletedPartNumbers.Add(pn.Id);
+                    }
+                }
+
+                if (deletedPartNumbers.Count > 0) {
+                    await conn.ExecuteAsync(@"delete from part_numbers where id = any(@Ids);", new { Ids = deletedPartNumbers.ToArray() });
                 }
 
                 if (pad.Image != null) {
@@ -452,7 +465,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         ) values (
                             @PadOptionId,
                             @PartNumberId
-                        ) on conflict (part_number_id) do update set
+                        ) on conflict (pad_option_id, part_number_id) do update set
                         pad_option_id = @PadOptionId;
                         ",
                         new PadOptionPartNumberRow() {
@@ -492,7 +505,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     ) values (
                         @PadId,
                         @ImageId
-                    ) on conflict do nothing;",
+                    ) on conflict (pad_id, image_id) do nothing;", //No id on pad_images table 
                     imageRelations
                 );
             }
