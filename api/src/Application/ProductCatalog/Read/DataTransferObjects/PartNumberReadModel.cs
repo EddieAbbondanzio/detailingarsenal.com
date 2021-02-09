@@ -1,3 +1,5 @@
+using System;
+
 namespace DetailingArsenal.Application.ProductCatalog {
-    public record PartNumberReadModel(string Value, string? Notes) : IDataTransferObject;
+    public record PartNumberReadModel(Guid Id, string Value, string? Notes) : IDataTransferObject;
 }
