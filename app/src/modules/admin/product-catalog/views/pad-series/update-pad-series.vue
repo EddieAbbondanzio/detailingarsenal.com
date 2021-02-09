@@ -104,7 +104,7 @@
                     <template #detail="props">
                         <ul v-for="option in props.row.options" :key="option.padSizeIndex">
                             <li>
-                                <span class="has-text-weight-bold">{{
+                                <span class="has-text-weight-bold" v-if="option.padSizeIndex != null">{{
                                     sizes[option.padSizeIndex].diameter | measurement
                                 }}</span>
                                 <span>:&nbsp;</span>
@@ -397,7 +397,24 @@ export default class UpdatePadSeries extends Vue {
     }
 
     onPadEdit(index: number) {
-        this.modalPad = Object.assign({}, this.pads[index]);
+        const p = this.pads[index];
+
+        this.modalPad = {
+            id: p.id,
+            name: p.name,
+            category: p.category,
+            material: p.material,
+            texture: p.texture,
+            color: p.color,
+            hasCenterHole: p.hasCenterHole,
+            image: p.image,
+            options: p.options.map(o => ({
+                id: o.id,
+                padSizeIndex: o.padSizeIndex,
+                partNumbers: o.partNumbers.map(pn => ({ id: pn.id, value: pn.value, notes: pn.notes }))
+            }))
+        };
+
         this.isPadModalActive = true;
         this.isPadModalInEditMode = true;
     }
@@ -426,6 +443,7 @@ export default class UpdatePadSeries extends Vue {
     }
 
     onPadAddCancel() {
+        this.modalPad!.options.length = 0;
         this.modalPad = null;
         this.isPadModalActive = false;
     }
