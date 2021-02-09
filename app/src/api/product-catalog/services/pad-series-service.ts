@@ -23,7 +23,6 @@ export class PadSeriesService {
     }
 
     async update(update: PadSeriesUpdateRequest) {
-        console.log(update);
         const res = await http.put(`product-catalog/pad-series/${update.id}`, update);
         const ps = this._map(res.data);
         return ps;

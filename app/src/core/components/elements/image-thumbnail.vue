@@ -1,5 +1,5 @@
 <template>
-    <img :class="classes" :src="imageUrl" />
+    <img :class="classes" :src="imageUrl" v-if="value" />
 </template>
 
 <style lang="sass">
@@ -25,8 +25,10 @@ export default class ImageThumbnail extends Vue {
     get imageUrl() {
         if (typeof this.value == 'string') {
             return `${process.env.VUE_APP_API_DOMAIN}/image/${this.value}/thumbnail`;
-        } else {
+        } else if (this.value != null) {
             return (this.value as any).data;
+        } else {
+            return null;
         }
     }
 
@@ -34,7 +36,7 @@ export default class ImageThumbnail extends Vue {
     size!: string;
 
     @Prop()
-    value!: File | string;
+    value!: File | string | null;
 
     getDataUrl(file: File) {
         return new Promise((resolve, reject) => {
