@@ -27,6 +27,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
 
             series.Name = command.Name;
+            series.PolisherTypes = command.PolisherTypes;
             series.BrandId = command.BrandId;
 
             series.Sizes = UpdatePadSizes(series.Sizes, command.Sizes);

@@ -23,6 +23,7 @@ export class PadSeriesService {
     }
 
     async update(update: PadSeriesUpdateRequest) {
+        console.log(update);
         const res = await http.put(`product-catalog/pad-series/${update.id}`, update);
         const ps = this._map(res.data);
         return ps;
@@ -64,6 +65,7 @@ export class PadSeriesService {
                         new Rating(c.rating.stars, c.rating.reviewCount),
                         c.imageId,
                         (c.options ?? ([] as any[])).map((o: any) => ({
+                            id: o.id,
                             padSizeId: o.padSizeId,
                             partNumbers: o.partNumbers
                         }))

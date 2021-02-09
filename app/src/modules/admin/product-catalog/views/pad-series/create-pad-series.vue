@@ -396,6 +396,7 @@ export default class CreatePadSeries extends Vue {
 
     onOptionAddAnother() {
         this.modalPad?.options.push({
+            id: null,
             padSizeIndex: null,
             partNumbers: []
         });

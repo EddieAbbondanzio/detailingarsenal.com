@@ -361,8 +361,9 @@ export default class UpdatePadSeries extends Vue {
             hasCenterHole: c.hasCenterHole,
             image: c.image, // Existing images are just ids to real images.
             options: c.options.map<PadOptionCreateOrUpdate>(o => ({
+                id: o.id,
                 padSizeIndex: this.sizes.findIndex(s => s.id == o.padSizeId),
-                partNumbers: o.partNumbers ?? []
+                partNumbers: (o.partNumbers ?? []).map(pn => ({ id: pn.id, value: pn.value, notes: pn.notes }))
             }))
         }));
     }
@@ -418,6 +419,7 @@ export default class UpdatePadSeries extends Vue {
 
     onOptionAddAnother() {
         this.modalPad?.options.push({
+            id: null,
             padSizeIndex: null,
             partNumbers: []
         });
