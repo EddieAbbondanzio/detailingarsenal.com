@@ -10,7 +10,16 @@ import { PadColor } from './pad-color';
 
 export class Pad {
     get label() {
-        return `${this.series.brand.name} ${this.series.name} ${this.name}`;
+        /*
+         *  Some brands have pads without a series. Ex: Griots Garage.
+         * To compensate for this we create a series with the same name
+         * as the brand, and simply hide it.
+         */
+        if (this.series.brand.name == this.series.name) {
+            return `${this.series.brand.name} ${this.name}`;
+        } else {
+            return `${this.series.brand.name} ${this.series.name} ${this.name}`;
+        }
     }
 
     get imageUrl() {
