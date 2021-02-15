@@ -58,6 +58,8 @@
                     v-if="props.row.rating != null"
                     :value="props.row.rating.stars"
                     :count="props.row.rating.reviewCount"
+                    size="is-small"
+                    :readOnly="true"
                 />
                 <span class="has-text-grey" v-else>N/A</span>
             </b-table-column>

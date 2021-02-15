@@ -21,6 +21,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             left join reviews on reviews.pad_id = pads.id 
                             where pad_series_id = @Id
                             group by pads.id;
+                        select stars, count(*) as count, pad_id from reviews r left join pads p on r.pad_id = p.id where pad_id = @Id group by pad_id, stars; 
                         select pi.* from pad_images pi join pads p on pi.pad_id = p.id where p.pad_series_id = @Id;
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads pc 
                             left join reviews r on pc.id = r.pad_id 
@@ -50,11 +51,17 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             s.ThicknessAmount != null ? new MeasurementReadModel(s.ThicknessAmount ?? 0, s.ThicknessUnit!) : null
                             )));
 
-                    var reviewCount = reader.ReadFirstOrDefault<int>();
+                    var reviewCounts = new Dictionary<Guid, int>(reader.Read<(int Count, Guid Id)>().Select(c => new KeyValuePair<Guid, int>(c.Id, c.Count)));
+
                     var images = reader.Read<(Guid PadId, Guid ImageId)>();
 
                     var keyValues = new List<KeyValuePair<Guid, PadReadModel>>();
-                    foreach (var pad in reader.Read()) {
+                    var rawPads = reader.Read();
+                    var padStats = reader.Read();
+                    foreach (var pad in rawPads) {
+                        var reviewCount = reviewCounts[pad.id];
+                        var stats = padStats.Where(ps => ps.pad_id == pad.id).Select(ps => new RatingStarStat(ps.stars, ps.count, (float)ps.count / reviewCount));
+
                         Guid? imageId = images.Where(i => i.PadId == pad.id).FirstOrDefault().ImageId;
 
                         if (imageId == Guid.Empty) {
@@ -75,7 +82,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 new List<PadOptionReadModel>(),
                                 pad.cut,
                                 pad.finish,
-                                new RatingReadModel(pad.stars, reviewCount)
+                                new RatingReadModel(pad.stars, reviewCount, stats.ToList())
                             )
                         ));
                     }
@@ -115,10 +122,13 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"  select * from pad_series ps join brands b on ps.brand_id = b.id;
                         select * from pad_series_polisher_types;
                         select * from pad_sizes;
-                        select count(reviews.*) as count, pads.id from pads
+                        select count(reviews.*) as count, pads.id as id from pads
                             left join reviews on reviews.pad_id = pads.id 
                             group by pads.id;
                         select pi.* from pad_images pi join pads p on pi.pad_id = p.id;
+                        select stars, count(*) as count, pad_id from reviews r 
+                            left join pads p on r.pad_id = p.id 
+                            group by pad_id, stars; 
                         select pc.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads pc 
                             left join reviews r on pc.id = r.pad_id 
                             group by pc.id;
@@ -165,10 +175,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     var reviewCounts = new Dictionary<Guid, int>(reader.Read<(int Count, Guid Id)>().Select(c => new KeyValuePair<Guid, int>(c.Id, c.Count)));
                     var images = reader.Read<(Guid PadId, Guid ImageId)>();
+                    var padStats = reader.Read<(int Stars, int Count, Guid PadId)>();
 
                     var pads = new Dictionary<Guid, PadReadModel>();
+                    var rawPads = reader.Read();
 
-                    foreach (var raw in reader.Read()) {
+                    foreach (var raw in rawPads) {
+                        var reviewCount = reviewCounts[raw.id];
+                        var stats = padStats.Where(ps => ps.PadId == raw.id).Select(ps => new RatingStarStat(ps.Stars, ps.Count, ((float)ps.Count) / reviewCount));
                         Guid? imageId = images.Where(i => i.PadId == raw.id).FirstOrDefault().ImageId;
 
                         if (imageId == Guid.Empty) {
@@ -193,7 +207,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             new List<PadOptionReadModel>(),
                             raw.cut,
                             raw.finish,
-                            new RatingReadModel(raw.stars, reviewCounts[raw.id])
+                            new RatingReadModel(raw.stars, reviewCount, stats.ToList())
                         );
 
 

@@ -61,7 +61,7 @@ export class PadSeriesService {
                         c.hasCenterHole,
                         c.cut,
                         c.finish,
-                        new Rating(c.rating.stars, c.rating.reviewCount),
+                        new Rating(c.rating.stars, c.rating.reviewCount, c.stats),
                         c.imageId,
                         (c.options ?? ([] as any[])).map((o: any) => ({
                             id: o.id,

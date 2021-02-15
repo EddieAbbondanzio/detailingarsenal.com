@@ -39,6 +39,7 @@
                                     class="has-margin-right-1"
                                     :value="value.rating.stars"
                                     :count="value.rating.reviewCount"
+                                    :readOnly="true"
                                 />
 
                                 <div class="has-margin-right-1">
@@ -99,8 +100,17 @@
                     </b-table>
                 </div>
 
-                <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-2">
-                    <p class="is-size-5 title has-margin-bottom-0">Reviews</p>
+                <div>
+                    <p class="title is-size-5">Reviews</p>
+
+                    <div class="columns">
+                        <div class="column"><rating-stats v-model="value.rating" /></div>
+                        <div class="column"></div>
+                    </div>
+                </div>
+
+                <!-- <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-2">
+                    <p class="is-size-4 title has-margin-bottom-0">Reviews</p>
                     <b-button
                         class="has-margin-left-1"
                         type="is-success"
@@ -109,9 +119,9 @@
                         :to="{ name: 'writeReview' }"
                         >Write a review</b-button
                     >
-                </div>
+                </div> -->
 
-                <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
+                <!-- <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
                     <p class="has-text-weight-bold">
                         {{ review.username }}
                         <span class="is-size-7 has-text-weight-normal">{{ review.date | date }}</span>
@@ -138,7 +148,7 @@
                             <span v-else>N/A</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </page>
@@ -155,13 +165,15 @@ import reviewStore from '../store/review/review-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import { measurement } from '@/modules/shared/filters/measurement';
 import { uppercaseFirst } from '@/core/filters/uppercase-first';
+import RatingStats from '@/modules/product-catalog/core/components/rating-stats.vue';
 
 @Component({
     components: {
         Stars,
         PadCutBar,
         PadFinishBar,
-        PolisherTypeTag
+        PolisherTypeTag,
+        RatingStats
     },
     filters: {
         measurement

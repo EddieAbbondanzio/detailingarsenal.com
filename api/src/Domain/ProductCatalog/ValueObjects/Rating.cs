@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
