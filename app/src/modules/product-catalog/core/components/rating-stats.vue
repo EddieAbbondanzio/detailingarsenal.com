@@ -11,7 +11,7 @@
         <div>
             <div
                 class="is-flex is-flex-row is-align-items-center is-justify-content-space-between"
-                v-for="s in value.stats"
+                v-for="s in stats"
                 :key="s.stars"
             >
                 <p class="has-margin-right-1">{{ s.star }} star</p>
@@ -22,7 +22,7 @@
                     :max="1"
                     type="is-warning"
                 />
-                <p>{{ s.percentage }}%</p>
+                <p class="has-text-right" style="width: 64px;">{{ s.percentage }}%</p>
             </div>
         </div>
     </div>
@@ -40,6 +40,17 @@ import { Prop } from 'vue-property-decorator';
     }
 })
 export default class RatingStats extends Vue {
+    get stats() {
+        const stats: RatingStarStat[] = [];
+
+        for (let i = 1; i <= 5; i++) {
+            const actual = this.value.stats.find(s => s.star == i);
+            stats.push(actual ?? { star: i, count: 0, percentage: 0 });
+        }
+
+        return stats;
+    }
+
     @Prop()
     value!: Rating;
 
