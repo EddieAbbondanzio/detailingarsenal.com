@@ -101,54 +101,56 @@
                 </div>
 
                 <div>
-                    <p class="title is-size-5">Reviews</p>
-
                     <div class="columns">
-                        <div class="column"><rating-stats v-model="value.rating" /></div>
-                        <div class="column"></div>
+                        <div class="column is-4">
+                            <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-3">
+                                <p class="title is-size-5 has-margin-bottom-0 has-margin-right-3">Reviews</p>
+                                <b-button
+                                    class="has-margin-left-1"
+                                    type="is-success"
+                                    size="is-small"
+                                    tag="router-link"
+                                    :to="{ name: 'writeReview' }"
+                                    >Write a review</b-button
+                                >
+                            </div>
+                            <rating-stats v-model="value.rating" />
+                        </div>
+
+                        <div class="column">
+                            <div>
+                                <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
+                                    <p class="has-text-weight-bold">
+                                        {{ review.username }}
+                                        <span class="is-size-7 has-text-weight-normal">{{ review.date | date }}</span>
+                                    </p>
+
+                                    <div class="is-flex is-flex-row">
+                                        <stars :readOnly="true" :value="review.stars" :hideCount="true" />
+
+                                        <p class="has-text-weight-bold has-margin-left-1">{{ review.title }}</p>
+                                    </div>
+
+                                    <p>{{ review.body }}</p>
+
+                                    <div class="is-flex is-flex-row">
+                                        <div class>
+                                            <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
+                                            <span v-if="review.cut">{{ review.cut }} / 10</span>
+                                            <span v-else>N/A</span>
+                                        </div>
+
+                                        <div class="has-margin-left-1">
+                                            <span class="has-margin-right-1 has-text-weight-bold">Finish:</span>
+                                            <span v-if="review.finish">{{ review.finish }} / 10</span>
+                                            <span v-else>N/A</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-2">
-                    <p class="is-size-4 title has-margin-bottom-0">Reviews</p>
-                    <b-button
-                        class="has-margin-left-1"
-                        type="is-success"
-                        size="is-small"
-                        tag="router-link"
-                        :to="{ name: 'writeReview' }"
-                        >Write a review</b-button
-                    >
-                </div> -->
-
-                <!-- <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
-                    <p class="has-text-weight-bold">
-                        {{ review.username }}
-                        <span class="is-size-7 has-text-weight-normal">{{ review.date | date }}</span>
-                    </p>
-
-                    <div class="is-flex is-flex-row">
-                        <stars :value="review.stars" :hideCount="true" />
-
-                        <p class="has-text-weight-bold has-margin-left-1">{{ review.title }}</p>
-                    </div>
-
-                    <p>{{ review.body }}</p>
-
-                    <div class="is-flex is-flex-row">
-                        <div class>
-                            <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
-                            <span v-if="review.cut">{{ review.cut }} / 10</span>
-                            <span v-else>N/A</span>
-                        </div>
-
-                        <div class="has-margin-left-1">
-                            <span class="has-margin-right-1 has-text-weight-bold">Finish:</span>
-                            <span v-if="review.finish">{{ review.finish }} / 10</span>
-                            <span v-else>N/A</span>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </page>

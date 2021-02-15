@@ -16,7 +16,7 @@
             >
                 <p class="has-margin-right-1">{{ s.star }} star</p>
                 <b-progress
-                    :title="`${s.count} star reviews`"
+                    :title="`${s.count} ${s.star} star ${s.count == 1 ? 'review' : 'reviews'}`"
                     class="has-margin-all-0"
                     :value="s.percentage"
                     :max="1"
@@ -53,9 +53,5 @@ export default class RatingStats extends Vue {
 
     @Prop()
     value!: Rating;
-
-    created() {
-        console.log(this.value.stats);
-    }
 }
 </script>
