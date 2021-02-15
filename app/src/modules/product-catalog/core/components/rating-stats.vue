@@ -19,7 +19,7 @@
                     :title="`${s.count} star reviews`"
                     class="has-margin-all-0"
                     :value="s.percentage"
-                    :max="100"
+                    :max="1"
                     type="is-warning"
                 />
                 <p>{{ s.percentage }}%</p>
