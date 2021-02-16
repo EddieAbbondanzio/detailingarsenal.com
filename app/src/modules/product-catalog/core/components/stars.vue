@@ -1,5 +1,8 @@
 <template>
-    <b-rate v-model="value" class="has-margin-all-0" :size="size" :disabled="readOnly" />
+    <div class="is-flex is-flex-row is-align-items-center">
+        <b-rate v-model="value" class="has-margin-all-0" :size="size" :disabled="readOnly" />
+        <span class="is-size-6" v-if="!hideCount">({{ count }})</span>
+    </div>
 </template>
 
 <script lang="ts">

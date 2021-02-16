@@ -104,7 +104,7 @@
                     <div class="columns">
                         <div class="column is-4">
                             <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-3">
-                                <p class="title is-size-5 has-margin-bottom-0 has-margin-right-3">Reviews</p>
+                                <p class="title is-size-4 has-margin-bottom-0 has-margin-right-3">Reviews</p>
                                 <b-button
                                     class="has-margin-left-1"
                                     type="is-success"
@@ -146,6 +146,11 @@
                                             <span v-else>N/A</span>
                                         </div>
                                     </div>
+                                </div>
+                                <!-- Empty -->
+                                <div v-if="reviews.length == 0">
+                                    Nobody has left any reviews yet. Get some mad street cred with your friends and be
+                                    the first!
                                 </div>
                             </div>
                         </div>
