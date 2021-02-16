@@ -2,7 +2,7 @@
     <div style="max-width: 300px;">
         <div class="has-margin-bottom-3">
             <div class="is-flex is-flex-row is-align-items-center">
-                <stars v-model="value.stars" :readOnly="true" />
+                <stars v-model="value.stars" :readOnly="true" :hideCount="true" />
                 <p class="has-margin-left-2 is-size-5">{{ value.stars }} / 5</p>
             </div>
             <p class="has-text-grey">{{ value.reviewCount }} {{ value.reviewCount == 1 ? 'review' : 'reviews' }}</p>
