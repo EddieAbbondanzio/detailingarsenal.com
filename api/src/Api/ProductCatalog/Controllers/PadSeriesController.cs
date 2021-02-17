@@ -25,6 +25,13 @@ namespace DetailingArsenal.Api.ProductCatalog {
         }
 
         [AllowAnonymous]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id) {
+            var s = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
+            return Ok(s);
+        }
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             List<PadSeriesReadModel> pads = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>();
