@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DetailingArsenal.Api.Meta {
     [ApiController]
-    [Route("meta")]
+    [Route("ping")]
     public class MetaController : ControllerBase {
         [HttpGet]
         public IActionResult Get() {
-            return Ok("420 blaze it");
+            return Ok("pong");
         }
     }
 }

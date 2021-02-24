@@ -2,36 +2,36 @@
     <div>
         <p class="is-size-5 has-text-weight-bold has-margin-bottom-3">Filter</p>
 
-        <!-- Brand -->
-        <div class="has-margin-bottom-2">
-            <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Brand</p>
-
-            <div v-for="brand in brands" :key="brand">
-                <b-checkbox :native-value="brand" v-model="selectedBrands" @input.prevent="onInput()">{{
-                    brand
-                }}</b-checkbox>
+        <b-field label="Brands">
+            <div class="is-flex is-flex-column">
+                <input-checkbox label="All" @input="toggleAllBrands" class="has-margin-bottom-0" v-model="allBrands" />
+                <input-checkbox
+                    :nativeValue="b.id"
+                    :label="b.name"
+                    v-model="selectedBrands"
+                    class="has-margin-bottom-0"
+                    v-for="b in brands"
+                    :key="b.id"
+                    @input="onBrandInput"
+                />
             </div>
-        </div>
+        </b-field>
 
         <!-- Series -->
-        <div class="has-margin-bottom-2">
-            <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Series</p>
-
-            <div v-for="s in series" :key="s">
-                <b-checkbox :native-value="s" v-model="selectedSeries" @input="onInput">{{ s }}</b-checkbox>
+        <b-field label="Series">
+            <div class="is-flex is-flex-column">
+                <input-checkbox label="All" @input="toggleAllSeries" class="has-margin-bottom-0" v-model="allSeries" />
+                <input-checkbox
+                    :nativeValue="s.id"
+                    :label="s.name"
+                    v-model="selectedSeries"
+                    class="has-margin-bottom-0"
+                    v-for="s in series"
+                    :key="s.id"
+                    @input="onSeriesInput"
+                />
             </div>
-        </div>
-
-        <!-- Category -->
-        <div class="has-margin-bottom-2">
-            <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Category</p>
-
-            <div v-for="category in categories" :key="category">
-                <b-checkbox :native-value="category" v-model="selectedCategories" @input="onInput">{{
-                    category | padCategory
-                }}</b-checkbox>
-            </div>
-        </div>
+        </b-field>
 
         <!-- Reset -->
         <b-button type="is-danger" outlined @click="onReset">Reset</b-button>
@@ -46,6 +46,9 @@ import { FilterType } from '../store/filter-type';
 import { Filter } from '../store/filter';
 import store from '@/core/store';
 import { MutationPayload } from 'vuex';
+import padStore from '../store/pad/pad-store';
+import { ArrayUtils } from '@/core/utils/array-utils';
+import { displayLoading } from '@/core';
 
 @Component({
     name: 'pad-filter-control',
@@ -54,48 +57,88 @@ import { MutationPayload } from 'vuex';
     }
 })
 export default class PadFilterControl extends Vue {
-    // /**
-    //  * Unique list of pad brands
-    //  */
-    // get brands() {
-    //     return [...new Set(padStore.pads.map(p => p.series.brand.name))];
-    // }
-    // /**
-    //  * Unique list of pad series names
-    //  */
-    // get series() {
-    //     return [...new Set(padStore.pads.map(p => p.series.name))];
-    // }
-    // get categories(): PadCategory[] {
-    //     return [PadCategory.Cut, PadCategory.Polish, PadCategory.Finishing];
-    // }
-    // selectedBrands: string[] = [];
-    // selectedSeries: string[] = [];
-    // selectedCategories: string[] = [];
-    // unSub!: () => void;
-    // created() {
-    //     this.onReset();
-    //     this.unSub = store.subscribe((mut: MutationPayload, state: any) => {
-    //         if (mut.type == 'pad/SET_PADS') {
-    //             this.onReset();
-    //         }
-    //     });
-    // }
-    // destroyed() {
-    //     this?.unSub();
-    // }
-    // onInput() {
-    //     padStore.SET_FILTER(
-    //         new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
-    //     );
-    // }
-    // onReset() {
-    //     this.selectedBrands = [...this.brands];
-    //     this.selectedSeries = [...this.series];
-    //     this.selectedCategories = [...this.categories];
-    //     padStore.SET_FILTER(
-    //         new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
-    //     );
-    // }
+    /**
+     * Unique list of pad brands
+     */
+    get brands() {
+        return padStore.legend.brands;
+    }
+    /**
+     * Unique list of pad series names
+     */
+    get series() {
+        return padStore.legend.series;
+    }
+    get categories(): PadCategory[] {
+        return Object.values(PadCategory);
+    }
+    selectedBrands: string[] = [];
+    selectedSeries: string[] = [];
+
+    allBrands = true;
+    allSeries = true;
+
+    async created() {
+        await this.refreshData();
+    }
+
+    @displayLoading
+    async refreshData() {
+        // Wide open
+        if (this.allBrands && this.allSeries) {
+            await padStore.getAll();
+        } else {
+            await padStore.getAll({
+                brands: this.selectedBrands,
+                series: this.selectedSeries
+            });
+        }
+    }
+
+    onBrandInput() {
+        this.allBrands = false;
+
+        if (this.selectedBrands.length == 0) {
+            this.allBrands = true;
+        }
+
+        this.refreshData();
+    }
+
+    onSeriesInput() {
+        this.allSeries = false;
+
+        if (this.selectedSeries.length == 0) {
+            this.allSeries = true;
+        }
+
+        this.refreshData();
+    }
+
+    onReset() {
+        this.allBrands = true;
+        this.allSeries = true;
+        this.selectedBrands = [];
+        this.selectedSeries = [];
+        // padStore.SET_FILTER(
+        //     new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
+        // );
+    }
+
+    toggleAllBrands(value: boolean) {
+        this.$nextTick(() => {
+            this.allBrands = true;
+        });
+
+        this.selectedBrands = [];
+        this.refreshData();
+    }
+
+    toggleAllSeries(value: boolean) {
+        if (value) this.allSeries = true;
+
+        this.selectedSeries = [];
+        this.refreshData();
+    }
 }
 </script>

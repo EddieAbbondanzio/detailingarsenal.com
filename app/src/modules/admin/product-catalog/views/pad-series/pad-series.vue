@@ -21,7 +21,14 @@
             </page-header>
         </template>
 
-        <b-table :data="series">
+        <b-table
+            :data="series"
+            paginated
+            backend-pagination
+            :total="paging.total"
+            :per-page="paging.pageSize"
+            @page-change="onPageChange"
+        >
             <b-table-column label="Name" field="brand" sortable v-slot="props" cell-class="has-vertical-align-middle">
                 <router-link
                     class="is-inline-block has-text-weight-bold has-text-black"
@@ -51,7 +58,11 @@ import adminPadStore from '../../store/admin-pad-store';
 @Component
 export default class Pads extends Vue {
     get series() {
-        return adminPadStore.series;
+        return adminPadStore.series.values;
+    }
+
+    get paging() {
+        return adminPadStore.series.paging;
     }
 
     @displayLoading
@@ -79,6 +90,11 @@ export default class Pads extends Vue {
                 displayError(err);
             }
         }
+    }
+
+    @displayLoading
+    async onPageChange(pageNumber: number) {
+        await adminPadStore.goToPage(pageNumber);
     }
 }
 </script>

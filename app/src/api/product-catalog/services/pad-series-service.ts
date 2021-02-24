@@ -9,11 +9,50 @@ import { Rating } from '../data-transfer-objects/rating';
 import { Image } from '../data-transfer-objects/image';
 import { PadOption } from '../data-transfer-objects/pad-option';
 import { Measurement } from '../data-transfer-objects/measurement';
+import { PadSeriesFilterLegend } from '../data-transfer-objects/pad-series-filter-legend';
+import { PagedArray } from '@/api/core/data-transfer-objects/paged-array';
+import { PadSeriesGetAllRequest } from '../data-transfer-objects/requests/pad-series-get-all-request';
 
 export class PadSeriesService {
-    async get(): Promise<PadSeries[]> {
-        const res = await http.get('product-catalog/pad-series');
-        return (res.data as any[]).map(d => this._map(d));
+    async get(filter?: PadSeriesGetAllRequest): Promise<PagedArray<PadSeries>> {
+        // TODO: Switch to query string?
+        const res =
+            filter != null
+                ? await http.post('product-catalog/pad-series/filter', filter)
+                : await http.get('product-catalog/pad-series');
+
+        return {
+            paging: res.data.paging,
+            values: ((res.data.values as any[]) ?? []).map(d => this._map(d))
+        };
+    }
+
+    async getById(id: string): Promise<PagedArray<PadSeries>> {
+        const res = await http.get(`product-catalog/pad-series/${id}`);
+
+        if (res.data != null) {
+            const s = this._map(res.data);
+
+            return {
+                paging: {
+                    total: 1,
+                    pageNumber: 1,
+                    pageSize: 1,
+                    pageCount: 1
+                },
+                values: [s]
+            };
+        } else {
+            return {
+                paging: {
+                    total: 1,
+                    pageNumber: 1,
+                    pageSize: 1,
+                    pageCount: 1
+                },
+                values: []
+            };
+        }
     }
 
     async create(create: PadSeriesCreateRequest) {
@@ -61,7 +100,7 @@ export class PadSeriesService {
                         c.hasCenterHole,
                         c.cut,
                         c.finish,
-                        new Rating(c.rating.stars, c.rating.reviewCount),
+                        new Rating(c.rating.stars ?? 0, c.rating.reviewCount ?? 0, c.rating.stats ?? []),
                         c.imageId,
                         (c.options ?? ([] as any[])).map((o: any) => ({
                             id: o.id,

@@ -4,6 +4,8 @@ export * from './api';
 export * from './core/errors/authorization-error';
 export * from './core/errors/specification-error';
 export * from './core/errors/validation-error';
+export * from './core/data-transfer-objects/paging';
+export * from './core/data-transfer-objects/paged-array';
 
 //Billing
 export * from './scheduling/billing/data-transfer-objects/billing-interval';
@@ -73,6 +75,7 @@ export * from './product-catalog/data-transfer-objects/requests/pad-option-creat
 export * from './product-catalog/data-transfer-objects/requests/pad-size-create-or-update';
 export * from './product-catalog/data-transfer-objects/requests/brand-update-request';
 export * from './product-catalog/data-transfer-objects/requests/brand-create-request';
+export * from './product-catalog/data-transfer-objects/requests/pad-series-get-all-request';
 export * from './product-catalog/data-transfer-objects/pad-cut';
 export * from './product-catalog/data-transfer-objects/pad-texture';
 export * from './product-catalog/data-transfer-objects/pad-finish';
@@ -81,3 +84,5 @@ export * from './product-catalog/data-transfer-objects/review';
 export * from './product-catalog/data-transfer-objects/requests/review-create-request';
 export * from './product-catalog/data-transfer-objects/measurement';
 export * from './product-catalog/data-transfer-objects/measurement-unit';
+export * from './product-catalog/data-transfer-objects/pad-series-filter';
+export * from './product-catalog/data-transfer-objects/pad-series-filter-legend';

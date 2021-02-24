@@ -137,7 +137,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetAllBrandsQuery, List<BrandReadModel>>, GetAllBrandsHandler>();
             services.AddTransient<ActionHandler<GetBrandByIdQuery, BrandReadModel?>, GetBrandByIdHandler>();
             services.AddTransient<ActionHandler<BrandCreateCommand, Guid>, BrandCreateHandler>();
-            services.AddTransient<ActionHandler<BrandUpdateCommand>, UpdateBrandHandler>();
+            services.AddTransient<ActionHandler<BrandUpdateCommand>, BrandUpdateHandler>();
             services.AddTransient<ActionHandler<BrandDeleteCommand>, BrandDeleteHandler>();
             services.AddTransient<BrandCreateValidator>();
             services.AddTransient<BrandUpdateValidator>();
@@ -150,12 +150,13 @@ namespace DetailingArsenal.Api {
             services.AddTransient<PadSeriesCreateValidator>();
             services.AddTransient<PadSeriesUpdateValidator>();
             services.AddTransient<ActionHandler<GetPadSeriesByIdQuery, PadSeriesReadModel?>, GetPadSeriesByIdHandler>();
-            services.AddTransient<ActionHandler<GetAllPadSeriesQuery, List<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
+            services.AddTransient<ActionHandler<GetAllPadSeriesQuery, PagedArray<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
             services.AddTransient<ActionHandler<PadSeriesCreateCommand, Guid>, PadSeriesCreateHandler>();
             services.AddTransient<ActionHandler<PadSeriesUpdateCommand>, PadSeriesUpdateHandler>();
             services.AddTransient<ActionHandler<PadSeriesDeleteCommand>, PadSeriesDeleteHandler>();
             services.AddTransient<ActionHandler<GetAllReviewsForPadQuery, List<ReviewReadModel>>, GetAllReviewsForPadHandler>();
             services.AddTransient<ActionHandler<GetReviewByIdQuery, ReviewReadModel?>, GetReviewByIdHandler>();
+            services.AddTransient<ActionHandler<GetPadSeriesFilterQuery, PadSeriesFilterReadModel>, GetPadSeriesFilterHandler>();
             services.AddTransient<ReviewCreateValidator>();
             services.AddTransient<PadSeriesPadSizeDiametersAreUniqueSpecification>();
             services.AddTransient<PadSeriesHasPadsSpecification>();
@@ -166,6 +167,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<ReviewCreateCommand, Guid>, ReviewCreateHandler>();
             services.AddTransient<IReviewRepo, ReviewRepo>();
             services.AddTransient<IReviewReader, ReviewReader>();
+            services.AddTransient<IPadSeriesFilterReader, PadSeriesFilterReader>();
 
             // Billing
             var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));

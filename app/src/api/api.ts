@@ -14,6 +14,7 @@ import { AuthenticationService } from './user/security/services/authentication-s
 import { PermissionService } from './user/security/services/permission-service';
 import { RoleService } from './user/security/services/role-service';
 import { BrandService } from './product-catalog/services/brand-service';
+import { PadSeriesFilterService } from './product-catalog/services/pad-series-filter-service';
 
 export const api = {
     authentication: new AuthenticationService(),
@@ -48,6 +49,7 @@ export const api = {
     },
     productCatalog: {
         padSeries: new PadSeriesService(),
+        padSeriesFilter: new PadSeriesFilterService(),
         brand: new BrandService(),
         review: new ReviewService()
     }

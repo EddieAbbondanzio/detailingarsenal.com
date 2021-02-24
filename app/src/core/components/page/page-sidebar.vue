@@ -5,6 +5,7 @@
         :fullheight="true"
         :overlay="overlay"
         :open.sync="isOpen"
+        mobile="hide"
         :position="!overlay ? 'static' : 'fixed'"
     >
         <div class="has-padding-all-3">

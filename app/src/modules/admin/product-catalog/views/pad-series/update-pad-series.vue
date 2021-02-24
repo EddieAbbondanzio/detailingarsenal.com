@@ -336,7 +336,7 @@ export default class UpdatePadSeries extends Vue {
         await brandStore.init();
         await adminPadStore.init();
 
-        const padSeries = adminPadStore.series.find(s => s.id == this.$route.params.id);
+        const padSeries = adminPadStore.series.values.find(s => s.id == this.$route.params.id);
 
         if (padSeries == null) {
             this.$router.go(-1);

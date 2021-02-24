@@ -39,6 +39,7 @@
                                     class="has-margin-right-1"
                                     :value="value.rating.stars"
                                     :count="value.rating.reviewCount"
+                                    :readOnly="true"
                                 />
 
                                 <div class="has-margin-right-1">
@@ -99,43 +100,59 @@
                     </b-table>
                 </div>
 
-                <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-2">
-                    <p class="is-size-5 title has-margin-bottom-0">Reviews</p>
-                    <b-button
-                        class="has-margin-left-1"
-                        type="is-success"
-                        size="is-small"
-                        tag="router-link"
-                        :to="{ name: 'writeReview' }"
-                        >Write a review</b-button
-                    >
-                </div>
-
-                <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
-                    <p class="has-text-weight-bold">
-                        {{ review.username }}
-                        <span class="is-size-7 has-text-weight-normal">{{ review.date | date }}</span>
-                    </p>
-
-                    <div class="is-flex is-flex-row">
-                        <stars :value="review.stars" :hideCount="true" />
-
-                        <p class="has-text-weight-bold has-margin-left-1">{{ review.title }}</p>
-                    </div>
-
-                    <p>{{ review.body }}</p>
-
-                    <div class="is-flex is-flex-row">
-                        <div class>
-                            <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
-                            <span v-if="review.cut">{{ review.cut }} / 10</span>
-                            <span v-else>N/A</span>
+                <div>
+                    <div class="columns">
+                        <div class="column is-4">
+                            <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-3">
+                                <p class="title is-size-4 has-margin-bottom-0 has-margin-right-3">Reviews</p>
+                                <b-button
+                                    class="has-margin-left-1"
+                                    type="is-success"
+                                    size="is-small"
+                                    tag="router-link"
+                                    :to="{ name: 'writeReview' }"
+                                    >Write a review</b-button
+                                >
+                            </div>
+                            <rating-stats v-model="value.rating" />
                         </div>
 
-                        <div class="has-margin-left-1">
-                            <span class="has-margin-right-1 has-text-weight-bold">Finish:</span>
-                            <span v-if="review.finish">{{ review.finish }} / 10</span>
-                            <span v-else>N/A</span>
+                        <div class="column">
+                            <div>
+                                <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
+                                    <p class="has-text-weight-bold">
+                                        {{ review.username }}
+                                        <span class="is-size-7 has-text-weight-normal">{{ review.date | date }}</span>
+                                    </p>
+
+                                    <div class="is-flex is-flex-row">
+                                        <stars :readOnly="true" :value="review.stars" :hideCount="true" />
+
+                                        <p class="has-text-weight-bold has-margin-left-1">{{ review.title }}</p>
+                                    </div>
+
+                                    <p>{{ review.body }}</p>
+
+                                    <div class="is-flex is-flex-row">
+                                        <div class>
+                                            <span class="has-margin-right-1 has-text-weight-bold">Cut:</span>
+                                            <span v-if="review.cut">{{ review.cut }} / 10</span>
+                                            <span v-else>N/A</span>
+                                        </div>
+
+                                        <div class="has-margin-left-1">
+                                            <span class="has-margin-right-1 has-text-weight-bold">Finish:</span>
+                                            <span v-if="review.finish">{{ review.finish }} / 10</span>
+                                            <span v-else>N/A</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Empty -->
+                                <div v-if="reviews.length == 0">
+                                    Nobody has left a reviews yet. Get some mad street cred with your friends and be the
+                                    first!
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -155,21 +172,28 @@ import reviewStore from '../store/review/review-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import { measurement } from '@/modules/shared/filters/measurement';
 import { uppercaseFirst } from '@/core/filters/uppercase-first';
+import RatingStats from '@/modules/product-catalog/core/components/rating-stats.vue';
+import { displayLoading } from '@/core';
 
 @Component({
     components: {
         Stars,
         PadCutBar,
         PadFinishBar,
-        PolisherTypeTag
+        PolisherTypeTag,
+        RatingStats
     },
     filters: {
         measurement
     }
 })
 export default class PadView extends Vue {
-    get id() {
-        return this.$route.params.id;
+    get padId() {
+        return this.$route.params.padId;
+    }
+
+    get padSeriesId() {
+        return this.$route.params.padSeriesId;
     }
 
     get title() {
@@ -177,11 +201,11 @@ export default class PadView extends Vue {
             return '';
         }
 
-        return `${this.value.series.name} ${this.value.name}`;
+        return `${this.value?.series?.name ?? ''} ${this.value.name}`;
     }
 
     get description() {
-        return `By ${this.value?.series.brand.name}`;
+        return `By ${this.value?.series?.brand.name ?? ''}`;
     }
 
     get polisherTypes() {
@@ -207,11 +231,14 @@ export default class PadView extends Vue {
     value: Pad | null = null;
     sizes: PadSizeInfo[] = [];
 
+    @displayLoading
     async created() {
-        this.value = await padStore.getPadById(this.id);
+        this.value = padStore.pads.find(p => p.id == this.padId)!;
 
+        // Only fetch pad if we can't find it
         if (this.value == null) {
-            return;
+            await padStore.getAllBySeries(this.padSeriesId);
+            this.value = padStore.pads.find(p => p.id == this.padId)!;
         }
 
         this.sizes = this.value.options.map(o => {
@@ -223,7 +250,7 @@ export default class PadView extends Vue {
             };
         });
 
-        reviewStore.loadReviews(this.id);
+        reviewStore.loadReviews(this.padId);
     }
 
     isThin(size: PadSize) {
