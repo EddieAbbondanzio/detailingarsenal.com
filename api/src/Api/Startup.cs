@@ -156,6 +156,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<PadSeriesDeleteCommand>, PadSeriesDeleteHandler>();
             services.AddTransient<ActionHandler<GetAllReviewsForPadQuery, List<ReviewReadModel>>, GetAllReviewsForPadHandler>();
             services.AddTransient<ActionHandler<GetReviewByIdQuery, ReviewReadModel?>, GetReviewByIdHandler>();
+            services.AddTransient<ActionHandler<GetPadSeriesFilterQuery, PadSeriesFilterReadModel>, GetPadSeriesFilterHandler>();
             services.AddTransient<ReviewCreateValidator>();
             services.AddTransient<PadSeriesPadSizeDiametersAreUniqueSpecification>();
             services.AddTransient<PadSeriesHasPadsSpecification>();
@@ -166,6 +167,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<ReviewCreateCommand, Guid>, ReviewCreateHandler>();
             services.AddTransient<IReviewRepo, ReviewRepo>();
             services.AddTransient<IReviewReader, ReviewReader>();
+            services.AddTransient<IPadSeriesFilterReader, PadSeriesFilterReader>();
 
             // Billing
             var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));
