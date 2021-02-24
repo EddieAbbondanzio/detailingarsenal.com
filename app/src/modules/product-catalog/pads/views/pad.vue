@@ -187,8 +187,12 @@ import RatingStats from '@/modules/product-catalog/core/components/rating-stats.
     }
 })
 export default class PadView extends Vue {
-    get id() {
-        return this.$route.params.id;
+    get padId() {
+        return this.$route.params.padId;
+    }
+
+    get padSeriesId() {
+        return this.$route.params.padSeriesId;
     }
 
     get title() {
@@ -196,11 +200,11 @@ export default class PadView extends Vue {
             return '';
         }
 
-        return `${this.value.series.name} ${this.value.name}`;
+        return `${this.value?.series?.name ?? ''} ${this.value.name}`;
     }
 
     get description() {
-        return `By ${this.value?.series.brand.name}`;
+        return `By ${this.value?.series?.brand.name ?? ''}`;
     }
 
     get polisherTypes() {
@@ -227,10 +231,11 @@ export default class PadView extends Vue {
     sizes: PadSizeInfo[] = [];
 
     async created() {
-        this.value = await padStore.getPadById(this.id);
+        await padStore.getAllBySeries(this.padSeriesId);
+        this.value = padStore.pads.find(p => p.id == this.padId)!;
 
         if (this.value == null) {
-            return;
+            throw new Error('No matching pad found!');
         }
 
         this.sizes = this.value.options.map(o => {
@@ -242,7 +247,7 @@ export default class PadView extends Vue {
             };
         });
 
-        reviewStore.loadReviews(this.id);
+        reviewStore.loadReviews(this.padId);
     }
 
     isThin(size: PadSize) {

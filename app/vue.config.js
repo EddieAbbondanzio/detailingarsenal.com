@@ -5,5 +5,8 @@ module.exports = {
                 prependData: `@import "@/assets/styles/theme.sass";`
             }
         }
-    }
+    },
+    configureWebpack: {
+        devtool: 'source-map'
+      }
 };

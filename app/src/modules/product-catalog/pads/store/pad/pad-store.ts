@@ -1,37 +1,53 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { Pad, api } from '@/api';
+import { Pad, api, PadSeriesFilter, PadSeries, PagedArray } from '@/api';
+import _ from 'lodash';
 
 @Module({ namespaced: true, name: 'pad', dynamic: true, store })
 class PadStore extends InitableModule {
-    pads: Pad[] = [];
+    get pads() {
+        return this.series?.values.flatMap(s => s.pads) ?? [];
+    }
+
+    filter: PadSeriesFilter = null!;
+    defaultFilter: PadSeriesFilter = null!;
+
+    series: PagedArray<PadSeries> = null!;
 
     @Mutation
-    SET_PADS(pads: Pad[]) {
-        this.pads = pads;
+    SET_FILTER(filter: PadSeriesFilter) {
+        this.filter = filter;
+    }
+
+    @Mutation
+    SET_DEFAULT_FILTER(filter: PadSeriesFilter) {
+        this.defaultFilter = filter;
+    }
+
+    @Mutation
+    SET_SERIES(series: PagedArray<PadSeries>) {
+        this.series = series;
     }
 
     @Action({ rawError: true })
     async _init() {
-        const series = await api.productCatalog.padSeries.get();
-        this.context.commit(
-            'SET_PADS',
-            series.flatMap(s => s.pads)
-        );
+        const f = await api.productCatalog.padSeriesFilter.get();
+        this.context.commit('SET_FILTER', f);
+        this.context.commit('SET_DEFAULT_FILTER', _.cloneDeep(f));
+        this.context.dispatch('getAll', f);
     }
 
     @Action({ rawError: true })
-    async getPadById(id: string): Promise<Pad | null> {
-        if (this.pads.length == 0) {
-            const series = await api.productCatalog.padSeries.get();
-            this.context.commit(
-                'SET_PADS',
-                series.flatMap(s => s.pads)
-            );
-        }
+    async getAll(filter?: PadSeriesFilter) {
+        const series = await api.productCatalog.padSeries.get(filter);
+        this.context.commit('SET_SERIES', series);
+    }
 
-        return this.pads.find(p => p.id == id)!;
+    @Action({ rawError: true })
+    async getAllBySeries(id: string) {
+        var s = await api.productCatalog.padSeries.getById(id);
+        this.context.commit('SET_SERIES', s);
     }
 }
 

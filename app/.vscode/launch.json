@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "firefox",
+        "request": "launch",
+        "name": "App: FireFox",
+        "url": "http://localhost:8080",
+        "webRoot": "${workspaceFolder}/src",
+        "pathMappings": [{ "url": "webpack:///src/", "path": "${webRoot}/" }],
+        "profile": "dev",
+        "keepProfileChanges": true,
+        "reloadOnChange": {
+          "watch": "${workspaceFolder}/src/**/*",
+          "ignore": "**/node_modules/**"
+        }
+      },
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "App: Chrome",
+        "url": "http://localhost:8080",
+        "webRoot": "${workspaceFolder}/src",
+        "breakOnLoad": true,
+        "sourceMapPathOverrides": {
+          "webpack:///src/*": "${webRoot}/*"
+        }
+      },
+    ]
+  }

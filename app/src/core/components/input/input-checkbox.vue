@@ -1,5 +1,5 @@
 <template>
-    <b-field :class="required ? 'is-required' : ''">
+    <b-field :class="required ? 'is-required is-block' : 'is-block'">
         <template v-slot:label>
             <slot name="label"></slot>
         </template>
@@ -26,7 +26,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({
-    name: 'input-checkbox',
+    name: 'input-checkbox'
 })
 export default class InputCheckbox extends Vue {
     @Prop({ default: null })
@@ -75,7 +75,7 @@ export default class InputCheckbox extends Vue {
         (this.$refs.validator as any).applyResult({
             errors: [error],
             valid: false,
-            failedRules: {},
+            failedRules: {}
         });
     }
 }

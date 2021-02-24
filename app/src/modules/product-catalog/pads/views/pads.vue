@@ -11,12 +11,26 @@
                 </template>-->
             </page-header>
         </template>
-        <b-table class="pads-table" :data="summaries" :loading="loading">
+
+        <template v-slot:sidebar>
+            <page-sidebar>
+                <pad-filter-control />
+            </page-sidebar>
+        </template>
+
+        <b-table
+            class="pads-table"
+            :data="summaries"
+            :loading="loading"
+            :backend-pagination="true"
+            paginated
+            :total="paging.total"
+        >
             <b-table-column v-slot="props" centered>
                 <router-link
                     :to="{
                         name: 'pad',
-                        params: { id: props.row.id }
+                        params: { padId: props.row.id, padSeriesId: props.row.padSeriesId }
                     }"
                 >
                     <img
@@ -29,31 +43,34 @@
                     />
                 </router-link>
             </b-table-column>
-            <b-table-column v-slot="props" label="Name" field="label" sortable>
+            <b-table-column v-slot="props" label="Name" field="label">
                 <router-link
                     class="label-link has-text-weight-bold"
                     :to="{
                         name: 'pad',
-                        params: { id: props.row.id }
+                        params: {
+                            padSeriesId: props.row.padSeriesId,
+                            padId: props.row.id
+                        }
                     }"
                     >{{ props.row.name }}
                     <b-tag type="is-info" v-if="props.row.isThin" size="is-small">Thin</b-tag>
                 </router-link>
             </b-table-column>
-            <b-table-column v-slot="props" label="Category" field="category" sortable>{{
+            <b-table-column v-slot="props" label="Category" field="category">{{
                 props.row.category | uppercaseFirst
             }}</b-table-column>
-            <b-table-column v-slot="props" label="Material" field="material" sortable>
+            <b-table-column v-slot="props" label="Material" field="material">
                 <span v-if="props.row.material">{{ props.row.material | uppercaseFirst }}</span>
                 <span v-else class="has-text-grey">N/A</span>
             </b-table-column>
-            <b-table-column label="Cut" field="cut" width="120px" sortable v-slot="props">
+            <b-table-column label="Cut" field="cut" width="120px" v-slot="props">
                 <pad-cut-bar :value="props.row.cut" />
             </b-table-column>
-            <b-table-column v-slot="props" label="Finish" field="finish" width="120px" sortable>
+            <b-table-column v-slot="props" label="Finish" field="finish" width="120px">
                 <pad-finish-bar :value="props.row.finish" />
             </b-table-column>
-            <b-table-column v-slot="props" label="Rating" field="rating" sortable>
+            <b-table-column v-slot="props" label="Rating" field="rating">
                 <stars
                     v-if="props.row.rating != null"
                     :value="props.row.rating.stars"
@@ -63,7 +80,7 @@
                 />
                 <span class="has-text-grey" v-else>N/A</span>
             </b-table-column>
-            <b-table-column v-slot="props" label="Polisher Type(s)" field="polisherTypes" sortable>
+            <b-table-column v-slot="props" label="Polisher Type(s)" field="polisherTypes">
                 <div class="tags">
                     <polisher-type-tag
                         v-for="rec in props.row.polisherTypes"
@@ -121,12 +138,17 @@ import appStore from '@/core/store/app-store';
     }
 })
 export default class Pads extends Vue {
+    get paging() {
+        return padStore.filter.paging;
+    }
+
     get summaries(): PadSummary[] {
         const summaries: PadSummary[] = [];
 
         for (const pad of padStore.pads) {
             summaries.push({
                 id: pad.id,
+                padSeriesId: pad.series.id,
                 thumbnailUrl: pad.thumbnailUrl,
                 name: pad.label,
                 category: pad.category,
@@ -154,6 +176,7 @@ export default class Pads extends Vue {
 
 interface PadSummary {
     id: string;
+    padSeriesId: string;
     thumbnailUrl: string | null;
     name: string;
     category: PadCategory;

@@ -33,8 +33,8 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetAll() {
-            List<PadSeriesReadModel> pads = await mediator.Dispatch<GetAllPadSeriesQuery, List<PadSeriesReadModel>>();
+        public async Task<IActionResult> GetAll(GetAllPadSeriesQuery? query) {
+            var pads = await mediator.Dispatch<GetAllPadSeriesQuery, PagedArray<PadSeriesReadModel>>(query ?? new());
             return Ok(pads);
         }
 

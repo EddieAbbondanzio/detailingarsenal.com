@@ -9,11 +9,50 @@ import { Rating } from '../data-transfer-objects/rating';
 import { Image } from '../data-transfer-objects/image';
 import { PadOption } from '../data-transfer-objects/pad-option';
 import { Measurement } from '../data-transfer-objects/measurement';
+import { PadSeriesFilter } from '../data-transfer-objects/pad-series-filter';
+import qs from 'qs';
+import { PagedArray } from '@/api/core/data-transfer-objects/paged-array';
+import { PadSeriesGetAllRequest } from '../data-transfer-objects/requests/pad-series-get-all-request';
 
 export class PadSeriesService {
-    async get(): Promise<PadSeries[]> {
-        const res = await http.get('product-catalog/pad-series');
-        return (res.data as any[]).map(d => this._map(d));
+    async get(filter?: PadSeriesGetAllRequest): Promise<PagedArray<PadSeries>> {
+        var queryString = qs.stringify(filter);
+        const res = await http.get('product-catalog/pad-series', { params: queryString });
+
+        return {
+            paging: {
+                total: 10,
+                pageNumber: 1,
+                pageSize: 20
+            },
+            values: (res.data as any[]).map(d => this._map(d))
+        };
+    }
+
+    async getById(id: string): Promise<PagedArray<PadSeries>> {
+        const res = await http.get(`product-catalog/pad-series/${id}`);
+
+        if (res.data != null) {
+            const s = this._map(res.data);
+
+            return {
+                paging: {
+                    total: 1,
+                    pageNumber: 1,
+                    pageSize: 1
+                },
+                values: [s]
+            };
+        } else {
+            return {
+                paging: {
+                    total: 1,
+                    pageNumber: 1,
+                    pageSize: 1
+                },
+                values: []
+            };
+        }
     }
 
     async create(create: PadSeriesCreateRequest) {
