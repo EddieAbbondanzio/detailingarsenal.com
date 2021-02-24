@@ -149,8 +149,8 @@
                                 </div>
                                 <!-- Empty -->
                                 <div v-if="reviews.length == 0">
-                                    Nobody has left any reviews yet. Get some mad street cred with your friends and be
-                                    the first!
+                                    Nobody has left a reviews yet. Get some mad street cred with your friends and be the
+                                    first!
                                 </div>
                             </div>
                         </div>
@@ -173,6 +173,7 @@ import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import { measurement } from '@/modules/shared/filters/measurement';
 import { uppercaseFirst } from '@/core/filters/uppercase-first';
 import RatingStats from '@/modules/product-catalog/core/components/rating-stats.vue';
+import { displayLoading } from '@/core';
 
 @Component({
     components: {
@@ -230,12 +231,14 @@ export default class PadView extends Vue {
     value: Pad | null = null;
     sizes: PadSizeInfo[] = [];
 
+    @displayLoading
     async created() {
-        await padStore.getAllBySeries(this.padSeriesId);
         this.value = padStore.pads.find(p => p.id == this.padId)!;
 
+        // Only fetch pad if we can't find it
         if (this.value == null) {
-            throw new Error('No matching pad found!');
+            await padStore.getAllBySeries(this.padSeriesId);
+            this.value = padStore.pads.find(p => p.id == this.padId)!;
         }
 
         this.sizes = this.value.options.map(o => {
