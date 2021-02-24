@@ -10,22 +10,20 @@ import { Image } from '../data-transfer-objects/image';
 import { PadOption } from '../data-transfer-objects/pad-option';
 import { Measurement } from '../data-transfer-objects/measurement';
 import { PadSeriesFilter } from '../data-transfer-objects/pad-series-filter';
-import qs from 'qs';
 import { PagedArray } from '@/api/core/data-transfer-objects/paged-array';
 import { PadSeriesGetAllRequest } from '../data-transfer-objects/requests/pad-series-get-all-request';
 
 export class PadSeriesService {
     async get(filter?: PadSeriesGetAllRequest): Promise<PagedArray<PadSeries>> {
-        var queryString = qs.stringify(filter);
-        const res = await http.get('product-catalog/pad-series', { params: queryString });
+        // TODO: Switch to query string?
+        const res =
+            filter != null
+                ? await http.post('product-catalog/pad-series/filter', filter)
+                : await http.get('product-catalog/pad-series');
 
         return {
-            paging: {
-                total: 10,
-                pageNumber: 1,
-                pageSize: 20
-            },
-            values: (res.data as any[]).map(d => this._map(d))
+            paging: res.data.paging,
+            values: (res.data.values as any[]).map(d => this._map(d))
         };
     }
 

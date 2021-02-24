@@ -1,7 +1,7 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { Pad, api, PadSeriesFilter, PadSeries, PagedArray } from '@/api';
+import { Pad, api, PadSeriesFilter, PadSeries, PagedArray, Paging } from '@/api';
 import _ from 'lodash';
 
 @Module({ namespaced: true, name: 'pad', dynamic: true, store })
@@ -10,19 +10,14 @@ class PadStore extends InitableModule {
         return this.series?.values.flatMap(s => s.pads) ?? [];
     }
 
-    filter: PadSeriesFilter = null!;
-    defaultFilter: PadSeriesFilter = null!;
+    filter: PadSeriesFilter = { brands: [], series: [] };
+    paging: Paging = { pageNumber: 0, pageSize: 20 };
 
-    series: PagedArray<PadSeries> = null!;
+    series: PagedArray<PadSeries> = { paging: null!, values: [] };
 
     @Mutation
     SET_FILTER(filter: PadSeriesFilter) {
         this.filter = filter;
-    }
-
-    @Mutation
-    SET_DEFAULT_FILTER(filter: PadSeriesFilter) {
-        this.defaultFilter = filter;
     }
 
     @Mutation
@@ -34,13 +29,19 @@ class PadStore extends InitableModule {
     async _init() {
         const f = await api.productCatalog.padSeriesFilter.get();
         this.context.commit('SET_FILTER', f);
-        this.context.commit('SET_DEFAULT_FILTER', _.cloneDeep(f));
-        this.context.dispatch('getAll', f);
+
+        const series = await api.productCatalog.padSeries.get();
+        this.context.commit('SET_SERIES', series);
     }
 
     @Action({ rawError: true })
     async getAll(filter?: PadSeriesFilter) {
-        const series = await api.productCatalog.padSeries.get(filter);
+        const series = await api.productCatalog.padSeries.get({
+            brands: this.filter.brands?.map(b => b.id),
+            series: this.filter.series?.map(s => s.id),
+            paging: this.paging
+        });
+
         this.context.commit('SET_SERIES', series);
     }
 

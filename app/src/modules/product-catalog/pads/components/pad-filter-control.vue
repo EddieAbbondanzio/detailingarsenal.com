@@ -17,13 +17,19 @@
         </b-field>
 
         <!-- Series -->
-        <div class="has-margin-bottom-2">
-            <p class="is-size-6 has-text-weight-bold has-margin-bottom-1">Series</p>
-
-            <div v-for="s in series" :key="s">
-                <b-checkbox :native-value="s" v-model="selectedSeries" @input="onInput">{{ s }}</b-checkbox>
+        <b-field label="Series">
+            <div class="is-flex is-flex-column">
+                <input-checkbox label="All" @input="toggleAllSeries" class="has-margin-bottom-0" />
+                <input-checkbox
+                    :nativeValue="s.id"
+                    :label="s.name"
+                    v-model="selectedSeries"
+                    class="has-margin-bottom-0"
+                    v-for="s in series"
+                    :key="s.id"
+                />
             </div>
-        </div>
+        </b-field>
 
         <!-- Reset -->
         <b-button type="is-danger" outlined @click="onReset">Reset</b-button>
@@ -58,7 +64,7 @@ export default class PadFilterControl extends Vue {
      * Unique list of pad series names
      */
     get series() {
-        return [...new Set(padStore.pads.map(p => p.series.name))];
+        return padStore.filter.series;
     }
     get categories(): PadCategory[] {
         return Object.values(PadCategory);
@@ -77,7 +83,7 @@ export default class PadFilterControl extends Vue {
     }
     onReset() {
         this.selectedBrands = [...this.brands.map(b => b.id)];
-        this.selectedSeries = [...this.series];
+        this.selectedSeries = [...this.series.map(s => s.id)];
         // padStore.SET_FILTER(
         //     new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
         // );
@@ -88,6 +94,14 @@ export default class PadFilterControl extends Vue {
             this.selectedBrands = [...this.brands.map(b => b.id)];
         } else {
             this.selectedBrands = [];
+        }
+    }
+
+    toggleAllSeries(value: boolean) {
+        if (value) {
+            this.selectedSeries = [...this.series.map(b => b.id)];
+        } else {
+            this.selectedSeries = [];
         }
     }
 }

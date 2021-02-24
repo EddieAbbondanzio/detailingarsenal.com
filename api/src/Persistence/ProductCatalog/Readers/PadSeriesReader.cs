@@ -165,7 +165,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                 // Now get the rest
                 var childrenSql = BuildReadAllChildrenSql(query);
-                using (var reader = await conn.QueryMultipleAsync(childrenSql, new { Series = series })) {
+                using (var reader = await conn.QueryMultipleAsync(childrenSql, new { Series = series.Select(s => s.Id).ToArray() })) {
                     var totalCount = reader.ReadFirst<int>();
 
 
@@ -281,14 +281,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             bool addedFilter = false;
 
             // Add pad series filter options as needed
-            if (query.Brands?.Count > 0) {
+            if (query.Brands?.Length > 0) {
                 sb.Append(addedFilter ? "and " : "where ");
                 sb.Append("ps.brand_id = any(@Brands)");
 
                 addedFilter = true;
             }
 
-            if (query.Series?.Count > 0) {
+            if (query.Series?.Length > 0) {
                 sb.Append(addedFilter ? "and " : "where ");
                 sb.Append("ps.id = any(@Series)");
 
@@ -306,28 +306,30 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             bool addedFilter = false;
 
             // Add pad series filter options as needed
-            if (query.Brands?.Count > 0) {
+            if (query.Brands?.Length > 0) {
                 sb.Append(addedFilter ? "and " : "where ");
                 sb.Append("ps.brand_id = any(@Brands)");
 
                 addedFilter = true;
             }
 
-            if (query.Series?.Count > 0) {
+            if (query.Series?.Length > 0) {
                 sb.Append(addedFilter ? "and " : "where ");
                 sb.Append("ps.id = any(@Series)");
 
                 addedFilter = true;
             }
 
+            sb.Append(";");
+
             sb.Append(@"
                 select * from pad_series_polisher_types where pad_series_id = any(@Series);
-                select* from pad_sizes;
+                select * from pad_sizes where pad_series_id = any(@Series);
                 select count(reviews.*) as count, pads.id as id from pads
                     left join reviews on reviews.pad_id = pads.id
-                        where pad_series_id = any(@Series)
+                    where pad_series_id = any(@Series)
                     group by pads.id;
-                select pi.*from pad_images pi 
+                select pi.* from pad_images pi 
                     join pads p on pi.pad_id = p.id 
                     where pad_series_id = any(@Series);
                 select stars, count(*) as count, pad_id from reviews r
@@ -338,7 +340,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     left join reviews r on p.id = r.pad_id
                     where pad_series_id = any(@Series)
                     group by p.id;
-                select po.*from pad_options po 
+                select po.* from pad_options po 
                     left join pads pc on po.pad_id = pc.id;
                 select po.id as pad_option_id, pn.* from part_numbers pn 
                     join pad_option_part_numbers popn on pn.id = popn.part_number_id 

@@ -139,7 +139,7 @@ import appStore from '@/core/store/app-store';
 })
 export default class Pads extends Vue {
     get paging() {
-        return padStore.filter.paging;
+        return padStore.paging;
     }
 
     get summaries(): PadSummary[] {
