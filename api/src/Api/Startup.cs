@@ -137,7 +137,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetAllBrandsQuery, List<BrandReadModel>>, GetAllBrandsHandler>();
             services.AddTransient<ActionHandler<GetBrandByIdQuery, BrandReadModel?>, GetBrandByIdHandler>();
             services.AddTransient<ActionHandler<BrandCreateCommand, Guid>, BrandCreateHandler>();
-            services.AddTransient<ActionHandler<BrandUpdateCommand>, UpdateBrandHandler>();
+            services.AddTransient<ActionHandler<BrandUpdateCommand>, BrandUpdateHandler>();
             services.AddTransient<ActionHandler<BrandDeleteCommand>, BrandDeleteHandler>();
             services.AddTransient<BrandCreateValidator>();
             services.AddTransient<BrandUpdateValidator>();
