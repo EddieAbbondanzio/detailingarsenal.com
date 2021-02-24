@@ -22,7 +22,7 @@
                     :max="1"
                     type="is-warning"
                 />
-                <p class="has-text-right" style="width: 64px;">{{ s.percentage }}%</p>
+                <p class="has-text-right" style="width: 64px;">{{ s.percentage * 100 }}%</p>
             </div>
         </div>
     </div>
@@ -53,5 +53,9 @@ export default class RatingStats extends Vue {
 
     @Prop()
     value!: Rating;
+
+    created() {
+        console.log(this.value);
+    }
 }
 </script>
