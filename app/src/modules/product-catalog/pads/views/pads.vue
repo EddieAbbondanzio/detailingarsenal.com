@@ -173,6 +173,11 @@ export default class Pads extends Vue {
         this.loading = true;
         await padStore.init();
         this.loading = false;
+
+        // Pull in remainder pads
+        if (padStore.series.values.length == 1) {
+            await padStore.getAll();
+        }
     }
 
     @displayLoading
