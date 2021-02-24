@@ -53,9 +53,5 @@ export default class RatingStats extends Vue {
 
     @Prop()
     value!: Rating;
-
-    created() {
-        console.log(this.value);
-    }
 }
 </script>
