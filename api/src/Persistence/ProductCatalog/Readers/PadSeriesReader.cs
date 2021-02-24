@@ -304,7 +304,11 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         }
 
         string BuildReadAllChildrenSql(GetAllPadSeriesQuery query) {
-            StringBuilder sb = new StringBuilder(@"select count(*) from pad_series");
+            StringBuilder sb = new StringBuilder(@"
+                select count(*) from pads p
+                    where p.pad_series_id = any(
+                select id from pad_series
+            ");
 
             bool addedFilter = false;
 
@@ -323,7 +327,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 addedFilter = true;
             }
 
-            sb.Append(";");
+            sb.Append(");");
 
             sb.Append(@"
                 select * from pad_series_polisher_types where pad_series_id = any(@Series);

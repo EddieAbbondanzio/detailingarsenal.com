@@ -9,7 +9,7 @@ import { Rating } from '../data-transfer-objects/rating';
 import { Image } from '../data-transfer-objects/image';
 import { PadOption } from '../data-transfer-objects/pad-option';
 import { Measurement } from '../data-transfer-objects/measurement';
-import { PadSeriesFilter } from '../data-transfer-objects/pad-series-filter';
+import { PadSeriesFilterLegend } from '../data-transfer-objects/pad-series-filter-legend';
 import { PagedArray } from '@/api/core/data-transfer-objects/paged-array';
 import { PadSeriesGetAllRequest } from '../data-transfer-objects/requests/pad-series-get-all-request';
 
@@ -37,7 +37,8 @@ export class PadSeriesService {
                 paging: {
                     total: 1,
                     pageNumber: 1,
-                    pageSize: 1
+                    pageSize: 1,
+                    pageCount: 1
                 },
                 values: [s]
             };
@@ -46,7 +47,8 @@ export class PadSeriesService {
                 paging: {
                     total: 1,
                     pageNumber: 1,
-                    pageSize: 1
+                    pageSize: 1,
+                    pageCount: 1
                 },
                 values: []
             };

@@ -1,9 +1,9 @@
 import { http } from '@/api/core/http';
 import brandStore from '@/modules/admin/product-catalog/store/brand-store';
-import { PadSeriesFilter } from '../data-transfer-objects/pad-series-filter';
+import { PadSeriesFilterLegend } from '../data-transfer-objects/pad-series-filter-legend';
 
 export class PadSeriesFilterService {
-    async get(): Promise<PadSeriesFilter> {
+    async get(): Promise<PadSeriesFilterLegend> {
         var res = await http.get('product-catalog/pad-series/filter');
         return res.data;
     }

@@ -22,8 +22,10 @@
             class="pads-table"
             :data="summaries"
             :loading="loading"
-            :backend-pagination="true"
+            backend-pagination
             paginated
+            :per-page="paging.pageSize"
+            @pageChange="onPageChange"
             :total="paging.total"
         >
             <b-table-column v-slot="props" centered>
@@ -139,7 +141,7 @@ import appStore from '@/core/store/app-store';
 })
 export default class Pads extends Vue {
     get paging() {
-        return padStore.paging;
+        return padStore.series.paging;
     }
 
     get summaries(): PadSummary[] {
@@ -171,6 +173,13 @@ export default class Pads extends Vue {
         this.loading = true;
         await padStore.init();
         this.loading = false;
+        console.log(this.paging);
+    }
+
+    @displayLoading
+    async onPageChange(pageNumber: number) {
+        console.log('page change');
+        await padStore.goToPage(pageNumber);
     }
 }
 

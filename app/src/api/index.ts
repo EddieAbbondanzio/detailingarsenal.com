@@ -85,3 +85,4 @@ export * from './product-catalog/data-transfer-objects/requests/review-create-re
 export * from './product-catalog/data-transfer-objects/measurement';
 export * from './product-catalog/data-transfer-objects/measurement-unit';
 export * from './product-catalog/data-transfer-objects/pad-series-filter';
+export * from './product-catalog/data-transfer-objects/pad-series-filter-legend';

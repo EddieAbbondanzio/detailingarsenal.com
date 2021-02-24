@@ -61,13 +61,13 @@ export default class PadFilterControl extends Vue {
      * Unique list of pad brands
      */
     get brands() {
-        return padStore.filter.brands;
+        return padStore.legend.brands;
     }
     /**
      * Unique list of pad series names
      */
     get series() {
-        return padStore.filter.series;
+        return padStore.legend.series;
     }
     get categories(): PadCategory[] {
         return Object.values(PadCategory);
