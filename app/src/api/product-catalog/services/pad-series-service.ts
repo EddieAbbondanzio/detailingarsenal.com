@@ -23,7 +23,7 @@ export class PadSeriesService {
 
         return {
             paging: res.data.paging,
-            values: (res.data.values as any[]).map(d => this._map(d))
+            values: ((res.data.values as any[]) ?? []).map(d => this._map(d))
         };
     }
 

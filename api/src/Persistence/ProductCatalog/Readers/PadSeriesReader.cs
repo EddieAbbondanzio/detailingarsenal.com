@@ -165,7 +165,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                 // Now get the rest
                 var childrenSql = BuildReadAllChildrenSql(query);
-                using (var reader = await conn.QueryMultipleAsync(childrenSql, new { Series = series.Select(s => s.Id).ToArray() })) {
+                using (var reader = await conn.QueryMultipleAsync(childrenSql, new {
+                    Brands = query.Brands,
+                    Series = series.Select(s => s.Id).ToArray() // We only want series that we got back.
+                })) {
                     var totalCount = reader.ReadFirst<int>();
 
 
@@ -282,14 +285,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
             // Add pad series filter options as needed
             if (query.Brands?.Length > 0) {
-                sb.Append(addedFilter ? "and " : "where ");
+                sb.Append(addedFilter ? "and " : " where ");
                 sb.Append("ps.brand_id = any(@Brands)");
 
                 addedFilter = true;
             }
 
             if (query.Series?.Length > 0) {
-                sb.Append(addedFilter ? "and " : "where ");
+                sb.Append(addedFilter ? "and " : " where ");
                 sb.Append("ps.id = any(@Series)");
 
                 addedFilter = true;
@@ -307,15 +310,15 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
             // Add pad series filter options as needed
             if (query.Brands?.Length > 0) {
-                sb.Append(addedFilter ? "and " : "where ");
-                sb.Append("ps.brand_id = any(@Brands)");
+                sb.Append(addedFilter ? "and " : " where ");
+                sb.Append("brand_id = any(@Brands)");
 
                 addedFilter = true;
             }
 
             if (query.Series?.Length > 0) {
-                sb.Append(addedFilter ? "and " : "where ");
-                sb.Append("ps.id = any(@Series)");
+                sb.Append(addedFilter ? "and " : " where ");
+                sb.Append("id = any(@Series)");
 
                 addedFilter = true;
             }

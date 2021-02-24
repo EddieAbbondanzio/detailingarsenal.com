@@ -1,7 +1,7 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { Pad, api, PadSeriesFilter, PadSeries, PagedArray, Paging } from '@/api';
+import { Pad, api, PadSeriesFilter, PadSeries, PagedArray, Paging, PadSeriesGetAllRequest } from '@/api';
 import _ from 'lodash';
 
 @Module({ namespaced: true, name: 'pad', dynamic: true, store })
@@ -35,10 +35,9 @@ class PadStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async getAll(filter?: PadSeriesFilter) {
+    async getAll(filter?: { brands?: string[]; series?: string[] }) {
         const series = await api.productCatalog.padSeries.get({
-            brands: this.filter.brands?.map(b => b.id),
-            series: this.filter.series?.map(s => s.id),
+            ...filter,
             paging: this.paging
         });
 

@@ -4,7 +4,7 @@
 
         <b-field label="Brands">
             <div class="is-flex is-flex-column">
-                <input-checkbox label="All" @input="toggleAllBrands" class="has-margin-bottom-0" />
+                <input-checkbox label="All" @input="toggleAllBrands" class="has-margin-bottom-0" v-model="allBrands" />
                 <input-checkbox
                     :nativeValue="b.id"
                     :label="b.name"
@@ -12,6 +12,7 @@
                     class="has-margin-bottom-0"
                     v-for="b in brands"
                     :key="b.id"
+                    @input="onBrandInput"
                 />
             </div>
         </b-field>
@@ -19,7 +20,7 @@
         <!-- Series -->
         <b-field label="Series">
             <div class="is-flex is-flex-column">
-                <input-checkbox label="All" @input="toggleAllSeries" class="has-margin-bottom-0" />
+                <input-checkbox label="All" @input="toggleAllSeries" class="has-margin-bottom-0" v-model="allSeries" />
                 <input-checkbox
                     :nativeValue="s.id"
                     :label="s.name"
@@ -27,6 +28,7 @@
                     class="has-margin-bottom-0"
                     v-for="s in series"
                     :key="s.id"
+                    @input="onSeriesInput"
                 />
             </div>
         </b-field>
@@ -72,37 +74,69 @@ export default class PadFilterControl extends Vue {
     selectedBrands: string[] = [];
     selectedSeries: string[] = [];
 
-    created() {
-        this.onReset();
+    allBrands = true;
+    allSeries = true;
+
+    async created() {
+        await this.refreshData();
     }
 
-    onInput() {
-        // padStore.SET_FILTER(
-        //     new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
-        // );
+    async refreshData() {
+        // Wide open
+        if (this.allBrands && this.allSeries) {
+            await padStore.getAll();
+        } else {
+            await padStore.getAll({
+                brands: this.selectedBrands,
+                series: this.selectedSeries
+            });
+        }
     }
+
+    onBrandInput() {
+        this.allBrands = false;
+
+        if (this.selectedBrands.length == 0) {
+            this.allBrands = true;
+        }
+
+        this.refreshData();
+    }
+
+    onSeriesInput() {
+        this.allSeries = false;
+
+        if (this.selectedSeries.length == 0) {
+            this.allSeries = true;
+        }
+
+        this.refreshData();
+    }
+
     onReset() {
-        this.selectedBrands = [...this.brands.map(b => b.id)];
-        this.selectedSeries = [...this.series.map(s => s.id)];
+        this.allBrands = true;
+        this.allSeries = true;
+        this.selectedBrands = [];
+        this.selectedSeries = [];
         // padStore.SET_FILTER(
         //     new Filter(this.selectedBrands, this.selectedSeries, this.selectedCategories as PadCategory[])
         // );
     }
 
     toggleAllBrands(value: boolean) {
-        if (value) {
-            this.selectedBrands = [...this.brands.map(b => b.id)];
-        } else {
-            this.selectedBrands = [];
-        }
+        this.$nextTick(() => {
+            this.allBrands = true;
+        });
+
+        this.selectedBrands = [];
+        this.refreshData();
     }
 
     toggleAllSeries(value: boolean) {
-        if (value) {
-            this.selectedSeries = [...this.series.map(b => b.id)];
-        } else {
-            this.selectedSeries = [];
-        }
+        if (value) this.allSeries = true;
+
+        this.selectedSeries = [];
+        this.refreshData();
     }
 }
 </script>

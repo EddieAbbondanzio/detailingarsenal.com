@@ -1,18 +1,21 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using DetailingArsenal.Domain.ProductCatalog;
 
 namespace DetailingArsenal.Application.ProductCatalog {
     public record GetAllPadSeriesQuery : IAction {
+        public static readonly PagingOptions DefaultPaging = new PagingOptions(0, 25);
+
         /// <summary>
         /// Ids of brands to include.
         /// </summary>
-        public string[]? Brands { get; }
+        public Guid[]? Brands { get; }
 
         /// <summary>
         /// Ids of series to include.
         /// </summary>
-        public string[]? Series { get; }
+        public Guid[]? Series { get; }
 
         /// <summary>
         /// Page size, page number
@@ -20,14 +23,14 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public PagingOptions Paging { get; }
 
         public GetAllPadSeriesQuery() {
-            Paging = new PagingOptions(0, 25);
+            Paging = DefaultPaging;
         }
 
         [JsonConstructor]
-        public GetAllPadSeriesQuery(string[]? brands = null, string[]? series = null, PagingOptions? paging = null) {
+        public GetAllPadSeriesQuery(Guid[]? brands = null, Guid[]? series = null, PagingOptions? paging = null) {
             Brands = brands;
             Series = series;
-            Paging = paging ?? new PagingOptions(0, 25);
+            Paging = paging ?? DefaultPaging;
         }
     }
 }
