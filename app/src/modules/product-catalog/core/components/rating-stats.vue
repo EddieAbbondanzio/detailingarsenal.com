@@ -43,7 +43,7 @@ export default class RatingStats extends Vue {
     get stats() {
         const stats: RatingStarStat[] = [];
 
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 5; i > 0; i--) {
             const actual = this.value.stats.find(s => s.star == i);
             stats.push(actual ?? { star: i, count: 0, percentage: 0 });
         }
