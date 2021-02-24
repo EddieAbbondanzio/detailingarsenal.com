@@ -298,7 +298,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 addedFilter = true;
             }
 
-            sb.Append("limit @Limit offset @Offset");
+            sb.Append("order by b.name limit @Limit offset @Offset;");
 
             return sb.ToString();
         }
@@ -346,7 +346,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 select p.*, avg(r.cut) as cut, avg(r.finish) as finish, coalesce(avg(r.stars), 0) as stars from pads p
                     left join reviews r on p.id = r.pad_id
                     where pad_series_id = any(@Series)
-                    group by p.id;
+                    group by p.id
+                    order by name;
                 select po.* from pad_options po 
                     left join pads pc on po.pad_id = pc.id;
                 select po.id as pad_option_id, pn.* from part_numbers pn 
