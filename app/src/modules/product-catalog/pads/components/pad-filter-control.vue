@@ -48,6 +48,7 @@ import store from '@/core/store';
 import { MutationPayload } from 'vuex';
 import padStore from '../store/pad/pad-store';
 import { ArrayUtils } from '@/core/utils/array-utils';
+import { displayLoading } from '@/core';
 
 @Component({
     name: 'pad-filter-control',
@@ -81,6 +82,7 @@ export default class PadFilterControl extends Vue {
         await this.refreshData();
     }
 
+    @displayLoading
     async refreshData() {
         // Wide open
         if (this.allBrands && this.allSeries) {
