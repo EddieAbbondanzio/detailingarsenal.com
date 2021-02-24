@@ -22,11 +22,11 @@
             class="pads-table"
             :data="summaries"
             :loading="loading"
-            backend-pagination
             paginated
-            :per-page="paging.pageSize"
-            @pageChange="onPageChange"
+            backend-pagination
             :total="paging.total"
+            :per-page="paging.pageSize"
+            @page-change="onPageChange"
         >
             <b-table-column v-slot="props" centered>
                 <router-link
