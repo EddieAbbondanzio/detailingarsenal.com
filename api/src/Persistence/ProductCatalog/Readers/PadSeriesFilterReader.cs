@@ -10,13 +10,13 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public async Task<PadSeriesFilterReadModel> Read() {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(@"
-                    select id, name from pad_series;
                     select id, name from brands;
+                    select id, name from pad_series;
                 ")) {
-                    var series = reader.Read<PadSeriesFilterOptionReadModel>();
                     var brands = reader.Read<PadSeriesFilterOptionReadModel>();
+                    var series = reader.Read<PadSeriesFilterOptionReadModel>();
 
-                    return new PadSeriesFilterReadModel(series, brands);
+                    return new PadSeriesFilterReadModel(brands, series);
                 }
             }
         }
