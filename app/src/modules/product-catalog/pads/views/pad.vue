@@ -149,7 +149,7 @@
                                 </div>
                                 <!-- Empty -->
                                 <div v-if="reviews.length == 0">
-                                    Nobody has left a reviews yet. Get some mad street cred with your friends and be the
+                                    Nobody has left a review yet. Get some mad street cred with your friends and be the
                                     first!
                                 </div>
                             </div>
