@@ -467,6 +467,9 @@ export default class UpdatePadSeries extends Vue {
 
         this.isPadModalActive = false;
         this.modalPad = null;
+
+        // Sort alphabetically by name
+        this.pads.sort((a, b) => a.name.localeCompare(b.name));
     }
 
     /**
