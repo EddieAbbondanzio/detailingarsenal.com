@@ -392,6 +392,9 @@ export default class CreatePadSeries extends Vue {
             }))
         };
 
+        // Hack
+        (this.modalPad as any).index = index;
+
         this.isPadModalActive = true;
         this.isPadModalInEditMode = true;
     }
@@ -434,8 +437,7 @@ export default class CreatePadSeries extends Vue {
         // Editted existing pad
         if (this.isPadModalInEditMode) {
             this.isPadModalInEditMode = false;
-            const old = this.pads.findIndex(p => this.modalPad?.id == p.id);
-            this.pads.splice(old, 1);
+            this.pads.splice((this.modalPad as any).index, 1);
             this.pads.push(this.modalPad!);
         } else {
             this.pads.push(this.modalPad!);
@@ -443,6 +445,9 @@ export default class CreatePadSeries extends Vue {
 
         this.isPadModalActive = false;
         this.modalPad = null;
+
+        // Sort alphabetically by name
+        this.pads.sort((a, b) => a.name.localeCompare(b.name));
     }
 
     /**
