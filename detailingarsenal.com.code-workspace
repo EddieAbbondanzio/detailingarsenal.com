@@ -7,9 +7,6 @@
       "path": "api"
     },
     {
-      "path": "database"
-    },
-    {
       "path": "documentation"
     }
   ],

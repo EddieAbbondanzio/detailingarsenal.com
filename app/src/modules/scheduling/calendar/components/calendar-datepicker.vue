@@ -6,36 +6,18 @@
                 <div class="has-text-weight-bold is-size-5">{{ title }}</div>
 
                 <div class="is-flex is-flex-row is-align-items-center">
-                    <b-button
-                        type="is-text"
-                        icon-left="chevron-left"
-                        @click="onPrevious"
-                        title="Previous month"
-                    />
-                    <b-button
-                        type="is-text"
-                        icon-left="calendar-today"
-                        @click="onToday"
-                        title="Go to today"
-                    />
-                    <b-button
-                        type="is-text"
-                        icon-left="chevron-right"
-                        @click="onNext"
-                        title="Next month"
-                    />
+                    <b-button type="is-text" icon-left="chevron-left" @click="onPrevious" title="Previous month" />
+                    <b-button type="is-text" icon-left="calendar-today" @click="onToday" title="Go to today" />
+                    <b-button type="is-text" icon-left="chevron-right" @click="onNext" title="Next month" />
                 </div>
             </div>
 
             <div class="days">
                 <div v-for="d in [0, 1, 2, 3, 4, 5, 6]" :key="d">
-                    <div
-                        class="has-text-weight-bold has-text-right"
-                        style="padding: 4px;"
-                    >{{ dayNames[d] }}</div>
+                    <div class="has-text-weight-bold has-text-right" style="padding: 4px;">{{ dayNames[d] }}</div>
 
                     <div v-for="w in [0, 1, 2, 3, 4, 5, 6]" :key="w">
-                        <div :class="getDayStyles(w,d)" style="height: 24px; text-align: end;">
+                        <div :class="getDayStyles(w, d)" style="height: 24px; text-align: end;">
                             <a @click="onDay(w, d)">{{ getDayNumber(w, d) }}</a>
                         </div>
                     </div>
@@ -69,8 +51,7 @@
     justify-content: space-between
 
     > div
-        width: calc(100% / 7) // fuck it
-
+        width: calc(100% / 7) // Good enough
 </style>
 
 <script lang="ts">
