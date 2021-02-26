@@ -245,7 +245,7 @@ import { loadStripeJs } from '@/plugins/stripe';
 
 @Component
 export default class Subscription extends Vue {
-    // FUCK
+    // Work around
     get name() {
         return billingStore.defaultPlan == null ? '' : billingStore.defaultPlan.name;
     }
