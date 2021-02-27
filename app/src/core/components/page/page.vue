@@ -1,16 +1,13 @@
 <template>
     <div id="page" :class="cssClass">
         <!-- No sidebar -->
-        <div
-            class="is-flex is-flex-column is-flex-grow-1 has-overflow-y-hidden"
-            v-if="!$slots['sidebar']"
-        >
-            <b-progress
+        <div class="is-flex is-flex-column is-flex-grow-1 has-overflow-y-hidden" v-if="!$slots['sidebar']">
+            <!-- <b-progress
                 class="is-absolute page-loading-bar has-margin-bottom-0"
                 size="is-medium"
                 type="is-warning"
                 v-if="loading"
-            />
+            /> -->
 
             <!-- Page header -->
             <slot name="header"></slot>
@@ -32,12 +29,12 @@
             </div>
 
             <div class="is-flex is-flex-column is-flex-grow-1">
-                <b-progress
+                <!-- <b-progress
                     class="page-loading-bar has-margin-bottom-0"
                     size="is-medium"
                     type="is-warning"
                     v-if="loading"
-                />
+                /> -->
 
                 <!-- Page header -->
                 <slot name="header"></slot>
