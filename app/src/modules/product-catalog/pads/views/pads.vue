@@ -182,7 +182,9 @@ export default class Pads extends Vue {
 
     @displayLoading
     async onPageChange(pageNumber: number) {
+        this.loading = true;
         await padStore.goToPage(pageNumber);
+        this.loading = false;
     }
 }
 

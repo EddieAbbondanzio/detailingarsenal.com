@@ -433,7 +433,11 @@ export default class UpdatePadSeries extends Vue {
             color: null!,
             hasCenterHole: null!,
             image: null!,
-            options: []
+            options: this.sizes.map((s, i) => ({
+                id: null,
+                padSizeIndex: i,
+                partNumbers: [{ id: null, value: '', notes: null }]
+            }))
         };
     }
 
@@ -441,7 +445,7 @@ export default class UpdatePadSeries extends Vue {
         this.modalPad?.options.push({
             id: null,
             padSizeIndex: null,
-            partNumbers: []
+            partNumbers: [{ id: null, value: '', notes: null }]
         });
     }
 

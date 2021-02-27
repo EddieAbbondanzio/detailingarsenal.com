@@ -211,6 +211,10 @@
                                 </input-select>
                             </b-table-column>
 
+                            <b-table-column label="Part number" v-slot="props">
+                                <input-text-field v-if="props.row.partNumbers.length == 1" />
+                            </b-table-column>
+
                             <b-table-column centered v-slot="{ index }">
                                 <b-button type="is-danger" @click="modalPad.options.splice(index, 1)">Delete</b-button>
                             </b-table-column>
@@ -410,7 +414,11 @@ export default class CreatePadSeries extends Vue {
             color: null!,
             hasCenterHole: null!,
             image: null!,
-            options: []
+            options: this.sizes.map((s, i) => ({
+                id: null,
+                padSizeIndex: i,
+                partNumbers: [{ id: null, value: '', notes: null }]
+            }))
         };
     }
 
@@ -418,7 +426,7 @@ export default class CreatePadSeries extends Vue {
         this.modalPad?.options.push({
             id: null,
             padSizeIndex: null,
-            partNumbers: []
+            partNumbers: [{ id: null, value: '', notes: null }]
         });
     }
 

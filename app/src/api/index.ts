@@ -59,6 +59,7 @@ export * from './user/common/data-transfer-objects/user';
 //Product Catalog
 export * from './product-catalog/data-transfer-objects/image';
 export * from './product-catalog/data-transfer-objects/part-number';
+export * from './product-catalog/data-transfer-objects/requests/part-number-create-or-update';
 export * from './product-catalog/data-transfer-objects/stars';
 export * from './product-catalog/data-transfer-objects/brand';
 export * from './product-catalog/data-transfer-objects/rating';
