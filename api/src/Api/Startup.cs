@@ -162,6 +162,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<PadSeriesHasPadsSpecification>();
             services.AddTransient<PadSeriesHasOptionsForEveryPadSpecification>();
             services.AddTransient<PadSeriesHasSizesSpecification>();
+            services.AddTransient<PadSeriesNameUniqueSpecification>();
             services.AddTransient<PadSeriesOptionsAreUniqueBySizesSpecification>();
             services.AddTransient<PadSeriesCreateOrUpdateCompositeSpecification>();
             services.AddTransient<ActionHandler<ReviewCreateCommand, Guid>, ReviewCreateHandler>();

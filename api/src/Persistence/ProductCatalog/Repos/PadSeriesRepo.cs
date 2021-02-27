@@ -14,6 +14,118 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
     public class PadSeriesRepo : DatabaseInteractor, IPadSeriesRepo {
         public PadSeriesRepo(IDatabase database) : base(database) { }
 
+        public async Task<PadSeries?> FindByName(string name) {
+            using (var conn = OpenConnection()) {
+                using (var reader = await conn.QueryMultipleAsync(
+                        @"  select * from pad_series where name = @Name;
+                            select * from pad_series_polisher_types pspt
+                                join pad_series ps on ps.id = pspt.pad_series_id
+                                where ps.name = @Name;
+                            select * from pad_sizes 
+                                join pad_series ps on ps.id = pad_sizes.pad_series_id
+                                where ps.name = @Name;
+                            select pi.*, i.* from images i 
+                                join pad_images pi on i.id = pi.image_id 
+                                join pads p on pi.pad_id = p.id 
+                                join pad_series ps on ps.id = p.pad_series_id
+                                where ps.name = @Name;
+                            select * from pads
+                                join pad_series ps on pads.pad_series_id = ps.id
+                                where ps.name = @Name;
+                            select po.* from pad_options po 
+                                left join pads pc on po.pad_id = pc.id 
+                                join pad_series ps on pc.pad_series_id = ps.id
+                                where ps.name = @Name;
+                            select po.id as pad_option_id, pn.* from part_numbers pn 
+                                join pad_option_part_numbers popn on pn.id = popn.part_number_id 
+                                join pad_options po on po.id = popn.pad_option_id 
+                                join pads p on po.pad_id = p.id 
+                                join pad_series ps on p.pad_series_id = ps.id
+                                where ps.name = @Name; 
+                        ",
+                        new { Name = name }
+                    )) {
+                    // See if we even found a pad series first
+                    var seriesRow = reader.ReadFirstOrDefault<PadSeriesRow>();
+                    if (seriesRow == null) {
+                        return null;
+                    }
+
+                    var polisherTypes = reader.Read<PadSeriesPolisherTypeRow>().Select(t => PolisherTypeUtils.Parse(
+                        t.PolisherType
+                    )).ToList();
+
+                    var sizes = reader.Read<PadSizeRow>().Select(ps => new PadSize(
+                        ps.Id,
+                        new Measurement(ps.DiameterAmount, MeasurementUnitUtils.Parse(ps.DiameterUnit)),
+                        ps.ThicknessAmount != null ? new Measurement(ps.ThicknessAmount ?? 0, MeasurementUnitUtils.Parse(ps.ThicknessUnit!)) : null
+                    )).ToList();
+
+                    var images = reader.Read<PadImageRow, ImageRow, Tuple<PadImageRow, ImageRow>>((pi, i) => new Tuple<PadImageRow, ImageRow>(pi, i));
+
+                    var pads = new Dictionary<Guid, Pad>(
+                        reader.Read<PadRow>().Select(p => {
+                            var i = images.Where(i => i.Item1.PadId == p.Id).FirstOrDefault();
+                            ProcessedImage? processedImage = null;
+
+                            if (i != null) {
+                                processedImage = new ProcessedImage(
+                                    i.Item2.Id,
+                                    i.Item2.FileName,
+                                    i.Item2.MimeType,
+                                    ImageUtils.LoadFromBinary(i.Item2.ImageData),
+                                    ImageUtils.LoadFromBinary(i.Item2.ThumbnailData)
+                                );
+                            }
+
+                            var pad = new Pad(
+                                p.Id,
+                                p.Name,
+                                PadCategoryUtils.Parse(p.Category),
+                                p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
+                                p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
+                                p.Color != null ? PadColorUtils.Parse(p.Color) : null,
+                                p.HasCenterHole,
+                                processedImage
+                            );
+
+                            return pad;
+                        }).Select(c => new KeyValuePair<Guid, Pad>(c.Id, c))
+                    );
+
+                    var options = reader.Read<PadOptionRow>();
+                    var optionDict = new Dictionary<Guid, PadOption>();
+                    foreach (var opt in options) {
+                        Pad? pad;
+
+                        if (pads.TryGetValue(opt.PadId, out pad)) {
+                            var po = new PadOption(opt.PadSizeId);
+                            pad.Options.Add(po);
+                            optionDict.Add(opt.Id, po);
+                        }
+                    }
+
+                    var partNumbers = reader.Read<Guid, PartNumberRow, (Guid PadOptionId, PartNumberRow PartNumber)>((id, pn) => (id, pn));
+                    foreach (var partNumber in partNumbers) {
+                        PadOption? option;
+
+                        if (optionDict.TryGetValue(partNumber.PadOptionId, out option)) {
+                            option.PartNumbers.Add(new PartNumber(partNumber.PartNumber.Id, partNumber.PartNumber.Value, partNumber.PartNumber.Notes));
+                        }
+                    }
+
+                    return new PadSeries(
+                        seriesRow.Id,
+                        seriesRow.Name,
+                        seriesRow.BrandId,
+                        polisherTypes,
+                        sizes,
+                        pads.Values.ToList()
+                    );
+                }
+            }
+        }
+
         public async Task<PadSeries?> FindById(Guid id) {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
