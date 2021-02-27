@@ -40,7 +40,7 @@
             <b-field label="Sizes">
                 <b-table :data="sizes" class="is-flex" narrowed>
                     <b-table-column field="diameter" label="Diameter" v-slot="props">
-                        <measurement-input :value="props.row.diameter" rules="required" :required="true" />
+                        <measurement-input :value="props.row.diameter" rules="required" :required="true" v-focus />
                     </b-table-column>
                     <b-table-column field="thickness" label="Thickness" v-slot="props">
                         <measurement-input :value="props.row.thickness" />
@@ -212,7 +212,10 @@
                             </b-table-column>
 
                             <b-table-column label="Part number" v-slot="props">
-                                <input-text-field v-if="props.row.partNumbers.length == 1" />
+                                <input-text-field
+                                    v-model="props.row.partNumbers[0].value"
+                                    v-if="props.row.partNumbers.length == 1"
+                                />
                             </b-table-column>
 
                             <b-table-column centered v-slot="{ index }">
