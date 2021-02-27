@@ -301,6 +301,7 @@ import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
 import { PadColor } from '@/api/product-catalog/data-transfer-objects/pad-color';
 import { measurement } from '@/modules/shared/filters/measurement';
+import store from '@/core/store';
 
 @Component({
     components: {
@@ -366,6 +367,7 @@ export default class CreatePadSeries extends Vue {
 
         try {
             await adminPadStore.create(create);
+            await padStore.reloadFilter();
             toast(`Created new pad series ${create.name}`);
             this.$router.push({
                 name: 'padSeriesDetails',

@@ -392,6 +392,7 @@ export default class UpdatePadSeries extends Vue {
 
         try {
             await adminPadStore.update(update);
+            await padStore.reloadFilter();
             toast(`Updated pad series ${update.name}`);
             this.$router.push({ name: 'padSeriesDetails' });
         } catch (err) {

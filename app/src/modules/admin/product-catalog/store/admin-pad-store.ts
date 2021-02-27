@@ -2,6 +2,7 @@ import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-dec
 import { InitableModule } from '@/core/store/initable-module';
 import { api } from '@/api/api';
 import store from '@/core/store/index';
+import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 // import { Pad, Brand, PadSeriesCreate, PadSeriesUpdateRequest } from '@/api';
 import { PadSeries, PadSeriesCreateRequest, PadSeriesGetAllRequest, PadSeriesUpdateRequest, PagedArray } from '@/api';
 import { PadSeriesService } from '@/api/product-catalog/services/pad-series-service';
