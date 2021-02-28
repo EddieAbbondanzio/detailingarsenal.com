@@ -18,7 +18,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadSizesExistingPadSizesAreUpdated() {
             var h = new PadSeriesUpdateHandler(
                 Mock.Of<IPadSeriesRepo>(),
-                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                 Mock.Of<IImageProcessor>()
             );
 
@@ -41,7 +41,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadSizesAddsNewPadSizes() {
             var h = new PadSeriesUpdateHandler(
                             Mock.Of<IPadSeriesRepo>(),
-                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                             Mock.Of<IImageProcessor>()
                         );
 
@@ -65,7 +65,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadSizesExistingPadSizesAreDeletedAsNeeded() {
             var h = new PadSeriesUpdateHandler(
                 Mock.Of<IPadSeriesRepo>(),
-                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                 Mock.Of<IImageProcessor>()
             );
 
@@ -87,7 +87,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsExistingColorsAreUpdated() {
             var h = new PadSeriesUpdateHandler(
                             Mock.Of<IPadSeriesRepo>(),
-                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                             Mock.Of<IImageProcessor>()
             );
 
@@ -120,7 +120,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsAddsNewColors() {
             var h = new PadSeriesUpdateHandler(
                                         Mock.Of<IPadSeriesRepo>(),
-                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                                         Mock.Of<IImageProcessor>()
                         );
 
@@ -146,7 +146,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsDeletesAsNeeded() {
             var h = new PadSeriesUpdateHandler(
                                         Mock.Of<IPadSeriesRepo>(),
-                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                                         Mock.Of<IImageProcessor>()
                         );
 
@@ -168,7 +168,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsOrdersByName() {
             var h = new PadSeriesUpdateHandler(
                                         Mock.Of<IPadSeriesRepo>(),
-                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                                         Mock.Of<IImageProcessor>()
                         );
 
@@ -196,7 +196,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void OrdersPadSizesByDiameter() {
             var h = new PadSeriesUpdateHandler(
                             Mock.Of<IPadSeriesRepo>(),
-                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                             Mock.Of<IImageProcessor>()
                         );
 
@@ -222,7 +222,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsOrdersPadOptionsByDiameter() {
             var h = new PadSeriesUpdateHandler(
                                                     Mock.Of<IPadSeriesRepo>(),
-                                                    new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                                    new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                                                     Mock.Of<IImageProcessor>()
                                     );
 

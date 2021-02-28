@@ -16,7 +16,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
     public class PadSeriesCreateHandlerTests {
         [TestMethod]
         public async Task ExecuteCreatesSizes() {
-            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null);
             mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
 
             var mockRepo = new Mock<IPadSeriesRepo>();
@@ -34,7 +34,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                PolisherType.DualAction,
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
@@ -52,9 +52,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
             Assert.AreEqual("Name", s.Name);
             Assert.AreEqual(brandId, s.BrandId);
-            Assert.AreEqual(2, s.PolisherTypes.Count);
-            Assert.AreEqual(PolisherType.DualAction, s.PolisherTypes[0]);
-            Assert.AreEqual(PolisherType.ForcedRotation, s.PolisherTypes[1]);
+            Assert.AreEqual(PolisherType.DualAction, s.PolisherTypes);
 
             Assert.AreEqual(s.Sizes[0].Diameter, new Measurement(1.2f, "in"));
 
@@ -69,7 +67,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
         [TestMethod]
         public async Task ExecuteChecksSpec() {
-            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null);
             mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
 
             var mockRepo = new Mock<IPadSeriesRepo>();
@@ -87,7 +85,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                PolisherType.DualAction | PolisherType.ForcedRotation,
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
@@ -104,7 +102,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
         [TestMethod]
         public async Task ExecuteSavesSeries() {
-            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null);
             mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
 
             var mockRepo = new Mock<IPadSeriesRepo>();
@@ -122,7 +120,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                PolisherType.DualAction,
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
@@ -139,7 +137,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
         [TestMethod]
         public async Task ExecuteReturnsId() {
-            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null);
             mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
 
             var mockRepo = new Mock<IPadSeriesRepo>();
@@ -157,7 +155,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                PolisherType.DualAction,
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1.2f, "in"))
                 }.ToList(),
@@ -174,7 +172,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
         [TestMethod]
         public async Task ExecuteOrdersSizesDescendingByDiameter() {
-            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null);
             mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
 
             var mockRepo = new Mock<IPadSeriesRepo>();
@@ -192,7 +190,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                PolisherType.DualAction,
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(2f, "in")),
                     new PadSizeCreateOrUpdate(null, new Measurement(1f, "in")),
@@ -213,7 +211,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
         [TestMethod]
         public async Task ExecuteOrdersColorByName() {
-            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null);
             mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
 
             var mockRepo = new Mock<IPadSeriesRepo>();
@@ -231,7 +229,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                PolisherType.DualAction,
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1f, "in")),
                 }.ToList(),
@@ -256,7 +254,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
         [TestMethod]
         public async Task ExecuteOrdersOptionsByDiameterDescending() {
-            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null);
+            var mockSpec = new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null);
             mockSpec.Setup(s => s.CheckAndThrow(It.IsAny<PadSeries>())).Returns(Task.FromResult(new SpecificationResult(true)));
 
             var mockRepo = new Mock<IPadSeriesRepo>();
@@ -274,7 +272,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var c = new PadSeriesCreateCommand(
                 "Name",
                 brandId,
-                new[] { PolisherType.DualAction, PolisherType.ForcedRotation }.ToList(),
+                PolisherType.DualAction,
                 new PadSizeCreateOrUpdate[] {
                     new PadSizeCreateOrUpdate(null, new Measurement(1f, "in")),
                     new PadSizeCreateOrUpdate(null, new Measurement(2f, "in")),

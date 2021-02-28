@@ -7,7 +7,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
     public record PadReadModel : IDataTransferObject {
         public Guid Id { get; }
         public string Name { get; }
-        public string[] Category { get; }
+        public List<string> Category { get; }
         public string? Material { get; }
         public string? Texture { get; }
         public string? Color { get; }
@@ -33,7 +33,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
             Rating = rating;
         }
 
-        string[] BuildCategoryArray(PadCategory category) {
+        List<string> BuildCategoryArray(PadCategory category) {
             List<string> cats = new();
 
             if (category.HasFlag(PadCategory.Cutting)) {
@@ -48,7 +48,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
                 cats.Add("finishing");
             }
 
-            return cats.ToArray();
+            return cats;
         }
     }
 }

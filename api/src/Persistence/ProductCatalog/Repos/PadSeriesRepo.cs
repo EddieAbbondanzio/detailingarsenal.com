@@ -18,9 +18,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
                         @"  select * from pad_series where name = @Name;
-                            select * from pad_series_polisher_types pspt
-                                join pad_series ps on ps.id = pspt.pad_series_id
-                                where ps.name = @Name;
                             select * from pad_sizes 
                                 join pad_series ps on ps.id = pad_sizes.pad_series_id
                                 where ps.name = @Name;
@@ -51,10 +48,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         return null;
                     }
 
-                    var polisherTypes = reader.Read<PadSeriesPolisherTypeRow>().Select(t => PolisherTypeUtils.Parse(
-                        t.PolisherType
-                    )).ToList();
-
                     var sizes = reader.Read<PadSizeRow>().Select(ps => new PadSize(
                         ps.Id,
                         new Measurement(ps.DiameterAmount, MeasurementUnitUtils.Parse(ps.DiameterUnit)),
@@ -118,7 +111,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         seriesRow.Id,
                         seriesRow.Name,
                         seriesRow.BrandId,
-                        polisherTypes,
+                        seriesRow.PolisherTypes,
                         sizes,
                         pads.Values.ToList()
                     );
@@ -130,7 +123,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
                         @"  select * from pad_series where id = @Id;
-                            select * from pad_series_polisher_types where pad_series_id = @Id;
                             select * from pad_sizes where pad_series_id = @Id;
                             select pi.*, i.* from images i join pad_images pi on i.id = pi.image_id join pads p on pi.pad_id = p.id where p.pad_series_id = @Id;
                             select * from pads where pad_series_id = @Id;
@@ -145,10 +137,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         return null;
                     }
 
-                    var polisherTypes = reader.Read<PadSeriesPolisherTypeRow>().Select(t => PolisherTypeUtils.Parse(
-                        t.PolisherType
-                    )).ToList();
-
                     var sizes = reader.Read<PadSizeRow>().Select(ps => new PadSize(
                         ps.Id,
                         new Measurement(ps.DiameterAmount, MeasurementUnitUtils.Parse(ps.DiameterUnit)),
@@ -212,7 +200,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         seriesRow.Id,
                         seriesRow.Name,
                         seriesRow.BrandId,
-                        polisherTypes,
+                        seriesRow.PolisherTypes,
                         sizes,
                         pads.Values.ToList()
                     );
@@ -224,22 +212,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var t = conn.BeginTransaction()) {
                     await conn.ExecuteAsync(
-                        @"insert into pad_series (id, brand_id, name) values (@Id, @BrandId, @Name);",
+                        @"insert into pad_series (id, brand_id, name, polisher_types) values (@Id, @BrandId, @Name, @PolisherTypes);",
                         new PadSeriesRow() {
                             Id = series.Id,
                             BrandId = series.BrandId,
-                            Name = series.Name
+                            Name = series.Name,
+                            PolisherTypes = series.PolisherTypes
                         }
                     );
-
-                    await conn.ExecuteAsync(
-                        @"insert into pad_series_polisher_types (pad_series_id, polisher_type) values (@PadSeriesId, @PolisherType);",
-                        series.PolisherTypes.Select(pt => new PadSeriesPolisherTypeRow() {
-                            PadSeriesId = series.Id,
-                            PolisherType = pt.Serialize()
-                        }).ToList()
-                    );
-
                     await conn.ExecuteAsync(
                         @"insert into pad_sizes (id, pad_series_id, diameter_amount, diameter_unit, thickness_amount, thickness_unit) values (@Id, @PadSeriesId, @DiameterAmount, @DiameterUnit, @ThicknessAmount, @ThicknessUnit);",
                         series.Sizes.Select(s => new PadSizeRow() {
@@ -346,7 +326,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     // Update parent record.
                     await conn.ExecuteAsync(
-                        @"update pad_series set brand_id = @BrandId, name = @Name where id = @Id;",
+                        @"update pad_series set brand_id = @BrandId, name = @Name, polisher_types = @PolisherTypes where id = @Id;",
                         new PadSeriesRow() {
                             Id = series.Id,
                             BrandId = series.BrandId,
@@ -354,30 +334,12 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     );
 
-                    await UpdatePolisherTypes(conn, series.Id, series.PolisherTypes);
                     await UpdatePadSizes(conn, series.Id, old.Sizes, series.Sizes);
                     await UpdatePads(conn, series.Id, old.Pads, series.Pads);
 
                     t.Commit();
                 }
             }
-        }
-
-        /// <summary>
-        /// Update the recommended polisher types for a pad series.
-        /// </summary>
-        /// <param name="conn">Active database connection.</param>
-        /// <param name="padSeriesId">Id of the pad series parent record.</param>
-        /// <param name="polisherTypes">The list of polisher types to save.</param>
-        async Task UpdatePolisherTypes(IDbConnection conn, Guid padSeriesId, List<PolisherType> polisherTypes) {
-            await conn.ExecuteAsync(@"delete from pad_series_polisher_types where pad_series_id = @Id", new { Id = padSeriesId });
-            await conn.ExecuteAsync(
-                @"insert into pad_series_polisher_types (pad_series_id, polisher_type) values (@PadSeriesId, @PolisherType);",
-                polisherTypes.Select(pt => new PadSeriesPolisherTypeRow() {
-                    PadSeriesId = padSeriesId,
-                    PolisherType = pt.Serialize()
-                }).ToList()
-            );
         }
 
         /// <summary>

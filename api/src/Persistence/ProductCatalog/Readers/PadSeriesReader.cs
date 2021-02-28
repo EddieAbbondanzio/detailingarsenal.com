@@ -19,8 +19,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"  select * from pad_series ps 
                             join brands b on ps.brand_id = b.id 
                             where ps.id = @Id;
-                        select * from pad_series_polisher_types 
-                            where pad_series_id = @Id;
                         select * from pad_sizes 
                             where pad_series_id = @Id;
                         select count(reviews.*) as count, pads.id from pads
@@ -55,15 +53,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             new BrandReadModel(
                                 b.Id,
                                 b.Name
-                            )
+                            ),
+                            (PolisherType)ps.PolisherTypes
                         )).ElementAtOrDefault(0);
 
                     if (series == null) {
                         return null;
                     }
 
-                    series.PolisherTypes.AddRange(reader.Read<PadSeriesPolisherTypeRow>()
-                        .Select(p => p.PolisherType));
 
                     series.Sizes.AddRange(reader.Read<PadSizeRow>()
                         .Select(s => new PadSizeReadModel(
@@ -151,7 +148,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         new BrandReadModel(
                             b.Id,
                             b.Name
-                        )
+                        ),
+                        ps.PolisherTypes
                     ),
                     new {
                         Brands = query.Brands,
@@ -170,16 +168,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     Series = series.Select(s => s.Id).ToArray() // We only want series that we got back.
                 })) {
                     var totalCount = reader.ReadFirst<int>();
-
-
-                    var polisherTypes = reader.Read<PadSeriesPolisherTypeRow>();
-                    foreach (var pt in polisherTypes) {
-                        PadSeriesReadModel? s;
-
-                        if (seriesLookup.TryGetValue(pt.PadSeriesId, out s)) {
-                            s.PolisherTypes.Add(pt.PolisherType);
-                        }
-                    }
 
                     var sizes = reader.Read<PadSizeRow>();
                     foreach (var size in sizes) {
