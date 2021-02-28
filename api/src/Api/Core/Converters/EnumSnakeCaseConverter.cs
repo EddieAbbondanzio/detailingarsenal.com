@@ -15,7 +15,13 @@ namespace DetailingArsenal.Api {
     */
 
     public class EnumSnakeCaseConverter : JsonConverterFactory {
-        public override bool CanConvert(Type typeToConvert) => typeToConvert.IsEnum;
+        public override bool CanConvert(Type typeToConvert) {
+            if (typeToConvert.IsEnum) {
+                return typeToConvert.GetCustomAttribute<FlagsAttribute>() == null; // Don't touch flag enums
+            } else {
+                return false;
+            }
+        }
 
         public override JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options) {
             // See: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to?pivots=dotnet-5-0#sample-factory-pattern-converter

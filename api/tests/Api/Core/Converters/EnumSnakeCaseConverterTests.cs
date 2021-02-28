@@ -30,6 +30,12 @@ namespace DetailingArsenal.Tests.Api {
         }
 
         [TestMethod]
+        public void CanConvertReturnsFalseForFlags() {
+            var c = new EnumSnakeCaseConverter();
+            Assert.IsFalse(c.CanConvert(typeof(FlagEnum)));
+        }
+
+        [TestMethod]
         public void CreateConverterReturnsValidInstance() {
             var converter = new EnumSnakeCaseConverter().CreateConverter(typeof(Cartoon), null!);
 
@@ -90,6 +96,12 @@ namespace DetailingArsenal.Tests.Api {
             CatDog,
             [JsonValue("that_horse_from_horsin_around")]
             BojackHorseman
+        }
+
+        [Flags]
+        enum FlagEnum {
+            Foo = 1,
+            Bar = 2
         }
     }
 }

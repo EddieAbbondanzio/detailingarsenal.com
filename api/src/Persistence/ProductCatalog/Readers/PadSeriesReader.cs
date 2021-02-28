@@ -213,12 +213,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             imageId = null;
                         }
 
-                        Guid id = raw.id;
-                        string name = raw.name;
-                        string category = raw.category;
-                        decimal? cut = raw.cut;
-                        decimal? finish = raw.finish;
-
                         var pad = new PadReadModel(
                             raw.id,
                             raw.name,
@@ -233,7 +227,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             raw.finish,
                             new RatingReadModel(raw.stars, reviewCount, stats.ToList())
                         );
-
 
                         pads.Add(pad.Id, pad);
 

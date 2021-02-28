@@ -220,7 +220,7 @@ export default class PadView extends Vue {
         return [
             { label: 'Manufacturer', value: this.value?.series.brand.name! },
             { label: 'Series', value: this.value?.series.name! },
-            { label: 'Category', value: uppercaseFirst(this.value?.category!)! },
+            // { label: 'Category', value: uppercaseFirst(this.value?.category!)! },
             { label: 'Material', value: uppercaseFirst(this.value?.material!) ?? 'N/A' },
             { label: 'Texture', value: uppercaseFirst(this.value?.texture!) ?? 'N/A' },
             { label: 'Color', value: uppercaseFirst(this.value?.color!) ?? 'N/A' },

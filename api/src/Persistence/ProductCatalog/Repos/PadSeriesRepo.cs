@@ -81,7 +81,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             var pad = new Pad(
                                 p.Id,
                                 p.Name,
-                                PadCategoryUtils.Parse(p.Category),
+                                p.Category,
                                 p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
                                 p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
                                 p.Color != null ? PadColorUtils.Parse(p.Color) : null,
@@ -175,7 +175,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             var pad = new Pad(
                                 p.Id,
                                 p.Name,
-                                PadCategoryUtils.Parse(p.Category),
+                                p.Category,
                                 p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
                                 p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
                                 p.Color != null ? PadColorUtils.Parse(p.Color) : null,
@@ -282,7 +282,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         series.Pads.Select(c => new PadRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
-                            Category = c.Category.Serialize(),
+                            Category = c.Category,
                             Material = c.Material?.Serialize(),
                             Texture = c.Texture?.Serialize(),
                             Color = c.Color?.Serialize(),
@@ -484,7 +484,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 newPads.Select(p => new PadRow() {
                     Id = p.Id,
                     Name = p.Name,
-                    Category = p.Category.Serialize(),
+                    Category = p.Category,
                     Color = p.Color?.Serialize(),
                     HasCenterHole = p.HasCenterHole,
                     Material = p.Material?.Serialize(),

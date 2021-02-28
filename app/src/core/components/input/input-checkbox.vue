@@ -7,7 +7,7 @@
         <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
             <b-checkbox
                 :class="classes"
-                :value="value"
+                :value="bitwise ? value & nativeValue : value"
                 @input="onInput"
                 :type="type"
                 :disabled="disabled"
@@ -42,7 +42,7 @@ export default class InputCheckbox extends Vue {
     rules!: string;
 
     @Prop()
-    value!: boolean;
+    value!: any;
 
     @Prop({ default: false })
     disabled!: boolean;
@@ -57,7 +57,13 @@ export default class InputCheckbox extends Vue {
     type!: string;
 
     @Prop()
-    nativeValue!: string | null;
+    nativeValue!: any | null;
+
+    /**
+     * If the value is a bit flag. nativeValue must be set.
+     */
+    @Prop({ default: false })
+    bitwise!: boolean;
 
     get vid() {
         if (this.id != null) {
@@ -68,7 +74,16 @@ export default class InputCheckbox extends Vue {
     }
 
     onInput(val: any) {
-        this.$emit('input', val);
+        if (!this.bitwise) {
+            this.$emit('input', val);
+            return;
+        }
+
+        if (val) {
+            this.$emit('input', this.value | this.nativeValue);
+        } else {
+            this.$emit('input', this.value & ~this.nativeValue);
+        }
     }
 
     setError(error: string) {

@@ -69,9 +69,7 @@ export default class PadFilterControl extends Vue {
     get series() {
         return padStore.legend.series;
     }
-    get categories(): PadCategory[] {
-        return Object.values(PadCategory);
-    }
+
     selectedBrands: string[] = [];
     selectedSeries: string[] = [];
 

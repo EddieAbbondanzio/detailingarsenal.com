@@ -41,7 +41,7 @@
             <b-field label="Sizes">
                 <b-table :data="sizes" class="is-flex" narrowed>
                     <b-table-column field="diameter" label="Diameter" v-slot="props">
-                        <measurement-input :value="props.row.diameter" rules="required" :required="true" v-focus />
+                        <measurement-input :value="props.row.diameter" rules="required" :required="true" />
                     </b-table-column>
                     <b-table-column field="thickness" label="Thickness" v-slot="props">
                         <measurement-input :value="props.row.thickness" />
@@ -64,7 +64,7 @@
                     </b-table-column>
 
                     <b-table-column label="Category" field="category" v-slot="props">
-                        {{ props.row.category | uppercaseFirst }}
+                        {{ props.row.category | padCategory }}
                     </b-table-column>
 
                     <b-table-column field="material" label="Material" v-slot="props">
@@ -143,18 +143,16 @@
                         v-focus
                     />
 
-                    <input-select
-                        label="Category"
-                        class="has-margin-x-1 has-margin-y-0"
-                        rules="required"
-                        :required="true"
-                        v-model="modalPad.category"
-                    >
-                        <option :value="null">Select a category</option>
-                        <option v-for="category in categories" :key="category[1]" :value="category[1]">
-                            {{ category[0] }}
-                        </option>
-                    </input-select>
+                    <input-checkbox-group label="Category">
+                        <input-checkbox
+                            v-model="modalPad.category"
+                            :bitwise="true"
+                            :label="cat.label"
+                            v-for="cat in categories"
+                            :key="cat.value"
+                            :nativeValue="cat.value"
+                        />
+                    </input-checkbox-group>
 
                     <input-select label="Material" class="has-margin-x-1 has-margin-y-0" v-model="modalPad.material">
                         <option :value="null">Select a material</option>
@@ -295,13 +293,15 @@ import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
 import { PadColor } from '@/api/product-catalog/data-transfer-objects/pad-color';
 import { measurement } from '@/modules/shared/filters/measurement';
+import { padCategory } from '@/modules/admin/product-catalog/filters/pad-category';
 
 @Component({
     components: {
         MeasurementInput
     },
     filters: {
-        measurement
+        measurement,
+        padCategory
     }
 })
 export default class UpdatePadSeries extends Vue {
@@ -310,7 +310,11 @@ export default class UpdatePadSeries extends Vue {
     }
 
     get categories() {
-        return Object.entries(PadCategory);
+        return [
+            { label: 'Cutting', value: PadCategory.Cutting },
+            { label: 'Polishing', value: PadCategory.Polishing },
+            { label: 'Finishing', value: PadCategory.Finishing }
+        ];
     }
 
     get materials() {
