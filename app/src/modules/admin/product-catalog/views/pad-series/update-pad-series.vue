@@ -143,7 +143,12 @@
                         v-focus
                     />
 
-                    <input-checkbox-group label="Category">
+                    <input-checkbox-group
+                        label="Category"
+                        :required="true"
+                        rules="required"
+                        v-model="modalPad.category"
+                    >
                         <input-checkbox
                             v-model="modalPad.category"
                             :bitwise="true"
@@ -151,6 +156,7 @@
                             v-for="cat in categories"
                             :key="cat.value"
                             :nativeValue="cat.value"
+                            :grouped="true"
                         />
                     </input-checkbox-group>
 
