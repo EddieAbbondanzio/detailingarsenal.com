@@ -1,10 +1,17 @@
 <template>
-    <b-field :class="required ? 'is-required is-block' : 'is-block'">
+    <b-field :class="{ 'is-required': required, 'is-block': true, 'has-margin-bottom-0': grouped }">
         <template v-slot:label>
             <slot name="label"></slot>
         </template>
 
-        <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
+        <validation-provider
+            :vid="vid"
+            :name="label"
+            :rules="rules"
+            v-slot="{ errors, classes }"
+            ref="validator"
+            v-if="!grouped"
+        >
             <b-checkbox
                 :class="classes"
                 :value="bitwise ? value & nativeValue : value"
@@ -19,6 +26,18 @@
             </b-checkbox>
             <input-error-message v-if="!hideErrors" :text="errors[0]" />
         </validation-provider>
+        <b-checkbox
+            :value="bitwise ? value & nativeValue : value"
+            @input="onInput"
+            :type="type"
+            :disabled="disabled"
+            :native-value="nativeValue"
+            v-else
+        >
+            <slot>
+                <span v-if="!hideLabel">{{ label }}</span>
+            </slot>
+        </b-checkbox>
     </b-field>
 </template>
 
@@ -58,6 +77,9 @@ export default class InputCheckbox extends Vue {
 
     @Prop()
     nativeValue!: any | null;
+
+    @Prop({ default: false })
+    grouped!: boolean;
 
     /**
      * If the value is a bit flag. nativeValue must be set.
