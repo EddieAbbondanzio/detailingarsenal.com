@@ -14,7 +14,6 @@ import InputAutocomplete from './components/input/input-autocomplete.vue';
 import InputSelect from './components/input/input-select.vue';
 import InputCheckbox from './components/input/input-checkbox.vue';
 import InputCheckboxGroup from './components/input/input-checkbox-group.vue';
-import InputGroup from './components/input/input-group.vue';
 import InputErrorMessage from './components/input/input-error-message.vue';
 import InputDatepicker from '@/core/components/input/input-datepicker.vue';
 import InputTimepicker from '@/core/components/input/input-timepicker.vue';
@@ -74,7 +73,6 @@ export default {
         Vue.component('input-select', InputSelect);
         Vue.component('input-checkbox', InputCheckbox);
         Vue.component('input-checkbox-group', InputCheckboxGroup);
-        Vue.component('input-group', InputGroup);
         Vue.component('input-error-message', InputErrorMessage);
         Vue.component('input-image-upload', InputImageUpload);
         Vue.component('input-datepicker', InputDatepicker);
