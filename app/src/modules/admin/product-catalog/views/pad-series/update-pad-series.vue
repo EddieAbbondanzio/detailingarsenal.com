@@ -79,7 +79,7 @@
                     </b-table-column>
 
                     <b-table-column label="Category" field="category" v-slot="props">
-                        {{ props.row.category | commaSeperate }}
+                        {{ props.row.category | uppercaseFirst | commaSeperate }}
                     </b-table-column>
 
                     <b-table-column field="material" label="Material" v-slot="props">
