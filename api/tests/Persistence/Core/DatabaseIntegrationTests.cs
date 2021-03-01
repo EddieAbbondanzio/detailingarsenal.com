@@ -4,8 +4,8 @@ using DetailingArsenal.Tests.Persistence;
 
 namespace DetailingArsenal.Tests.Persistence {
     public class DatabaseIntegrationTests {
-        internal IDatabase Database => DatabaseManager.Database;
+        internal static IDatabase Database => DatabaseManager.Database;
 
-        internal IDbConnection OpenConnection() => DatabaseManager.Database.OpenConnection();
+        internal static IDbConnection OpenConnection() => DatabaseManager.Database.OpenConnection();
     }
 }
