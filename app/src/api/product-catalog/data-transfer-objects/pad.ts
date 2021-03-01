@@ -34,7 +34,7 @@ export class Pad {
         public id: string,
         public series: PadSeries, // Used for quick lookup of series info only
         public name: string,
-        public category: PadCategory,
+        public category: PadCategory[],
         public material: PadMaterial | null,
         public texture: PadTexture | null,
         public color: PadColor | null,

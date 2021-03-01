@@ -174,6 +174,7 @@ import { measurement } from '@/modules/shared/filters/measurement';
 import { uppercaseFirst } from '@/core/filters/uppercase-first';
 import RatingStats from '@/modules/product-catalog/core/components/rating-stats.vue';
 import { displayLoading } from '@/core';
+import { commaSeperate } from '@/core/filters/comma-seperate';
 
 @Component({
     components: {
@@ -220,7 +221,7 @@ export default class PadView extends Vue {
         return [
             { label: 'Manufacturer', value: this.value?.series.brand.name! },
             { label: 'Series', value: this.value?.series.name! },
-            { label: 'Category', value: uppercaseFirst(this.value?.category!)! },
+            { label: 'Category', value: commaSeperate(uppercaseFirst(this.value?.category!)) },
             { label: 'Material', value: uppercaseFirst(this.value?.material!) ?? 'N/A' },
             { label: 'Texture', value: uppercaseFirst(this.value?.texture!) ?? 'N/A' },
             { label: 'Color', value: uppercaseFirst(this.value?.color!) ?? 'N/A' },

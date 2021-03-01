@@ -55,7 +55,7 @@
                         props.row.name
                     }}</b-table-column>
                     <b-table-column v-slot="props" label="Category" field="action" sortable>{{
-                        props.row.category | uppercaseFirst
+                        props.row.category | commaSeperate
                     }}</b-table-column>
                     <b-table-column v-slot="props" label="Material" field="action" sortable>{{
                         props.row.material | uppercaseFirst

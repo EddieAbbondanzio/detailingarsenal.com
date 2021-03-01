@@ -18,7 +18,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadSizesExistingPadSizesAreUpdated() {
             var h = new PadSeriesUpdateHandler(
                 Mock.Of<IPadSeriesRepo>(),
-                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                 Mock.Of<IImageProcessor>()
             );
 
@@ -41,7 +41,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadSizesAddsNewPadSizes() {
             var h = new PadSeriesUpdateHandler(
                             Mock.Of<IPadSeriesRepo>(),
-                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                             Mock.Of<IImageProcessor>()
                         );
 
@@ -65,7 +65,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadSizesExistingPadSizesAreDeletedAsNeeded() {
             var h = new PadSeriesUpdateHandler(
                 Mock.Of<IPadSeriesRepo>(),
-                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                 Mock.Of<IImageProcessor>()
             );
 
@@ -87,7 +87,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsExistingColorsAreUpdated() {
             var h = new PadSeriesUpdateHandler(
                             Mock.Of<IPadSeriesRepo>(),
-                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                             Mock.Of<IImageProcessor>()
             );
 
@@ -112,7 +112,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
             Assert.AreEqual(existing[0].Id, updated[0].Id);
             Assert.AreEqual("ColorAA", updated[0].Name);
-            Assert.AreEqual(PadCategory.Finishing, updated[0].Category);
+            Assert.AreEqual(PadCategory.Finishing, updated[0].Category[0]);
             Assert.AreEqual(1, updated[0].Options.Count);
         }
 
@@ -120,7 +120,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsAddsNewColors() {
             var h = new PadSeriesUpdateHandler(
                                         Mock.Of<IPadSeriesRepo>(),
-                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                                         Mock.Of<IImageProcessor>()
                         );
 
@@ -139,19 +139,19 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
             var updated = h.UpdatePads(sizes, existing, updates);
             Assert.AreEqual(1, updated.Count);
             Assert.AreEqual("ColorB", updated[0].Name);
-            Assert.AreEqual(PadCategory.Finishing, updated[0].Category);
+            Assert.AreEqual(PadCategory.Finishing, updated[0].Category[0]);
         }
 
         [TestMethod]
         public void UpdatePadsDeletesAsNeeded() {
             var h = new PadSeriesUpdateHandler(
-                                        Mock.Of<IPadSeriesRepo>(),
-                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
-                                        Mock.Of<IImageProcessor>()
-                        );
+                Mock.Of<IPadSeriesRepo>(),
+                new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
+                Mock.Of<IImageProcessor>()
+            );
 
             var existing = new Pad[] {
-                new Pad("ColorA", PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOption[] {
+                new Pad("ColorA",  PadCategory.Cutting, PadMaterial.Foam, PadTexture.Dimpled, PadColor.Red, false,null, new PadOption[] {
                     new PadOption(Guid.NewGuid()),
                 }.ToList())
             }.ToList();
@@ -168,7 +168,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsOrdersByName() {
             var h = new PadSeriesUpdateHandler(
                                         Mock.Of<IPadSeriesRepo>(),
-                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                        new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                                         Mock.Of<IImageProcessor>()
                         );
 
@@ -196,7 +196,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void OrdersPadSizesByDiameter() {
             var h = new PadSeriesUpdateHandler(
                             Mock.Of<IPadSeriesRepo>(),
-                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                            new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                             Mock.Of<IImageProcessor>()
                         );
 
@@ -222,7 +222,7 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
         public void UpdatePadsOrdersPadOptionsByDiameter() {
             var h = new PadSeriesUpdateHandler(
                                                     Mock.Of<IPadSeriesRepo>(),
-                                                    new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null).Object,
+                                                    new Mock<PadSeriesCreateOrUpdateCompositeSpecification>(null, null, null, null, null, null).Object,
                                                     Mock.Of<IImageProcessor>()
                                     );
 

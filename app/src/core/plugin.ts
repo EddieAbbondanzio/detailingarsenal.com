@@ -6,6 +6,7 @@ import { twelveHourFormat } from '@/core/filters/twelve-hour-format';
 import { currency } from '@/core/filters/currency';
 import { fullDate } from '@/core/filters/full-date';
 import { date } from '@/core/filters/date';
+import { commaSeperate } from '@/core/filters/comma-seperate';
 
 import InputForm from './components/input/input-form.vue';
 import InputFormErrorSummary from './components/input/input-form-error-summary.vue';
@@ -13,7 +14,7 @@ import InputTextField from './components/input/input-text-field.vue';
 import InputAutocomplete from './components/input/input-autocomplete.vue';
 import InputSelect from './components/input/input-select.vue';
 import InputCheckbox from './components/input/input-checkbox.vue';
-import InputGroup from './components/input/input-group.vue';
+import InputCheckboxGroup from './components/input/input-checkbox-group.vue';
 import InputErrorMessage from './components/input/input-error-message.vue';
 import InputDatepicker from '@/core/components/input/input-datepicker.vue';
 import InputTimepicker from '@/core/components/input/input-timepicker.vue';
@@ -72,7 +73,7 @@ export default {
         Vue.component('input-autocomplete', InputAutocomplete);
         Vue.component('input-select', InputSelect);
         Vue.component('input-checkbox', InputCheckbox);
-        Vue.component('input-group', InputGroup);
+        Vue.component('input-checkbox-group', InputCheckboxGroup);
         Vue.component('input-error-message', InputErrorMessage);
         Vue.component('input-image-upload', InputImageUpload);
         Vue.component('input-datepicker', InputDatepicker);
@@ -95,6 +96,7 @@ export default {
         Vue.filter('date', date);
         Vue.filter('twelveHourFormat', twelveHourFormat);
         Vue.filter('uppercaseFirst', uppercaseFirst);
+        Vue.filter('commaSeperate', commaSeperate);
 
         Vue.directive('disable-all', disableAll);
         Vue.directive('mouse', mouse);

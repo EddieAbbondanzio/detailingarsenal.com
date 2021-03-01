@@ -7,7 +7,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
     public record PadReadModel : IDataTransferObject {
         public Guid Id { get; }
         public string Name { get; }
-        public string Category { get; }
+        public List<PadCategory> Category { get; }
         public string? Material { get; }
         public string? Texture { get; }
         public string? Color { get; }
@@ -18,7 +18,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public decimal? Finish { get; }
         public RatingReadModel Rating { get; }
 
-        public PadReadModel(Guid id, string name, string category, string? material, string? texture, string? color, bool? hasCenterHole, Guid? image, List<PadOptionReadModel> options, decimal? cut, decimal? finish, RatingReadModel rating) {
+        public PadReadModel(Guid id, string name, List<PadCategory> category, string? material, string? texture, string? color, bool? hasCenterHole, Guid? image, List<PadOptionReadModel> options, decimal? cut, decimal? finish, RatingReadModel rating) {
             Id = id;
             Name = name;
             Category = category;

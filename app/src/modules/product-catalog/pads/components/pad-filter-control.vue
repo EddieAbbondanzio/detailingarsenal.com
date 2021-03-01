@@ -41,7 +41,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { PadCategory, Pad } from '@/api';
-import { padCategory } from '@/modules/product-catalog/pads/filters/pad-category';
 import { FilterType } from '../store/filter-type';
 import { Filter } from '../store/filter';
 import store from '@/core/store';
@@ -51,10 +50,7 @@ import { ArrayUtils } from '@/core/utils/array-utils';
 import { displayLoading } from '@/core';
 
 @Component({
-    name: 'pad-filter-control',
-    filters: {
-        padCategory
-    }
+    name: 'pad-filter-control'
 })
 export default class PadFilterControl extends Vue {
     /**
@@ -69,9 +65,7 @@ export default class PadFilterControl extends Vue {
     get series() {
         return padStore.legend.series;
     }
-    get categories(): PadCategory[] {
-        return Object.values(PadCategory);
-    }
+
     selectedBrands: string[] = [];
     selectedSeries: string[] = [];
 

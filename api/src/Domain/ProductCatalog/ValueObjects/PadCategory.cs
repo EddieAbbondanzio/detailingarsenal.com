@@ -1,10 +1,12 @@
 using System;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
     public enum PadCategory {
-        Cutting = 0,
-        Polishing = 1,
-        Finishing = 2
+        None,
+        Cutting,
+        Polishing,
+        Finishing
     }
 }

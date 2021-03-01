@@ -19,8 +19,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     @"  select * from pad_series ps 
                             join brands b on ps.brand_id = b.id 
                             where ps.id = @Id;
-                        select * from pad_series_polisher_types 
-                            where pad_series_id = @Id;
                         select * from pad_sizes 
                             where pad_series_id = @Id;
                         select count(reviews.*) as count, pads.id from pads
@@ -55,15 +53,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             new BrandReadModel(
                                 b.Id,
                                 b.Name
-                            )
+                            ),
+                            ps.PolisherTypes.ToList()
                         )).ElementAtOrDefault(0);
 
                     if (series == null) {
                         return null;
                     }
 
-                    series.PolisherTypes.AddRange(reader.Read<PadSeriesPolisherTypeRow>()
-                        .Select(p => p.PolisherType));
 
                     series.Sizes.AddRange(reader.Read<PadSizeRow>()
                         .Select(s => new PadSizeReadModel(
@@ -95,7 +92,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             new PadReadModel(
                                 pad.id,
                                 pad.name,
-                                pad.category,
+                                ((PadCategoryBitwise)pad.category).ToList(),
                                 pad.material,
                                 pad.texture,
                                 pad.color,
@@ -151,7 +148,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         new BrandReadModel(
                             b.Id,
                             b.Name
-                        )
+                        ),
+                        ps.PolisherTypes.ToList()
                     ),
                     new {
                         Brands = query.Brands,
@@ -170,16 +168,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     Series = series.Select(s => s.Id).ToArray() // We only want series that we got back.
                 })) {
                     var totalCount = reader.ReadFirst<int>();
-
-
-                    var polisherTypes = reader.Read<PadSeriesPolisherTypeRow>();
-                    foreach (var pt in polisherTypes) {
-                        PadSeriesReadModel? s;
-
-                        if (seriesLookup.TryGetValue(pt.PadSeriesId, out s)) {
-                            s.PolisherTypes.Add(pt.PolisherType);
-                        }
-                    }
 
                     var sizes = reader.Read<PadSizeRow>();
                     foreach (var size in sizes) {
@@ -213,16 +201,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             imageId = null;
                         }
 
-                        Guid id = raw.id;
-                        string name = raw.name;
-                        string category = raw.category;
-                        decimal? cut = raw.cut;
-                        decimal? finish = raw.finish;
-
                         var pad = new PadReadModel(
                             raw.id,
                             raw.name,
-                            raw.category,
+                            ((PadCategoryBitwise)raw.category).ToList(),
                             raw.material,
                             raw.texture,
                             raw.color,
@@ -233,7 +215,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             raw.finish,
                             new RatingReadModel(raw.stars, reviewCount, stats.ToList())
                         );
-
 
                         pads.Add(pad.Id, pad);
 
@@ -330,7 +311,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             sb.Append(");");
 
             sb.Append(@"
-                select * from pad_series_polisher_types where pad_series_id = any(@Series);
                 select * from pad_sizes where pad_series_id = any(@Series);
                 select count(reviews.*) as count, pads.id as id from pads
                     left join reviews on reviews.pad_id = pads.id
