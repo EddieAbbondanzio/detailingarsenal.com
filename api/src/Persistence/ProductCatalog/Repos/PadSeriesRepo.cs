@@ -18,7 +18,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(
                         @"  select * from pad_series where name = @Name;
-                            select * from pad_sizes 
+                            select pad_sizes.* from pad_sizes 
                                 join pad_series ps on ps.id = pad_sizes.pad_series_id
                                 where ps.name = @Name;
                             select pi.*, i.* from images i 
