@@ -26,7 +26,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 join pads p on pi.pad_id = p.id 
                                 join pad_series ps on ps.id = p.pad_series_id
                                 where ps.name = @Name;
-                            select * from pads
+                            select p.* from pads
                                 join pad_series ps on pads.pad_series_id = ps.id
                                 where ps.name = @Name;
                             select po.* from pad_options po 
@@ -56,35 +56,35 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
 
                     var images = reader.Read<PadImageRow, ImageRow, Tuple<PadImageRow, ImageRow>>((pi, i) => new Tuple<PadImageRow, ImageRow>(pi, i));
 
-                    var pads = new Dictionary<Guid, Pad>(
-                        reader.Read<PadRow>().Select(p => {
-                            var i = images.Where(i => i.Item1.PadId == p.Id).FirstOrDefault();
-                            ProcessedImage? processedImage = null;
+                    var padKVpairs = reader.Read<PadRow>().Select(p => {
+                        var i = images.Where(i => i.Item1.PadId == p.Id).FirstOrDefault();
+                        ProcessedImage? processedImage = null;
 
-                            if (i != null) {
-                                processedImage = new ProcessedImage(
-                                    i.Item2.Id,
-                                    i.Item2.FileName,
-                                    i.Item2.MimeType,
-                                    ImageUtils.LoadFromBinary(i.Item2.ImageData),
-                                    ImageUtils.LoadFromBinary(i.Item2.ThumbnailData)
-                                );
-                            }
-
-                            var pad = new Pad(
-                                p.Id,
-                                p.Name,
-                                p.Category.ToList(),
-                                p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
-                                p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
-                                p.Color != null ? PadColorUtils.Parse(p.Color) : null,
-                                p.HasCenterHole,
-                                processedImage
+                        if (i != null) {
+                            processedImage = new ProcessedImage(
+                                i.Item2.Id,
+                                i.Item2.FileName,
+                                i.Item2.MimeType,
+                                ImageUtils.LoadFromBinary(i.Item2.ImageData),
+                                ImageUtils.LoadFromBinary(i.Item2.ThumbnailData)
                             );
+                        }
 
-                            return pad;
-                        }).Select(c => new KeyValuePair<Guid, Pad>(c.Id, c))
-                    );
+                        var pad = new Pad(
+                            p.Id,
+                            p.Name,
+                            p.Category.ToList(),
+                            p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
+                            p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
+                            p.Color != null ? PadColorUtils.Parse(p.Color) : null,
+                            p.HasCenterHole,
+                            processedImage
+                        );
+
+                        return pad;
+                    }).Select(p => new KeyValuePair<Guid, Pad>(p.Id, p));
+
+                    var pads = new Dictionary<Guid, Pad>(padKVpairs);
 
                     var options = reader.Read<PadOptionRow>();
                     var optionDict = new Dictionary<Guid, PadOption>();
