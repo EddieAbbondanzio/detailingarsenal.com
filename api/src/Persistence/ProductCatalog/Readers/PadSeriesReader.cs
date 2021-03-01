@@ -54,7 +54,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 b.Id,
                                 b.Name
                             ),
-                            (PolisherType)ps.PolisherTypes
+                            ps.PolisherTypes.ToList()
                         )).ElementAtOrDefault(0);
 
                     if (series == null) {
@@ -92,7 +92,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             new PadReadModel(
                                 pad.id,
                                 pad.name,
-                                pad.category,
+                                ((PadCategoryBitwise)pad.category).ToList(),
                                 pad.material,
                                 pad.texture,
                                 pad.color,
@@ -149,7 +149,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             b.Id,
                             b.Name
                         ),
-                        ps.PolisherTypes
+                        ps.PolisherTypes.ToList()
                     ),
                     new {
                         Brands = query.Brands,

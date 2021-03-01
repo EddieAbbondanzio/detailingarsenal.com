@@ -74,7 +74,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             var pad = new Pad(
                                 p.Id,
                                 p.Name,
-                                p.Category,
+                                p.Category.ToList(),
                                 p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
                                 p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
                                 p.Color != null ? PadColorUtils.Parse(p.Color) : null,
@@ -111,7 +111,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         seriesRow.Id,
                         seriesRow.Name,
                         seriesRow.BrandId,
-                        seriesRow.PolisherTypes,
+                        seriesRow.PolisherTypes.ToList(),
                         sizes,
                         pads.Values.ToList()
                     );
@@ -163,7 +163,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             var pad = new Pad(
                                 p.Id,
                                 p.Name,
-                                p.Category,
+                                p.Category.ToList(),
                                 p.Material != null ? PadMaterialUtils.Parse(p.Material) : null,
                                 p.Texture != null ? PadTextureUtils.Parse(p.Texture) : null,
                                 p.Color != null ? PadColorUtils.Parse(p.Color) : null,
@@ -200,7 +200,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         seriesRow.Id,
                         seriesRow.Name,
                         seriesRow.BrandId,
-                        seriesRow.PolisherTypes,
+                        seriesRow.PolisherTypes.ToList(),
                         sizes,
                         pads.Values.ToList()
                     );
@@ -217,7 +217,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                             Id = series.Id,
                             BrandId = series.BrandId,
                             Name = series.Name,
-                            PolisherTypes = series.PolisherTypes
+                            PolisherTypes = Flatten(series.PolisherTypes)
                         }
                     );
                     await conn.ExecuteAsync(
@@ -262,7 +262,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         series.Pads.Select(c => new PadRow() {
                             Id = c.Id,
                             PadSeriesId = series.Id,
-                            Category = c.Category,
+                            Category = Flatten(c.Category),
                             Material = c.Material?.Serialize(),
                             Texture = c.Texture?.Serialize(),
                             Color = c.Color?.Serialize(),
@@ -446,7 +446,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 newPads.Select(p => new PadRow() {
                     Id = p.Id,
                     Name = p.Name,
-                    Category = p.Category,
+                    Category = Flatten(p.Category),
                     Color = p.Color?.Serialize(),
                     HasCenterHole = p.HasCenterHole,
                     Material = p.Material?.Serialize(),
@@ -593,6 +593,52 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     t.Commit();
                 }
             }
+        }
+
+        PadCategoryBitwise Flatten(List<PadCategory> category) {
+            var bitwise = PadCategoryBitwise.None;
+
+            for (int i = 0; i < category.Count; i++) {
+                switch (category[i]) {
+                    case PadCategory.Cutting:
+                        bitwise |= PadCategoryBitwise.Cutting;
+                        break;
+                    case PadCategory.Polishing:
+                        bitwise |= PadCategoryBitwise.Polishing;
+                        break;
+                    case PadCategory.Finishing:
+                        bitwise |= PadCategoryBitwise.Finishing;
+                        break;
+                }
+            }
+
+            return bitwise;
+        }
+
+        PolisherTypeBitwise Flatten(List<PolisherType> polisherTypes) {
+            var bitwise = PolisherTypeBitwise.None;
+
+            for (int i = 0; i < polisherTypes.Count; i++) {
+                switch (polisherTypes[i]) {
+                    case PolisherType.DualAction:
+                        bitwise |= PolisherTypeBitwise.DualAction;
+                        break;
+                    case PolisherType.LongThrow:
+                        bitwise |= PolisherTypeBitwise.LongThrow;
+                        break;
+                    case PolisherType.ForcedRotation:
+                        bitwise |= PolisherTypeBitwise.ForcedRotation;
+                        break;
+                    case PolisherType.Mini:
+                        bitwise |= PolisherTypeBitwise.Mini;
+                        break;
+                    case PolisherType.Rotary:
+                        bitwise |= PolisherTypeBitwise.Rotary;
+                        break;
+                }
+            }
+
+            return bitwise;
         }
     }
 }

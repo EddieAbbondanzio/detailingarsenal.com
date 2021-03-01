@@ -52,12 +52,12 @@ namespace DetailingArsenal.Tests.Application.ProductCatalog {
 
             Assert.AreEqual("Name", s.Name);
             Assert.AreEqual(brandId, s.BrandId);
-            Assert.AreEqual(PolisherType.DualAction, s.PolisherTypes);
+            Assert.AreEqual(PolisherType.DualAction, s.PolisherTypes[0]);
 
             Assert.AreEqual(s.Sizes[0].Diameter, new Measurement(1.2f, "in"));
 
             Assert.AreEqual("Color", s.Pads[0].Name);
-            Assert.AreEqual(PadCategory.Cutting, s.Pads[0].Category);
+            Assert.AreEqual(PadCategory.Cutting, s.Pads[0].Category[0]);
             Assert.AreEqual(PadTexture.Dimpled, s.Pads[0].Texture);
             Assert.AreEqual(PadMaterial.Foam, s.Pads[0].Material);
             Assert.AreEqual(1, s.Pads[0].Options.Count);
