@@ -204,7 +204,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         var pad = new PadReadModel(
                             raw.id,
                             raw.name,
-                            raw.category,
+                            ((PadCategoryBitwise)raw.category).ToList(),
                             raw.material,
                             raw.texture,
                             raw.color,
@@ -311,7 +311,6 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
             sb.Append(");");
 
             sb.Append(@"
-                select * from pad_series_polisher_types where pad_series_id = any(@Series);
                 select * from pad_sizes where pad_series_id = any(@Series);
                 select count(reviews.*) as count, pads.id as id from pads
                     left join reviews on reviews.pad_id = pads.id

@@ -55,7 +55,7 @@
                         props.row.name
                     }}</b-table-column>
                     <b-table-column v-slot="props" label="Category" field="action" sortable>{{
-                        props.row.category | padCategory
+                        props.row.category | commaSeperate
                     }}</b-table-column>
                     <b-table-column v-slot="props" label="Material" field="action" sortable>{{
                         props.row.material | uppercaseFirst
@@ -107,7 +107,6 @@ import { displayLoading } from '@/core';
 import adminPadStore from '../../store/admin-pad-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import { measurement } from '@/modules/shared/filters/measurement';
-import { padCategory } from '@/modules/admin/product-catalog/filters/pad-category';
 
 @Component({
     name: 'role',
@@ -115,8 +114,7 @@ import { padCategory } from '@/modules/admin/product-catalog/filters/pad-categor
         PolisherTypeTag
     },
     filters: {
-        measurement,
-        padCategory
+        measurement
     }
 })
 export default class PadSeriesDetails extends Vue {

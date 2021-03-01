@@ -28,13 +28,28 @@
                 <option v-for="brand in brands" :key="brand.id" :value="brand">{{ brand.name }}</option>
             </input-select>
 
-            <b-field label="Polisher Type(s)">
-                <input-checkbox v-model="polisherTypes" native-value="dual_action" label="Dual Action" />
-                <input-checkbox v-model="polisherTypes" native-value="long_throw" label="Long Throw" />
-                <input-checkbox v-model="polisherTypes" native-value="forced_rotation" label="Forced Rotation" />
-                <input-checkbox v-model="polisherTypes" native-value="rotary" label="Rotary" />
-                <input-checkbox v-model="polisherTypes" native-value="mini" label="Mini" />
-            </b-field>
+            <input-checkbox-group
+                label="Recommended for polisher types"
+                v-model="polisherTypes"
+                rules="required"
+                :required="true"
+            >
+                <input-checkbox
+                    v-model="polisherTypes"
+                    native-value="dual_action"
+                    label="Dual Action"
+                    :grouped="true"
+                />
+                <input-checkbox v-model="polisherTypes" native-value="long_throw" label="Long Throw" :grouped="true" />
+                <input-checkbox
+                    v-model="polisherTypes"
+                    native-value="forced_rotation"
+                    label="Forced Rotation"
+                    :grouped="true"
+                />
+                <input-checkbox v-model="polisherTypes" native-value="rotary" label="Rotary" :grouped="true" />
+                <input-checkbox v-model="polisherTypes" native-value="mini" label="Mini" :grouped="true" />
+            </input-checkbox-group>
 
             <!-- Size Table -->
             <b-field label="Sizes">
@@ -64,7 +79,7 @@
                     </b-table-column>
 
                     <b-table-column label="Category" field="category" v-slot="props">
-                        {{ props.row.category | padCategory }}
+                        {{ props.row.category | commaSeperate }}
                     </b-table-column>
 
                     <b-table-column field="material" label="Material" v-slot="props">
@@ -152,11 +167,10 @@
                     >
                         <input-checkbox
                             v-model="modalPad.category"
-                            :bitwise="true"
-                            :label="cat.label"
+                            :label="cat[0]"
                             v-for="cat in categories"
-                            :key="cat.value"
-                            :nativeValue="cat.value"
+                            :key="cat[1]"
+                            :nativeValue="cat[1]"
                             :grouped="true"
                         />
                     </input-checkbox-group>
@@ -305,7 +319,6 @@ import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
 import { PadColor } from '@/api/product-catalog/data-transfer-objects/pad-color';
 import { measurement } from '@/modules/shared/filters/measurement';
-import { padCategory } from '@/modules/admin/product-catalog/filters/pad-category';
 import store from '@/core/store';
 
 @Component({
@@ -313,8 +326,7 @@ import store from '@/core/store';
         MeasurementInput
     },
     filters: {
-        measurement,
-        padCategory
+        measurement
     }
 })
 export default class CreatePadSeries extends Vue {
@@ -323,11 +335,7 @@ export default class CreatePadSeries extends Vue {
     }
 
     get categories() {
-        return [
-            { label: 'Cutting', value: PadCategory.Cutting },
-            { label: 'Polishing', value: PadCategory.Polishing },
-            { label: 'Finishing', value: PadCategory.Finishing }
-        ];
+        return Object.entries(PadCategory).filter(v => v[0] != 'None');
     }
 
     get materials() {
@@ -423,7 +431,7 @@ export default class CreatePadSeries extends Vue {
         this.modalPad = {
             id: null,
             name: null!,
-            category: null!,
+            category: [],
             material: null!,
             texture: null!,
             color: null!,

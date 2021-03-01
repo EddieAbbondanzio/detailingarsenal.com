@@ -9,7 +9,7 @@ import { PadOptionCreateOrUpdate } from './pad-option-create-or-update';
 export interface PadCreateOrUpdate {
     id: string | null;
     name: string;
-    category: PadCategory;
+    category: PadCategory[];
     material: PadMaterial | null;
     texture: PadTexture | null;
     color: PadColor | null;

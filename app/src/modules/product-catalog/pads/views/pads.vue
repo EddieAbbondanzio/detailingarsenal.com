@@ -129,6 +129,7 @@ import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import padStore from '../store/pad/pad-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import appStore from '@/core/store/app-store';
+import { uppercaseFirst } from '@/core/filters/uppercase-first';
 
 @Component({
     components: {
@@ -153,7 +154,7 @@ export default class Pads extends Vue {
                 padSeriesId: pad.series.id,
                 thumbnailUrl: pad.thumbnailUrl,
                 name: pad.label,
-                category: pad.category,
+                category: pad.category.map(c => uppercaseFirst(c)).join(', '),
                 material: pad.material,
                 cut: pad.cut,
                 finish: pad.finish,
@@ -193,7 +194,7 @@ interface PadSummary {
     padSeriesId: string;
     thumbnailUrl: string | null;
     name: string;
-    category: PadCategory;
+    category: string;
     material: PadMaterial | null;
     cut: number | null;
     finish: number | null;
