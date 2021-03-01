@@ -11,7 +11,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         public async Task<PadSeriesFilterReadModel> Read() {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(@"
-                    select id, name from brands;
+                    select b.id, b.name from pads p join pad_series ps on p.pad_series_id = ps.id join brands b on ps.brand_id = b.id group by b.id;
                     select ps.id, ps.name, b.name as brand_name from pad_series ps join brands b on ps.brand_id = b.id;
                 ")) {
                     var brands = reader.Read<PadSeriesFilterBrandReadModel>();
