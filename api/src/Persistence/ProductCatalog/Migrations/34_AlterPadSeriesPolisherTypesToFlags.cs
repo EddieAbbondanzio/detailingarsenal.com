@@ -12,31 +12,26 @@ namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
             Create.Column("polisher_types").OnTable("pad_series").AsInt16().WithDefaultValue(0);
 
             Execute.WithConnection((c, t) => {
-                var polisherTypes = c.Query("select * from pad_series_polisher_types");
+                var raws = c.Query("select * from pad_series_polisher_types");
+                var padSeriesPolisherTypeMap = new Dictionary<Guid, List<PolisherType>>();
 
-                var lookUp = new Dictionary<Guid, List<PolisherType>>();
-
-                foreach (var pt in polisherTypes) {
+                foreach (var raw in raws) {
                     List<PolisherType> existing;
 
-                    if (!lookUp.TryGetValue(pt.pad_series_id, out existing)) {
+                    if (!padSeriesPolisherTypeMap.TryGetValue(raw.pad_series_id, out existing)) {
                         existing = new();
-                        lookUp.Add(pt.pad_series_id, existing);
+                        padSeriesPolisherTypeMap.Add(raw.pad_series_id, existing);
                     }
 
-                    existing.Add(pt.polisher_type switch {
-                        "dual_action" => PolisherType.DualAction,
-                        "long_throw" => PolisherType.LongThrow,
-                        "forced_rotation" => PolisherType.ForcedRotation,
-                        "rotary" => PolisherType.Rotary,
-                        "mini" => PolisherType.Mini,
-                        _ => PolisherType.None
-                    });
+                    existing.Add((PolisherType)raw.polisher_type);
                 }
 
-                var toUpdate = lookUp.ToArray().SelectMany(kvp => kvp.Value.Select(pt => new { Id = kvp.Key, PolisherType = pt }));
+                var finals = new List<object>();
+                foreach (var kv in padSeriesPolisherTypeMap) {
+                    finals.Add(new { Id = kv.Key, PolisherType = Flatten(kv.Value) });
+                }
 
-                c.Execute(@"update pad_series set polisher_types = @PolisherTypes where id = @Id;", toUpdate);
+                c.Execute(@"update pad_series set polisher_types = @PolisherType where id = @Id;", finals);
             });
 
             Delete.Table("pad_series_polisher_types");
@@ -90,6 +85,32 @@ namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
             });
 
             Delete.Column("polisher_types").FromTable("pad_series_polisher_types");
+        }
+
+        PolisherTypeBitwise Flatten(List<PolisherType> polisherTypes) {
+            var bitwise = PolisherTypeBitwise.None;
+
+            for (int i = 0; i < polisherTypes.Count; i++) {
+                switch (polisherTypes[i]) {
+                    case PolisherType.DualAction:
+                        bitwise |= PolisherTypeBitwise.DualAction;
+                        break;
+                    case PolisherType.LongThrow:
+                        bitwise |= PolisherTypeBitwise.LongThrow;
+                        break;
+                    case PolisherType.ForcedRotation:
+                        bitwise |= PolisherTypeBitwise.ForcedRotation;
+                        break;
+                    case PolisherType.Mini:
+                        bitwise |= PolisherTypeBitwise.Mini;
+                        break;
+                    case PolisherType.Rotary:
+                        bitwise |= PolisherTypeBitwise.Rotary;
+                        break;
+                }
+            }
+
+            return bitwise;
         }
     }
 }
