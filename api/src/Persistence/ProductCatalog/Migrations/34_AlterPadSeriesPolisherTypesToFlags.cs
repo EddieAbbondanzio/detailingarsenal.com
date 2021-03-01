@@ -22,7 +22,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
                         "forced_rotation" => PolisherType.ForcedRotation,
                         "rotary" => PolisherType.Rotary,
                         "mini" => PolisherType.Mini,
-                        _ => throw new NotImplementedException()
+                        _ => PolisherType.None
                     })));
                 }
 
