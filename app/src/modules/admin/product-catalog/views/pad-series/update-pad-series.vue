@@ -370,7 +370,8 @@ export default class UpdatePadSeries extends Vue {
 
         this.name = padSeries.name;
         this.brand = padSeries.brand;
-        this.polisherTypes = padSeries.polisherTypes;
+        this.polisherTypes = padSeries.polisherTypes ?? [];
+        console.log(this.polisherTypes);
 
         this.sizes = padSeries.sizes.map(s => ({
             id: s.id,
@@ -409,6 +410,15 @@ export default class UpdatePadSeries extends Vue {
             })),
             pads: this.pads
         };
+
+        // Purge out empty part numbers
+        for (let p = 0; p < this.pads.length; p++) {
+            for (let o = 0; o < this.pads[p].options.length; o++) {
+                this.pads[p].options[o].partNumbers = this.pads[p].options[o].partNumbers.filter(
+                    pn => pn.value != null
+                );
+            }
+        }
 
         try {
             await adminPadStore.update(update);

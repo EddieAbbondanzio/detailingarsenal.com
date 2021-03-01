@@ -383,6 +383,15 @@ export default class CreatePadSeries extends Vue {
             pads: this.pads
         };
 
+        // Purge out empty part numbers
+        for (let p = 0; p < this.pads.length; p++) {
+            for (let o = 0; o < this.pads[p].options.length; o++) {
+                this.pads[p].options[o].partNumbers = this.pads[p].options[o].partNumbers.filter(
+                    pn => pn.value != null
+                );
+            }
+        }
+
         try {
             await adminPadStore.create(create);
             await padStore.reloadFilter();
