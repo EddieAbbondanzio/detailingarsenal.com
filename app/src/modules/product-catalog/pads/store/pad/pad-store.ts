@@ -51,7 +51,6 @@ class PadStore extends InitableModule {
     async reloadFilter() {
         const f = await api.productCatalog.padSeriesFilter.get();
         this.context.commit('SET_LEGEND', f);
-        console.log('reload!');
     }
 
     @Action({ rawError: true })
