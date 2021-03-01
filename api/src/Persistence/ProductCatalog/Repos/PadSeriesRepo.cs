@@ -26,7 +26,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                                 join pads p on pi.pad_id = p.id 
                                 join pad_series ps on ps.id = p.pad_series_id
                                 where ps.name = @Name;
-                            select p.* from pads
+                            select pads.* from pads
                                 join pad_series ps on pads.pad_series_id = ps.id
                                 where ps.name = @Name;
                             select po.* from pad_options po 
@@ -125,7 +125,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         @"  select * from pad_series where id = @Id;
                             select * from pad_sizes where pad_series_id = @Id;
                             select pi.*, i.* from images i join pad_images pi on i.id = pi.image_id join pads p on pi.pad_id = p.id where p.pad_series_id = @Id;
-                            select * from pads where pad_series_id = @Id;
+                            select pads.* from pads where pad_series_id = @Id;
                             select po.* from pad_options po left join pads pc on po.pad_id = pc.id where pad_series_id = @Id;
                             select po.id as pad_option_id, pn.* from part_numbers pn join pad_option_part_numbers popn on pn.id = popn.part_number_id join pad_options po on po.id = popn.pad_option_id join pads p on po.pad_id = p.id where p.pad_series_id = @Id; 
                         ",
