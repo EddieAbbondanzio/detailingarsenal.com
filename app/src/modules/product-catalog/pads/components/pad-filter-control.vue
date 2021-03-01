@@ -1,6 +1,12 @@
 <template>
     <div>
-        <p class="is-size-5 has-text-weight-bold has-margin-bottom-3">Filter</p>
+        <div class="is-flex is-flex-row is-align-items-center has-margin-bottom-3">
+            <a @click="onHideSidebar" class="is-hidden-tablet is-flex is-align-items-center">
+                <b-icon icon="arrow-left" />
+            </a>
+
+            <p class="is-size-5 has-text-weight-bold has-margin-bottom-0">Filter</p>
+        </div>
 
         <pad-filter-control-section label="Brand">
             <div class="is-flex is-flex-column">
@@ -49,6 +55,7 @@ import padStore from '../store/pad/pad-store';
 import { ArrayUtils } from '@/core/utils/array-utils';
 import { displayLoading } from '@/core';
 import PadFilterControlSection from '@/modules/product-catalog/pads/components/pad-filter-control-section.vue';
+import appStore from '@/core/store/app-store';
 
 @Component({
     name: 'pad-filter-control',
@@ -137,6 +144,10 @@ export default class PadFilterControl extends Vue {
 
         this.selectedSeries = [];
         this.refreshData();
+    }
+
+    onHideSidebar() {
+        appStore.HIDE_SIDEBAR();
     }
 }
 </script>

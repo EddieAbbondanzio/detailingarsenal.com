@@ -18,6 +18,14 @@
             </page-sidebar>
         </template>
 
+        <div
+            class="box is-shadowless has-padding-all-3 has-margin-bottom-3 is-hidden-tablet is-flex is-flex-row is-align-items-center is-justify-content-space-between"
+        >
+            <p class="title is-6 has-margin-bottom-0">{{ paging.total }} pads</p>
+
+            <b-button type="is-primary" outlined @click="showSidebar">Filter</b-button>
+        </div>
+
         <b-table
             class="pads-table"
             :data="summaries"
@@ -186,6 +194,10 @@ export default class Pads extends Vue {
         this.loading = true;
         await padStore.goToPage(pageNumber);
         this.loading = false;
+    }
+
+    showSidebar() {
+        appStore.SHOW_SIDEBAR();
     }
 }
 

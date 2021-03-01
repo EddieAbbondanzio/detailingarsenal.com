@@ -8,6 +8,7 @@ import store from '@/core/store/index';
 @Module({ namespaced: true, name: 'app', dynamic: true, store })
 class AppStore extends InitableModule {
     loading = false;
+    sidebar = false;
 
     @Mutation
     LOADING() {
@@ -17,6 +18,21 @@ class AppStore extends InitableModule {
     @Mutation
     LOADED() {
         this.loading = false;
+    }
+
+    @Mutation
+    SHOW_SIDEBAR() {
+        this.sidebar = true;
+    }
+
+    @Mutation
+    HIDE_SIDEBAR() {
+        this.sidebar = false;
+    }
+
+    @Mutation
+    TOGGLE_SIDEBAR(open: boolean) {
+        this.sidebar = open;
     }
 }
 
