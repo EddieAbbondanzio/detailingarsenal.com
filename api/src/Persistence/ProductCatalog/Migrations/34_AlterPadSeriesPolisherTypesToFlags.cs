@@ -23,7 +23,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
                         padSeriesPolisherTypeMap.Add(raw.pad_series_id, existing);
                     }
 
-                    existing.Add((PolisherType)raw.polisher_type);
+                    existing.Add(raw.polisher_type switch {
+                        "dual_action" => PolisherType.DualAction,
+                        "forced_rotation" => PolisherType.ForcedRotation,
+                        "long_throw" => PolisherType.LongThrow,
+                        "mini" => PolisherType.Mini,
+                        "rotary" => PolisherType.Rotary,
+                        _ => PolisherType.None
+                    });
                 }
 
                 var finals = new List<object>();
@@ -55,7 +62,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
                     }
 
                     if (pt.PolisherType.HasFlag(PolisherType.LongThrow)) {
-                        types.Add("dual_action");
+                        types.Add("long_throw");
                     }
 
                     if (pt.PolisherType.HasFlag(PolisherType.ForcedRotation)) {
