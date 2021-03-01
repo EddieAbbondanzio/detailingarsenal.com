@@ -29,6 +29,7 @@
                     v-for="s in series"
                     :key="s.id"
                     @input="onSeriesInput"
+                    :title="s.brandName"
                 />
             </div>
         </b-field>
