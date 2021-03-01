@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dapper;
 using DetailingArsenal.Domain.ProductCatalog;
 using FluentMigrator;
@@ -13,28 +14,37 @@ namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
             Execute.WithConnection((c, t) => {
                 var polisherTypes = c.Query("select * from pad_series_polisher_types");
 
-                var newPolisherTypes = new List<(Guid PadSeriesId, PolisherType PolisherType)>();
+                var lookUp = new Dictionary<Guid, List<PolisherType>>();
 
                 foreach (var pt in polisherTypes) {
-                    newPolisherTypes.Add((PadSeriesId: (Guid)pt.pad_series_id, PolisherType: (pt switch {
+                    List<PolisherType> existing;
+
+                    if (!lookUp.TryGetValue(pt.pad_series_id, out existing)) {
+                        existing = new();
+                        lookUp.Add(pt.pad_series_id, existing);
+                    }
+
+                    existing.Add(pt.polisher_type switch {
                         "dual_action" => PolisherType.DualAction,
                         "long_throw" => PolisherType.LongThrow,
                         "forced_rotation" => PolisherType.ForcedRotation,
                         "rotary" => PolisherType.Rotary,
                         "mini" => PolisherType.Mini,
                         _ => PolisherType.None
-                    })));
+                    });
                 }
 
-                c.Execute(@"update pad_series set polisher_types = @PolisherTypes where id = @Id;", newPolisherTypes);
+                var toUpdate = lookUp.ToArray().SelectMany(kvp => kvp.Value.Select(pt => new { Id = kvp.Key, PolisherType = pt }));
+
+                c.Execute(@"update pad_series set polisher_types = @PolisherTypes where id = @Id;", toUpdate);
             });
 
             Delete.Table("pad_series_polisher_types");
         }
 
         public override void Down() {
-            Create.Table("pad_polisher_types")
-            .WithColumn("pad_id").AsGuid().ForeignKey("pads", "id")
+            Create.Table("pad_series_polisher_types")
+            .WithColumn("pad_series_id").AsGuid().ForeignKey("pad_series", "id")
             .WithColumn("polisher_type").AsString(32);
 
             Execute.WithConnection((c, t) => {
