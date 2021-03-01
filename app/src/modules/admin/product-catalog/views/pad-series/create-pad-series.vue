@@ -452,6 +452,13 @@ export default class CreatePadSeries extends Vue {
                 partNumbers: [{ id: null, value: '', notes: null }]
             }))
         };
+
+        // Auto populate some fields
+        if (this.pads.length > 0) {
+            this.modalPad.material = this.pads[0].material;
+            this.modalPad.texture = this.pads[0].texture;
+            this.modalPad.hasCenterHole = this.pads[0].hasCenterHole;
+        }
     }
 
     onOptionAddAnother() {
