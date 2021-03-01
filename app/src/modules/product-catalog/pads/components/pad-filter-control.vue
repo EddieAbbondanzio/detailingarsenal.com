@@ -2,7 +2,7 @@
     <div>
         <p class="is-size-5 has-text-weight-bold has-margin-bottom-3">Filter</p>
 
-        <b-field label="Brands">
+        <pad-filter-control-section label="Brand">
             <div class="is-flex is-flex-column">
                 <input-checkbox label="All" @input="toggleAllBrands" class="has-margin-bottom-0" v-model="allBrands" />
                 <input-checkbox
@@ -15,10 +15,9 @@
                     @input="onBrandInput"
                 />
             </div>
-        </b-field>
+        </pad-filter-control-section>
 
-        <!-- Series -->
-        <b-field label="Series">
+        <pad-filter-control-section label="Series">
             <div class="is-flex is-flex-column">
                 <input-checkbox label="All" @input="toggleAllSeries" class="has-margin-bottom-0" v-model="allSeries" />
                 <input-checkbox
@@ -32,7 +31,7 @@
                     :title="s.brandName"
                 />
             </div>
-        </b-field>
+        </pad-filter-control-section>
 
         <!-- Reset -->
         <b-button type="is-danger" outlined @click="onReset">Reset</b-button>
@@ -49,9 +48,13 @@ import { MutationPayload } from 'vuex';
 import padStore from '../store/pad/pad-store';
 import { ArrayUtils } from '@/core/utils/array-utils';
 import { displayLoading } from '@/core';
+import PadFilterControlSection from '@/modules/product-catalog/pads/components/pad-filter-control-section.vue';
 
 @Component({
-    name: 'pad-filter-control'
+    name: 'pad-filter-control',
+    components: {
+        PadFilterControlSection
+    }
 })
 export default class PadFilterControl extends Vue {
     /**
