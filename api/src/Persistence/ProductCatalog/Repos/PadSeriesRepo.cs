@@ -330,7 +330,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         new PadSeriesRow() {
                             Id = series.Id,
                             BrandId = series.BrandId,
-                            Name = series.Name
+                            Name = series.Name,
+                            PolisherTypes = Flatten(series.PolisherTypes)
                         }
                     );
 

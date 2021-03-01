@@ -371,7 +371,6 @@ export default class UpdatePadSeries extends Vue {
         this.name = padSeries.name;
         this.brand = padSeries.brand;
         this.polisherTypes = padSeries.polisherTypes ?? [];
-        console.log(this.polisherTypes);
 
         this.sizes = padSeries.sizes.map(s => ({
             id: s.id,
