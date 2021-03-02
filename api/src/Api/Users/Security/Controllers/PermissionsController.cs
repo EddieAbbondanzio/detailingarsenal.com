@@ -10,10 +10,10 @@ namespace DetailingArsenal.Api.Users.Security {
     [Authorize]
     [Route("/security/permissions")]
     [ApiController]
-    public class PermissionController : ControllerBase {
+    public class PermissionsController : ControllerBase {
         IMediator mediator;
 
-        public PermissionController(IMediator mediator) {
+        public PermissionsController(IMediator mediator) {
             this.mediator = mediator;
         }
 

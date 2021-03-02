@@ -4,12 +4,12 @@ import store from '@/core/store/index';
 import {
     Pad,
     api,
-    PadSeriesFilterLegend,
+    PadFilterLegend,
     PadSeries,
     PagedArray,
     Paging,
     PadSeriesGetAllRequest,
-    PadSeriesFilter
+    PadFilter
 } from '@/api';
 import _ from 'lodash';
 
@@ -19,12 +19,12 @@ class PadStore extends InitableModule {
         return this.series?.values.flatMap(s => s.pads) ?? [];
     }
 
-    legend: PadSeriesFilterLegend = { brands: [], series: [] };
-    filter: PadSeriesFilter = {};
+    legend: PadFilterLegend = { brands: [], series: [] };
+    filter: PadFilter = {};
     series: PagedArray<PadSeries> = { paging: { pageCount: 1, pageSize: 20, pageNumber: 0, total: 0 }, values: [] };
 
     @Mutation
-    SET_LEGEND(legend: PadSeriesFilterLegend) {
+    SET_LEGEND(legend: PadFilterLegend) {
         this.legend = legend;
     }
 
@@ -34,7 +34,7 @@ class PadStore extends InitableModule {
     }
 
     @Mutation
-    SET_FILTER(filter: PadSeriesFilter) {
+    SET_FILTER(filter: PadFilter) {
         this.filter = filter;
     }
 
@@ -54,7 +54,7 @@ class PadStore extends InitableModule {
     }
 
     @Action({ rawError: true })
-    async getAll(filter?: PadSeriesFilter) {
+    async getAll(filter?: PadFilter) {
         const series = await api.productCatalog.padSeries.get({
             ...filter,
             paging: this.series.paging

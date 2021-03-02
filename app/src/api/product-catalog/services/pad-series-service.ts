@@ -9,7 +9,7 @@ import { Rating } from '../data-transfer-objects/rating';
 import { Image } from '../data-transfer-objects/image';
 import { PadOption } from '../data-transfer-objects/pad-option';
 import { Measurement } from '../data-transfer-objects/measurement';
-import { PadSeriesFilterLegend } from '../data-transfer-objects/pad-series-filter-legend';
+import { PadFilterLegend } from '../data-transfer-objects/pad-filter-legend';
 import { PagedArray } from '@/api/core/data-transfer-objects/paged-array';
 import { PadSeriesGetAllRequest } from '../data-transfer-objects/requests/pad-series-get-all-request';
 
@@ -18,7 +18,7 @@ export class PadSeriesService {
         // TODO: Switch to query string?
         const res =
             filter != null
-                ? await http.post('product-catalog/pad-series/filter', filter)
+                ? await http.post('product-catalog/pads/filter', filter)
                 : await http.get('product-catalog/pad-series');
 
         return {

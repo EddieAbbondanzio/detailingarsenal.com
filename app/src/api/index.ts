@@ -86,5 +86,5 @@ export * from './product-catalog/data-transfer-objects/review';
 export * from './product-catalog/data-transfer-objects/requests/review-create-request';
 export * from './product-catalog/data-transfer-objects/measurement';
 export * from './product-catalog/data-transfer-objects/measurement-unit';
-export * from './product-catalog/data-transfer-objects/pad-series-filter';
-export * from './product-catalog/data-transfer-objects/pad-series-filter-legend';
+export * from './product-catalog/data-transfer-objects/pad-filter';
+export * from './product-catalog/data-transfer-objects/pad-filter-legend';
