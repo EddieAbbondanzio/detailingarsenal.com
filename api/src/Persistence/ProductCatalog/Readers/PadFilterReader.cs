@@ -5,10 +5,10 @@ using DetailingArsenal.Application.ProductCatalog;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
-    public class PadSeriesFilterReader : DatabaseInteractor, IPadSeriesFilterReader {
-        public PadSeriesFilterReader(IDatabase database) : base(database) { }
+    public class PadFilterReader : DatabaseInteractor, IPadFilterReader {
+        public PadFilterReader(IDatabase database) : base(database) { }
 
-        public async Task<PadSeriesFilterReadModel> Read() {
+        public async Task<PadFilterReadModel> Read() {
             using (var conn = OpenConnection()) {
                 using (var reader = await conn.QueryMultipleAsync(@"
                     select b.id, b.name from pads p 
@@ -20,10 +20,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         join brands b on ps.brand_id = b.id
                         order by ps.name;
                 ")) {
-                    var brands = reader.Read<PadSeriesFilterBrandReadModel>();
-                    var series = reader.Read().Select(s => new PadSeriesFilterSeriesReadModel(s.id, s.name, s.brand_name)); //Dapper isn't find ctor.
+                    var brands = reader.Read<PadFilterBrandReadModel>();
+                    var series = reader.Read().Select(s => new PadFilterSeriesReadModel(s.id, s.name, s.brand_name)); //Dapper isn't find ctor.
 
-                    return new PadSeriesFilterReadModel(brands, series);
+                    return new PadFilterReadModel(brands, series);
                 }
             }
         }

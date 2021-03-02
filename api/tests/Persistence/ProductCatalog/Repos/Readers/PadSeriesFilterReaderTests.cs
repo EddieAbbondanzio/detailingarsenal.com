@@ -50,7 +50,7 @@ namespace DetailingArsenal.Tests.Persistence.ProductCatalog {
 
         [TestMethod]
         public async Task Read() {
-            var reader = new PadSeriesFilterReader(Database);
+            var reader = new PadFilterReader(Database);
             var filter = await reader.Read();
 
             Assert.AreEqual(1, filter.Brands.Count()); // No empty brands

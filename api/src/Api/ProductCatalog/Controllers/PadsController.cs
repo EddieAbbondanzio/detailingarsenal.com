@@ -21,9 +21,14 @@ namespace DetailingArsenal.Api.ProductCatalog {
         }
 
         [HttpGet("filter")]
-        public async Task<IActionResult> Get() {
-            var filter = await mediator.Dispatch<GetPadSeriesFilterQuery, PadSeriesFilterReadModel>();
+        public async Task<IActionResult> GetFilter() {
+            var filter = await mediator.Dispatch<GetPadSeriesFilterQuery, PadFilterReadModel>();
             return Ok(filter);
+        }
+
+        public async Task<IActionResult> GetAll(GetAllPadsQuery query) {
+            var pads = await mediator.Dispatch<GetAllPadsQuery, PagedArray<PadSummaryReadModel>>(query);
+            return Ok(pads);
         }
     }
 }
