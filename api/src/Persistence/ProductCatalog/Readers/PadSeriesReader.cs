@@ -126,12 +126,15 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
         }
 
 
-        public async Task<PagedArray<PadSeriesReadModel>> ReadAll(GetAllPadSeriesQuery query) {
+        public async Task<PagedCollection<PadSeriesReadModel>> ReadAll(PagingOptions paging) {
             using (var conn = OpenConnection()) {
                 // Pull in the parent records first
-                var parentSql = BuildReadAllPadSeriesParentSql(query);
                 var series = await conn.QueryAsync<PadSeriesRow, BrandRow, PadSeriesReadModel>(
-                    parentSql,
+                    @"
+                    select * from pad_series ps 
+                    join brands b on ps.brand_id = b.id
+                    order by b.name limit @Limit offset @Offset;
+                    ",
                     (ps, b) => new PadSeriesReadModel(
                         ps.Id,
                         ps.Name,
@@ -142,21 +145,34 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         ps.PolisherTypes.ToList()
                     ),
                     new {
-                        Brands = query.Brands,
-                        Series = query.Series,
-                        Limit = query.Paging.PageSize,
-                        Offset = query.Paging.PageSize * query.Paging.PageNumber
+                        Limit = paging.PageSize,
+                        Offset = paging.Offset
                     }
                 );
 
                 var seriesLookup = new Dictionary<Guid, PadSeriesReadModel>(series.Select(p => new KeyValuePair<Guid, PadSeriesReadModel>(p.Id, p)));
 
                 // Now get the rest
-                var childrenSql = BuildReadAllChildrenSql(query);
-                using (var reader = await conn.QueryMultipleAsync(childrenSql, new {
-                    Brands = query.Brands,
-                    Series = series.Select(s => s.Id).ToArray() // We only want series that we got back.
-                })) {
+                using (var reader = await conn.QueryMultipleAsync(
+                    @"
+                    select count(*) from pads p
+                    select * from pad_sizes where pad_series_id = any(@Series);
+                    select pi.* from pad_images pi 
+                        join pads p on pi.pad_id = p.id 
+                        where pad_series_id = any(@Series);
+                    select p.* from pads p
+                        where pad_series_id = any(@Series)
+                        group by p.id
+                        order by name;
+                    select po.* from pad_options po 
+                        left join pads pc on po.pad_id = pc.id;
+                    select po.id as pad_option_id, pn.* from part_numbers pn 
+                        join pad_option_part_numbers popn on pn.id = popn.part_number_id 
+                        join pad_options po on po.id = popn.pad_option_id;
+                    "
+                    , new {
+                        Series = series.Select(s => s.Id).ToArray() // We only want series that we got back.
+                    })) {
                     var totalCount = reader.ReadFirst<int>();
 
                     var sizes = reader.Read<PadSizeRow>();
@@ -232,86 +248,9 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                         }
                     }
 
-                    return new PagedArray<PadSeriesReadModel>(new Paging(query.Paging, totalCount), seriesLookup.Values.ToArray());
+                    return new PagedCollection<PadSeriesReadModel>(new Paging(paging, totalCount), seriesLookup.Values);
                 }
             }
-        }
-
-        /// <summary>
-        /// Build the sql query that pulls in pad series parent records.
-        /// </summary>
-        /// <param name="query">The query to build SQL for</param>
-        string BuildReadAllPadSeriesParentSql(GetAllPadSeriesQuery query) {
-            StringBuilder sb = new StringBuilder(@"
-                select * from pad_series ps 
-                join brands b on ps.brand_id = b.id
-            ");
-
-            bool addedFilter = false;
-
-            // Add pad series filter options as needed
-            if (query.Brands?.Length > 0) {
-                sb.Append(addedFilter ? "and " : " where ");
-                sb.Append("ps.brand_id = any(@Brands)");
-
-                addedFilter = true;
-            }
-
-            if (query.Series?.Length > 0) {
-                sb.Append(addedFilter ? "and " : " where ");
-                sb.Append("ps.id = any(@Series)");
-
-                addedFilter = true;
-            }
-
-            sb.Append("order by b.name limit @Limit offset @Offset;");
-
-            return sb.ToString();
-        }
-
-        string BuildReadAllChildrenSql(GetAllPadSeriesQuery query) {
-            StringBuilder sb = new StringBuilder(@"
-                select count(*) from pads p
-                    where p.pad_series_id = any(
-                select id from pad_series
-            ");
-
-            bool addedFilter = false;
-
-            // Add pad series filter options as needed
-            if (query.Brands?.Length > 0) {
-                sb.Append(addedFilter ? "and " : " where ");
-                sb.Append("brand_id = any(@Brands)");
-
-                addedFilter = true;
-            }
-
-            if (query.Series?.Length > 0) {
-                sb.Append(addedFilter ? "and " : " where ");
-                sb.Append("id = any(@Series)");
-
-                addedFilter = true;
-            }
-
-            sb.Append(");");
-
-            sb.Append(@"
-                select * from pad_sizes where pad_series_id = any(@Series);
-                select pi.* from pad_images pi 
-                    join pads p on pi.pad_id = p.id 
-                    where pad_series_id = any(@Series);
-                select p.* from pads p
-                    where pad_series_id = any(@Series)
-                    group by p.id
-                    order by name;
-                select po.* from pad_options po 
-                    left join pads pc on po.pad_id = pc.id;
-                select po.id as pad_option_id, pn.* from part_numbers pn 
-                    join pad_option_part_numbers popn on pn.id = popn.part_number_id 
-                    join pad_options po on po.id = popn.pad_option_id;
-            ");
-
-            return sb.ToString();
         }
     }
 }

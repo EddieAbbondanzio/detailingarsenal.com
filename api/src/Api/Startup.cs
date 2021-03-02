@@ -151,7 +151,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<PadSeriesCreateValidator>();
             services.AddTransient<PadSeriesUpdateValidator>();
             services.AddTransient<ActionHandler<GetPadSeriesByIdQuery, PadSeriesReadModel?>, GetPadSeriesByIdHandler>();
-            services.AddTransient<ActionHandler<GetAllPadSeriesQuery, PagedArray<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
+            services.AddTransient<ActionHandler<GetAllPadSeriesQuery, PagedCollection<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
             services.AddTransient<ActionHandler<PadSeriesCreateCommand, Guid>, PadSeriesCreateHandler>();
             services.AddTransient<ActionHandler<PadSeriesUpdateCommand>, PadSeriesUpdateHandler>();
             services.AddTransient<ActionHandler<PadSeriesDeleteCommand>, PadSeriesDeleteHandler>();

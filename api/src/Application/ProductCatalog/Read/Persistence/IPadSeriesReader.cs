@@ -5,6 +5,6 @@ using System.Threading.Tasks;
 namespace DetailingArsenal.Application.ProductCatalog {
     public interface IPadSeriesReader {
         Task<PadSeriesReadModel?> ReadById(Guid id);
-        Task<PagedArray<PadSeriesReadModel>> ReadAll(GetAllPadSeriesQuery query);
+        Task<PagedCollection<PadSeriesReadModel>> ReadAll(PagingOptions paging);
     }
 }

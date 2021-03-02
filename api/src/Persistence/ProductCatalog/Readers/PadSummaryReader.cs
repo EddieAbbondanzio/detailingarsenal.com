@@ -9,7 +9,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
     public class PadSummaryReader : DatabaseInteractor, IPadSummaryReader {
         public PadSummaryReader(IDatabase database) : base(database) { }
 
-        public async Task<PagedArray<PadSummaryReadModel>> ReadAll() {
+        public async Task<PagedCollection<PadSummaryReadModel>> ReadAll() {
             using (var conn = OpenConnection()) {
                 var raws = await conn.QueryAsync(@"
                     select * from pad_summaries;
@@ -30,7 +30,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     new PadSummaryRatingReadModel(r.stars, r.review_count)
                 ));
 
-                return new PagedArray<PadSummaryReadModel>(new Paging(0, 0, summaries.Count()), summaries.ToArray());
+                return new PagedCollection<PadSummaryReadModel>(new Paging(0, 0, summaries.Count()), summaries.ToArray());
             }
         }
     }
