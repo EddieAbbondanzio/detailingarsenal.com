@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using DetailingArsenal;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public record BrandCreateCommand : IAction {
         public string Name { get; }
 

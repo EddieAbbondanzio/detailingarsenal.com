@@ -1,6 +1,7 @@
 using System;
+using DetailingArsenal.Domain.ProductCatalog;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public class PadSizeCreateOrUpdate : IDataTransferObject {
         public Guid? Id { get; }
         public Measurement Diameter { get; }

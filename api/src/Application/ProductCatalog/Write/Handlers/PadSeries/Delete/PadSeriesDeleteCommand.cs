@@ -1,5 +1,5 @@
 using System;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public record PadSeriesDeleteCommand(Guid Id) : IAction;
 }

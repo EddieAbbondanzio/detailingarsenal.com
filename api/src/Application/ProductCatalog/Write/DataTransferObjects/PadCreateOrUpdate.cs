@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Shared;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public class PadCreateOrUpdate : IDataTransferObject {
         public Guid? Id { get; }
         public string Name { get; }

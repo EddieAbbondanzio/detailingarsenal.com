@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DetailingArsenal.Domain.ProductCatalog;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public record PadSeriesCreateCommand : IAction {
         public string Name { get; }
         public Guid BrandId { get; }

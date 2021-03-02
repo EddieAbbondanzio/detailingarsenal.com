@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public class PadOptionCreateOrUpdate : IDataTransferObject {
         public Guid? Id { get; }
         public int PadSizeIndex { get; }

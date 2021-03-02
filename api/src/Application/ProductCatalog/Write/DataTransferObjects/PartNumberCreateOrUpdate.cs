@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public class PartNumberCreateOrUpdate : IDataTransferObject {
         public Guid? Id { get; }
         public string Value { get; }

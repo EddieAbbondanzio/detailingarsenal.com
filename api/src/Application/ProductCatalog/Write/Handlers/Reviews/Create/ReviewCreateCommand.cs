@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public record ReviewCreateCommand : IAction {
         public Guid PadId { get; }
         public int Stars { get; }

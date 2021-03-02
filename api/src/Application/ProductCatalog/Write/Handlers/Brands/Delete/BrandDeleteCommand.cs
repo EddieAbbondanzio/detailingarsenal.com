@@ -1,5 +1,5 @@
 using System;
 
-namespace DetailingArsenal.Domain.ProductCatalog {
+namespace DetailingArsenal.Application.ProductCatalog {
     public record BrandDeleteCommand(Guid Id) : IAction;
 }
