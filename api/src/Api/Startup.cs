@@ -158,6 +158,7 @@ namespace DetailingArsenal.Api {
             services.AddTransient<ActionHandler<GetAllReviewsForPadQuery, List<ReviewReadModel>>, GetAllReviewsForPadHandler>();
             services.AddTransient<ActionHandler<GetReviewByIdQuery, ReviewReadModel?>, GetReviewByIdHandler>();
             services.AddTransient<ActionHandler<GetPadSeriesFilterQuery, PadFilterReadModel>, GetPadSeriesFilterHandler>();
+            services.AddTransient<ActionHandler<GetAllPadsQuery, PagedCollection<PadSummaryReadModel>>, GetAllPadsHandler>();
             services.AddTransient<ReviewCreateValidator>();
             services.AddTransient<PadSeriesPadSizeDiametersAreUniqueSpecification>();
             services.AddTransient<PadSeriesHasPadsSpecification>();

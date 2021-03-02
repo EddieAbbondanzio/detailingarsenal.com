@@ -7,7 +7,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog.Migrations {
         public override void Up() {
             Execute.WithConnection((c, o) => {
                 c.Execute(@"
-                    create view pad_summaries as 
+                    create view pads_view as 
                     select 
                         p.id, 
                         p.name, 

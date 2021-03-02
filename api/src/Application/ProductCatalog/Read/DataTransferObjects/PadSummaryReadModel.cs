@@ -34,5 +34,5 @@ namespace DetailingArsenal.Application.ProductCatalog {
     }
 
     public record PadSummarySeriesReadModel(Guid Id, string Name) : IDataTransferObject;
-    public record PadSummaryRatingReadModel(float Stars, int ReviewCount) : IDataTransferObject;
+    public record PadSummaryRatingReadModel(float? Stars, int ReviewCount) : IDataTransferObject;
 }
