@@ -4,7 +4,7 @@ import { PadSeriesFilterLegend } from '../data-transfer-objects/pad-series-filte
 
 export class PadSeriesFilterService {
     async get(): Promise<PadSeriesFilterLegend> {
-        var res = await http.get('product-catalog/pad-series/filter');
+        var res = await http.get('product-catalog/pads/filter');
         return res.data;
     }
 }

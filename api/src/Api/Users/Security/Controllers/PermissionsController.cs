@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DetailingArsenal.Api.Users.Security {
     [Authorize]
-    [Route("/security/permission")]
+    [Route("/security/permissions")]
     [ApiController]
     public class PermissionController : ControllerBase {
         IMediator mediator;

@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DetailingArsenal.Api.Users.Security {
     [Authorize]
-    [Route("/security/role")]
+    [Route("/security/roles")]
     [ApiController]
-    public class RoleController : ControllerBase {
+    public class RolesController : ControllerBase {
         IMediator mediator;
 
-        public RoleController(IMediator mediator) {
+        public RolesController(IMediator mediator) {
             this.mediator = mediator;
         }
 

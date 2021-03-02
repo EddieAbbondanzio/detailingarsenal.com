@@ -23,11 +23,11 @@ export class Pad {
     }
 
     get imageUrl() {
-        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/image/${this.image}` : null;
+        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/images/${this.image}` : null;
     }
 
     get thumbnailUrl() {
-        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/image/${this.image}/thumbnail` : null;
+        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/images/${this.image}/thumbnail` : null;
     }
 
     constructor(

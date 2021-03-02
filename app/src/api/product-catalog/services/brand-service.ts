@@ -6,7 +6,7 @@ import { BrandUpdateRequest } from '../data-transfer-objects/requests/brand-upda
 export class BrandService {
     async get() {
         try {
-            const res = await http.get('product-catalog/brand');
+            const res = await http.get('product-catalog/brands');
 
             if (res.data == null) {
                 return [];
@@ -23,19 +23,19 @@ export class BrandService {
     }
 
     async create(create: BrandCreateRequest) {
-        const res = await http.post('product-catalog/brand', create);
+        const res = await http.post('product-catalog/brands', create);
         const b = this._map(res.data);
         return b;
     }
 
     async update(update: BrandUpdateRequest) {
-        const res = await http.put(`product-catalog/brand/${update.id}`, update);
+        const res = await http.put(`product-catalog/brands/${update.id}`, update);
         const b = this._map(res.data);
         return b;
     }
 
     async delete(id: string) {
-        await http.delete(`product-catalog/brand/${id}`);
+        await http.delete(`product-catalog/brands/${id}`);
     }
 
     _map(b: any): Brand {

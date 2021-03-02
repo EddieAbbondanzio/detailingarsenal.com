@@ -64,6 +64,7 @@ export * from './product-catalog/data-transfer-objects/stars';
 export * from './product-catalog/data-transfer-objects/brand';
 export * from './product-catalog/data-transfer-objects/rating';
 export * from './product-catalog/data-transfer-objects/pad';
+export * from './product-catalog/data-transfer-objects/pad-summary';
 export * from './product-catalog/data-transfer-objects/pad-option';
 export * from './product-catalog/data-transfer-objects/pad-category';
 export * from './product-catalog/data-transfer-objects/pad-material';

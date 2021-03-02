@@ -22,7 +22,12 @@ export class PadSeriesService {
                 : await http.get('product-catalog/pad-series');
 
         return {
-            paging: res.data.paging,
+            paging: {
+                pageCount: res.data.paging.pageCount,
+                pageNumber: res.data.paging.pageNumber ?? 0,
+                pageSize: res.data.paging.pageSize,
+                total: res.data.paging.total
+            },
             values: ((res.data.values as any[]) ?? []).map(d => this._map(d))
         };
     }

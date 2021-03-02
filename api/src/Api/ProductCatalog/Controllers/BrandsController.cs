@@ -13,11 +13,11 @@ using DetailingArsenal.Application.ProductCatalog;
 namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
     [ApiController]
-    [Route("product-catalog/brand")]
-    public class BrandController : ControllerBase {
+    [Route("product-catalog/brands")]
+    public class BrandsController : ControllerBase {
         private IMediator mediator;
 
-        public BrandController(IMediator mediator) {
+        public BrandsController(IMediator mediator) {
             this.mediator = mediator;
         }
 

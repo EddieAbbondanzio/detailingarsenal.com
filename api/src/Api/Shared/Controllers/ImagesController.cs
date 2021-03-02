@@ -15,11 +15,11 @@ using DetailingArsenal.Application.Shared;
 
 namespace DetailingArsenal.Api.Shared {
     [ApiController]
-    [Route("image")]
-    public class ImageController : ControllerBase {
+    [Route("images")]
+    public class ImagesController : ControllerBase {
         IMediator mediator;
 
-        public ImageController(IMediator mediator) {
+        public ImagesController(IMediator mediator) {
             this.mediator = mediator;
         }
 

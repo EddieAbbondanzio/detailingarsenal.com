@@ -11,11 +11,11 @@ using Microsoft.Extensions.Logging;
 namespace DetailingArsenal.Api.Users {
     [Authorize]
     [ApiController]
-    [Route("user")]
-    public class UserController : ControllerBase {
+    [Route("users")]
+    public class UsersController : ControllerBase {
         private IMediator mediator;
 
-        public UserController(IMediator mediator) {
+        public UsersController(IMediator mediator) {
             this.mediator = mediator;
         }
 

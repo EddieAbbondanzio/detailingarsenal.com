@@ -12,15 +12,15 @@ using DetailingArsenal.Application.ProductCatalog;
 
 namespace DetailingArsenal.Api.ProductCatalog {
     [ApiController]
-    [Route("product-catalog/pad-series/filter")]
-    public class PadSeriesFilterController : ControllerBase {
+    [Route("product-catalog/pads")]
+    public class PadsController : ControllerBase {
         IMediator mediator;
 
-        public PadSeriesFilterController(IMediator mediator) {
+        public PadsController(IMediator mediator) {
             this.mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("filter")]
         public async Task<IActionResult> Get() {
             var filter = await mediator.Dispatch<GetPadSeriesFilterQuery, PadSeriesFilterReadModel>();
             return Ok(filter);

@@ -6,9 +6,6 @@
                 :description="`Compare buffing pads of multiple brands based on cut, finish, size, etc...`"
                 :backButton="false"
             >
-                <!-- <template v-slot:action>
-                            <b-button type="is-primary" outlined @click="onFiltersClick">Filters</b-button>
-                </template>-->
             </page-header>
         </template>
 
@@ -19,11 +16,11 @@
         </template>
 
         <div
-            class="box is-shadowless has-padding-all-3 has-margin-bottom-3 is-hidden-tablet is-flex is-flex-row is-align-items-center is-justify-content-space-between"
+            class="box is-shadowless has-padding-all-3 has-margin-bottom-3 is-flex is-flex-row is-align-items-center is-justify-content-space-between"
         >
-            <p class="title is-6 has-margin-bottom-0">{{ paging.total }} pads</p>
+            <p class="title is-6 is-5-tablet has-margin-bottom-0">{{ paging.total }} Pads</p>
 
-            <b-button type="is-primary" outlined @click="showSidebar">Filter</b-button>
+            <b-button class="is-hidden-tablet " type="is-primary" outlined @click="showSidebar">Filter</b-button>
         </div>
 
         <b-table
