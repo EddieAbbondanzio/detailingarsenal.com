@@ -203,7 +203,7 @@ class CalendarStore extends InitableModule {
 
     @Action({ rawError: true })
     async loadAppointments({ date, range }: { date: Date; range: CalendarRange }) {
-        const appointments = await api.scheduling.appointment.get(date, range);
+        const appointments = await api.scheduling.appointments.get(date, range);
         this.context.commit('CLEAR_NONPENDING_BLOCKS');
 
         this.context.commit(
@@ -214,14 +214,14 @@ class CalendarStore extends InitableModule {
 
     @Action({ rawError: true })
     async createAppointment(create: AppointmentCreate) {
-        let a = await api.scheduling.appointment.createAppointment(create);
+        let a = await api.scheduling.appointments.createAppointment(create);
         this.context.commit('ADD_BLOCKS', a.blocks);
         return a;
     }
 
     @Action({ rawError: true })
     async deleteAppointment(appointment: Appointment) {
-        await api.scheduling.appointment.deleteAppointment(appointment.id);
+        await api.scheduling.appointments.deleteAppointment(appointment.id);
         this.context.commit('DELETE_BLOCKS_FOR', appointment);
     }
 
@@ -230,7 +230,7 @@ class CalendarStore extends InitableModule {
         // Save off changes to backend, if the block isn't pending, and actually has changes
         if (!block.meta[BLOCK_PENDING_FLAG] && block.meta[BLOCK_MODIFIED]) {
             try {
-                await api.scheduling.appointment.updateAppointment(block.appointment);
+                await api.scheduling.appointments.updateAppointment(block.appointment);
                 toast(`Updated appointment`);
 
                 this.context.commit('REMOVE_BLOCK_META', {

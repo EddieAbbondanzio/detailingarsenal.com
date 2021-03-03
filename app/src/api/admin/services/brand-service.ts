@@ -1,6 +1,6 @@
-import { Brand } from '@/api';
 import { http } from '@/api/core/http';
-import { BrandCreateRequest } from '../data-transfer-objects/requests/brand-create-request';
+import { BrandCreateRequest } from '../../admin/data-transfer-objects/requests/brand-create-request';
+import { Brand } from '../data-transfer-objects/brand';
 import { BrandUpdateRequest } from '../data-transfer-objects/requests/brand-update-request';
 
 export class BrandService {

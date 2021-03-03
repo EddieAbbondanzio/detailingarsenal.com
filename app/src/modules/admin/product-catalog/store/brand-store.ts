@@ -34,25 +34,25 @@ class BrandStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const [brands] = await Promise.all([api.productCatalog.brand.get()]);
+        const [brands] = await Promise.all([api.productCatalog.brands.get()]);
 
         this.context.commit('SET_BRANDS', brands);
     }
 
     @Action({ rawError: true })
     async create(create: BrandCreateRequest) {
-        const brand = await api.productCatalog.brand.create(create);
+        const brand = await api.productCatalog.brands.create(create);
         this.context.commit('CREATE_BRAND', brand);
     }
 
     @Action({ rawError: true })
     async update(update: BrandUpdateRequest) {
-        const brand = await api.productCatalog.brand.update(update);
+        const brand = await api.productCatalog.brands.update(update);
         this.context.commit('UPDATE_BRAND', brand);
     }
     @Action({ rawError: true })
     async delete(brand: Brand) {
-        await api.productCatalog.brand.delete(brand.id);
+        await api.productCatalog.brands.delete(brand.id);
         this.context.commit('DELETE_BRAND', brand);
     }
 }

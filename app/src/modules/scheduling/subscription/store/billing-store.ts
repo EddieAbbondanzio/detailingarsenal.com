@@ -42,8 +42,8 @@ class BillingStore extends InitableModule {
     @Action({ rawError: true })
     async _init() {
         const [plan, customer] = await Promise.all([
-            api.scheduling.billing.subscriptionPlan.getDefault(),
-            api.scheduling.billing.customer.getCustomer()
+            api.scheduling.billing.subscriptionPlans.getDefault(),
+            api.scheduling.billing.customers.getCustomer()
         ]);
 
         this.context.commit('SET_DEFAULT_PLAN', plan);
@@ -52,19 +52,19 @@ class BillingStore extends InitableModule {
 
     @Action({ rawError: true })
     async createCheckoutSession(priceBillingId: string) {
-        var id = await api.scheduling.billing.checkoutSession.createSession(priceBillingId);
+        var id = await api.scheduling.billing.checkoutSessions.createSession(priceBillingId);
         await stripe.redirectToCheckout({ sessionId: id });
     }
 
     @Action({ rawError: true })
     async cancelSubscriptionAtPeriodEnd() {
-        await api.scheduling.billing.customer.cancelSubscription();
+        await api.scheduling.billing.customers.cancelSubscription();
         this.context.commit('MARK_AS_CANCELLING');
     }
 
     @Action({ rawError: true })
     async undoCancellingAtPeriodEnd() {
-        await api.scheduling.billing.customer.undoCancellingSubscription();
+        await api.scheduling.billing.customers.undoCancellingSubscription();
         this.context.commit('REMOVE_CANCELLING');
     }
 }

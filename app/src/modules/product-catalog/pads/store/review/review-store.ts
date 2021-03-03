@@ -19,13 +19,13 @@ class ReviewStore extends InitableModule {
 
     @Action({ rawError: true })
     async loadReviews(padId: string) {
-        const reviews = await api.productCatalog.review.getForPad(padId);
+        const reviews = await api.productCatalog.reviews.getForPad(padId);
         this.context.commit('SET_REVIEWS', reviews);
     }
 
     @Action({ rawError: true })
     async create(request: ReviewCreateRequest) {
-        const r = await api.productCatalog.review.create(request);
+        const r = await api.productCatalog.reviews.create(request);
 
         this.context.commit('ADD_REVIEW', r);
     }

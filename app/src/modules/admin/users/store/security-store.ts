@@ -66,8 +66,8 @@ class SecurityStore extends InitableModule {
     @Action({ rawError: true })
     async _init() {
         const [perms, roles] = await Promise.all([
-            api.scheduling.security.permission.getPermissions(),
-            api.scheduling.security.role.getRoles()
+            api.scheduling.security.permissions.getPermissions(),
+            api.scheduling.security.roles.getRoles()
         ]);
 
         this.context.commit('SET_PERMISSIONS', perms);
@@ -76,7 +76,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async createPermission(createPermission: PermissionCreateRequest) {
-        const p = await api.scheduling.security.permission.createPermission(createPermission);
+        const p = await api.scheduling.security.permissions.createPermission(createPermission);
         this.context.commit('CREATE_PERMISSION', p);
 
         return p;
@@ -84,7 +84,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async updatePermission(updatePermission: PermissionUpdateRequest) {
-        const p = await api.scheduling.security.permission.updatePermission(updatePermission);
+        const p = await api.scheduling.security.permissions.updatePermission(updatePermission);
         this.context.commit('UPDATE_PERMISSION', p);
 
         return p;
@@ -92,13 +92,13 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async deletePermission(permission: Permission) {
-        await api.scheduling.security.permission.deletePermission(permission);
+        await api.scheduling.security.permissions.deletePermission(permission);
         this.context.commit('DELETE_PERMISSION', permission);
     }
 
     @Action({ rawError: true })
     async createRole(createRole: RoleCreateRequest) {
-        const r = await api.scheduling.security.role.createRole(createRole);
+        const r = await api.scheduling.security.roles.createRole(createRole);
         this.context.commit('CREATE_ROLE', r);
 
         return r;
@@ -106,7 +106,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async updateRole(updateRole: RoleUpdateRequest) {
-        const r = await api.scheduling.security.role.updateRole(updateRole);
+        const r = await api.scheduling.security.roles.updateRole(updateRole);
         this.context.commit('UPDATE_ROLE', r);
 
         return r;
@@ -114,7 +114,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async deleteRole(role: Role) {
-        await api.scheduling.security.role.deleteRole(role);
+        await api.scheduling.security.roles.deleteRole(role);
         this.context.commit('DELETE_ROLE', role);
     }
 }

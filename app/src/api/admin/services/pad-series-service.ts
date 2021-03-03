@@ -3,15 +3,15 @@ import { PadSeries } from '../data-transfer-objects/pad-series';
 import { http } from '@/api/core/http';
 import { PadSize } from '../data-transfer-objects/pad-size';
 import { Pad } from '../data-transfer-objects/pad';
-import { PadSeriesCreateRequest } from '../data-transfer-objects/requests/pad-series-create-request';
-import { PadSeriesUpdateRequest } from '../data-transfer-objects/requests/pad-series-update-request';
-import { Rating } from '../data-transfer-objects/rating';
-import { Image } from '../data-transfer-objects/image';
+import { Rating } from '../../product-catalog/data-transfer-objects/rating';
+import { Image } from '../../core/data-transfer-objects/image';
 import { PadOption } from '../data-transfer-objects/pad-option';
-import { Measurement } from '../data-transfer-objects/measurement';
-import { PadFilterLegend } from '../data-transfer-objects/pad-filter-legend';
+import { PadFilterLegend } from '../../product-catalog/data-transfer-objects/pad-filter-legend';
 import { PagedArray } from '@/api/core/data-transfer-objects/paged-array';
+import { Measurement } from '..';
+import { PadSeriesCreateRequest } from '../data-transfer-objects/requests/pad-series-create-request';
 import { PadSeriesGetAllRequest } from '../data-transfer-objects/requests/pad-series-get-all-request';
+import { PadSeriesUpdateRequest } from '../data-transfer-objects/requests/pad-series-update-request';
 
 export class PadSeriesService {
     async get(filter?: PadSeriesGetAllRequest): Promise<PagedArray<PadSeries>> {

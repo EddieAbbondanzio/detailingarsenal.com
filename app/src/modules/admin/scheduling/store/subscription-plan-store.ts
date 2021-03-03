@@ -21,21 +21,21 @@ class SubscriptionPlanStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const [plans] = await Promise.all([api.scheduling.billing.subscriptionPlan.getPlans()]);
+        const [plans] = await Promise.all([api.scheduling.billing.subscriptionPlans.getPlans()]);
 
         this.context.commit('SET_SUBSCRIPTION_PLANS', plans);
     }
 
     @Action({ rawError: true })
     async refreshSubscriptionPlans() {
-        const plans = await api.scheduling.billing.subscriptionPlan.refreshPlans();
+        const plans = await api.scheduling.billing.subscriptionPlans.refreshPlans();
         this.context.commit('SET_SUBSCRIPTION_PLANS', plans);
         return plans;
     }
 
     @Action({ rawError: true })
     async updateSubscriptionPlan(update: SubscriptionPlanUpdateRequest) {
-        var p = await api.scheduling.billing.subscriptionPlan.updatePlan(update);
+        var p = await api.scheduling.billing.subscriptionPlans.updatePlan(update);
         this.context.commit('UPDATE_SUBSCRIPTION_PLAN', p);
 
         return p;
