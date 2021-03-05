@@ -16,5 +16,6 @@ module.exports = {
     testRegex: '(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
     moduleNameMapper: {
         '@/(.*)': '<rootDir>/src/$1'
-    }
+    },
+    setupFiles: ['./jest-setup.ts'],
 };
