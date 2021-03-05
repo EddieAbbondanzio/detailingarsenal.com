@@ -39,13 +39,14 @@
 </template>
 
 <script lang="ts">
-import { Pad, PadCut, PadFinish, Stars } from '@/api';
+import { PadCut, PadFinish, Stars } from '@/api/product-catalog';
 import { displayError, displayLoading } from '@/core';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import padStore from '../store/pad/pad-store';
 import PadCutInput from '@/modules/product-catalog/pads/components/pad-cut-input.vue';
 import PadFinishInput from '@/modules/product-catalog/pads/components/pad-finish-input.vue';
 import reviewStore from '../store/review/review-store';
+import { Pad } from '@/api/product-catalog/data-transfer-objects/pad';
 
 @Component({
     components: {
@@ -68,12 +69,12 @@ export default class WriteReview extends Vue {
 
     @displayLoading
     async created() {
-        this.value = padStore.pads.find(p => p.id == this.$route.params.padId)!;
+        this.value = padStore.pads.values.find(p => p.id == this.$route.params.padId)!;
 
         // Pull in the pad if we can't find it.
         if (this.value == null) {
-            await padStore.getAllBySeries(this.$route.params.padSeriesId);
-            this.value = padStore.pads.find(p => p.id == this.$route.params.padId)!;
+            await padStore.get(this.$route.params.padSeriesId);
+            this.value = padStore.pads.values.find(p => p.id == this.$route.params.padId)!;
         }
     }
 

@@ -8,11 +8,7 @@
     >
         <!-- Axis -->
         <div class="is-flex is-flex-column has-w-40px has-border-right">
-            <div
-                class="has-h-80px has-border-bottom"
-                v-for="hour in hours"
-                :key="`${hour.hour}-${hour.period}-key`"
-            >
+            <div class="has-h-80px has-border-bottom" v-for="hour in hours" :key="`${hour.hour}-${hour.period}-key`">
                 <div class="is-flex is-flex-row is-justify-content-end has-padding-right-1">
                     <span class="is-size-6">{{ hour.hour }}</span>
                     <span class="is-size-7 has-text-grey">{{ hour.period }}</span>
@@ -30,22 +26,19 @@
             >
                 <div :class="determineHourBackground(hour.raw)">
                     <div
-                        v-for="i in [0,1,2,3]"
+                        v-for="i in [0, 1, 2, 3]"
                         :key="i"
                         class="interval has-h-20px"
                         @mousedown.left.self="onCreateDragStart(hour.raw + i * 15)"
-                    >&nbsp;</div>
+                    >
+                        &nbsp;
+                    </div>
                 </div>
             </div>
 
             <!-- Appointment blocks -->
             <div class="blocks">
-                <calendar-block
-                    v-for="block in blocks"
-                    :key="block.id"
-                    :ref="`block-${block.time}`"
-                    :value="block"
-                />
+                <calendar-block v-for="block in blocks" :key="block.id" :ref="`block-${block.time}`" :value="block" />
             </div>
         </div>
     </div>
@@ -60,7 +53,7 @@ import Calendar from '../mixins/calendar';
 import calendarStore from '../store/calendar-store';
 import settingsStore from '@/modules/scheduling/settings/store/settings-store';
 import store from '@/core/store';
-import { HoursOfOperationDay } from '@/api';
+import { HoursOfOperationDay } from '@/api/scheduling';
 
 @Component({
     name: 'calendar-day',

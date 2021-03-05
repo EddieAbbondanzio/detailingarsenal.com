@@ -16,7 +16,7 @@ using DetailingArsenal.Domain.Shared;
 namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]
     [ApiController]
-    [Route("product-catalog/pad-series")]
+    [Route("admin/product-catalog/pad-series")]
     public class PadSeriesController : ControllerBase {
         IMediator mediator;
 

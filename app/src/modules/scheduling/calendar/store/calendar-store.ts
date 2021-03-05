@@ -9,14 +9,14 @@ import {
     BLOCK_MODIFIED,
     BLOCK_INITIAL_TIME,
     Appointment,
-    AppointmentCreate
-} from '@/api';
+    AppointmentCreate,
+    appointmentService
+} from '@/api/scheduling';
 import store from '@/core/store/index';
 import { CalendarCreateStep } from '@/modules/scheduling/calendar/store/calendar-create-step';
 import { CalendarRange } from '@/modules/scheduling/calendar/store/calendar-range';
 import { displayError } from '@/core/utils/display-error/display-error';
 import Vue from 'vue';
-import { api } from '@/api/api';
 
 /**
  * Store for the Calendar view.
@@ -203,7 +203,7 @@ class CalendarStore extends InitableModule {
 
     @Action({ rawError: true })
     async loadAppointments({ date, range }: { date: Date; range: CalendarRange }) {
-        const appointments = await api.scheduling.appointments.get(date, range);
+        const appointments = await appointmentService.get(date, range);
         this.context.commit('CLEAR_NONPENDING_BLOCKS');
 
         this.context.commit(
@@ -214,14 +214,14 @@ class CalendarStore extends InitableModule {
 
     @Action({ rawError: true })
     async createAppointment(create: AppointmentCreate) {
-        let a = await api.scheduling.appointments.createAppointment(create);
+        let a = await appointmentService.createAppointment(create);
         this.context.commit('ADD_BLOCKS', a.blocks);
         return a;
     }
 
     @Action({ rawError: true })
     async deleteAppointment(appointment: Appointment) {
-        await api.scheduling.appointments.deleteAppointment(appointment.id);
+        await appointmentService.deleteAppointment(appointment.id);
         this.context.commit('DELETE_BLOCKS_FOR', appointment);
     }
 
@@ -230,7 +230,7 @@ class CalendarStore extends InitableModule {
         // Save off changes to backend, if the block isn't pending, and actually has changes
         if (!block.meta[BLOCK_PENDING_FLAG] && block.meta[BLOCK_MODIFIED]) {
             try {
-                await api.scheduling.appointments.updateAppointment(block.appointment);
+                await appointmentService.updateAppointment(block.appointment);
                 toast(`Updated appointment`);
 
                 this.context.commit('REMOVE_BLOCK_META', {

@@ -1,5 +1,5 @@
-import { ReviewCreateRequest } from '@/api';
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
+import { ReviewCreateRequest } from '..';
 import { Review } from '../data-transfer-objects/review';
 
 export class ReviewService {
@@ -24,3 +24,5 @@ export class ReviewService {
         );
     }
 }
+
+export const reviewService = new ReviewService();

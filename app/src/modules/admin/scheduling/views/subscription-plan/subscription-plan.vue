@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { SubscriptionPlan } from '@/api';
+import { SubscriptionPlan } from '@/api/scheduling';
 import { displayLoading } from '@/core';
 import subscriptionPlanStore from '../../store/subscription-plan-store';
 
@@ -61,7 +61,7 @@ export default class SubscriptionPlanView extends Vue {
     @displayLoading
     async created() {
         await subscriptionPlanStore.init();
-        this.plan = subscriptionPlanStore.subscriptionPlans.find((p) => p.id == this.$route.params.id)!;
+        this.plan = subscriptionPlanStore.subscriptionPlans.find(p => p.id == this.$route.params.id)!;
     }
 }
 </script>

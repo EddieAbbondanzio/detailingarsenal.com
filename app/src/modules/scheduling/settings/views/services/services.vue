@@ -41,10 +41,10 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import settingsStore from '../../store/settings-store';
 import { confirmDelete, displayError, toast, displayLoading } from '@/core';
-import { Service } from '@/api';
+import { Service } from '@/api/scheduling';
 
 @Component({
-    name: 'services',
+    name: 'services'
 })
 export default class Services extends Vue {
     get count() {

@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Permission, SpecificationError } from '@/api';
+import { Permission } from '@/api/users';
 import { displayError, toast, displayLoading } from '@/core';
 import securityStore from '../../store/security-store';
 import InputViewMixin from '@/core/mixins/input-view-mixin';
@@ -65,7 +65,7 @@ export default class CreateRole extends InputViewMixin {
         await securityStore.init();
 
         if (this.mode == 'update') {
-            const role = securityStore.roles.find((r) => r.id == this.$route.params.id);
+            const role = securityStore.roles.find(r => r.id == this.$route.params.id);
 
             if (role == null) {
                 this.$router.go(-1);
@@ -83,14 +83,14 @@ export default class CreateRole extends InputViewMixin {
             if (this.mode == 'create') {
                 const create = {
                     name: this.name,
-                    permissionIds: this.enabledPermissions.map((p) => p.id),
+                    permissionIds: this.enabledPermissions.map(p => p.id)
                 };
                 const role = await securityStore.createRole(create);
             } else {
                 const update = {
                     id: this.$route.params.id,
                     name: this.name,
-                    permissionIds: [...new Set(this.enabledPermissions.map((p) => p.id))],
+                    permissionIds: [...new Set(this.enabledPermissions.map(p => p.id))]
                 };
 
                 const role = await securityStore.updateRole(update);

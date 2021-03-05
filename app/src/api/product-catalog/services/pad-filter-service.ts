@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import brandStore from '@/modules/admin/product-catalog/store/brand-store';
 import { PadFilterLegend } from '../data-transfer-objects/pad-filter-legend';
 
@@ -8,3 +8,5 @@ export class PadFilterService {
         return res.data;
     }
 }
+
+export const padFilterService = new PadFilterService();

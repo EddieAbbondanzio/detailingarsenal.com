@@ -4,13 +4,9 @@
             <page-header title="Create vehicle category" :description="`Create vehicle category`">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb name="Vehicle categories" :to="{name: 'vehicleCategories'}" />
-                        <breadcrumb
-                            name="Create"
-                            :to="{name: 'createVehicleCategory'}"
-                            active="true"
-                        />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Vehicle categories" :to="{ name: 'vehicleCategories' }" />
+                        <breadcrumb name="Create" :to="{ name: 'createVehicleCategory' }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -45,7 +41,7 @@ import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
 import settingsStore from '../../store/settings-store';
-import { ValidationError, SpecificationError } from '@/api';
+import { ValidationError, SpecificationError } from '@/api/shared';
 
 /**
  * View to create a new vehicle category.

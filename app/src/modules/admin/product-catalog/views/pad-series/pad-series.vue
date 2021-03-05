@@ -52,7 +52,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading, confirmDelete, toast, displayError } from '@/core';
-import { Pad, PadSeries } from '@/api';
+import { Pad, PadSeries } from '@/api/admin';
 import adminPadStore from '../../store/admin-pad-store';
 
 @Component

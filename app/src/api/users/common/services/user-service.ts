@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { User } from '../data-transfer-objects/user';
 import { UserPermission } from '../data-transfer-objects/user-permission';
 

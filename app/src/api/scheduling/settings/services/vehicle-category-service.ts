@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { VehicleCategory } from '@/api/scheduling/settings/data-transfer-objects/vehicle-category';
 import { VehicleCategoryCreate } from '@/api/scheduling/settings/data-transfer-objects/vehicle-category-create';
 import { VehicleCategoryUpdate } from '@/api/scheduling/settings/data-transfer-objects/vehicle-category-update';
@@ -47,3 +47,5 @@ export class VehicleCategoryService {
         await http.delete(`/settings/vehicle-category/${vehicleCategory.id}`);
     }
 }
+
+export const vehicleCategoryService = new VehicleCategoryService();

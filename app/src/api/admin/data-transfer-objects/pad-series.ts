@@ -1,7 +1,5 @@
 import { Brand } from './brand';
-import { PadMaterial } from './pad-material';
-import { PadTexture } from './pad-texture';
-import { PolisherType } from './polisher-type';
+import { PolisherType } from '../../shared/data-transfer-objects/polisher-type';
 import { Pad } from './pad';
 import { PadSize } from './pad-size';
 

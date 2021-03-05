@@ -1,6 +1,6 @@
 import { SubscriptionPlanPrice } from '@/api/scheduling/billing/data-transfer-objects/subscription-plan-price';
 import { SubscriptionPlan } from '@/api/scheduling/billing/data-transfer-objects/subscription-plan';
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { SubscriptionPlanUpdateRequest } from '../data-transfer-objects/requests/subscription-plan-update-request';
 
 export class SubscriptionPlanService {
@@ -37,3 +37,5 @@ export class SubscriptionPlanService {
         });
     }
 }
+
+export const subscriptionPlanService = new SubscriptionPlanService();

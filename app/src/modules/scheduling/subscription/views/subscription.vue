@@ -237,11 +237,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Subscription as SubscriptionObj, Customer } from '../../../../api';
 import moment from 'moment';
 import { displayLoading } from '../../../../core';
 import billingStore from '@/modules/scheduling/subscription/store/billing-store';
 import { loadStripeJs } from '@/plugins/stripe';
+import { Customer } from '@/api/scheduling';
 
 @Component
 export default class Subscription extends Vue {

@@ -1,4 +1,4 @@
-import { PartNumber } from './part-number';
+import { PartNumber } from '../../shared/data-transfer-objects/part-number';
 
 export interface PadOption {
     id: string | null;

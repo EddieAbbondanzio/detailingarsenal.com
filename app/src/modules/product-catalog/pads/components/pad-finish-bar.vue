@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { PadFinish } from '@/api';
+import { PadFinish } from '@/api/product-catalog';
 
 @Component({ name: 'pad-finish-bar' })
 export default class PadFinishBar extends Vue {

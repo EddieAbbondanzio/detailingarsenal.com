@@ -46,10 +46,10 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading } from '@/core';
 import subscriptionPlanStore from '@/modules/admin/scheduling/store/subscription-plan-store';
-import { SubscriptionPlan } from '@/api';
+import { SubscriptionPlan } from '@/api/scheduling';
 
 @Component({
-    name: 'subscription-plans',
+    name: 'subscription-plans'
 })
 export default class SubscriptionPlans extends Vue {
     get plans() {

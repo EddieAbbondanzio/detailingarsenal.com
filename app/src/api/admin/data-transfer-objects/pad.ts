@@ -1,27 +1,14 @@
-import { Brand, PadCategory, PadSeries, Stars } from '@/api';
-import { PadFinish } from './pad-finish';
-import { PadCut } from './pad-cut';
-import { Rating } from './rating';
-import { Image } from './image';
+import { PadFinish } from '../../product-catalog/data-transfer-objects/pad-finish';
+import { PadCut } from '../../product-catalog/data-transfer-objects/pad-cut';
+import { Rating } from '../../product-catalog/data-transfer-objects/rating';
+import { Image } from '../../shared/data-transfer-objects/image';
 import { PadOption } from './pad-option';
-import { PadMaterial } from './pad-material';
-import { PadTexture } from './pad-texture';
-import { PadColor } from './pad-color';
+import { PadTexture } from '../../shared/data-transfer-objects/pad-texture';
+import { PadColor } from '../../shared/data-transfer-objects/pad-color';
+import { PadSeries } from '..';
+import { PadCategory, PadMaterial } from '@/api/shared';
 
 export class Pad {
-    get label() {
-        /*
-         *  Some brands have pads without a series. Ex: Griots Garage.
-         * To compensate for this we create a series with the same name
-         * as the brand, and simply hide it.
-         */
-        if (this.series.brand.name == this.series.name) {
-            return `${this.series.brand.name} ${this.name}`;
-        } else {
-            return `${this.series.brand.name} ${this.series.name} ${this.name}`;
-        }
-    }
-
     get imageUrl() {
         return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/images/${this.image}` : null;
     }
@@ -32,7 +19,6 @@ export class Pad {
 
     constructor(
         public id: string,
-        public series: PadSeries, // Used for quick lookup of series info only
         public name: string,
         public category: PadCategory[],
         public material: PadMaterial | null,

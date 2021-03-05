@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 
 /**
  *
@@ -12,3 +12,5 @@ export class CheckoutSessionService {
         return res.data.checkoutSessionId as string;
     }
 }
+
+export const checkoutSessionService = new CheckoutSessionService();

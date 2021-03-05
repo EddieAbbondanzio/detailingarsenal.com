@@ -1,8 +1,7 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { api } from '@/api/api';
-import { Client, ClientUpdate, ClientCreate } from '@/api';
+import { Client, ClientUpdate, ClientCreate, clientService } from '@/api/scheduling';
 
 /**
  * Store for the schedule view.
@@ -38,27 +37,27 @@ class ClientsStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const clients = await api.scheduling.clients.getClients();
+        const clients = await clientService.getClients();
         this.context.commit('SET_CLIENTS', clients);
     }
 
     @Action({ rawError: true })
     public async createClient(create: ClientCreate): Promise<Client> {
-        const c = await api.scheduling.clients.createClient(create);
+        const c = await clientService.createClient(create);
         this.context.commit('CREATE_CLIENT', c);
         return c;
     }
 
     @Action({ rawError: true })
     public async updateClient(update: ClientUpdate): Promise<Client> {
-        const c = await api.scheduling.clients.updateClient(update);
+        const c = await clientService.updateClient(update);
         this.context.commit('UPDATE_CLIENT', c);
         return c;
     }
 
     @Action({ rawError: true })
     public async deleteClient(client: Client) {
-        await api.scheduling.clients.deleteClient(client);
+        await clientService.deleteClient(client);
         this.context.commit('DELETE_CLIENT', client);
     }
 }

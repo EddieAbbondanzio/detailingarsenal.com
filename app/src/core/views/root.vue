@@ -24,8 +24,6 @@
     </div>
 </template>
 <script lang="ts">
-import { api } from '@/api';
-import userStore from '@/modules/user/core/store/user-store';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 

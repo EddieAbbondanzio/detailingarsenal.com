@@ -13,7 +13,7 @@ using Moq;
 
 namespace DetailingArsenal.Tests.Persistence.ProductCatalog {
     [TestClass, TestCategory("Integration")]
-    public class PadSeriesFilterTests : DatabaseIntegrationTests {
+    public class PadFilterTests : DatabaseIntegrationTests {
         [ClassInitialize]
         public static async Task InsertTestData(TestContext context) {
             // Ensure actually empty

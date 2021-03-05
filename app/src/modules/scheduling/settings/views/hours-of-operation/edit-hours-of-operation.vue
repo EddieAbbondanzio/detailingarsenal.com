@@ -1,30 +1,19 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header
-                title="Edit hours of operation"
-                description="Edit the hours the business is open"
-            >
+            <page-header title="Edit hours of operation" description="Edit the hours the business is open">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb name="Hours of operation" :to="{name: 'hoursOfOperation'}" />
-                        <breadcrumb
-                            name="Edit"
-                            :to="{name: 'editHoursOfOperation'}"
-                            :active="true"
-                        />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Hours of operation" :to="{ name: 'hoursOfOperation' }" />
+                        <breadcrumb name="Edit" :to="{ name: 'editHoursOfOperation' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
         <input-form submitText="Save changes" @submit="onSubmit" :errorSummary="true">
-            <div
-                class="is-flex is-flex-row is-align-items-center"
-                v-for="day in days"
-                :key="day.name"
-            >
+            <div class="is-flex is-flex-row is-align-items-center" v-for="day in days" :key="day.name">
                 <input-checkbox
                     :id="`enabled-${day.name}`"
                     class="has-margin-bottom-0"
@@ -47,11 +36,7 @@
                         :hideErrors="true"
                         :hideLabel="true"
                     >
-                        <option
-                            v-for="time in times"
-                            :key="time"
-                            :value="time"
-                        >{{ time | twelveHourFormat }}</option>
+                        <option v-for="time in times" :key="time" :value="time">{{ time | twelveHourFormat }}</option>
                     </input-select>
 
                     <span class="has-margin-x-1 has-margin-x-3-tablet">to</span>
@@ -66,11 +51,7 @@
                         :hideErrors="true"
                         :hideLabel="true"
                     >
-                        <option
-                            v-for="time in times"
-                            :key="time"
-                            :value="time"
-                        >{{ time | twelveHourFormat }}</option>
+                        <option v-for="time in times" :key="time" :value="time">{{ time | twelveHourFormat }}</option>
                     </input-select>
                 </div>
             </div>
@@ -97,7 +78,7 @@ import { ValidationObserver } from 'vee-validate';
 import { DayOfTheWeek } from '@/core/store/day-of-the-week';
 import settingsStore from '../../store/settings-store';
 import { TimeUtils, displayError, toast, displayLoading } from '@/core';
-import { HoursOfOperationUpdate } from '@/api';
+import { HoursOfOperationUpdate } from '@/api/scheduling';
 
 /**
  * View to edit hours of operation.

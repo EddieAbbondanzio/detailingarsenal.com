@@ -300,26 +300,21 @@ import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
 import brandStore from '../../store/brand-store';
 import {
-    Brand,
     Image,
     PadCategory,
     PadMaterial,
     PadTexture,
     PolisherType,
     SpecificationError,
-    PadOption,
-    PadCreateOrUpdate,
-    PadSizeCreateOrUpdate,
-    PadSize,
-    PadOptionCreateOrUpdate,
     MeasurementUnit
-} from '@/api';
+} from '@/api/shared';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
-import { PadColor } from '@/api/product-catalog/data-transfer-objects/pad-color';
+import { PadColor } from '@/api/shared';
 import { measurement } from '@/modules/shared/filters/measurement';
 import store from '@/core/store';
+import { Brand, PadSizeCreateOrUpdate, PadCreateOrUpdate } from '@/api/admin';
 
 @Component({
     components: {

@@ -40,13 +40,13 @@
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import { toast, displayLoading, confirmDelete, displayError } from '@/core';
 import settingsStore from '../../store/settings-store';
-import { VehicleCategory } from '@/api';
+import { VehicleCategory } from '@/api/scheduling';
 
 /**
  * Settings page for managing vehicle categories.
  */
 @Component({
-    name: 'vehicle-categories',
+    name: 'vehicle-categories'
 })
 export default class VehicleCategories extends Vue {
     get count() {

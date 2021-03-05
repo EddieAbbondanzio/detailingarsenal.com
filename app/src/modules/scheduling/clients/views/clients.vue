@@ -9,34 +9,26 @@
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Clients" :to="{name: 'clients'}" :active="true" />
+                        <breadcrumb name="Clients" :to="{ name: 'clients' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
 
                 <template v-slot:action>
-                    <create-button :to="{name: 'createClient' }" text="Create client" />
+                    <create-button :to="{ name: 'createClient' }" text="Create client" />
                 </template>
             </page-header>
         </template>
 
-        <b-input
-            icon="magnify"
-            placeholder="Type to search"
-            @input="onSearchChange"
-            class="has-margin-bottom-3"
-        />
+        <b-input icon="magnify" placeholder="Type to search" @input="onSearchChange" class="has-margin-bottom-3" />
         <list size="is-compact">
             <list-item
                 class="has-border-bottom-1-light"
                 v-for="client in clients"
                 :key="client.id"
                 :title="client.name"
-                :to="{name: 'client', params: {id: client.id}}"
+                :to="{ name: 'client', params: { id: client.id } }"
             >
-                <div
-                    class="is-hidden-mobile is-flex is-flex-row has-margin-y-1"
-                    style="min-height: 24px;"
-                >
+                <div class="is-hidden-mobile is-flex is-flex-row has-margin-y-1" style="min-height: 24px;">
                     <phone :value="client.phone" v-if="client.phone != null" :disabled="true" />
                     <email :value="client.email" v-if="client.email != null" :disabled="true" />
                 </div>
@@ -49,7 +41,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import clientsStore from '../store/clients-store';
 import { displayLoading } from '@/core';
-import { Client } from '@/api';
+import { Client } from '@/api/scheduling';
 
 @Component({
     name: 'clients'

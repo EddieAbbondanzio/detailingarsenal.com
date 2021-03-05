@@ -1,23 +1,11 @@
 <template>
-    <b-modal
-        :active.sync="isActive"
-        :has-modal-card="true"
-        :can-cancel="canCancel"
-        @close="hide(true)"
-    >
+    <b-modal :active.sync="isActive" :has-modal-card="true" :can-cancel="canCancel" @close="hide(true)">
         <div class="card">
             <div class="modal-card-head">
                 <p class="is-size-3">Create appointment</p>
             </div>
-            <div
-                class="modal-card-body has-padding-all-0 is-flex is-flex-row is-align-items-center"
-            >
-                <input-form
-                    class="is-flex-grow-1"
-                    :preventCancelDefault="true"
-                    @submit="submit()"
-                    @cancel="hide()"
-                >
+            <div class="modal-card-body has-padding-all-0 is-flex is-flex-row is-align-items-center">
+                <input-form class="is-flex-grow-1" :preventCancelDefault="true" @submit="submit()" @cancel="hide()">
                     <div>
                         <p class="is-size-5">Details</p>
                         <hr class="has-margin-top-0 has-padding-y-0 has-margin-bottom-3" />
@@ -29,13 +17,16 @@
                             :required="true"
                             rules="required"
                             v-model="service"
-                            @input="() => { price = null; populateServiceDetails() }"
+                            @input="
+                                () => {
+                                    price = null;
+                                    populateServiceDetails();
+                                }
+                            "
                         >
-                            <option
-                                v-for="service in services"
-                                :key="service.id"
-                                :value="service"
-                            >{{ service.name }}</option>
+                            <option v-for="service in services" :key="service.id" :value="service">{{
+                                service.name
+                            }}</option>
                         </input-select>
 
                         <input-select
@@ -45,11 +36,7 @@
                             v-if="service != null && isVariablePrice()"
                             @input="populateServiceDetails()"
                         >
-                            <option
-                                v-for="vc in vehicleCategories"
-                                :key="vc.id"
-                                :value="vc"
-                            >{{ vc.name }}</option>
+                            <option v-for="vc in vehicleCategories" :key="vc.id" :value="vc">{{ vc.name }}</option>
                         </input-select>
                     </input-group>
 
@@ -106,18 +93,12 @@
                                 @input="inp => updateBlockEnd(block, inp)"
                             />
 
-                            <a
-                                class="delete has-margin-x-1"
-                                @click="deleteBlock(block)"
-                                v-if="blocks.length > 1"
-                            ></a>
+                            <a class="delete has-margin-x-1" @click="deleteBlock(block)" v-if="blocks.length > 1"></a>
                         </div>
 
-                        <b-button
-                            class="has-margin-top-3"
-                            type="is-primary"
-                            @click="onCalendarClick"
-                        >Select on calendar</b-button>
+                        <b-button class="has-margin-top-3" type="is-primary" @click="onCalendarClick"
+                            >Select on calendar</b-button
+                        >
                     </div>
 
                     <div>
@@ -126,11 +107,7 @@
                     </div>
 
                     <b-field label="Name" class="is-required">
-                        <validation-provider
-                            name="Name"
-                            rules="required"
-                            v-slot="{ classes, errors }"
-                        >
+                        <validation-provider name="Name" rules="required" v-slot="{ classes, errors }">
                             <b-autocomplete
                                 icon="account"
                                 :class="classes"
@@ -159,10 +136,7 @@
                         </validation-provider>
                     </b-field>
 
-                    <div
-                        v-if="isNewClient"
-                        class="is-flex is-flex-row is-align-items-center has-text-success"
-                    >
+                    <div v-if="isNewClient" class="is-flex is-flex-row is-align-items-center has-text-success">
                         <b-icon icon="account-plus" class="has-margin-right-1" />New client will be created
                     </div>
 
@@ -200,7 +174,7 @@ import {
     Client,
     AppointmentBlock,
     AppointmentBlockCreate
-} from '@/api';
+} from '@/api/scheduling';
 
 @Component({
     name: 'appointment-create-modal'

@@ -123,7 +123,7 @@ namespace DetailingArsenal.Tests.Persistence.ProductCatalog {
         public static async Task ClearDatabase() {
             using (var conn = DatabaseManager.Database.OpenConnection()) {
                 await conn.ExecuteAsync(
-                    "delete from brands;"
+                    "delete from pad_series; delete from brands;"
                 );
             }
         }

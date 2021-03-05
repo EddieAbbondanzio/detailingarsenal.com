@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Stars } from '@/api';
+import { Stars } from '@/api/product-catalog';
 
 @Component({ name: 'stars' })
 export default class StarsComponent extends Vue {

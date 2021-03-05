@@ -1,5 +1,5 @@
 import { Service } from '@/api/scheduling/settings/data-transfer-objects/service';
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { ServiceCreate } from '@/api/scheduling/settings/data-transfer-objects/service-create';
 import { ServiceUpdate } from '@/api/scheduling/settings/data-transfer-objects/service-update';
 import { ServiceConfiguration } from '@/api/scheduling/settings/data-transfer-objects/service-configuration';
@@ -57,3 +57,5 @@ export class ServiceService {
         return s;
     }
 }
+
+export const serviceService = new ServiceService();

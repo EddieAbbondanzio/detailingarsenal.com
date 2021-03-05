@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { BrandCreateRequest } from '../../admin/data-transfer-objects/requests/brand-create-request';
 import { Brand } from '../data-transfer-objects/brand';
 import { BrandUpdateRequest } from '../data-transfer-objects/requests/brand-update-request';
@@ -42,3 +42,5 @@ export class BrandService {
         return new Brand(b.id, b.name);
     }
 }
+
+export const brandService = new BrandService();

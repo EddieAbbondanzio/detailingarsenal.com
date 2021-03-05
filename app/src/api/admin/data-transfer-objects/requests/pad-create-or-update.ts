@@ -1,10 +1,9 @@
-import { Image } from '../image';
-import { PadCategory } from '../pad-category';
-import { PadColor } from '../pad-color';
-import { PadMaterial } from '../pad-material';
+import { Image } from '../../../shared/data-transfer-objects/image';
+import { PadColor } from '../../../shared/data-transfer-objects/pad-color';
 import { PadOption } from '../pad-option';
-import { PadTexture } from '../pad-texture';
+import { PadTexture } from '../../../shared/data-transfer-objects/pad-texture';
 import { PadOptionCreateOrUpdate } from './pad-option-create-or-update';
+import { PadCategory, PadMaterial } from '@/api/shared';
 
 export interface PadCreateOrUpdate {
     id: string | null;

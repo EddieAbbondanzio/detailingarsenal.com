@@ -24,7 +24,6 @@
 </template>
 
 <script lang="ts">
-import { Brand } from '@/api';
 import { displayLoading } from '@/core';
 import Vue from 'vue';
 import Component from 'vue-class-component';
@@ -37,7 +36,7 @@ export default class BrandView extends Vue {
     @displayLoading
     async created() {
         await brandStore.init();
-        this.name = brandStore.brands.find((b) => b.id == this.$route.params.id)!.name;
+        this.name = brandStore.brands.find(b => b.id == this.$route.params.id)!.name;
     }
 }
 </script>

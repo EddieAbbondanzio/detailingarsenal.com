@@ -163,7 +163,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Measurement, Pad, PadOption, PadSeries, PadSize, PartNumber, PolisherType } from '@/api';
 import padStore from '../store/pad/pad-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
@@ -175,6 +174,7 @@ import { uppercaseFirst } from '@/core/filters/uppercase-first';
 import RatingStats from '@/modules/product-catalog/core/components/rating-stats.vue';
 import { displayLoading } from '@/core';
 import { commaSeperate } from '@/core/filters/comma-seperate';
+import { Pad } from '@/api/product-catalog/data-transfer-objects/pad';
 
 @Component({
     components: {
@@ -206,11 +206,11 @@ export default class PadView extends Vue {
     }
 
     get description() {
-        return `By ${this.value?.series?.brand.name ?? ''}`;
+        return `By ${this.value?.brand.name ?? ''}`;
     }
 
     get polisherTypes() {
-        return this.value?.series.polisherTypes;
+        return this.value?.polisherTypes;
     }
 
     get reviews() {
@@ -219,7 +219,7 @@ export default class PadView extends Vue {
 
     get specs(): { label: string; value: string }[] {
         return [
-            { label: 'Manufacturer', value: this.value?.series.brand.name! },
+            { label: 'Manufacturer', value: this.value?.brand.name! },
             { label: 'Series', value: this.value?.series.name! },
             { label: 'Category', value: commaSeperate(uppercaseFirst(this.value?.category!)) },
             { label: 'Material', value: uppercaseFirst(this.value?.material!) ?? 'N/A' },
@@ -230,38 +230,28 @@ export default class PadView extends Vue {
     }
 
     value: Pad | null = null;
-    sizes: PadSizeInfo[] = [];
+    sizes: any[] = [];
 
     @displayLoading
     async created() {
-        this.value = padStore.pads.find(p => p.id == this.padId)!;
+        this.value = padStore.pads.values.find(p => p.id == this.padId)!;
 
         // Only fetch pad if we can't find it
         if (this.value == null) {
-            await padStore.getAllBySeries(this.padSeriesId);
-            this.value = padStore.pads.find(p => p.id == this.padId)!;
+            await padStore.get(this.padSeriesId);
+            this.value = padStore.pads.values.find(p => p.id == this.padId)!;
         }
 
-        this.sizes = this.value.options.map(o => {
-            var size = this.value?.series.sizes.find(s => s.id == o.padSizeId)!;
-            return {
-                diameter: size.diameter,
-                thickness: size.thickness,
-                partNumbers: o.partNumbers
-            };
-        });
+        // this.sizes = this.value.options.map(o => {
+        //     var size = this.value?.series.sizes.find(s => s.id == o.padSizeId)!;
+        //     return {
+        //         diameter: size.diameter,
+        //         thickness: size.thickness,
+        //         partNumbers: o.partNumbers
+        //     };
+        // });
 
         reviewStore.loadReviews(this.padId);
     }
-
-    isThin(size: PadSize) {
-        return PadSize.isThin(size);
-    }
-}
-
-interface PadSizeInfo {
-    diameter: Measurement;
-    thickness?: Measurement;
-    partNumbers: PartNumber[];
 }
 </script>

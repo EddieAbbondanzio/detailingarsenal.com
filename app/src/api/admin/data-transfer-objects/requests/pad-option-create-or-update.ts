@@ -1,4 +1,4 @@
-import { PartNumber } from '../part-number';
+import { PartNumber } from '../../../shared/data-transfer-objects/part-number';
 import { PartNumberCreateOrUpdate } from './part-number-create-or-update';
 
 export interface PadOptionCreateOrUpdate {

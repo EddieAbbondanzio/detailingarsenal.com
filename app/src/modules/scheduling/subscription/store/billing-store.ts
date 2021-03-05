@@ -1,10 +1,9 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
-import { SubscriptionPlan } from '@/api';
 import store from '@/core/store/index';
-import { api } from '@/api/api';
-import { Subscription, Customer } from '@/api';
 import { stripe } from '@/plugins/stripe';
+import { SubscriptionPlan, Customer, customerService, checkoutSessionService } from '@/api/scheduling';
+import { subscriptionPlanService } from '@/api/scheduling';
 
 @Module({ namespaced: true, name: 'billing', dynamic: true, store })
 class BillingStore extends InitableModule {
@@ -42,8 +41,8 @@ class BillingStore extends InitableModule {
     @Action({ rawError: true })
     async _init() {
         const [plan, customer] = await Promise.all([
-            api.scheduling.billing.subscriptionPlans.getDefault(),
-            api.scheduling.billing.customers.getCustomer()
+            subscriptionPlanService.getDefault(),
+            customerService.getCustomer()
         ]);
 
         this.context.commit('SET_DEFAULT_PLAN', plan);
@@ -52,19 +51,19 @@ class BillingStore extends InitableModule {
 
     @Action({ rawError: true })
     async createCheckoutSession(priceBillingId: string) {
-        var id = await api.scheduling.billing.checkoutSessions.createSession(priceBillingId);
+        var id = await checkoutSessionService.createSession(priceBillingId);
         await stripe.redirectToCheckout({ sessionId: id });
     }
 
     @Action({ rawError: true })
     async cancelSubscriptionAtPeriodEnd() {
-        await api.scheduling.billing.customers.cancelSubscription();
+        await customerService.cancelSubscription();
         this.context.commit('MARK_AS_CANCELLING');
     }
 
     @Action({ rawError: true })
     async undoCancellingAtPeriodEnd() {
-        await api.scheduling.billing.customers.undoCancellingSubscription();
+        await customerService.undoCancellingSubscription();
         this.context.commit('REMOVE_CANCELLING');
     }
 }

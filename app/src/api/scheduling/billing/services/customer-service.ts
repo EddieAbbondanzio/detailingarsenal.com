@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { Subscription } from '@/api/scheduling/billing/data-transfer-objects/subscription';
 import { SubscriptionPlanPrice } from '@/api/scheduling/billing/data-transfer-objects/subscription-plan-price';
 import { Customer } from '@/api/scheduling/billing/data-transfer-objects/customer';
@@ -51,3 +51,5 @@ export class CustomerService {
         await http.patch('billing/customer/subscription');
     }
 }
+
+export const customerService = new CustomerService();

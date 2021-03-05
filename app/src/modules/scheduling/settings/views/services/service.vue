@@ -81,11 +81,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import settingsStore from '../../store/settings-store';
-import { Service } from '@/api';
+import { Service } from '@/api/scheduling';
 import { displayLoading } from '@/core';
 
 @Component({
-    name: 'service',
+    name: 'service'
 })
 export default class ServiceView extends Vue {
     service: Service = null!;
@@ -93,11 +93,11 @@ export default class ServiceView extends Vue {
     @displayLoading
     async created() {
         await settingsStore.init();
-        this.service = settingsStore.services.find((s) => s.id == this.$route.params.id)!;
+        this.service = settingsStore.services.find(s => s.id == this.$route.params.id)!;
     }
 
     getVehicleCategoryName(vcId: string) {
-        const vc = settingsStore.vehicleCategories.find((vc) => vc.id == vcId);
+        const vc = settingsStore.vehicleCategories.find(vc => vc.id == vcId);
         return vc == null ? 'Any' : vc.name;
     }
 }

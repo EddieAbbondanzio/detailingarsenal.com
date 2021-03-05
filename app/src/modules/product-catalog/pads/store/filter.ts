@@ -1,4 +1,4 @@
-import { PadCategory } from '@/api';
+import { PadCategory } from '@/api/shared';
 
 export class Filter {
     constructor(public brands: string[] = [], public series: string[] = [], public category: PadCategory[] = []) {}

@@ -4,13 +4,7 @@
             <slot name="label"></slot>
         </template>
 
-        <validation-provider
-            :vid="vid"
-            :name="label"
-            :rules="rules"
-            v-slot="{ errors, classes }"
-            ref="validator"
-        >
+        <validation-provider :vid="vid" :name="label" :rules="rules" v-slot="{ errors, classes }" ref="validator">
             <b-upload
                 :type="type"
                 :class="classes"
@@ -33,8 +27,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Image } from '@/api';
 import { toBase64 } from '@/core/utils/to-base-64';
+import { Image } from '@/api/shared';
 
 @Component({
     name: 'input-image-upload'

@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { PadCut } from '@/api';
+import { PadCut } from '@/api/product-catalog';
 
 @Component({ name: 'pad-cut-bar' })
 export default class PadCutBar extends Vue {

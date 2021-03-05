@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { Permission } from '../data-transfer-objects/permission';
 import { PermissionCreateRequest } from '../data-transfer-objects/requests/permission-create-request';
 import { PermissionUpdateReqest } from '../data-transfer-objects/requests/permission-update-request';
@@ -28,3 +28,5 @@ export class PermissionService {
         return p;
     }
 }
+
+export const permissionService = new PermissionService();

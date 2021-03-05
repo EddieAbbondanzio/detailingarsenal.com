@@ -25,7 +25,7 @@
 
         <b-table
             class="pads-table"
-            :data="summaries"
+            :data="pads"
             :loading="loading"
             paginated
             backend-pagination
@@ -122,7 +122,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { api, PadCategory, PadCut, PadFinish, PadMaterial, PadSize, PolisherType, Rating } from '@/api';
 import { displayLoading } from '@/core';
 import PadFilterControl from '@/modules/product-catalog/pads/components/pad-filter-control.vue';
 import store from '@/core/store';
@@ -135,6 +134,8 @@ import padStore from '../store/pad/pad-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import appStore from '@/core/store/app-store';
 import { uppercaseFirst } from '@/core/filters/uppercase-first';
+import { Rating } from '@/api/product-catalog';
+import { PadMaterial, PolisherType } from '@/api/shared';
 
 @Component({
     components: {
@@ -147,29 +148,11 @@ import { uppercaseFirst } from '@/core/filters/uppercase-first';
 })
 export default class Pads extends Vue {
     get paging() {
-        return padStore.series.paging;
+        return padStore.pads.paging;
     }
 
-    get summaries(): PadSummary[] {
-        const summaries: PadSummary[] = [];
-
-        for (const pad of padStore.pads) {
-            summaries.push({
-                id: pad.id,
-                padSeriesId: pad.series.id,
-                thumbnailUrl: pad.thumbnailUrl,
-                name: pad.label,
-                category: pad.category.map(c => uppercaseFirst(c)).join(', '),
-                material: pad.material,
-                cut: pad.cut,
-                finish: pad.finish,
-                rating: pad.rating,
-                polisherTypes: pad.series.polisherTypes,
-                isThin: PadSize.isThin(pad.series.sizes[0])
-            });
-        }
-
-        return summaries;
+    get pads() {
+        return padStore.pads.values;
     }
 
     loading = false; // used for b-table
@@ -181,7 +164,7 @@ export default class Pads extends Vue {
         this.loading = false;
 
         // Pull in remainder pads
-        if (padStore.series.values.length == 1) {
+        if (padStore.pads.values.length == 1) {
             await padStore.getAll();
         }
     }
@@ -196,19 +179,5 @@ export default class Pads extends Vue {
     showSidebar() {
         appStore.SHOW_SIDEBAR();
     }
-}
-
-interface PadSummary {
-    id: string;
-    padSeriesId: string;
-    thumbnailUrl: string | null;
-    name: string;
-    category: string;
-    material: PadMaterial | null;
-    cut: number | null;
-    finish: number | null;
-    rating: Rating;
-    polisherTypes: PolisherType[];
-    isThin: boolean;
 }
 </script>

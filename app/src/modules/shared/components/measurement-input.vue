@@ -20,7 +20,7 @@
 </style>
 
 <script lang="ts">
-import { Measurement, MeasurementUnit } from '@/api';
+import { Measurement, MeasurementUnit } from '@/api/shared';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop, Watch } from 'vue-property-decorator';

@@ -46,13 +46,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { PadCategory, Pad } from '@/api';
-import { FilterType } from '../store/filter-type';
-import { Filter } from '../store/filter';
-import store from '@/core/store';
-import { MutationPayload } from 'vuex';
 import padStore from '../store/pad/pad-store';
-import { ArrayUtils } from '@/core/utils/array-utils';
 import { displayLoading } from '@/core';
 import PadFilterControlSection from '@/modules/product-catalog/pads/components/pad-filter-control-section.vue';
 import appStore from '@/core/store/app-store';

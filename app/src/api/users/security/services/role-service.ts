@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { Role } from '../data-transfer-objects/role';
 import { RoleCreateRequest } from '../data-transfer-objects/requests/role-create-request';
 import { RoleUpdateRequest } from '../data-transfer-objects/requests/role-update-request';
@@ -34,3 +34,5 @@ export class RoleService {
         return role;
     }
 }
+
+export const roleService = new RoleService();

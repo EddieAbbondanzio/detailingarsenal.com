@@ -38,12 +38,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { toast, displayError } from '@/core';
 import appStore from '@/core/store/app-store';
 import { displayLoading } from '@/core/utils/display-loading';
-import { SpecificationError } from '@/api';
+import { SpecificationError } from '@/api/shared';
 import securityStore from '../../store/security-store';
 import InputViewMixin from '@/core/mixins/input-view-mixin';
 
 @Component({
-    name: 'create-permission',
+    name: 'create-permission'
 })
 export default class CreateOrUpdatePermission extends InputViewMixin {
     action: string = '';
@@ -54,7 +54,7 @@ export default class CreateOrUpdatePermission extends InputViewMixin {
         if (this.mode == 'update') {
             await securityStore.init();
 
-            const p = await securityStore.permissions.find((p) => p.id == this.id);
+            const p = await securityStore.permissions.find(p => p.id == this.id);
 
             if (p == null) {
                 this.$router.go(-1);

@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { PolisherType } from '@/api';
+import { PolisherType } from '@/api/shared';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';

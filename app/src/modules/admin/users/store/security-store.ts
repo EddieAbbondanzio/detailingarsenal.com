@@ -1,8 +1,15 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
-import { api } from '@/api/api';
 import store from '@/core/store/index';
-import { Permission, Role, SubscriptionPlan, PermissionCreateRequest, PermissionUpdateReqest as PermissionUpdateRequest, RoleCreateRequest, RoleUpdateRequest } from '@/api';
+import {
+    Permission,
+    Role,
+    PermissionCreateRequest,
+    PermissionUpdateReqest as PermissionUpdateRequest,
+    RoleCreateRequest,
+    RoleUpdateRequest
+} from '@/api/users';
+import { permissionService, roleService } from '@/api/users';
 
 /**
  * Store for the schedule view.
@@ -65,10 +72,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const [perms, roles] = await Promise.all([
-            api.scheduling.security.permissions.getPermissions(),
-            api.scheduling.security.roles.getRoles()
-        ]);
+        const [perms, roles] = await Promise.all([permissionService.getPermissions(), roleService.getRoles()]);
 
         this.context.commit('SET_PERMISSIONS', perms);
         this.context.commit('SET_ROLES', roles);
@@ -76,7 +80,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async createPermission(createPermission: PermissionCreateRequest) {
-        const p = await api.scheduling.security.permissions.createPermission(createPermission);
+        const p = await permissionService.createPermission(createPermission);
         this.context.commit('CREATE_PERMISSION', p);
 
         return p;
@@ -84,7 +88,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async updatePermission(updatePermission: PermissionUpdateRequest) {
-        const p = await api.scheduling.security.permissions.updatePermission(updatePermission);
+        const p = await permissionService.updatePermission(updatePermission);
         this.context.commit('UPDATE_PERMISSION', p);
 
         return p;
@@ -92,13 +96,13 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async deletePermission(permission: Permission) {
-        await api.scheduling.security.permissions.deletePermission(permission);
+        await permissionService.deletePermission(permission);
         this.context.commit('DELETE_PERMISSION', permission);
     }
 
     @Action({ rawError: true })
     async createRole(createRole: RoleCreateRequest) {
-        const r = await api.scheduling.security.roles.createRole(createRole);
+        const r = await roleService.createRole(createRole);
         this.context.commit('CREATE_ROLE', r);
 
         return r;
@@ -106,7 +110,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async updateRole(updateRole: RoleUpdateRequest) {
-        const r = await api.scheduling.security.roles.updateRole(updateRole);
+        const r = await roleService.updateRole(updateRole);
         this.context.commit('UPDATE_ROLE', r);
 
         return r;
@@ -114,7 +118,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async deleteRole(role: Role) {
-        await api.scheduling.security.roles.deleteRole(role);
+        await roleService.deleteRole(role);
         this.context.commit('DELETE_ROLE', role);
     }
 }

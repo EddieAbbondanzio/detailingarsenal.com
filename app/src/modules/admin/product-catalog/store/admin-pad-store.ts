@@ -1,11 +1,10 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
-import { api } from '@/api/api';
 import store from '@/core/store/index';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
-// import { Pad, Brand, PadSeriesCreate, PadSeriesUpdateRequest } from '@/api';
-import { PadSeries, PadSeriesCreateRequest, PadSeriesGetAllRequest, PadSeriesUpdateRequest, PagedArray } from '@/api';
-import { PadSeriesService } from '@/api/admin/pad-series-service';
+import { padSeriesService, PadSeriesService } from '@/api/admin/services/pad-series-service';
+import { PadSeries, PadSeriesCreateRequest, PadSeriesUpdateRequest } from '@/api/admin';
+import { PagedArray } from '@/api/shared';
 
 @Module({ namespaced: true, name: 'admin-pad', dynamic: true, store })
 class AdminPadStore extends InitableModule {
@@ -38,35 +37,35 @@ class AdminPadStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const [series] = await Promise.all([api.productCatalog.padSeries.get()]);
-        this.context.commit('SET_SERIES', series);
+        // const [series] = await Promise.all([padSeriesService.get()]);
+        // this.context.commit('SET_SERIES', series);
     }
 
     @Action({ rawError: true })
     async goToPage(pageNumber: number) {
-        const series = await api.productCatalog.padSeries.get({
-            paging: {
-                pageNumber,
-                pageSize: this.series.paging.pageSize
-            }
-        });
+        // const series = await padSeriesService.get({
+        //     paging: {
+        //         pageNumber,
+        //         pageSize: this.series.paging.pageSize
+        //     }
+        // });
     }
 
     @Action({ rawError: true })
     async create(create: PadSeriesCreateRequest) {
-        const series = await api.productCatalog.padSeries.create(create);
+        const series = await padSeriesService.create(create);
         this.context.commit('ADD_SERIES', series);
     }
 
     @Action({ rawError: true })
     async update(update: PadSeriesUpdateRequest) {
-        const series = await api.productCatalog.padSeries.update(update);
+        const series = await padSeriesService.update(update);
         this.context.commit('UPDATE_SERIES', series);
     }
 
     @Action({ rawError: true })
     async delete(padSeries: PadSeries) {
-        await api.productCatalog.padSeries.delete(padSeries.id);
+        await padSeriesService.delete(padSeries.id);
         this.context.commit('DELETE_SERIES', padSeries);
     }
 }

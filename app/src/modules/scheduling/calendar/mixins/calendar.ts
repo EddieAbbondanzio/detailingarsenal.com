@@ -1,6 +1,6 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
-import { AppointmentBlock } from '@/api';
+import { AppointmentBlock } from '@/api/scheduling';
 import calendarStore from '@/modules/scheduling/calendar/store/calendar-store';
 import moment from 'moment';
 import { CalendarRange } from '@/modules/scheduling/calendar/store/calendar-range';

@@ -38,7 +38,6 @@ import ErrorMessage from '@/components/common/input/error-message.vue';
 import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
-import { ValidationError, SpecificationError } from '@/api';
 import brandStore from '../../store/brand-store';
 import InputViewMixin from '@/core/mixins/input-view-mixin';
 

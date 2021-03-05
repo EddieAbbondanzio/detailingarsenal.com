@@ -1,5 +1,5 @@
 import { Client } from '@/api/scheduling/clients/data-transfer-objects/client';
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { ClientCreate } from '@/api/scheduling/clients/data-transfer-objects/client-create';
 import { ClientUpdate } from '@/api/scheduling/clients/data-transfer-objects/client-update';
 
@@ -29,3 +29,5 @@ export class ClientService {
         return c;
     }
 }
+
+export const clientService = new ClientService();

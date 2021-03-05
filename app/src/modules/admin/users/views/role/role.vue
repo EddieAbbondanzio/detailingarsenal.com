@@ -36,7 +36,7 @@
                             return a.id === b.id;
                         }
                     "
-                    :is-row-checkable="(r) => false"
+                    :is-row-checkable="r => false"
                 >
                     <b-table-column v-slot="props" label="Permission" field="label" sortable>{{
                         props.row.label
@@ -60,12 +60,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import appStore from '@/core/store/app-store';
-import { Permission, Role } from '@/api';
+import { Permission, Role } from '@/api/users';
 import securityStore from '../../store/security-store';
 import { displayLoading } from '@/core';
 
 @Component({
-    name: 'role',
+    name: 'role'
 })
 export default class RoleView extends Vue {
     get permissions() {
@@ -79,7 +79,7 @@ export default class RoleView extends Vue {
     async created() {
         await securityStore.init();
 
-        this.role = securityStore.roles.find((r) => r.id == this.$route.params.id)!;
+        this.role = securityStore.roles.find(r => r.id == this.$route.params.id)!;
 
         if (this.role == null) {
             throw new Error('Role not found');

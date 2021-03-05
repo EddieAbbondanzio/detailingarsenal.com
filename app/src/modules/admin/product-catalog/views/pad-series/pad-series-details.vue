@@ -102,7 +102,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import appStore from '@/core/store/app-store';
-import { Image, PadSize, Permission, Role } from '@/api';
 import { displayLoading } from '@/core';
 import adminPadStore from '../../store/admin-pad-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';

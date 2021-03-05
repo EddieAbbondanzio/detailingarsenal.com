@@ -1,6 +1,4 @@
-import { PadMaterial } from '../pad-material';
-import { PadTexture } from '../pad-texture';
-import { PolisherType } from '../polisher-type';
+import { PolisherType } from '../../../shared/data-transfer-objects/polisher-type';
 import { PadCreateOrUpdate } from './pad-create-or-update';
 import { PadSizeCreateOrUpdate } from './pad-size-create-or-update';
 

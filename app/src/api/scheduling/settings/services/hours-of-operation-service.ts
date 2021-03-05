@@ -1,6 +1,6 @@
 import { HoursOfOperation } from '@/api/scheduling/settings/data-transfer-objects/hours-of-operation';
 import { HoursOfOperationDay } from '@/api/scheduling/settings/data-transfer-objects/hours-of-operation-day';
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { HoursOfOperationUpdate } from '@/api/scheduling/settings/data-transfer-objects/hours-of-operation-update';
 
 export class HoursOfOperationService {
@@ -30,3 +30,5 @@ export class HoursOfOperationService {
         return h;
     }
 }
+
+export const hoursOfOperationService = new HoursOfOperationService();

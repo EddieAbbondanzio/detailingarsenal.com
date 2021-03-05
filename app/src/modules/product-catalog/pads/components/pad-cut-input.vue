@@ -18,7 +18,7 @@
                 { value: 7, label: 7 },
                 { value: 8, label: 8 },
                 { value: 9, label: 9 },
-                { value: 10, label: '10 (Most)' },
+                { value: 10, label: '10 (Most)' }
             ]"
         />
 
@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { PadCut } from '@/api';
+import { PadCut } from '@/api/product-catalog';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 /**

@@ -4,7 +4,7 @@ import { AppointmentUpdate } from '@/api/scheduling/calendar/data-transfer-objec
 import { AppointmentBlock } from '@/api/scheduling/calendar/data-transfer-objects/appointment-block';
 import moment from 'moment';
 import { CalendarRange } from '@/modules/scheduling/calendar/store/calendar-range';
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 
 export class AppointmentService {
     public async get(day: Date, range: CalendarRange): Promise<Appointment[]> {
@@ -50,3 +50,5 @@ export class AppointmentService {
         return appointment;
     }
 }
+
+export const appointmentService = new AppointmentService();

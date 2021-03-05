@@ -37,12 +37,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Permission } from '@/api';
+import { Permission } from '@/api/users';
 import { confirmDelete, toast, displayError, displayLoading } from '@/core';
 import securityStore from '../../store/security-store';
 
 @Component({
-    name: 'permissions',
+    name: 'permissions'
 })
 export default class Permissions extends Vue {
     get permissions(): Permission[] {

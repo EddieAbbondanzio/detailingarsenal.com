@@ -4,19 +4,16 @@
             <page-header
                 :title="`Edit ${name}`"
                 description="Edit an existing service"
-                :backButtonTo="{name: 'services'}"
+                :backButtonTo="{ name: 'services' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb name="Services" :to="{name: 'services'}" />
-                        <breadcrumb
-                            :name="name"
-                            :to="{name: 'service', params: {id: $route.params.id}}"
-                        />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Services" :to="{ name: 'services' }" />
+                        <breadcrumb :name="name" :to="{ name: 'service', params: { id: $route.params.id } }" />
                         <breadcrumb
                             name="Edit"
-                            :to="{name: 'editService', params: {id: $route.params.id}}"
+                            :to="{ name: 'editService', params: { id: $route.params.id } }"
                             :active="true"
                         />
                     </breadcrumb-trail>
@@ -46,16 +43,15 @@
             <b-field label="Pricing Method">
                 <!-- Not a typo. Label will be inline if we dont. -->
                 <b-field>
-                    <b-radio-button
-                        v-model="pricingMethod"
-                        native-value="Fixed"
-                        @input="onPricingMethodInput"
-                    >Fixed</b-radio-button>
+                    <b-radio-button v-model="pricingMethod" native-value="Fixed" @input="onPricingMethodInput"
+                        >Fixed</b-radio-button
+                    >
                     <b-radio-button
                         v-model="pricingMethod"
                         native-value="ByVehicleCategory"
                         @input="onPricingMethodInput"
-                    >By vehicle category</b-radio-button>
+                        >By vehicle category</b-radio-button
+                    >
                 </b-field>
             </b-field>
 
@@ -103,11 +99,7 @@
                                 v-model="val.vehicleCategory"
                                 style="width: 30%; margin-bottom: 0px;"
                             >
-                                <option
-                                    v-for="vc in vehicleCategories"
-                                    :key="vc.id"
-                                    :value="vc"
-                                >{{ vc.name }}</option>
+                                <option v-for="vc in vehicleCategories" :key="vc.id" :value="vc">{{ vc.name }}</option>
                             </input-select>
                             <input-text-field
                                 class="has-margin-x-1"
@@ -137,11 +129,9 @@
                         </div>
 
                         <div>
-                            <b-button
-                                type="is-text"
-                                @click="onAddAnother"
-                                :disabled="!canAddAnother()"
-                            >Add another</b-button>
+                            <b-button type="is-text" @click="onAddAnother" :disabled="!canAddAnother()"
+                                >Add another</b-button
+                            >
                         </div>
                     </div>
                 </div>
@@ -159,7 +149,7 @@ import ActionPage from '@/components/common/pages/action-page.vue';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayError, displayLoading } from '@/core';
 import settingsStore from '../../store/settings-store';
-import { VehicleCategory, ServicePricingMethod } from '@/api';
+import { VehicleCategory, ServicePricingMethod } from '@/api/scheduling';
 
 @Component({
     name: 'edit-service',

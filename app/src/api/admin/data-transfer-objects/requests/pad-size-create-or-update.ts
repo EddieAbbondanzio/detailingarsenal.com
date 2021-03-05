@@ -1,4 +1,4 @@
-import { Measurement } from '../measurement';
+import { Measurement } from '@/api/shared';
 
 export interface PadSizeCreateOrUpdate {
     id: string | null;

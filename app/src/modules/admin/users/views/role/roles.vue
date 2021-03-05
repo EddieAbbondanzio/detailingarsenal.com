@@ -35,11 +35,11 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading } from '@/core/utils/display-loading';
 import { confirmDelete, toast, displayError } from '@/core';
-import { Role } from '@/api';
+import { Role } from '@/api/users';
 import securityStore from '../../store/security-store';
 
 @Component({
-    name: 'roles',
+    name: 'roles'
 })
 export default class Roles extends Vue {
     get roles() {

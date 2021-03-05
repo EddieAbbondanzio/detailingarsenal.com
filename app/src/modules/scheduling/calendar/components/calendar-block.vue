@@ -27,7 +27,9 @@
             v-mouse:release.left="onMoveOrResizeEnd"
             v-mouse:click.left="onMoveOrResizeEnd"
             ref="resize"
-        >&nbsp;</div>
+        >
+            &nbsp;
+        </div>
     </div>
 </template>
 
@@ -36,7 +38,7 @@
     .action
         position: absolute
         top: 4px
-        right: 4px   
+        right: 4px
 
     .block-resizer
         cursor: ns-resize
@@ -53,7 +55,7 @@ import moment from 'moment';
 import { triggerMouseEvent } from '@/core/utils/trigger-mouse-event';
 import settingsStore from '@/modules/scheduling/settings/store/settings-store';
 import calendarStore from '../store/calendar-store';
-import { AppointmentBlock, BLOCK_INITIAL_TIME, BLOCK_MODIFIED } from '@/api';
+import { AppointmentBlock, BLOCK_INITIAL_TIME, BLOCK_MODIFIED } from '@/api/scheduling';
 
 @Component({
     name: 'calendar-block'

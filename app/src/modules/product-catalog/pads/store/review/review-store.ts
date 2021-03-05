@@ -1,7 +1,7 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { api, Review, ReviewCreateRequest } from '@/api';
+import { Review, ReviewCreateRequest, reviewService } from '@/api/product-catalog';
 
 @Module({ namespaced: true, name: 'review', dynamic: true, store })
 class ReviewStore extends InitableModule {
@@ -19,13 +19,13 @@ class ReviewStore extends InitableModule {
 
     @Action({ rawError: true })
     async loadReviews(padId: string) {
-        const reviews = await api.productCatalog.reviews.getForPad(padId);
+        const reviews = await reviewService.getForPad(padId);
         this.context.commit('SET_REVIEWS', reviews);
     }
 
     @Action({ rawError: true })
     async create(request: ReviewCreateRequest) {
-        const r = await api.productCatalog.reviews.create(request);
+        const r = await reviewService.create(request);
 
         this.context.commit('ADD_REVIEW', r);
     }

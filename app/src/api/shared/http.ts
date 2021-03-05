@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { api } from '@/api/api';
 import { traverse } from '@/core/utils/traverse';
-import { SpecificationError } from '@/api/core/errors/specification-error';
-import { ValidationError } from '@/api/core/errors/validation-error';
-import { AuthorizationError } from '@/api/core/errors/authorization-error';
+import { SpecificationError } from '@/api/shared/errors/specification-error';
+import { ValidationError } from '@/api/shared/errors/validation-error';
+import { AuthorizationError } from '@/api/shared/errors/authorization-error';
 import router from '@/core/router';
+import { AuthenticationService } from '../users';
 
 /**
  * Singleton instance for making HTTP requests to backend.
@@ -14,6 +14,8 @@ export const http = axios.create({
     headers: { 'Content-Type': 'application/json' }
 });
 
+const authenticationService: AuthenticationService = new AuthenticationService();
+
 http.interceptors.request.use(async config => {
     /*
      * Cannot use user-store.ts here or else you'll introduce a circular dependency
@@ -22,8 +24,8 @@ http.interceptors.request.use(async config => {
      */
 
     // When authenticated, and sending a request to the backend add the token.
-    if (config.baseURL == process.env.VUE_APP_API_DOMAIN && api.authentication.isAuthenticated) {
-        const token = await api.authentication.getToken();
+    if (config.baseURL == process.env.VUE_APP_API_DOMAIN && authenticationService.isAuthenticated) {
+        const token = await authenticationService.getToken();
         config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -37,7 +39,7 @@ http.interceptors.request.use(config => {
 
         // We remove any circular references by JSONifying it first.
         // https://stackoverflow.com/questions/9382167/serializing-object-that-contains-cyclic-object-value
-        var jsonData = JSON.stringify(data, function (key, val) {
+        var jsonData = JSON.stringify(data, function(key, val) {
             if (val != null && typeof val == 'object') {
                 if (seen.indexOf(val) >= 0) {
                     return;
@@ -106,7 +108,7 @@ http.interceptors.response.use(
                      */
                     // router.push({ name: 'subscription' });
                     return Promise.reject(
-                        new AuthorizationError('Uh Uh Uh. You didn\'t say the magic word')
+                        new AuthorizationError("Uh Uh Uh. You didn't say the magic word")
                         // new AuthorizationError('Please upgrade your subscription to use this feature')
                     );
                 }

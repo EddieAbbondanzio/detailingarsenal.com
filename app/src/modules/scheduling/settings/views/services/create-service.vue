@@ -4,13 +4,13 @@
             <page-header
                 title="Create new service"
                 description="A new service that can be used to create appointments"
-                :backButtonTo="{name: 'settings'}"
+                :backButtonTo="{ name: 'settings' }"
             >
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb name="Services" :to="{name: 'services'}" />
-                        <breadcrumb name="Create" :to="{name: 'createService'}" :active="true" />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Services" :to="{ name: 'services' }" />
+                        <breadcrumb name="Create" :to="{ name: 'createService' }" :active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
@@ -38,16 +38,15 @@
             <b-field label="Pricing Method">
                 <!-- Not a typo. Label will be inline if we dont. -->
                 <b-field>
-                    <b-radio-button
-                        v-model="pricingMethod"
-                        native-value="Fixed"
-                        @input="onPricingMethodInput"
-                    >Fixed</b-radio-button>
+                    <b-radio-button v-model="pricingMethod" native-value="Fixed" @input="onPricingMethodInput"
+                        >Fixed</b-radio-button
+                    >
                     <b-radio-button
                         v-model="pricingMethod"
                         native-value="ByVehicleCategory"
                         @input="onPricingMethodInput"
-                    >By vehicle category</b-radio-button>
+                        >By vehicle category</b-radio-button
+                    >
                 </b-field>
             </b-field>
 
@@ -93,11 +92,7 @@
                                 v-model="val.vehicleCategory"
                                 style="width: 30%; margin-bottom: 0px;"
                             >
-                                <option
-                                    v-for="vc in vehicleCategories"
-                                    :key="vc.id"
-                                    :value="vc"
-                                >{{ vc.name }}</option>
+                                <option v-for="vc in vehicleCategories" :key="vc.id" :value="vc">{{ vc.name }}</option>
                             </input-select>
                             <input-text-field
                                 class="has-margin-x-1"
@@ -127,11 +122,9 @@
                         </div>
 
                         <div>
-                            <b-button
-                                type="is-text"
-                                @click="onAddAnother"
-                                :disabled="!canAddAnother()"
-                            >Add another</b-button>
+                            <b-button type="is-text" @click="onAddAnother" :disabled="!canAddAnother()"
+                                >Add another</b-button
+                            >
                         </div>
                     </div>
                 </div>
@@ -147,7 +140,7 @@ import { ValidationObserver } from 'vee-validate';
 import { getModule } from 'vuex-module-decorators';
 import { toast, displayError, displayLoading } from '@/core';
 import settingsStore from '../../store/settings-store';
-import { VehicleCategory, ServicePricingMethod } from '@/api';
+import { VehicleCategory, ServicePricingMethod } from '@/api/scheduling';
 
 @Component({
     name: 'create-service',

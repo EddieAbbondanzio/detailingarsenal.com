@@ -1,27 +1,19 @@
 <template>
     <page>
         <template v-slot:header>
-            <page-header
-                title="Edit business"
-                description="Edit the name, address, and contact info"
-            >
+            <page-header title="Edit business" description="Edit the name, address, and contact info">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb name="Business" :to="{name: 'business'}" />
-                        <breadcrumb name="Edit" :to="{name: 'editBusiness'}" active="true" />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Business" :to="{ name: 'business' }" />
+                        <breadcrumb name="Edit" :to="{ name: 'editBusiness' }" active="true" />
                     </breadcrumb-trail>
                 </template>
             </page-header>
         </template>
 
         <input-form @submit="onSubmit" submitText="Save changes">
-            <input-text-field
-                label="Name"
-                placeholder="Jimbo's Buff Shop"
-                rules="max:64"
-                v-model="name"
-            />
+            <input-text-field label="Name" placeholder="Jimbo's Buff Shop" rules="max:64" v-model="name" />
 
             <input-text-field
                 label="Address"
@@ -30,12 +22,7 @@
                 v-model="address"
             />
 
-            <input-text-field
-                label="Phone"
-                placeholder="555-123-1234"
-                rules="max:32"
-                v-model="phone"
-            />
+            <input-text-field label="Phone" placeholder="555-123-1234" rules="max:32" v-model="phone" />
         </input-form>
     </page>
 </template>
@@ -44,7 +31,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import settingsStore from '../../store/settings-store';
 import { toast, displayLoading } from '@/core';
-import { BusinessUpdate } from '@/api';
+import { BusinessUpdate } from '@/api/scheduling';
 
 @Component({
     name: 'edit-business'

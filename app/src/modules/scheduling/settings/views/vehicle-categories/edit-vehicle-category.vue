@@ -4,11 +4,11 @@
             <page-header :title="`Edit ${name}`" description="Edit an existing vehicle category">
                 <template v-slot:breadcrumb-trail>
                     <breadcrumb-trail>
-                        <breadcrumb name="Settings" :to="{name: 'settings'}" />
-                        <breadcrumb name="Vehicle categories" :to="{name: 'vehicleCategories'}" />
+                        <breadcrumb name="Settings" :to="{ name: 'settings' }" />
+                        <breadcrumb name="Vehicle categories" :to="{ name: 'vehicleCategories' }" />
                         <breadcrumb
                             name="Edit"
-                            :to="{name: 'editVehicleCategory', params: $route.params}"
+                            :to="{ name: 'editVehicleCategory', params: $route.params }"
                             active="true"
                         />
                     </breadcrumb-trail>
@@ -42,7 +42,7 @@ import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import { toast, displayLoading, displayError } from '@/core';
 import InputTextField from '@/core/components/input/input-text-field.vue';
 import settingsStore from '../../store/settings-store';
-import { ValidationError, SpecificationError } from '@/api';
+import { ValidationError, SpecificationError } from '@/api/shared';
 
 /**
  * View to edit a vehicle category.

@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { SpecificationError } from '@/api';
+import { SpecificationError } from '@/api/shared';
 import { displayError, displayLoading, toast } from '@/core';
 import securityStore from '@/modules/admin/users/store/security-store';
 import Vue from 'vue';
@@ -57,7 +57,7 @@ export default class EditSubscriptionPlan extends Vue {
         await securityStore.init();
         await subscriptionPlanStore.init();
 
-        const plan = subscriptionPlanStore.subscriptionPlans.find((p) => p.id == this.$route.params.id)!;
+        const plan = subscriptionPlanStore.subscriptionPlans.find(p => p.id == this.$route.params.id)!;
 
         this.name = plan.name;
         this.description = plan.description;
@@ -69,7 +69,7 @@ export default class EditSubscriptionPlan extends Vue {
         const edit = {
             id: this.$route.params.id,
             description: this.description,
-            roleId: this.roleId,
+            roleId: this.roleId
         };
 
         try {

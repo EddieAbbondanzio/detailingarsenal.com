@@ -35,7 +35,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { displayLoading, confirmDelete, toast, displayError } from '@/core';
 import brandStore from '@/modules/admin/product-catalog/store/brand-store';
-import { Brand } from '@/api';
+import { Brand } from '@/api/admin';
 
 @Component
 export default class Brands extends Vue {
@@ -52,8 +52,8 @@ export default class Brands extends Vue {
         this.$router.push({
             name: 'updateBrand',
             params: {
-                id: brand.id,
-            },
+                id: brand.id
+            }
         });
     }
 

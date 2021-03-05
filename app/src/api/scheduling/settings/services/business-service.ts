@@ -1,4 +1,4 @@
-import { http } from '@/api/core/http';
+import { http } from '@/api/shared/http';
 import { BusinessUpdate } from '@/api/scheduling/settings/data-transfer-objects/business-update';
 import { Business } from '@/api/scheduling/settings/data-transfer-objects/business';
 
@@ -19,3 +19,5 @@ export class BusinessService {
         return b;
     }
 }
+
+export const businessService = new BusinessService();
