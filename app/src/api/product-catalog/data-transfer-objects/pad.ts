@@ -1,4 +1,5 @@
 import { PadCategory, PadColor, PadMaterial, PadTexture, PolisherType } from '@/api/shared';
+import { imageUrl, thumbnailUrl } from '@/api/shared/utils/image-utils';
 import { Rating } from './rating';
 
 export class Pad {
@@ -15,6 +16,14 @@ export class Pad {
         }
     }
 
+    get imageUrl() {
+        return imageUrl(this.imageId);
+    }
+
+    get thumbnailUrl() {
+        return thumbnailUrl(this.imageId);
+    }
+
     constructor(
         public id: string,
         public name: string,
@@ -28,6 +37,7 @@ export class Pad {
         public finish: number | null,
         public rating: Rating,
         public polisherTypes: PolisherType[],
-        public hasCenterHole: boolean
+        public hasCenterHole: boolean,
+        public imageId: string | null
     ) {}
 }

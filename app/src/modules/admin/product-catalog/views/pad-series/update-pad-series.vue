@@ -377,7 +377,7 @@ export default class UpdatePadSeries extends Vue {
             texture: c.texture,
             color: c.color,
             hasCenterHole: c.hasCenterHole,
-            image: c.image, // Existing images are just ids to real images.
+            image: c.imageId, // Existing images are just ids to real images.
             options: c.options.map<PadOptionCreateOrUpdate>(o => ({
                 id: o.id,
                 padSizeIndex: this.sizes.findIndex(s => s.id == o.padSizeId),

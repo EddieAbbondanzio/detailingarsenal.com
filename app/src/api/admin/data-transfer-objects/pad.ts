@@ -7,14 +7,15 @@ import { PadTexture } from '../../shared/data-transfer-objects/pad-texture';
 import { PadColor } from '../../shared/data-transfer-objects/pad-color';
 import { PadSeries } from '..';
 import { PadCategory, PadMaterial } from '@/api/shared';
+import { imageUrl, thumbnailUrl } from '@/api/shared/utils/image-utils';
 
 export class Pad {
     get imageUrl() {
-        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/images/${this.image}` : null;
+        return imageUrl(this.imageId);
     }
 
     get thumbnailUrl() {
-        return this.image != null ? `${process.env.VUE_APP_API_DOMAIN}/images/${this.image}/thumbnail` : null;
+        return thumbnailUrl(this.imageId);
     }
 
     constructor(
@@ -28,7 +29,7 @@ export class Pad {
         public cut: number | null, // Comes from review
         public finish: number | null, // Comes from review
         public rating: Rating,
-        public image: string | null = null,
+        public imageId: string | null = null,
         public options: PadOption[] = []
     ) {}
 }
