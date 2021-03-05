@@ -4,7 +4,7 @@ import { http } from '@/api/shared/http';
 import { SubscriptionPlanUpdateRequest } from '../data-transfer-objects/requests/subscription-plan-update-request';
 
 export class SubscriptionPlanService {
-    async getPlans() {
+    async get() {
         const res = await http.get('/billing/subscription-plan');
         return this._map(res.data);
     }

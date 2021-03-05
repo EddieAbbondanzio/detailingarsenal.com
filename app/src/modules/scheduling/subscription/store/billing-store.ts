@@ -40,10 +40,7 @@ class BillingStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const [plan, customer] = await Promise.all([
-            subscriptionPlanService.getDefault(),
-            customerService.getCustomer()
-        ]);
+        const [plan, customer] = await Promise.all([subscriptionPlanService.getDefault(), customerService.get()]);
 
         this.context.commit('SET_DEFAULT_PLAN', plan);
         this.context.commit('SET_CUSTOMER', customer);

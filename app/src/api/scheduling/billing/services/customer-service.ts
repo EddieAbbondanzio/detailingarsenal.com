@@ -7,7 +7,7 @@ import { ExpirationDate } from '@/api/scheduling/billing/data-transfer-objects/e
 import { Period } from '@/api/scheduling/billing/data-transfer-objects/period';
 
 export class CustomerService {
-    async getCustomer() {
+    async get() {
         const res = await http.get('billing/customer');
 
         const c = new Customer(

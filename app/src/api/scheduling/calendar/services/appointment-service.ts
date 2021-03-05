@@ -7,7 +7,7 @@ import { CalendarRange } from '@/modules/scheduling/calendar/store/calendar-rang
 import { http } from '@/api/shared/http';
 
 export class AppointmentService {
-    public async get(day: Date, range: CalendarRange): Promise<Appointment[]> {
+    async get(day: Date, range: CalendarRange): Promise<Appointment[]> {
         const res = await http.get<any[]>('/appointment', {
             params: { range: 'day', date: moment(day).format('YYYY-MM-DD') }
         });
@@ -19,17 +19,17 @@ export class AppointmentService {
         return res.data.map(d => this._map(d));
     }
 
-    public async createAppointment(appointment: AppointmentCreate): Promise<Appointment> {
+    async createAppointment(appointment: AppointmentCreate): Promise<Appointment> {
         const res = await http.post<any>('/appointment', appointment);
         return this._map(res.data);
     }
 
-    public async updateAppointment(appointment: AppointmentUpdate): Promise<Appointment> {
+    async updateAppointment(appointment: AppointmentUpdate): Promise<Appointment> {
         const res = await http.put<any>(`/appointment/${appointment.id}`, appointment);
         return this._map(res.data);
     }
 
-    public async deleteAppointment(id: string): Promise<void> {
+    async deleteAppointment(id: string): Promise<void> {
         await http.delete(`/appointment/${id}`);
     }
 

@@ -19,7 +19,7 @@ class SubscriptionPlanStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const [plans] = await Promise.all([subscriptionPlanService.getPlans()]);
+        const [plans] = await Promise.all([subscriptionPlanService.get()]);
 
         this.context.commit('SET_SUBSCRIPTION_PLANS', plans);
     }

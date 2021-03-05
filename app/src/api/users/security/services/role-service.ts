@@ -5,7 +5,7 @@ import { RoleUpdateRequest } from '../data-transfer-objects/requests/role-update
 import { Permission } from '../data-transfer-objects/permission';
 
 export class RoleService {
-    async getRoles() {
+    async getAll() {
         const res = await http.get<any[]>('/security/roles');
         return res.data.map(d => this._map(d));
     }

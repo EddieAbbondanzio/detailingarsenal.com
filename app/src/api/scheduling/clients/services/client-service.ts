@@ -4,7 +4,7 @@ import { ClientCreate } from '@/api/scheduling/clients/data-transfer-objects/cli
 import { ClientUpdate } from '@/api/scheduling/clients/data-transfer-objects/client-update';
 
 export class ClientService {
-    async getClients(): Promise<Client[]> {
+    async getAll(): Promise<Client[]> {
         const res = await http.get<any[]>('/client');
         return res.data.map(r => this._map(r));
     }

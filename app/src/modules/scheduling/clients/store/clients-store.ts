@@ -37,7 +37,7 @@ class ClientsStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const clients = await clientService.getClients();
+        const clients = await clientService.getAll();
         this.context.commit('SET_CLIENTS', clients);
     }
 

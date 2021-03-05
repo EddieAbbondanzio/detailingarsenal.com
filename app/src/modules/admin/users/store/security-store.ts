@@ -72,7 +72,7 @@ class SecurityStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const [perms, roles] = await Promise.all([permissionService.getPermissions(), roleService.getRoles()]);
+        const [perms, roles] = await Promise.all([permissionService.getAll(), roleService.getAll()]);
 
         this.context.commit('SET_PERMISSIONS', perms);
         this.context.commit('SET_ROLES', roles);

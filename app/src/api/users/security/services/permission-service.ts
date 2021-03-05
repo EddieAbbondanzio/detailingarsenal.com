@@ -4,7 +4,7 @@ import { PermissionCreateRequest } from '../data-transfer-objects/requests/permi
 import { PermissionUpdateReqest } from '../data-transfer-objects/requests/permission-update-request';
 
 export class PermissionService {
-    async getPermissions() {
+    async getAll() {
         const res = await http.get<any[]>('/security/permissions');
         return res.data.map(r => this._map(r));
     }
