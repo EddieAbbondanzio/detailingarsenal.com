@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Domain.Admin.ProductCatalog;
 using DetailingArsenal.Domain.Clients;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Users;

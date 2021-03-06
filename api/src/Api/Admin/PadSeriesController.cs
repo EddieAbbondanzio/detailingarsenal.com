@@ -12,8 +12,9 @@ using DetailingArsenal.Application.ProductCatalog;
 using System.Drawing;
 using System.IO;
 using DetailingArsenal.Domain.Shared;
+using DetailingArsenal.Application.Admin.ProductCatalog;
 
-namespace DetailingArsenal.Api.ProductCatalog {
+namespace DetailingArsenal.Api.Admin.ProductCatalog {
     [Authorize]
     [ApiController]
     [Route("admin/product-catalog/pad-series")]

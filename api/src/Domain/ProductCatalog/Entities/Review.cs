@@ -2,7 +2,7 @@ using System;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain.ProductCatalog {
-    public class Review : Entity<Review>, IUserEntity {
+    public class Review : Aggregate<Review>, IUserEntity {
         public const int TitleMaxLength = 64;
         public const int BodyMaxLength = 10_000;
 

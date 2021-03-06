@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using DetailingArsenal.Application.Settings;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Application.ProductCatalog;
+using DetailingArsenal.Application.Admin.ProductCatalog;
 
 namespace DetailingArsenal.Api.ProductCatalog {
     [Authorize]

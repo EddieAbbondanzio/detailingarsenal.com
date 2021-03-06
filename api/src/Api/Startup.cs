@@ -50,6 +50,9 @@ using DetailingArsenal.Persistence.Shared;
 using DetailingArsenal.Domain.Shared;
 using Serilog;
 using Microsoft.AspNetCore.HttpOverrides;
+using DetailingArsenal.Domain.Admin.ProductCatalog;
+using DetailingArsenal.Application.Admin.ProductCatalog;
+using DetailingArsenal.Persistence.Admin.ProductCatalog;
 
 namespace DetailingArsenal.Api {
     public class Startup {

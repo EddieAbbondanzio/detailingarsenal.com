@@ -1,4 +1,5 @@
 using System;
+using DetailingArsenal.Persistence.Shared;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
     internal class PadsViewRow : IDataTransferObject {

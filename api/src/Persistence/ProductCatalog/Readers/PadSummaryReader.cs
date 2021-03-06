@@ -5,6 +5,7 @@ using Dapper;
 using DetailingArsenal.Application;
 using DetailingArsenal.Application.ProductCatalog;
 using DetailingArsenal.Domain;
+using DetailingArsenal.Persistence.Shared;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
     public class PadSummaryReader : DatabaseInteractor, IPadSummaryReader {
@@ -20,7 +21,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     r.Id,
                     r.Name,
                     new PadSummarySeriesReadModel(r.PadSeriesId, r.PadSeriesName),
-                    new BrandReadModel(r.BrandId, r.BrandName),
+                    new PadSummaryBrandReadModel(r.BrandId, r.BrandName),
                     ((PadCategoryBitwise)r.Category).ToList(),
                     PadMaterialUtils.Parse(r.Material),
                     PadTextureUtils.Parse(r.Texture),
@@ -45,7 +46,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     r.Id,
                     r.Name,
                     new PadSummarySeriesReadModel(r.PadSeriesId, r.PadSeriesName),
-                    new BrandReadModel(r.BrandId, r.BrandName),
+                    new PadSummaryBrandReadModel(r.BrandId, r.BrandName),
                     ((PadCategoryBitwise)r.Category).ToList(),
                     PadMaterialUtils.Parse(r.Material),
                     PadTextureUtils.Parse(r.Texture),
