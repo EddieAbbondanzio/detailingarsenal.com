@@ -14,8 +14,7 @@ import { Measurement, Paging } from '@/api/shared';
 
 export class PadSeriesService {
     async get(paging: Paging): Promise<PagedArray<PadSeries>> {
-        // TODO: Switch to query string?
-        const res = await http.get('product-catalog/pad-series');
+        const res = await http.get('admin/product-catalog/pad-series');
 
         return {
             paging: {
@@ -29,7 +28,7 @@ export class PadSeriesService {
     }
 
     async getById(id: string): Promise<PagedArray<PadSeries>> {
-        const res = await http.get(`product-catalog/pad-series/${id}`);
+        const res = await http.get(`admin/product-catalog/pad-series/${id}`);
 
         if (res.data != null) {
             const s = this._map(res.data);
@@ -57,19 +56,19 @@ export class PadSeriesService {
     }
 
     async create(create: PadSeriesCreateRequest) {
-        const res = await http.post('product-catalog/pad-series', create);
+        const res = await http.post('admin/product-catalog/pad-series', create);
         const ps = this._map(res.data);
         return ps;
     }
 
     async update(update: PadSeriesUpdateRequest) {
-        const res = await http.put(`product-catalog/pad-series/${update.id}`, update);
+        const res = await http.put(`admin/product-catalog/pad-series/${update.id}`, update);
         const ps = this._map(res.data);
         return ps;
     }
 
     async delete(id: string) {
-        await http.delete(`product-catalog/pad-series/${id}`);
+        await http.delete(`admin/product-catalog/pad-series/${id}`);
     }
 
     _map(ps: any): PadSeries {

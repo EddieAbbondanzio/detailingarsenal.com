@@ -4,7 +4,7 @@ import { SpecificationError } from '@/api/shared/errors/specification-error';
 import { ValidationError } from '@/api/shared/errors/validation-error';
 import { AuthorizationError } from '@/api/shared/errors/authorization-error';
 import router from '@/core/router';
-import { AuthenticationService } from '../users';
+import { authenticationService } from '../users';
 
 /**
  * Singleton instance for making HTTP requests to backend.
@@ -13,8 +13,6 @@ export const http = axios.create({
     baseURL: process.env.VUE_APP_API_DOMAIN,
     headers: { 'Content-Type': 'application/json' }
 });
-
-const authenticationService: AuthenticationService = new AuthenticationService();
 
 http.interceptors.request.use(async config => {
     /*

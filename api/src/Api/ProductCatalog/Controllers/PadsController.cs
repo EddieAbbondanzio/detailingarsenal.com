@@ -26,9 +26,16 @@ namespace DetailingArsenal.Api.ProductCatalog {
             return Ok(filter);
         }
 
-        public async Task<IActionResult> GetAll(GetAllPadsQuery query) {
-            var pads = await mediator.Dispatch<GetAllPadsQuery, PagedCollection<PadSummaryReadModel>>(query);
+        [HttpGet]
+        public async Task<IActionResult> GetAll() {
+            var pads = await mediator.Dispatch<GetAllPadsQuery, PagedCollection<PadSummaryReadModel>>();
             return Ok(pads);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id) {
+            var pad = await mediator.Dispatch<GetPadByIdQuery, PadSummaryReadModel?>(new(id));
+            return Ok(pad);
         }
     }
 }

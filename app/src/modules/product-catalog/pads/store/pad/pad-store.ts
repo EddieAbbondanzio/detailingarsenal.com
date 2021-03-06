@@ -29,10 +29,9 @@ class PadStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        const f = await padFilterService.get();
-        this.context.commit('SET_LEGEND', f);
+        const [filter, pads] = await Promise.all([padFilterService.get(), padService.getAll()]);
 
-        const pads = await padService.getAll();
+        this.context.commit('SET_LEGEND', filter);
         this.context.commit('SET_PADS', pads);
     }
 

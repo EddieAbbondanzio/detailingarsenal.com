@@ -26,3 +26,5 @@ export class UserService {
         return await this.getUser();
     }
 }
+
+export const userService = new UserService();

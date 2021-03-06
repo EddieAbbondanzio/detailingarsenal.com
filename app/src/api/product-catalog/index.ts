@@ -1,5 +1,6 @@
 export * from './data-transfer-objects/requests/review-create-request';
 export * from './data-transfer-objects/pad-cut';
+export * from './data-transfer-objects/pad';
 export * from './data-transfer-objects/pad-filter';
 export * from './data-transfer-objects/pad-filter-legend';
 export * from './data-transfer-objects/pad-finish';

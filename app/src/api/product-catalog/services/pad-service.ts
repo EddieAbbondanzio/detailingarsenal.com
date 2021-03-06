@@ -1,13 +1,39 @@
-import { Pad } from '@/api/admin/data-transfer-objects/pad';
-import { PagedArray } from '@/api/shared';
+import { http, PagedArray } from '@/api/shared';
+import { Pad } from '@/api/product-catalog';
 
 export class PadService {
     async getAll(req: { paging: any } | null = null): Promise<PagedArray<Pad>> {
-        throw new Error();
+        const res = await http.get('product-catalog/pads');
+        return res.data.values.map((d: any) => this.map(d));
     }
 
-    async get(id: string): Promise<Pad> {
-        throw new Error();
+    async get(id: string): Promise<Pad | null> {
+        const res = await http.get(`product-catalog/pads/${id}`);
+
+        if (res.data != null) {
+            return this.map(res.data);
+        } else {
+            return null;
+        }
+    }
+
+    map(raw: any): Pad {
+        return new Pad(
+            raw.id,
+            raw.name,
+            raw.series,
+            raw.brand,
+            raw.category,
+            raw.color,
+            raw.material,
+            raw.texture,
+            raw.cut,
+            raw.finish,
+            raw.rating,
+            raw.polisherTypes,
+            raw.hasCenterHole,
+            raw.image
+        );
     }
 }
 

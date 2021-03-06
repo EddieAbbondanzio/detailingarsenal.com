@@ -3,16 +3,13 @@ import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
 import { Route, RawLocation } from 'vue-router';
 import router from '@/core/router';
-import { AuthenticationService, User, UserService } from '@/api/users';
+import { authenticationService, AuthenticationService, User, userService, UserService } from '@/api/users';
 
 @Module({ namespaced: true, name: 'user', dynamic: true, store })
 class UserStore extends InitableModule {
     isAuthenticated: boolean = false;
     isLoading: boolean = true; // Used to show loading screen
     user: User = null!;
-
-    private authenticationService: AuthenticationService = new AuthenticationService();
-    private userService: UserService = new UserService();
 
     @Mutation
     SET_IS_AUTHENTICATED(isAuthenticated: boolean) {
@@ -31,35 +28,35 @@ class UserStore extends InitableModule {
 
     @Action({ rawError: true })
     async _init() {
-        await this.authenticationService.init();
+        await authenticationService.init();
 
-        if (this.authenticationService.isAuthenticated) {
-            const user = await this.userService.getUser();
+        if (authenticationService.isAuthenticated) {
+            const user = await userService.getUser();
             this.context.commit('SET_USER', user);
         }
 
-        this.context.commit('SET_IS_AUTHENTICATED', this.authenticationService.isAuthenticated);
+        this.context.commit('SET_IS_AUTHENTICATED', authenticationService.isAuthenticated);
         this.context.commit('SET_IS_LOADING', false);
     }
 
     @Action({ rawError: true })
     async login(route: RawLocation | null = null) {
-        await this.authenticationService.login(route);
+        await authenticationService.login(route);
     }
 
     @Action({ rawError: true })
     async signUp(route: RawLocation | null = null) {
-        await this.authenticationService.signUp(route);
+        await authenticationService.signUp(route);
     }
 
     @Action({ rawError: true })
     async logout() {
-        await this.authenticationService.logout();
+        await authenticationService.logout();
     }
 
     @Action({ rawError: true })
     async updateUser(update: { name: string }) {
-        const u = await this.userService.updateUser(update);
+        const u = await userService.updateUser(update);
         this.context.commit('SET_USER', u);
     }
 }
