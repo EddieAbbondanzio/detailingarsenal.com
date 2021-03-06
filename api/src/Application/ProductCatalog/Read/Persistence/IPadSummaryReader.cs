@@ -2,8 +2,8 @@ using System;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    public interface IPadSummaryReader {
-        Task<PadSummaryReadModel?> Read(Guid id);
-        Task<PagedCollection<PadSummaryReadModel>> ReadAll();
+    public interface IPadReader {
+        Task<PadReadModel?> Read(Guid id);
+        Task<PagedCollection<PadReadModel>> ReadAll();
     }
 }

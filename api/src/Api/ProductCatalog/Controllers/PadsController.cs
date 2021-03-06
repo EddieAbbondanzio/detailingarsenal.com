@@ -28,13 +28,13 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            var pads = await mediator.Dispatch<GetAllPadsQuery, PagedCollection<PadSummaryReadModel>>();
+            var pads = await mediator.Dispatch<GetAllPadsQuery, PagedCollection<PadReadModel>>();
             return Ok(pads);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id) {
-            var pad = await mediator.Dispatch<GetPadByIdQuery, PadSummaryReadModel?>(new(id));
+            var pad = await mediator.Dispatch<GetPadByIdQuery, PadReadModel?>(new(id));
             return Ok(pad);
         }
     }

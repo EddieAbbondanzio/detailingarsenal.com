@@ -8,20 +8,20 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Persistence.Shared;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
-    public class PadSummaryReader : DatabaseInteractor, IPadSummaryReader {
-        public PadSummaryReader(IDatabase database) : base(database) { }
+    public class PadReader : DatabaseInteractor, IPadReader {
+        public PadReader(IDatabase database) : base(database) { }
 
-        public async Task<PadSummaryReadModel?> Read(Guid id) {
+        public async Task<PadReadModel?> Read(Guid id) {
             using (var conn = OpenConnection()) {
                 var r = await conn.QueryFirstOrDefaultAsync<PadsViewRow>(@"
                     select * from pads_view where id = @Id;
                 ", new { Id = id });
 
-                var summary = new PadSummaryReadModel(
+                var summary = new PadReadModel(
                     r.Id,
                     r.Name,
-                    new PadSummarySeriesReadModel(r.PadSeriesId, r.PadSeriesName),
-                    new PadSummaryBrandReadModel(r.BrandId, r.BrandName),
+                    new (r.PadSeriesId, r.PadSeriesName),
+                    new (r.BrandId, r.BrandName),
                     ((PadCategoryBitwise)r.Category).ToList(),
                     PadMaterialUtils.Parse(r.Material),
                     PadTextureUtils.Parse(r.Texture),
@@ -29,24 +29,24 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     ((PolisherTypeBitwise)r.PolisherTypes).ToList(),
                     r.Cut,
                     r.Finish,
-                    new PadSummaryRatingReadModel(r.Stars, r.ReviewCount)
+                    new PadRatingReadModel(r.Stars, r.ReviewCount)
                 );
 
                 return summary;
             }
         }
 
-        public async Task<PagedCollection<PadSummaryReadModel>> ReadAll() {
+        public async Task<PagedCollection<PadReadModel>> ReadAll() {
             using (var conn = OpenConnection()) {
                 var raws = await conn.QueryAsync<PadsViewRow>(@"
                     select * from pads_view;
                 ");
 
-                var summaries = raws.Select(r => new PadSummaryReadModel(
+                var summaries = raws.Select(r => new PadReadModel(
                     r.Id,
                     r.Name,
-                    new PadSummarySeriesReadModel(r.PadSeriesId, r.PadSeriesName),
-                    new PadSummaryBrandReadModel(r.BrandId, r.BrandName),
+                    new PadSeriesReadModel(r.PadSeriesId, r.PadSeriesName),
+                    new PadBrandReadModel(r.BrandId, r.BrandName),
                     ((PadCategoryBitwise)r.Category).ToList(),
                     PadMaterialUtils.Parse(r.Material),
                     PadTextureUtils.Parse(r.Texture),
@@ -54,10 +54,10 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     ((PolisherTypeBitwise)r.PolisherTypes).ToList(),
                     r.Cut,
                     r.Finish,
-                    new PadSummaryRatingReadModel(r.Stars, r.ReviewCount)
+                    new PadRatingReadModel(r.Stars, r.ReviewCount)
                 ));
 
-                return new PagedCollection<PadSummaryReadModel>(new Paging(0, 20, summaries.Count()), summaries.ToArray());
+                return new PagedCollection<PadReadModel>(new Paging(0, 20, summaries.Count()), summaries.ToArray());
             }
         }
     }

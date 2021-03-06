@@ -4,11 +4,11 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Shared;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    public record PadSummaryReadModel : IDataTransferObject {
+    public record PadReadModel : IDataTransferObject {
         public Guid Id { get; }
         public string Name { get; }
-        public PadSummarySeriesReadModel Series { get; }
-        public PadSummaryBrandReadModel Brand { get; }
+        public PadSeriesReadModel Series { get; }
+        public PadBrandReadModel Brand { get; }
         public List<PadCategory> Category { get; }
         public PadMaterial Material { get; }
         public PadTexture Texture { get; }
@@ -16,9 +16,9 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public List<PolisherType> PolisherTypes { get; }
         public float? Cut { get; }
         public float? Finish { get; }
-        public PadSummaryRatingReadModel Rating { get; }
+        public PadRatingReadModel Rating { get; }
 
-        public PadSummaryReadModel(Guid id, string name, PadSummarySeriesReadModel series, PadSummaryBrandReadModel brand, List<PadCategory> category, PadMaterial material, PadTexture texture, bool hasCenterHole, List<PolisherType> polisherTypes, float? cut, float? finish, PadSummaryRatingReadModel rating) {
+        public PadReadModel(Guid id, string name, PadSeriesReadModel series, PadBrandReadModel brand, List<PadCategory> category, PadMaterial material, PadTexture texture, bool hasCenterHole, List<PolisherType> polisherTypes, float? cut, float? finish, PadRatingReadModel rating) {
             Id = id;
             Name = name;
             Series = series;
@@ -35,7 +35,7 @@ namespace DetailingArsenal.Application.ProductCatalog {
     }
 
 
-    public record PadSummarySeriesReadModel(Guid Id, string Name) : IDataTransferObject;
-    public record PadSummaryBrandReadModel(Guid Id, string Name) : IDataTransferObject;
-    public record PadSummaryRatingReadModel(float? Stars, int ReviewCount) : IDataTransferObject;
+    public record PadSeriesReadModel(Guid Id, string Name) : IDataTransferObject;
+    public record PadBrandReadModel(Guid Id, string Name) : IDataTransferObject;
+    public record PadRatingReadModel(float? Stars, int ReviewCount) : IDataTransferObject;
 }

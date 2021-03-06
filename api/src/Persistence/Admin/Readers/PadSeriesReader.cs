@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using DetailingArsenal.Application;
-using DetailingArsenal.Application.ProductCatalog;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
 using System.Text;
-using DetailingArsenal.Application.Admin.ProductCatalog;
 using DetailingArsenal.Persistence.Shared;
+using DetailingArsenal.Application.Admin.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
     public class PadSeriesReader : DatabaseInteractor, IPadSeriesReader {

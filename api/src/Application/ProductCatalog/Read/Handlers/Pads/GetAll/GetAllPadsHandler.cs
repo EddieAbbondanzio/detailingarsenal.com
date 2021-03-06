@@ -6,16 +6,16 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
-    public class GetAllPadsHandler : ActionHandler<GetAllPadsQuery, PagedCollection<PadSummaryReadModel>> {
-        IPadSummaryReader reader;
+    public class GetAllPadsHandler : ActionHandler<GetAllPadsQuery, PagedCollection<PadReadModel>> {
+        IPadReader reader;
 
-        public GetAllPadsHandler(IPadSummaryReader reader) {
+        public GetAllPadsHandler(IPadReader reader) {
             this.reader = reader;
         }
 
-        public async override Task<PagedCollection<PadSummaryReadModel>> Execute(GetAllPadsQuery input, User? user) {
+        public async override Task<PagedCollection<PadReadModel>> Execute(GetAllPadsQuery input, User? user) {
             var pads = await reader.ReadAll();
-            return pads;                
+            return pads;
         }
     }
 }
