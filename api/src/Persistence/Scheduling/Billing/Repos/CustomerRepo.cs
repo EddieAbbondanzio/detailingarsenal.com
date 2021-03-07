@@ -11,6 +11,7 @@ using DetailingArsenal.Domain.Users;
 using Serilog;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(ICustomerRepo))]
     public class CustomerRepo : DatabaseInteractor, ICustomerRepo {
         public CustomerRepo(IDatabase database) : base(database) { }
 

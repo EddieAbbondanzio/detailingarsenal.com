@@ -7,6 +7,7 @@ using Stripe;
 using Stripe.Checkout;
 
 namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(ISubscriptionPlanGateway))]
     public class StripeSubscriptionPlanGateway : ISubscriptionPlanGateway {
         ProductService productService;
         PriceService priceService;

@@ -8,6 +8,7 @@ using System;
 namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateVehicleCategoryValidator))]
     [Authorization(Action = "update", Scope = "vehicle-categories")]
+    [DependencyInjection]
     public class UpdateVehicleCategoryHandler : ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryView> {
         private IVehicleCategoryService service;
         public UpdateVehicleCategoryHandler(IVehicleCategoryService service) {

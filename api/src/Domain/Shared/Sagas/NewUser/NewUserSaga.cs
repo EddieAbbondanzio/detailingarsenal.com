@@ -1,6 +1,7 @@
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class NewUserSaga : Saga<string> {
         public NewUserSaga(
                             CreateUserStep createUser,

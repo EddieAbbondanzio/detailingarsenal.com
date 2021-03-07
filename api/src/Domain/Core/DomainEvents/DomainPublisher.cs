@@ -12,6 +12,7 @@ namespace DetailingArsenal.Domain {
     /// Publisher to notify subscribers when a domain event they
     /// care about has occured. Best used to initiate parallel tasks.
     /// </summary>transaction
+    [DependencyInjection(RegisterAs = typeof(IDomainEventPublisher), LifeTime = LifeTime.Singleton)]
     public sealed class DomainEventPublisher : IDomainEventPublisher {
         private IDomainEventSubscriberCollection subscriberCollection;
 

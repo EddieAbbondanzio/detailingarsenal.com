@@ -1,4 +1,5 @@
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class SynchronizationSaga : Saga {
         public SynchronizationSaga(
             RunDatabaseMigrationsStep runDatabaseMigrations,

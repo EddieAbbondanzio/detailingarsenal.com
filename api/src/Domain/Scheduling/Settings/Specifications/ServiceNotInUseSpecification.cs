@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Calendar;
 
 namespace DetailingArsenal.Domain.Settings {
+    [DependencyInjection]
     public class ServiceNotInUseSpecification : Specification<Service> {
         private IAppointmentRepo repo;
 

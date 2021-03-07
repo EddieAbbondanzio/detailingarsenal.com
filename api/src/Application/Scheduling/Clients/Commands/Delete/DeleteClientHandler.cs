@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "delete", Scope = "clients")]
+    [DependencyInjection]
     public class DeleteClientHandler : ActionHandler<DeleteClientCommand, ClientView> {
         IClientService service;
 

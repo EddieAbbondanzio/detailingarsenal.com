@@ -10,6 +10,7 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Calendar {
+    [DependencyInjection(RegisterAs = typeof(IAppointmentRepo))]
     public class AppointmentRepo : DatabaseInteractor, IAppointmentRepo {
         public AppointmentRepo(IDatabase database) : base(database) { }
 

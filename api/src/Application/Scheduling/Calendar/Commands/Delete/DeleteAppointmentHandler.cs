@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "delete", Scope = "appointments")]
+    [DependencyInjection]
     public class DeleteAppointmentHandler : ActionHandler<DeleteAppointmentCommand> {
         IAppointmentService service;
 

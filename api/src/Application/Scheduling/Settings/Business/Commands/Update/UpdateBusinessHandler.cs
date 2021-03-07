@@ -8,6 +8,7 @@ using System;
 namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(UpdateBusinessValidator))]
     [Authorization(Action = "update", Scope = "businesses")]
+    [DependencyInjection]
     public class UpdateBusinessHandler : ActionHandler<UpdateBusinessCommand, BusinessView> {
         IBusinessService service;
 

@@ -9,6 +9,7 @@ using System.Linq;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(UpdateRoleValidator))]
     [Authorization(Action = "update", Scope = "roles")]
+    [DependencyInjection]
     public class UpdateRoleHandler : ActionHandler<RoleUpdateCommand> {
         IRoleRepo repo;
         RoleNameUniqueSpecification nameUniqueSpec;

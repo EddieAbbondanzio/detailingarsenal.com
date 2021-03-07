@@ -7,6 +7,7 @@ namespace DetailingArsenal.Domain.Scheduling.Billing {
         Task Refresh(Customer customer);    // Don't delete
     }
 
+    [DependencyInjection(RegisterAs = typeof(ICustomerRefresher))]
     public class CustomerRefresher : ICustomerRefresher {
         ICustomerGateway customerGateway;
         ICustomerRepo customerRepo;

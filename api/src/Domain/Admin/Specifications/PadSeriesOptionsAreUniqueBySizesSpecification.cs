@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Admin.ProductCatalog {
+    [DependencyInjection]
     public class PadSeriesOptionsAreUniqueBySizesSpecification : Specification<PadSeries> {
 #pragma warning disable 1998
         protected async override Task<SpecificationResult> IsSatisfied(PadSeries series) {

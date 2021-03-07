@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
+    [DependencyInjection]
     public class GetReviewByIdHandler : ActionHandler<GetReviewByIdQuery, ReviewReadModel?> {
         IReviewReader reader;
 

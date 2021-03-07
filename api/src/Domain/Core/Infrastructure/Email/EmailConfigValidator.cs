@@ -1,6 +1,7 @@
 using FluentValidation;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class EmailConfigValidator : FluentValidatorAdapter<EmailConfig> {
         public EmailConfigValidator() {
             RuleFor(c => c.Username).NotEmpty().WithMessage("Email address is required.");

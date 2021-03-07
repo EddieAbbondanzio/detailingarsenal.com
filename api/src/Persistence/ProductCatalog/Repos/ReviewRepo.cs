@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.ProductCatalog;
 using System.Linq;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(IReviewRepo))]
     public class ReviewRepo : DatabaseInteractor, IReviewRepo {
         public ReviewRepo(IDatabase database) : base(database) {
         }

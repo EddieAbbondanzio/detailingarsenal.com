@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class AddRoleToNewUserStep : SagaStep<string> {
         IRoleAssigner roleAssigner;
 

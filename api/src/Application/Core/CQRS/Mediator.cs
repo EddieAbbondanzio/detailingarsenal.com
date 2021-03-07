@@ -33,6 +33,7 @@ namespace DetailingArsenal.Application {
         Task<TOutput> Dispatch<TInput, TOutput>(string? userId = null) where TInput : class, IAction, new();
     }
 
+    [DependencyInjection(RegisterAs = typeof(IMediator), LifeTime = LifeTime.Scoped)]
     public sealed class Mediator : IMediator {
         IServiceProvider serviceProvider;
         IEnumerable<ActionMiddleware> middlewares;

@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "create", Scope = "vehicle-categories")]
     [Validation(typeof(CreateVehicleCategoryValidator))]
+    [DependencyInjection]
     public class CreateVehicleCategoryHandler : ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryView> {
         private IVehicleCategoryService service;
 

@@ -3,6 +3,7 @@ using DetailingArsenal.Domain.ProductCatalog;
 using FluentValidation;
 
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
+    [DependencyInjection]
     public class PadSeriesUpdateValidator : FluentValidatorAdapter<PadSeriesUpdateCommand> {
         public PadSeriesUpdateValidator() {
             RuleFor(c => c.Name).NotEmpty().WithMessage("Name is required.");

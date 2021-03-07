@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Users;
 using Serilog;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class CreateOrUpdateAdminStep : SagaStep {
         AdminConfig config;
         IRoleRepo roleRepo;

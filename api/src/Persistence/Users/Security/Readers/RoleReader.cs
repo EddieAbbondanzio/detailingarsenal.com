@@ -7,6 +7,8 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Application.Users.Security;
 
 namespace DetailingArsenal.Persistence.Users.Security {
+
+    [DependencyInjection(RegisterAs = typeof(IRoleReader))]
     public class RoleReader : DatabaseInteractor, IRoleReader {
         public RoleReader(IDatabase database) : base(database) { }
 

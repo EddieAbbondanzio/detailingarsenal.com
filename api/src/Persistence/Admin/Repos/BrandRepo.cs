@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Admin.ProductCatalog;
 using DetailingArsenal.Domain.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(IBrandRepo))]
     public class BrandRepo : DatabaseInteractor, IBrandRepo {
         public BrandRepo(IDatabase database) : base(database) { }
 

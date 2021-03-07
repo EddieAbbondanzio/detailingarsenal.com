@@ -13,6 +13,7 @@ namespace DetailingArsenal.Domain.Users.Security {
         Task RemoveRole(User user, Guid roleId);
     }
 
+    [DependencyInjection(RegisterAs = typeof(IRoleAssigner))]
     public class RoleAssigner : IRoleAssigner {
         IRoleRepo roleRepo;
 

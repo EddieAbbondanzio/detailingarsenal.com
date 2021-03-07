@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class CreateHoursOfOperationStep : SagaStep<string> {
         IHoursOfOperationService service;
 

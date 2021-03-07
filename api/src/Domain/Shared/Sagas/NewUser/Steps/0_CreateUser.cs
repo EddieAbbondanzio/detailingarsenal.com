@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class CreateUserStep : SagaStep<string> {
         IUserRepo userRepo;
         IUserGateway userGateway;

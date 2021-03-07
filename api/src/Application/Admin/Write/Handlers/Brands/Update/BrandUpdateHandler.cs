@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
     [Authorization(Action = "update", Scope = "brands")]
     [Validation(typeof(BrandUpdateValidator))]
+    [DependencyInjection]
     public class BrandUpdateHandler : ActionHandler<BrandUpdateCommand> {
         IBrandRepo repo;
         BrandNameUniqueSpecification unique;

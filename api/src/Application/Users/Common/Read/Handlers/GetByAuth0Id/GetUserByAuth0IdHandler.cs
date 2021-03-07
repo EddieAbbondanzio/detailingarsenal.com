@@ -3,6 +3,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users {
+    [DependencyInjection]
     public class GetUserByAuth0IdHandler : ActionHandler<GetUserByAuth0IdQuery, UserReadModel> {
         IUserReader userReader;
 

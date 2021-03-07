@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Settings;
 using FluentValidation;
 
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
+    [DependencyInjection]
     public class BrandUpdateValidator : FluentValidatorAdapter<BrandUpdateCommand> {
         public BrandUpdateValidator() {
             RuleFor(cmd => cmd.Name).NotNull().WithMessage("Name is required.");

@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using Stripe;
 
 namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(StripeWebhookConverter))]
     public class CustomerSubscriptionTrialWillEndSoonConverter : StripeWebhookConverter {
         protected override string WebhookType => Events.CustomerSubscriptionTrialWillEnd;
 

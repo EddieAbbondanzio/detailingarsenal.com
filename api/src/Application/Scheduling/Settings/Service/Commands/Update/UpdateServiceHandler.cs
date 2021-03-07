@@ -9,6 +9,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "update", Scope = "services")]
     [Validation(typeof(UpdateServiceValidator))]
+    [DependencyInjection]
     public class UpdateServiceHandler : ActionHandler<UpdateServiceCommand, ServiceView> {
         IServiceService service;
 

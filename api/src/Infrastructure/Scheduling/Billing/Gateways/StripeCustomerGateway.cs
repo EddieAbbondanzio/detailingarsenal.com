@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 using Stripe;
 
 namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(ICustomerGateway))]
     public class StripeCustomerGateway : ICustomerGateway {
         Stripe.CustomerService customerService;
         Stripe.SubscriptionService subscriptionService;

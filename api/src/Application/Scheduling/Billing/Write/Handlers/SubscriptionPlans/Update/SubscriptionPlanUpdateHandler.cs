@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "update", Scope = "subscription-plans")]
+    [DependencyInjection]
     public class SubscriptionPlanUpdateHandler : ActionHandler<SubscriptionPlanUpdateCommand> {
         ISubscriptionPlanRepo repo;
 

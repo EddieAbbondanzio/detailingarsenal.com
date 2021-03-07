@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "businesses")]
+    [DependencyInjection]
     public class GetBusinessHandler : ActionHandler<GetBusinessQuery, BusinessView> {
         private IBusinessService service;
 

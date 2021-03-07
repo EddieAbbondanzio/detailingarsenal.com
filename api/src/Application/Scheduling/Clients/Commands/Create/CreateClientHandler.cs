@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "create", Scope = "clients")]
+    [DependencyInjection]
     public class CreateClientHandler : ActionHandler<CreateClientCommand, ClientView> {
         IClientService service;
 

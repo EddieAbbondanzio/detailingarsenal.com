@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "delete", Scope = "services")]
+    [DependencyInjection]
     public class DeleteServiceHandler : ActionHandler<DeleteServiceCommand> {
         private IServiceService service;
 

@@ -12,6 +12,7 @@ namespace DetailingArsenal.Domain.Settings {
         Task Delete(Business business);
     }
 
+    [DependencyInjection(RegisterAs = typeof(IBusinessService))]
     public class BusinessService : IBusinessService {
         public IBusinessRepo repo;
 

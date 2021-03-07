@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 using Serilog;
 
 namespace DetailingArsenal.Application {
+    [DetailingArsenal.DependencyInjection(RegisterAs = typeof(IDomainEventSubscriber<NewUserCreatedEvent>), Environment = Environment.Prod)]
     public class EmailEdOnNewUser : IDomainEventSubscriber<NewUserCreatedEvent> {
         IEmailClient emailClient;
 

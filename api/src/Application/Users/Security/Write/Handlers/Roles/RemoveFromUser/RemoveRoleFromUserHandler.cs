@@ -5,6 +5,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "remove-role", Scope = "users")]
+    [DependencyInjection]
     public class RemoveRoleFromUserHandler : ActionHandler<RemoveRoleFromUserCommand> {
         IUserRepo userRepo;
         IRoleAssigner roleAssigner;

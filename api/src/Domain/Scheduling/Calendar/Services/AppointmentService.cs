@@ -13,6 +13,7 @@ namespace DetailingArsenal.Domain.Calendar {
         Task Delete(Appointment appointment);
     }
 
+    [DependencyInjection(RegisterAs = typeof(IAppointmentService))]
     public class AppointmentService : IAppointmentService {
         IAppointmentRepo repo;
 

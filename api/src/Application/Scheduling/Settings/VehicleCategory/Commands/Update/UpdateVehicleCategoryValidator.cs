@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Settings;
 using FluentValidation;
 
 namespace DetailingArsenal.Application.Settings {
+    [DependencyInjection]
     public class UpdateVehicleCategoryValidator : FluentValidatorAdapter<UpdateVehicleCategoryCommand> {
         public UpdateVehicleCategoryValidator() {
             RuleFor(cmd => cmd.Id).NotNull().WithMessage("Id is required.");

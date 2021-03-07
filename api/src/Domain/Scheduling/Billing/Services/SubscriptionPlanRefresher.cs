@@ -9,6 +9,7 @@ namespace DetailingArsenal.Domain.Scheduling.Billing {
         Task<List<SubscriptionPlan>> RefreshPlans();
     }
 
+    [DependencyInjection(RegisterAs = typeof(ISubscriptionPlanRefresher))]
     public class SubscriptionPlanRefresher : ISubscriptionPlanRefresher {
         ISubscriptionPlanGateway gateway;
         ISubscriptionPlanRepo repo;

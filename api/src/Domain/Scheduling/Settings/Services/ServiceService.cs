@@ -13,6 +13,7 @@ namespace DetailingArsenal.Domain.Settings {
         Task Delete(Service service);
     }
 
+    [DependencyInjection(RegisterAs = typeof(IServiceService))]
     public class ServiceService : IServiceService {
         IServiceRepo repo;
         ServiceNameUniqueSpecification uniqueNameSpec;

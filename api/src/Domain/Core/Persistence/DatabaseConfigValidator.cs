@@ -1,6 +1,7 @@
 using FluentValidation;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class DatabaseConfigValidator : FluentValidatorAdapter<DatabaseConfig> {
         public DatabaseConfigValidator() {
             RuleFor(c => c.Host).NotEmpty().WithMessage("Database host is required.");

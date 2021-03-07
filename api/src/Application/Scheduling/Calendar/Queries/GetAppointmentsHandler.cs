@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "read", Scope = "appointments")]
+    [DependencyInjection]
     public class GetAppointmentsHandler : ActionHandler<GetAppointmentsQuery, List<AppointmentView>> {
         IAppointmentService service;
 

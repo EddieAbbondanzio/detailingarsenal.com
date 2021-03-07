@@ -1,6 +1,7 @@
 using FluentValidation;
 
 namespace DetailingArsenal.Domain.Users {
+    [DependencyInjection]
     public class Auth0ConfigValidator : FluentValidatorAdapter<Auth0Config> {
         public Auth0ConfigValidator() {
             RuleFor(c => c.Domain).NotEmpty().WithMessage("Auth0 domain is required.");

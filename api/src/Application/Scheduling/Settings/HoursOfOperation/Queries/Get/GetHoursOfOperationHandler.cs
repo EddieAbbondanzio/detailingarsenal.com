@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "hours-of-operations")]
+    [DependencyInjection]
     public class GetHoursOfOperationHandler : ActionHandler<GetHoursOfOperationQuery, HoursOfOperationView> {
         private IHoursOfOperationService service;
 

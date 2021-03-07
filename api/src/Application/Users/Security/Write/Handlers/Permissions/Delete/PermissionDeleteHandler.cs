@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "delete", Scope = "permissions")]
+    [DependencyInjection]
     public class PermissionDeleteHandler : ActionHandler<PermissionDeleteCommand> {
         IPermissionRepo repo;
         PermissionNotInUseSpecification spec;

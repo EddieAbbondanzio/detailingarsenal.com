@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Clients {
     [Authorization(Action = "update", Scope = "clients")]
+    [DependencyInjection]
     public class UpdateClientHandler : ActionHandler<UpdateClientCommand, ClientView> {
         IClientService service;
 

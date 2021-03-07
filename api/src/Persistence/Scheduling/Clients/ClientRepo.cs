@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Clients;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Clients {
+    [DependencyInjection(RegisterAs = typeof(IClientRepo))]
     public class ClientRepo : DatabaseInteractor, IClientRepo {
         public ClientRepo(IDatabase database) : base(database) { }
 

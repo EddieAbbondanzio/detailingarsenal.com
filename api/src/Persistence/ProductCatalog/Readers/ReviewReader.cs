@@ -7,6 +7,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Application.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(IReviewReader))]
     public class ReviewReader : DatabaseInteractor, IReviewReader {
         public ReviewReader(IDatabase database) : base(database) {
         }

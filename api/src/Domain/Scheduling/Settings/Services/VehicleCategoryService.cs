@@ -12,6 +12,7 @@ namespace DetailingArsenal.Domain.Settings {
         Task Delete(VehicleCategory category);
     }
 
+    [DependencyInjection(RegisterAs = typeof(IVehicleCategoryService))]
     public class VehicleCategoryService : IVehicleCategoryService {
         private VehicleCategoryNameUniqueSpecification uniqueNameSpec;
         private VehicleCategoryNotInUseSpecification notInUseSpec;

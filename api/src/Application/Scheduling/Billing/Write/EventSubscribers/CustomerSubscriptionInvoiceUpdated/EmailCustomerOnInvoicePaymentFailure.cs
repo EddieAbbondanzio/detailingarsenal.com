@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated>))]
     public class EmailCustomerOnInvoicePaymentFailure : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
         IEmailClient emailClient;
         ICustomerRepo customerRepo;

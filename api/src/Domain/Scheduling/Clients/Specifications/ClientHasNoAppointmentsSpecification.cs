@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Calendar;
 
 namespace DetailingArsenal.Domain.Clients {
+    [DependencyInjection]
     public class ClientHasNoAppointmentsSpecification : Specification<Client> {
         private IAppointmentRepo repo;
 

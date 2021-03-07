@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization]
+    [DependencyInjection]
     public class CreateSessionHandler : ActionHandler<CreateCheckoutSessionCommand, BillingReference> {
         ICustomerRepo customerRepo;
         ICheckoutSessionGateway sessionGateway;

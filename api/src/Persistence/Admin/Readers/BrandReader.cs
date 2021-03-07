@@ -9,6 +9,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(IBrandReader))]
     public class BrandReader : DatabaseInteractor, IBrandReader {
         public BrandReader(IDatabase database) : base(database) { }
 

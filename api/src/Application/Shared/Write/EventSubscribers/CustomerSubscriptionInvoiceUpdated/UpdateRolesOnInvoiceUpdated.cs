@@ -10,6 +10,7 @@ using DetailingArsenal.Domain.Users;
 using Serilog;
 
 namespace DetailingArsenal.Application {
+    [DependencyInjection(RegisterAs = typeof(IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated>))]
     public class UpdateRolesOnInvoiceUpdated : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
         ICustomerRepo customerRepo;
         IRoleAssigner roleAssigner;

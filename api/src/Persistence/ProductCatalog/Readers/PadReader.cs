@@ -8,6 +8,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Persistence.Shared;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(IPadReader))]
     public class PadReader : DatabaseInteractor, IPadReader {
         public PadReader(IDatabase database) : base(database) { }
 
@@ -20,8 +21,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 var summary = new PadReadModel(
                     r.Id,
                     r.Name,
-                    new (r.PadSeriesId, r.PadSeriesName),
-                    new (r.BrandId, r.BrandName),
+                    new(r.PadSeriesId, r.PadSeriesName),
+                    new(r.BrandId, r.BrandName),
                     ((PadCategoryBitwise)r.Category).ToList(),
                     PadMaterialUtils.Parse(r.Material),
                     PadTextureUtils.Parse(r.Texture),

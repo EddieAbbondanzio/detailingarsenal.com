@@ -7,6 +7,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(ISubscriptionPlanRepo))]
     public class SubscriptionPlanRepo : DatabaseInteractor, ISubscriptionPlanRepo {
         IBillingConfig billingConfig;
 

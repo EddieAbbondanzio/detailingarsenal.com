@@ -2,6 +2,7 @@ using DetailingArsenal.Domain;
 using FluentMigrator.Runner;
 
 namespace DetailingArsenal.Persistence {
+    [DependencyInjection(RegisterAs = typeof(IDatabaseMigrationRunner), LifeTime = LifeTime.Scoped)]
     public sealed class FluentMigratorMigrationRunner : IDatabaseMigrationRunner {
         private IMigrationRunner runner;
 

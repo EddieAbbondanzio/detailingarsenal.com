@@ -7,6 +7,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Persistence.Users.Security {
+    [DependencyInjection(RegisterAs = typeof(IPermissionRepo))]
     public class PermissionRepo : DatabaseInteractor, IPermissionRepo {
         public PermissionRepo(IDatabase database) : base(database) { }
 

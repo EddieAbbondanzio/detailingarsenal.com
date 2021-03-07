@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Users;
 using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Infrastructure.Users {
+    [DependencyInjection(RegisterAs = typeof(IUserGateway))]
     public class Auth0UserGateway : IUserGateway {
         private IAuth0ApiClientBuilder tokenGenerator;
 

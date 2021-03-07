@@ -8,6 +8,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(ISubscriptionPlanReader))]
     public class SubscriptionPlanReader : DatabaseInteractor, ISubscriptionPlanReader {
         IBillingConfig config;
 

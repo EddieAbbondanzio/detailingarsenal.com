@@ -3,6 +3,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class ValidateConfigFile : SagaStep {
         DatabaseConfigValidator databaseConfigValidator;
         DatabaseConfig databaseConfig;

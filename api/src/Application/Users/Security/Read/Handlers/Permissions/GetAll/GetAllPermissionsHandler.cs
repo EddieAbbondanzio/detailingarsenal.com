@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "read", Scope = "permissions")]
+    [DependencyInjection]
     public class GetAllPermissionsHandler : ActionHandler<GetAllPermissionsQuery, List<PermissionReadModel>> {
         IPermissionReader reader;
 

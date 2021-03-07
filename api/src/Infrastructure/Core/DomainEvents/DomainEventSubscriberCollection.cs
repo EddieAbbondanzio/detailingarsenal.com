@@ -4,6 +4,7 @@ using DetailingArsenal.Domain;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DetailingArsenal.Infrastructure {
+    [DependencyInjection(RegisterAs = typeof(IDomainEventSubscriberCollection))]
     public sealed class DomainEventSubscriberCollection : IDomainEventSubscriberCollection {
         private IServiceProvider serviceProvider;
 

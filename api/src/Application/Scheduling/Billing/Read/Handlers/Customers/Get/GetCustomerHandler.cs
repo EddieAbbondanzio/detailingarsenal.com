@@ -3,6 +3,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
+    [DependencyInjection]
     public class GetCustomerHandler : ActionHandler<GetCustomerQuery, CustomerReadModel> {
         ICustomerReader customerReader;
 

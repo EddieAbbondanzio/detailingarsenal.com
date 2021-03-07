@@ -5,6 +5,7 @@ using DetailingArsenal.Application.ProductCatalog;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Persistence.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(IPadFilterReader))]
     public class PadFilterReader : DatabaseInteractor, IPadFilterReader {
         public PadFilterReader(IDatabase database) : base(database) { }
 

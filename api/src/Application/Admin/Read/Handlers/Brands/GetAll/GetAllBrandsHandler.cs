@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(ActionHandler<GetAllBrandsQuery, List<BrandReadModel>>))]
     public class GetAllBrandsHandler : ActionHandler<GetAllBrandsQuery, List<BrandReadModel>> {
         IBrandReader reader;
 

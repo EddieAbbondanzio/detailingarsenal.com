@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "read", Scope = "roles")]
+    [DependencyInjection]
     public class GetRolesHandler : ActionHandler<GetAllRolesQuery, List<RoleReadModel>> {
         IRoleReader reader;
 

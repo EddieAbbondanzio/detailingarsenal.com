@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application {
+    [DependencyInjection(RegisterAs = typeof(ActionMiddleware))]
     public class AuthorizationMiddleware : ActionMiddleware {
         private IRoleRepo roleRepo;
         private IPermissionRepo permissionRepo;

@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DetailingArsenal.Application {
+    [DependencyInjection(RegisterAs = typeof(ActionMiddleware))]
     public class ValidationMiddleware : ActionMiddleware {
         public async override Task Execute(IServiceProvider provider, ActionHandler handler, IAction input, User? user) {
             ValidationAttribute? attribute = handler.GetType().GetCustomAttribute<ValidationAttribute>();

@@ -5,6 +5,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "add-role", Scope = "users")]
+    [DependencyInjection]
     public class AddRoleToUserHandler : ActionHandler<AddRoleToUserCommand> {
         IUserRepo userRepo;
         IRoleRepo roleRepo;

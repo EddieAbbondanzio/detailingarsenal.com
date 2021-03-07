@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "vehicle-categories")]
+    [DependencyInjection]
     public class GetVehicleCategoriesHandler : ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryView>> {
         private IVehicleCategoryService service;
 

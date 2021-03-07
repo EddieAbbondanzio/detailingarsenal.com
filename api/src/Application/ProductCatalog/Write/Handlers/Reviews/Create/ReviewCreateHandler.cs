@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.ProductCatalog {
     [Validation(typeof(ReviewCreateValidator))]
     [Authorization(Scope = "reviews", Action = "create")]
+    [DependencyInjection]
     public class ReviewCreateHandler : ActionHandler<ReviewCreateCommand, Guid> {
         IReviewRepo repo;
 

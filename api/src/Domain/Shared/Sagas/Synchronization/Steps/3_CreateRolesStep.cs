@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class CreateRolesStep : SagaStep {
         IRoleRepo repo;
 

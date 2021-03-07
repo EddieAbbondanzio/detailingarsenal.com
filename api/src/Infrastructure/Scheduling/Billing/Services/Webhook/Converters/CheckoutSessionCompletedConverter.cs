@@ -9,6 +9,7 @@ namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
     /// Converter that retrieves additional information on a Stripe checkout session completed
     /// successfully event before returning our domain event.
     /// </summary>
+    [DependencyInjection(RegisterAs = typeof(StripeWebhookConverter))]
     public class CheckoutSessionCompletedConverter : StripeWebhookConverter {
         protected override string WebhookType => Events.CheckoutSessionCompleted;
 

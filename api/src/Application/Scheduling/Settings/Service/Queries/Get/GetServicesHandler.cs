@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "read", Scope = "services")]
+    [DependencyInjection]
     public class GetServicesHandler : ActionHandler<GetServicesQuery, List<ServiceView>> {
         private IServiceService service;
 

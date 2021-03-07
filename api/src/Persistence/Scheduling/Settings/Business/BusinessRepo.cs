@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Settings {
+    [DependencyInjection(RegisterAs = typeof(IBusinessRepo))]
     public class BusinessRepo : DatabaseInteractor, IBusinessRepo {
         public BusinessRepo(IDatabase database) : base(database) { }
 

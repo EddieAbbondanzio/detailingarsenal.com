@@ -8,6 +8,7 @@ namespace DetailingArsenal.Domain.Shared {
         ProcessedImage Process(string fileName, string fileData);
     }
 
+    [DependencyInjection(RegisterAs = typeof(IImageProcessor), LifeTime = LifeTime.Singleton)]
     public class ImageProcessor : IImageProcessor {
         const int ThumbnailSize = 100;
 

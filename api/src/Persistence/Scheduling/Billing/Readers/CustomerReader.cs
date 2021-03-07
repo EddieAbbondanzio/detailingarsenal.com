@@ -6,6 +6,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(ICustomerReader))]
     public class CustomerReader : DatabaseInteractor, ICustomerReader {
         public CustomerReader(IDatabase database) : base(database) { }
 

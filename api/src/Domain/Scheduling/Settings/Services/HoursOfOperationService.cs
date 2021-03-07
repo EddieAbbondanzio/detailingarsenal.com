@@ -13,6 +13,7 @@ namespace DetailingArsenal.Domain.Settings {
         Task Delete(HoursOfOperation hours);
     }
 
+    [DependencyInjection(RegisterAs = typeof(IHoursOfOperationService))]
     public class HoursOfOperationService : IHoursOfOperationService {
         private IHoursOfOperationRepo repo;
 

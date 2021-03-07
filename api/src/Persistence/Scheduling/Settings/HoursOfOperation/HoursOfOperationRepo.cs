@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Settings {
+    [DependencyInjection(RegisterAs = typeof(IHoursOfOperationRepo))]
     public class HoursOfOperationRepo : DatabaseInteractor, IHoursOfOperationRepo {
         public HoursOfOperationRepo(IDatabase database) : base(database) {
         }

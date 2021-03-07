@@ -9,6 +9,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Calendar {
     [Authorization(Action = "update", Scope = "appointments")]
+    [DependencyInjection]
     public class UpdateAppointmentHandler : ActionHandler<UpdateAppointmentCommand, AppointmentView> {
         IAppointmentService service;
 

@@ -1,6 +1,7 @@
 using FluentValidation;
 
 namespace DetailingArsenal.Domain.Users {
+    [DependencyInjection]
     public class AdminConfigValidator : FluentValidatorAdapter<AdminConfig> {
         public AdminConfigValidator() {
             RuleFor(c => c.Email).NotEmpty().WithMessage("Admin user email is required.");

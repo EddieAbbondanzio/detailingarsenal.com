@@ -7,6 +7,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Application.Users.Security;
 
 namespace DetailingArsenal.Persistence.Users.Security {
+    [DependencyInjection(RegisterAs = typeof(IPermissionReader))]
     public class PermissionReader : DatabaseInteractor, IPermissionReader {
         public PermissionReader(IDatabase database) : base(database) { }
 

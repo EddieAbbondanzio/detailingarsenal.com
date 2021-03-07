@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
     [Authorization(Action = "delete", Scope = "pad-series")]
+    [DependencyInjection]
     public class PadSeriesDeleteHandler : ActionHandler<PadSeriesDeleteCommand> {
         IPadSeriesRepo repo;
 

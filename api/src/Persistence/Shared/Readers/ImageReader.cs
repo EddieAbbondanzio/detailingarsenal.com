@@ -7,6 +7,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Application.Shared;
 
 namespace DetailingArsenal.Persistence.Shared {
+    [DependencyInjection(RegisterAs = typeof(IImageReader))]
     public class ImageReader : DatabaseInteractor, IImageReader {
         public ImageReader(IDatabase database) : base(database) { }
 

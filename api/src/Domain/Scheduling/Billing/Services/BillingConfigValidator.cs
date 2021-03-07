@@ -1,6 +1,7 @@
 using FluentValidation;
 
 namespace DetailingArsenal.Domain.Scheduling.Billing {
+    [DependencyInjection]
     public class BillingConfigValidator : FluentValidatorAdapter<IBillingConfig> {
         public BillingConfigValidator() {
             RuleFor(c => c.SecretKey).NotEmpty().WithMessage("No secret key.");

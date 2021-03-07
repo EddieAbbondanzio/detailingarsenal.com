@@ -4,6 +4,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully>))]
     public class RefreshCustomerOnCheckoutSuccess : IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully> {
         ICustomerRepo repo;
         ICustomerRefresher customerService;

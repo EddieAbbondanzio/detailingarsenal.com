@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
     [Authorization(Action = "refresh", Scope = "subscription-plans")]
+    [DependencyInjection]
     public class RefreshSubscriptionPlansHandler : ActionHandler<RefreshSubscriptionPlansCommand> {
         ISubscriptionPlanRefresher refreshService;
 

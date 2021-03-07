@@ -3,6 +3,7 @@ using FluentValidation;
 using DetailingArsenal.Domain.Settings;
 
 namespace DetailingArsenal.Application.Settings {
+    [DependencyInjection]
     public class UpdateBusinessValidator : FluentValidatorAdapter<UpdateBusinessCommand> {
         public UpdateBusinessValidator() {
             RuleFor(c => c.Id).NotNull().WithMessage("Id is required.");

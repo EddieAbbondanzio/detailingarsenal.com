@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Settings {
+    [DependencyInjection(RegisterAs = typeof(IServiceRepo))]
     public class ServiceRepo : DatabaseInteractor, IServiceRepo {
         public ServiceRepo(IDatabase database) : base(database) { }
 

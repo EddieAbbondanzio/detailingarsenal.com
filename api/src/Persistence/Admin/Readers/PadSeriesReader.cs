@@ -11,6 +11,7 @@ using DetailingArsenal.Persistence.Shared;
 using DetailingArsenal.Application.Admin.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(IPadSeriesReader))]
     public class PadSeriesReader : DatabaseInteractor, IPadSeriesReader {
         public PadSeriesReader(IDatabase database) : base(database) { }
 

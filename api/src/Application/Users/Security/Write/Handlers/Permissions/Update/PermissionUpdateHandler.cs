@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(UpdatePermissionValidator))]
     [Authorization(Action = "update", Scope = "permissions")]
+    [DependencyInjection]
     public class PermissionUpdateHandler : ActionHandler<PermissionUpdateCommand> {
         IPermissionRepo repo;
         PermissionUniqueSpecification spec;

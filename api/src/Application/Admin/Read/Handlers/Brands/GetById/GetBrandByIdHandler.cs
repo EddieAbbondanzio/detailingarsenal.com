@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
+    [DependencyInjection]
     public class GetBrandByIdHandler : ActionHandler<GetBrandByIdQuery, BrandReadModel?> {
         IBrandReader reader;
 

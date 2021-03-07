@@ -3,6 +3,7 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class CreateBusinessStep : SagaStep<string> {
         IBusinessService service;
 

@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Users;
 using Serilog;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(IDomainEventSubscriber<CustomerTrialWillEndSoon>))]
     public class EmailEdOnCustomerTrialWillEnd : IDomainEventSubscriber<CustomerTrialWillEndSoon> {
         IEmailClient emailClient;
         ICustomerRepo customerRepo;

@@ -11,6 +11,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
     [Validation(typeof(PadSeriesCreateValidator))]
     [Authorization(Action = "create", Scope = "pad-series")]
+    [DependencyInjection]
     public class PadSeriesCreateHandler : ActionHandler<PadSeriesCreateCommand, Guid> {
         PadSeriesCreateOrUpdateCompositeSpecification spec;
         IPadSeriesRepo repo;

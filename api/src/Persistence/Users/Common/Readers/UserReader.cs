@@ -6,6 +6,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Application.Users;
 
 namespace DetailingArsenal.Persistence.Users {
+    [DependencyInjection(RegisterAs = typeof(IUserReader))]
     public class UserReader : DatabaseInteractor, IUserReader {
         public UserReader(IDatabase database) : base(database) { }
 

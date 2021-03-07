@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
+
+    [DependencyInjection]
     public class GetAllReviewsForPadHandler : ActionHandler<GetAllReviewsForPadQuery, List<ReviewReadModel>> {
         IReviewReader reader;
 

@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Settings;
 using FluentValidation;
 
 namespace DetailingArsenal.Application.Settings {
+    [DependencyInjection]
     public class CreateVehicleCategoryValidator : FluentValidatorAdapter<CreateVehicleCategoryCommand> {
         public CreateVehicleCategoryValidator() {
             RuleFor(cmd => cmd.Name).NotNull().WithMessage("Name is required.");

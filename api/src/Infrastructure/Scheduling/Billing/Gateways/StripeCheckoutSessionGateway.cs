@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using Stripe.Checkout;
 
 namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(ICheckoutSessionGateway))]
     public class StripeCheckoutSessionGateway : ICheckoutSessionGateway {
         IBillingConfig config;
         SessionService sessionService;

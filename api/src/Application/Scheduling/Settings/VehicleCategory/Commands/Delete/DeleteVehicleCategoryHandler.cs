@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users.Security;
 namespace DetailingArsenal.Application.Settings {
     [Validation(typeof(DeleteVehicleCategoryValidator))]
     [Authorization(Action = "delete", Scope = "vehicle-categories")]
+    [DependencyInjection]
     public class DeleteVehicleCategoryHandler : ActionHandler<DeleteVehicleCategoryCommand> {
         IVehicleCategoryService service;
 

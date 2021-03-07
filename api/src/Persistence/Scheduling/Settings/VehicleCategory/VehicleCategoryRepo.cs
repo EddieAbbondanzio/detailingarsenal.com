@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Settings;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Settings {
+    [DependencyInjection(RegisterAs = typeof(IVehicleCategoryRepo))]
     public class VehicleCategoryRepo : DatabaseInteractor, IVehicleCategoryRepo {
         public VehicleCategoryRepo(IDatabase database) : base(database) { }
 

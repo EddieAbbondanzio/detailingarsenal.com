@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Users.Security;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Users.Security {
+    [DependencyInjection(RegisterAs = typeof(IRoleRepo))]
     public class RoleRepo : DatabaseInteractor, IRoleRepo {
         public RoleRepo(IDatabase database) : base(database) { }
 

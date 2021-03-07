@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class CreateSubscriptionStep : SagaStep<string> {
         ICustomerGateway customerGateway;
         ICustomerRepo customerRepo;

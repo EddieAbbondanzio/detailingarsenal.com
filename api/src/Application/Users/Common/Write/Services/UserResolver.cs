@@ -10,6 +10,7 @@ namespace DetailingArsenal.Application.Users {
     /// <summary>
     /// Application service to create, or resolve users.
     /// </summary>
+    [DependencyInjection(RegisterAs = typeof(IUserResolver))]
     public class UserResolver : IUserResolver {
         IUserRepo userRepo;
         NewUserSaga newUserSaga;

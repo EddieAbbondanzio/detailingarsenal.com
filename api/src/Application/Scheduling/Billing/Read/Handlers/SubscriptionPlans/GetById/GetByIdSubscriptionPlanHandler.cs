@@ -5,6 +5,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
+    [DependencyInjection]
     public class GetByIdSubscriptionPlanHandler : ActionHandler<GetByIdSubscriptionPlanQuery, SubscriptionPlanReadModel?> {
         ISubscriptionPlanReader reader;
 

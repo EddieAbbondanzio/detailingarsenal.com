@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Users.Security {
+    [DependencyInjection]
     public class RoleNotInUseSpecification : Specification<Role> {
         private IRoleRepo repo;
 

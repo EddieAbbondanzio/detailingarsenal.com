@@ -14,6 +14,7 @@ namespace DetailingArsenal.Infrastructure.Users {
         Task<ManagementApiClient> GetManagementApiClient();
     }
 
+    [DependencyInjection(RegisterAs = typeof(IAuth0ApiClientBuilder))]
     public class Auth0ApiClientBuilder : IAuth0ApiClientBuilder {
         private Auth0Config config;
 

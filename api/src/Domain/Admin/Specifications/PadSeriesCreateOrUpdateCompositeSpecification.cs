@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Admin.ProductCatalog {
+    [DependencyInjection]
     public class PadSeriesCreateOrUpdateCompositeSpecification : Specification<PadSeries> {
         Specification<PadSeries> groupedSpec;
 

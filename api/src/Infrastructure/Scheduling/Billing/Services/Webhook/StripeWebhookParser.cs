@@ -8,6 +8,7 @@ using Serilog;
 using Stripe;
 
 namespace DetailingArsenal.Infrastructure.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(IBillingWebhookParser))]
     public class StripeWebhookParser : IBillingWebhookParser {
         IBillingConfig config;
         IEnumerable<StripeWebhookConverter> converters;

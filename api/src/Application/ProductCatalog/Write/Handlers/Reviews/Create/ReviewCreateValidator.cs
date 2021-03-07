@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Settings;
 using FluentValidation;
 
 namespace DetailingArsenal.Application.ProductCatalog {
+    [DependencyInjection]
     public class ReviewCreateValidator : FluentValidatorAdapter<ReviewCreateCommand> {
         public ReviewCreateValidator() {
             RuleFor(c => c.PadId).NotEqual(Guid.Empty).WithMessage("Pad id is required.");

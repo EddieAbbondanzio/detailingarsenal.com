@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
+    [DependencyInjection]
     public class GetPadSeriesFilterHandler : ActionHandler<GetPadSeriesFilterQuery, PadFilterReadModel> {
         IPadFilterReader reader;
 

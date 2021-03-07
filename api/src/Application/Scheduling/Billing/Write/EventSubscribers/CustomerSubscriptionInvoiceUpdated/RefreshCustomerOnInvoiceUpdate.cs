@@ -3,6 +3,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Scheduling.Billing;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
+    [DependencyInjection(RegisterAs = typeof(IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated>))]
     public class RefreshCustomerOnInvoiceUpdate : IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated> {
         ICustomerRepo repo;
         ICustomerRefresher customerService;

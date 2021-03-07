@@ -6,6 +6,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.ProductCatalog {
+    [DependencyInjection]
     public class GetAllPadsHandler : ActionHandler<GetAllPadsQuery, PagedCollection<PadReadModel>> {
         IPadReader reader;
 

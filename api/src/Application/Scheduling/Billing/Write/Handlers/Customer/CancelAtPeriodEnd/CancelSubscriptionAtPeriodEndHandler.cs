@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.Scheduling.Billing;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Scheduling.Billing {
+    [DependencyInjection]
     public class CancelSubscriptionAtPeriodEndHandler : ActionHandler<CancelSubscriptionAtPeriodEndCommand> {
         ICustomerGateway customerGateway;
         ICustomerRepo customerRepo;

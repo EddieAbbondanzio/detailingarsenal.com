@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DetailingArsenal.Domain;
 
 namespace DetailingArsenal.Infrastructure {
+    [DependencyInjection(RegisterAs = typeof(IEmailClient))]
     public class SmtpEmailClient : IEmailClient {
         private SmtpClient client;
         private MailAddress from;

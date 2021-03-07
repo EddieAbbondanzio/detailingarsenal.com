@@ -4,6 +4,7 @@ using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
+    [DependencyInjection]
     public class GetAllPadSeriesHandler : ActionHandler<GetAllPadSeriesQuery, PagedCollection<PadSeriesReadModel>> {
         IPadSeriesReader reader;
 

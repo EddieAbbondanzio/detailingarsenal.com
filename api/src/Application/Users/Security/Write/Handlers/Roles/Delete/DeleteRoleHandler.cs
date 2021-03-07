@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Users.Security {
     [Authorization(Action = "delete", Scope = "roles")]
+    [DependencyInjection]
     public class DeleteRoleHandler : ActionHandler<RoleDeleteCommand> {
         IRoleRepo repo;
         RoleNotInUseSpecification spec;

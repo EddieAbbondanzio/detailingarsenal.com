@@ -6,6 +6,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
     [Authorization(Action = "delete", Scope = "brands")]
+    [DependencyInjection]
     public class BrandDeleteHandler : ActionHandler<BrandDeleteCommand> {
         IBrandRepo repo;
         BrandNotInUseSpecification spec;

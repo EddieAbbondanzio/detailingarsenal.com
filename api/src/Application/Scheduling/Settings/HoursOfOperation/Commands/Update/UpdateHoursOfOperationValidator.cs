@@ -2,6 +2,7 @@ using DetailingArsenal.Application.Settings;
 using FluentValidation;
 
 namespace DetailingArsenal.Domain.Settings {
+    [DependencyInjection]
     public class UpdateHoursOfOperationValidator : FluentValidatorAdapter<UpdateHoursOfOperationCommand> {
         public UpdateHoursOfOperationValidator() {
             RuleFor(c => c.Days).Must((days) => days.Count <= 7).WithMessage("Maximum of 7 days allowed");

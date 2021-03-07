@@ -12,6 +12,7 @@ using System.Data;
 using DetailingArsenal.Domain.Admin.ProductCatalog;
 
 namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
+    [DependencyInjection(RegisterAs = typeof(IPadSeriesRepo))]
     public class PadSeriesRepo : DatabaseInteractor, IPadSeriesRepo {
         public PadSeriesRepo(IDatabase database) : base(database) { }
 

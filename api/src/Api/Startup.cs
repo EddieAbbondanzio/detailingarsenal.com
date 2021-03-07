@@ -76,14 +76,21 @@ namespace DetailingArsenal.Api {
 
             services.AddCors();
 
-            // Core
-            services.AddSingleton<IDomainEventPublisher, DomainEventPublisher>();
-            services.AddSingleton<IDomainEventSubscriberCollection, DomainEventSubscriberCollection>();
+            DependencyInjectionRegistrar.Execute(
+                services,
+                AppDomain.CurrentDomain.GetAssemblies()
+            );
 
-            // Auth0
             var authConfig = services.AddConfig<Auth0Config>(Configuration.GetSection("Auth0"));
-            services.AddTransient<IAuth0ApiClientBuilder, Auth0ApiClientBuilder>();
-            services.AddTransient<IUserGateway, Auth0UserGateway>();
+
+            services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
+
+            var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = stripeConfig.SecretKey;
+
+            var dbConfig = services.AddConfig<DatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
+
+            services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
 
             services.AddAuthentication(opts => {
                 opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -103,217 +110,7 @@ namespace DetailingArsenal.Api {
                 opts.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
-            // Infrastructure
-            services.AddScoped<IMediator, Mediator>();
-            services.AddTransient<ActionMiddleware, AuthorizationMiddleware>();
-            services.AddTransient<ActionMiddleware, ValidationMiddleware>();
-
-            // Common
-            services.AddTransient<ActionHandler<StartupCommand>, StartupHandler>();
-            services.AddTransient<SynchronizationSaga>();
-            services.AddTransient<RunDatabaseMigrationsStep>();
-            services.AddTransient<RefreshSubscriptionPlansStep>();
-            services.AddTransient<CreateOrUpdateAdminStep>();
-            services.AddTransient<CreateRolesStep>();
-            services.AddTransient<ValidateConfigFile>();
-            services.AddTransient<GiveAdminAllPermissionsStep>();
-
-            services.AddTransient<NewUserSaga>();
-            services.AddTransient<CreateUserStep>();
-            services.AddTransient<CreateBusinessStep>();
-            services.AddTransient<CreateHoursOfOperationStep>();
-            services.AddTransient<CreateSubscriptionStep>();
-            services.AddTransient<AddRoleToNewUserStep>();
-
-            services.AddTransient<IUserResolver, UserResolver>();
-
-            if (environment.IsProduction()) {
-                services.AddTransient<IDomainEventSubscriber<NewUserCreatedEvent>, EmailEdOnNewUser>();
-            }
-
-            // Email
-            services.AddTransient<EmailConfigValidator>();
-            services.AddConfig<EmailConfig>(Configuration.GetSection("Email"));
-            services.AddTransient<IEmailClient, SmtpEmailClient>();
-
-            // Product Catalog
-            services.AddTransient<ActionHandler<GetAllBrandsQuery, List<BrandReadModel>>, GetAllBrandsHandler>();
-            services.AddTransient<ActionHandler<GetBrandByIdQuery, BrandReadModel?>, GetBrandByIdHandler>();
-            services.AddTransient<ActionHandler<BrandCreateCommand, Guid>, BrandCreateHandler>();
-            services.AddTransient<ActionHandler<BrandUpdateCommand>, BrandUpdateHandler>();
-            services.AddTransient<ActionHandler<BrandDeleteCommand>, BrandDeleteHandler>();
-            services.AddTransient<BrandCreateValidator>();
-            services.AddTransient<BrandUpdateValidator>();
-            services.AddTransient<IBrandReader, BrandReader>();
-            services.AddTransient<BrandNameUniqueSpecification>();
-            services.AddTransient<BrandNotInUseSpecification>();
-            services.AddTransient<IBrandRepo, BrandRepo>();
-            services.AddTransient<IPadSeriesRepo, PadSeriesRepo>();
-            services.AddTransient<IPadSeriesReader, PadSeriesReader>();
-            services.AddTransient<IPadReader, PadSummaryReader>();
-            services.AddTransient<PadSeriesCreateValidator>();
-            services.AddTransient<PadSeriesUpdateValidator>();
-            services.AddTransient<ActionHandler<GetPadSeriesByIdQuery, PadSeriesReadModel?>, GetPadSeriesByIdHandler>();
-            services.AddTransient<ActionHandler<GetAllPadSeriesQuery, PagedCollection<PadSeriesReadModel>>, GetAllPadSeriesHandler>();
-            services.AddTransient<ActionHandler<GetPadByIdQuery, PadReadModel?>, GetPadByIdHandler>();
-            services.AddTransient<ActionHandler<PadSeriesCreateCommand, Guid>, PadSeriesCreateHandler>();
-            services.AddTransient<ActionHandler<PadSeriesUpdateCommand>, PadSeriesUpdateHandler>();
-            services.AddTransient<ActionHandler<PadSeriesDeleteCommand>, PadSeriesDeleteHandler>();
-            services.AddTransient<ActionHandler<GetAllReviewsForPadQuery, List<ReviewReadModel>>, GetAllReviewsForPadHandler>();
-            services.AddTransient<ActionHandler<GetReviewByIdQuery, ReviewReadModel?>, GetReviewByIdHandler>();
-            services.AddTransient<ActionHandler<GetPadSeriesFilterQuery, PadFilterReadModel>, GetPadSeriesFilterHandler>();
-            services.AddTransient<ActionHandler<GetAllPadsQuery, PagedCollection<PadReadModel>>, GetAllPadsHandler>();
-            services.AddTransient<ReviewCreateValidator>();
-            services.AddTransient<PadSeriesPadSizeDiametersAreUniqueSpecification>();
-            services.AddTransient<PadSeriesHasPadsSpecification>();
-            services.AddTransient<PadSeriesHasOptionsForEveryPadSpecification>();
-            services.AddTransient<PadSeriesHasSizesSpecification>();
-            services.AddTransient<PadSeriesNameUniqueSpecification>();
-            services.AddTransient<PadSeriesOptionsAreUniqueBySizesSpecification>();
-            services.AddTransient<PadSeriesCreateOrUpdateCompositeSpecification>();
-            services.AddTransient<ActionHandler<ReviewCreateCommand, Guid>, ReviewCreateHandler>();
-            services.AddTransient<IReviewRepo, ReviewRepo>();
-            services.AddTransient<IReviewReader, ReviewReader>();
-            services.AddTransient<IPadFilterReader, PadFilterReader>();
-
-            // Billing
-            var stripeConfig = services.AddConfig<IBillingConfig, StripeConfig>(Configuration.GetSection("Stripe"));
-            StripeConfiguration.ApiKey = stripeConfig.SecretKey;
-            services.AddTransient<BillingConfigValidator>();
-            services.AddTransient<ISubscriptionPlanRepo, SubscriptionPlanRepo>();
-            services.AddTransient<ISubscriptionPlanReader, SubscriptionPlanReader>();
-            services.AddTransient<ICustomerRepo, CustomerRepo>();
-            services.AddTransient<ICustomerReader, CustomerReader>();
-            services.AddTransient<ICustomerRefresher, Domain.Scheduling.Billing.CustomerRefresher>();
-            services.AddTransient<ICustomerGateway, StripeCustomerGateway>();
-            services.AddTransient<ISubscriptionPlanGateway, StripeSubscriptionPlanGateway>();
-            services.AddTransient<ICheckoutSessionGateway, StripeCheckoutSessionGateway>();
-            services.AddTransient<IBillingWebhookParser, StripeWebhookParser>();
-            services.AddTransient<StripeWebhookConverter, CheckoutSessionCompletedConverter>();
-            services.AddTransient<StripeWebhookConverter, CustomerSubscriptionTrialWillEndSoonConverter>();
-            services.AddTransient<StripeWebhookConverter, CustomerSubscriptionInvoiceUpdatedConverter>();
-            services.AddTransient<ActionHandler<GetCustomerQuery, CustomerReadModel>, GetCustomerHandler>();
-            services.AddTransient<ActionHandler<CancelSubscriptionAtPeriodEndCommand>, CancelSubscriptionAtPeriodEndHandler>();
-            services.AddTransient<ActionHandler<UndoCancellingSubscriptionCommand>, UndoCancellingSubscriptionHandler>();
-            services.AddTransient<ActionHandler<GetDefaultSubscriptionPlanQuery, SubscriptionPlanReadModel>, GetDefaultSubscriptionPlanHandler>();
-            services.AddTransient<ActionHandler<GetByIdSubscriptionPlanQuery, SubscriptionPlanReadModel?>, GetByIdSubscriptionPlanHandler>();
-            services.AddTransient<ActionHandler<GetAllSubscriptionPlansQuery, List<SubscriptionPlanReadModel>>, GetAllSubscriptionPlansHandler>();
-            services.AddTransient<ActionHandler<CreateCheckoutSessionCommand, BillingReference>, CreateSessionHandler>();
-            services.AddTransient<ActionHandler<RefreshSubscriptionPlansCommand>, RefreshSubscriptionPlansHandler>();
-            services.AddTransient<ActionHandler<SubscriptionPlanUpdateCommand>, SubscriptionPlanUpdateHandler>();
-            services.AddTransient<ISubscriptionPlanRefresher, SubscriptionPlanRefresher>();
-            services.AddTransient<IDomainEventSubscriber<CheckoutSessionCompletedSuccessfully>, RefreshCustomerOnCheckoutSuccess>();
-            services.AddTransient<IDomainEventSubscriber<CustomerTrialWillEndSoon>, EmailEdOnCustomerTrialWillEnd>();
-            services.AddTransient<IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated>, RefreshCustomerOnInvoiceUpdate>();
-            services.AddTransient<IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated>, EmailCustomerOnInvoicePaymentFailure>();
-            services.AddTransient<IDomainEventSubscriber<CustomerSubscriptionInvoiceUpdated>, UpdateRolesOnInvoiceUpdated>();
-
-            // Security
-            services.AddTransient<IPermissionRepo, PermissionRepo>();
-            services.AddTransient<IRoleRepo, RoleRepo>();
-            services.AddTransient<IPermissionReader, PermissionReader>();
-            services.AddTransient<IRoleReader, RoleReader>();
-            services.AddTransient<IRoleAssigner, RoleAssigner>();
-            services.AddTransient<PermissionUniqueSpecification>();
-            services.AddTransient<PermissionNotInUseSpecification>();
-            services.AddTransient<RoleNameUniqueSpecification>();
-            services.AddTransient<RolePermissionsDistinctSpecification>();
-            services.AddTransient<RoleNotInUseSpecification>();
-            services.AddTransient<CreatePermissionValidator>();
-            services.AddTransient<UpdatePermissionValidator>();
-            services.AddTransient<CreateRoleValidator>();
-            services.AddTransient<UpdateRoleValidator>();
-            services.AddTransient<ActionHandler<GetAllPermissionsQuery, List<PermissionReadModel>>, GetAllPermissionsHandler>();
-            services.AddTransient<ActionHandler<GetPermissionByIdQuery, PermissionReadModel?>, GetPermissionByIdHandler>();
-            services.AddTransient<ActionHandler<PermissionCreateCommand, Guid>, PermissionCreateHandler>();
-            services.AddTransient<ActionHandler<PermissionUpdateCommand>, PermissionUpdateHandler>();
-            services.AddTransient<ActionHandler<PermissionDeleteCommand>, PermissionDeleteHandler>();
-            services.AddTransient<ActionHandler<GetAllRolesQuery, List<RoleReadModel>>, GetRolesHandler>();
-            services.AddTransient<ActionHandler<GetRoleByIdQuery, RoleReadModel?>, GetRoleByIdHandler>();
-            services.AddTransient<ActionHandler<RoleCreateCommand, Guid>, CreateRoleHandler>();
-            services.AddTransient<ActionHandler<RoleUpdateCommand>, UpdateRoleHandler>();
-            services.AddTransient<ActionHandler<RoleDeleteCommand>, DeleteRoleHandler>();
-            services.AddTransient<ActionHandler<AddRoleToUserCommand>, AddRoleToUserHandler>();
-            services.AddTransient<ActionHandler<RemoveRoleFromUserCommand>, RemoveRoleFromUserHandler>();
-
-            // Database
-            var raw = Configuration.GetSection("Database");
-            services.AddTransient<DatabaseConfigValidator>();
-            var dbConfig = services.AddConfig<DatabaseConfig, PostgresDatabaseConfig>(Configuration.GetSection("Database"));
-            services.AddScoped<IDatabaseMigrationRunner, FluentMigratorMigrationRunner>();
-            services.AddSingleton<IDatabase, PostgresDatabase>();
             services.AddDatabaseMigrations(dbConfig.GetConnectionString(), typeof(MigrationsFlag).Assembly);
-
-            // User
-            services.AddTransient<Auth0ConfigValidator>();
-            services.AddTransient<AdminConfigValidator>();
-            services.AddConfig<AdminConfig>(Configuration.GetSection("Admin"));
-            services.AddTransient<IUserRepo, UserRepo>();
-            services.AddTransient<IUserReader, UserReader>();/*  */
-            services.AddTransient<ActionHandler<UserUpdateCommand>, UserUpdateHandler>();
-            services.AddTransient<ActionHandler<GetUserByAuth0IdQuery, UserReadModel>, GetUserByAuth0IdHandler>();
-
-            // Vehicle Categories
-            services.AddTransient<VehicleCategoryNameUniqueSpecification>();
-            services.AddTransient<VehicleCategoryNotInUseSpecification>();
-            services.AddTransient<IVehicleCategoryRepo, VehicleCategoryRepo>();
-            services.AddTransient<IVehicleCategoryService, VehicleCategoryService>();
-            services.AddTransient<ActionHandler<GetVehicleCategoriesQuery, List<VehicleCategoryView>>, GetVehicleCategoriesHandler>();
-            services.AddTransient<CreateVehicleCategoryValidator>();
-            services.AddTransient<ActionHandler<CreateVehicleCategoryCommand, VehicleCategoryView>, CreateVehicleCategoryHandler>();
-            services.AddTransient<UpdateVehicleCategoryValidator>();
-            services.AddTransient<ActionHandler<UpdateVehicleCategoryCommand, VehicleCategoryView>, UpdateVehicleCategoryHandler>();
-            services.AddTransient<DeleteVehicleCategoryValidator>();
-            services.AddTransient<ActionHandler<DeleteVehicleCategoryCommand>, DeleteVehicleCategoryHandler>();
-
-            // Business
-            services.AddTransient<IBusinessRepo, BusinessRepo>();
-            services.AddTransient<IBusinessService, BusinessService>();
-            services.AddTransient<ActionHandler<GetBusinessQuery, BusinessView>, GetBusinessHandler>();
-            services.AddTransient<UpdateBusinessValidator>();
-            services.AddTransient<ActionHandler<UpdateBusinessCommand, BusinessView>, UpdateBusinessHandler>();
-
-            // Hours Of Operation
-            services.AddTransient<IHoursOfOperationRepo, HoursOfOperationRepo>();
-            services.AddTransient<IHoursOfOperationService, HoursOfOperationService>();
-            services.AddTransient<ActionHandler<GetHoursOfOperationQuery, HoursOfOperationView>, GetHoursOfOperationHandler>();
-            services.AddTransient<UpdateHoursOfOperationValidator>();
-            services.AddTransient<ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationView>, UpdateHoursOfOperationHandler>();
-
-            // Service
-            services.AddTransient<ServiceNameUniqueSpecification>();
-            services.AddTransient<ServiceNotInUseSpecification>();
-            services.AddTransient<IServiceRepo, ServiceRepo>();
-            services.AddTransient<IServiceService, ServiceService>();
-            services.AddTransient<ActionHandler<GetServicesQuery, List<ServiceView>>, GetServicesHandler>();
-            services.AddTransient<ActionHandler<CreateServiceCommand, ServiceView>, CreateServiceHandler>();
-            services.AddTransient<CreateServiceValidator>();
-            services.AddTransient<ActionHandler<UpdateServiceCommand, ServiceView>, UpdateServiceHandler>();
-            services.AddTransient<UpdateServiceValidator>();
-            services.AddTransient<ActionHandler<DeleteServiceCommand>, DeleteServiceHandler>();
-
-            // Clients
-            services.AddTransient<ClientHasNoAppointmentsSpecification>();
-            services.AddTransient<IClientRepo, ClientRepo>();
-            services.AddTransient<IClientService, ClientService>();
-            services.AddTransient<ActionHandler<GetClientsQuery, List<ClientView>>, GetClientsHandler>();
-            services.AddTransient<ActionHandler<CreateClientCommand, ClientView>, CreateClientHandler>();
-            services.AddTransient<ActionHandler<UpdateClientCommand, ClientView>, UpdateClientHandler>();
-            services.AddTransient<ActionHandler<DeleteClientCommand, ClientView>, DeleteClientHandler>();
-
-            // Calendar
-            services.AddTransient<IAppointmentRepo, AppointmentRepo>();
-            services.AddTransient<IAppointmentService, AppointmentService>();
-            services.AddTransient<ActionHandler<GetAppointmentsQuery, List<AppointmentView>>, GetAppointmentsHandler>();
-            services.AddTransient<ActionHandler<CreateAppointmentCommand, AppointmentView>, CreateAppointmentHandler>();
-            services.AddTransient<ActionHandler<UpdateAppointmentCommand, AppointmentView>, UpdateAppointmentHandler>();
-            services.AddTransient<ActionHandler<DeleteAppointmentCommand>, DeleteAppointmentHandler>();
-
-            // Shared
-            services.AddTransient<IImageReader, ImageReader>();
-            services.AddSingleton<IImageProcessor, ImageProcessor>();
-            services.AddTransient<ActionHandler<GetImageByIdQuery, SerializedImage?>, GetImageByIdHandler>();
-            services.AddTransient<ActionHandler<GetThumbnailByIdQuery, SerializedImage?>, GetThumbnailByIdHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

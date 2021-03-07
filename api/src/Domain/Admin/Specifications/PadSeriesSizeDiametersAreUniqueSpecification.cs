@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Admin.ProductCatalog {
+    [DependencyInjection]
     public class PadSeriesPadSizeDiametersAreUniqueSpecification : Specification<PadSeries> {
 
 #pragma warning disable 1998

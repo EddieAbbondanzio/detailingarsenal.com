@@ -9,6 +9,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
     [Authorization(Action = "create", Scope = "brands")]
     [Validation(typeof(BrandCreateValidator))]
+    [DependencyInjection(RegisterAs = typeof(ActionHandler<BrandCreateCommand, Guid>))]
     public class BrandCreateHandler : ActionHandler<BrandCreateCommand, Guid> {
         IBrandRepo repo;
         BrandNameUniqueSpecification unique;

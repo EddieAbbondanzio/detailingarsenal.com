@@ -8,6 +8,7 @@ using System.Linq;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(CreateRoleValidator))]
     [Authorization(Action = "create", Scope = "roles")]
+    [DependencyInjection]
     public class CreateRoleHandler : ActionHandler<RoleCreateCommand, Guid> {
         IRoleRepo repo;
         RoleNameUniqueSpecification uniqueNameSpec;

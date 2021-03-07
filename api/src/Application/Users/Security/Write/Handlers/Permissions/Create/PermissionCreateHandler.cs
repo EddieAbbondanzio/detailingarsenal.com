@@ -7,6 +7,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Users.Security {
     [Validation(typeof(CreatePermissionValidator))]
     [Authorization(Action = "create", Scope = "permissions")]
+    [DependencyInjection]
     public class PermissionCreateHandler : ActionHandler<PermissionCreateCommand, Guid> {
         PermissionUniqueSpecification spec;
         IPermissionRepo repo;

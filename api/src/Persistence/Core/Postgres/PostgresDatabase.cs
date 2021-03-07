@@ -8,6 +8,7 @@ namespace DetailingArsenal.Persistence {
     /// <summary>
     /// A database for data persistence that runs PostgreSQL.
     /// </summary>
+    [DependencyInjection(RegisterAs = typeof(IDatabase), LifeTime = LifeTime.Singleton)]
     public sealed class PostgresDatabase : IDatabase {
         /// <summary>
         /// The connection string for initiating new connections.

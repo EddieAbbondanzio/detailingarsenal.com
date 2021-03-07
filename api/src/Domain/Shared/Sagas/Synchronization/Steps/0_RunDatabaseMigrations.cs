@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class RunDatabaseMigrationsStep : SagaStep {
         IDatabaseMigrationRunner migrationRunner;
 

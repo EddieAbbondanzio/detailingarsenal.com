@@ -12,6 +12,7 @@ namespace DetailingArsenal.Domain.Clients {
         Task Delete(Client client);
     }
 
+    [DependencyInjection(RegisterAs = typeof(IClientService))]
     public class ClientService : IClientService {
         IClientRepo repo;
         ClientHasNoAppointmentsSpecification noAppointmentsSpec;

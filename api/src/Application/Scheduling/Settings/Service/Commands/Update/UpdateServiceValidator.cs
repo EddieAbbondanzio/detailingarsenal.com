@@ -3,6 +3,7 @@ using DetailingArsenal.Domain.Settings;
 using FluentValidation;
 
 namespace DetailingArsenal.Application.Settings {
+    [DependencyInjection]
     public class UpdateServiceValidator : FluentValidatorAdapter<UpdateServiceCommand> {
         public UpdateServiceValidator() {
             RuleFor(c => c.Name).NotNull().WithMessage("Name is required.");

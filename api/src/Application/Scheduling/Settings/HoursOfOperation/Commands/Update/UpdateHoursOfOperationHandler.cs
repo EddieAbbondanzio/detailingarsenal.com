@@ -9,6 +9,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "update", Scope = "hours-of-operations")]
     [Validation(typeof(UpdateHoursOfOperationValidator))]
+    [DependencyInjection]
     public class UpdateHoursOfOperationHandler : ActionHandler<UpdateHoursOfOperationCommand, HoursOfOperationView> {
         private IHoursOfOperationService service;
 

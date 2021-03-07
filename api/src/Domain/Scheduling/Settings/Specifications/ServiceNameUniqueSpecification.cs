@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 
 namespace DetailingArsenal.Domain.Settings {
+    [DependencyInjection]
     public class ServiceNameUniqueSpecification : Specification<Service> {
         public IServiceRepo repo;
 

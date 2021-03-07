@@ -5,6 +5,7 @@ using DetailingArsenal.Domain.Users;
 using DetailingArsenal.Domain.Users.Security;
 
 namespace DetailingArsenal.Domain {
+    [DependencyInjection]
     public class GiveAdminAllPermissionsStep : SagaStep {
         IRoleRepo roleRepo;
         IPermissionRepo permissionRepo;

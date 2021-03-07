@@ -5,6 +5,7 @@ using DetailingArsenal.Domain.Users;
 using Serilog;
 
 namespace DetailingArsenal.Application {
+    [DependencyInjection(RegisterAs = typeof(ActionHandler<StartupCommand>))]
     public class StartupHandler : ActionHandler<StartupCommand> {
         SynchronizationSaga saga;
 

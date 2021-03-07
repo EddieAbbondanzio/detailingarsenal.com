@@ -8,6 +8,7 @@ using DetailingArsenal.Domain.Users;
 namespace DetailingArsenal.Application.Settings {
     [Authorization(Action = "create", Scope = "services")]
     [Validation(typeof(CreateServiceValidator))]
+    [DependencyInjection]
     public class CreateServiceHandler : ActionHandler<CreateServiceCommand, ServiceView> {
 
         private IServiceService service;
