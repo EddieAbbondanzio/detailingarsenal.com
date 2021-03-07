@@ -51,5 +51,14 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                 await conn.ExecuteAsync("delete from reviews where id = @Id;", entity);
             }
         }
+
+        public async Task<bool> HasReviewByUserForPad(Guid userId, Guid padId) {
+            using (var conn = OpenConnection()) {
+                return (await conn.ExecuteScalarAsync<int>(
+                    @"select count(*) from reviews where user_id = @UserId and pad_id = @PadId;",
+                    new { UserId = userId, PadId = padId }
+                )) > 0;
+            }
+        }
     }
 }
