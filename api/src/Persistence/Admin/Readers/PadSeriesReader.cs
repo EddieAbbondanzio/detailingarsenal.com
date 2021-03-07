@@ -23,10 +23,6 @@ namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
                             where ps.id = @Id;
                         select * from pad_sizes 
                             where pad_series_id = @Id;
-                        select count(reviews.*) as count, pads.id from pads
-                            left join reviews on reviews.pad_id = pads.id 
-                            where pad_series_id = @Id
-                            group by pads.id;
                         select pi.* from pad_images pi 
                             join pads p on pi.pad_id = p.id 
                             where p.pad_series_id = @Id;
@@ -66,16 +62,12 @@ namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
                             s.ThicknessAmount != null ? new MeasurementReadModel(s.ThicknessAmount ?? 0, s.ThicknessUnit!) : null
                             )));
 
-                    var reviewCounts = new Dictionary<Guid, int>(reader.Read<(int Count, Guid Id)>().Select(c => new KeyValuePair<Guid, int>(c.Id, c.Count)));
-
                     var images = reader.Read<(Guid PadId, Guid ImageId)>();
 
                     var keyValues = new List<KeyValuePair<Guid, PadReadModel>>();
                     var rawPads = reader.Read();
 
                     foreach (var pad in rawPads) {
-                        var reviewCount = reviewCounts[pad.id];
-
                         Guid? imageId = images.Where(i => i.PadId == pad.id).FirstOrDefault().ImageId;
 
                         if (imageId == Guid.Empty) {
@@ -157,7 +149,7 @@ namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
                 // Now get the rest
                 using (var reader = await conn.QueryMultipleAsync(
                     @"
-                    select count(*) from pads p
+                    select count(*) from pads p;
                     select * from pad_sizes where pad_series_id = any(@Series);
                     select pi.* from pad_images pi 
                         join pads p on pi.pad_id = p.id 
@@ -192,15 +184,12 @@ namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
                         }
                     }
 
-
-                    var reviewCounts = new Dictionary<Guid, int>(reader.Read<(int Count, Guid Id)>().Select(c => new KeyValuePair<Guid, int>(c.Id, c.Count)));
                     var images = reader.Read<(Guid PadId, Guid ImageId)>();
 
                     var pads = new Dictionary<Guid, PadReadModel>();
                     var rawPads = reader.Read();
 
                     foreach (var raw in rawPads) {
-                        var reviewCount = reviewCounts[raw.id];
                         Guid? imageId = images.Where(i => i.PadId == raw.id).FirstOrDefault().ImageId;
 
                         if (imageId == Guid.Empty) {
