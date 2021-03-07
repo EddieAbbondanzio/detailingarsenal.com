@@ -48,14 +48,12 @@ class AdminPadStore extends InitableModule {
 
         this.context.commit('SET_SERIES', series.values);
         this.context.commit('SET_PAGING', series.paging);
-
-        console.log(this.series);
     }
 
     @Action({ rawError: true })
     async goToPage(pageNumber: number) {
         const series = await padSeriesService.get({
-            pageNumber,
+            pageNumber: pageNumber - 1,
             pageSize: this.paging.pageSize
         });
 

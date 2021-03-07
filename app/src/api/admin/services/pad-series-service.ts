@@ -13,7 +13,7 @@ import { PadSeriesUpdateRequest } from '../data-transfer-objects/requests/pad-se
 import { Measurement, PagingOptions } from '@/api/shared';
 
 export class PadSeriesService {
-    async get(paging: PagingOptions = { pageNumber: 0, pageSize: 20 }): Promise<PagedArray<PadSeries>> {
+    async get(paging: PagingOptions = { pageNumber: 0, pageSize: 5 }): Promise<PagedArray<PadSeries>> {
         const res = await http.get('admin/product-catalog/pad-series', { params: paging });
 
         return {

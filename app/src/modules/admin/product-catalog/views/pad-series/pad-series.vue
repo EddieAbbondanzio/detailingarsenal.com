@@ -25,7 +25,7 @@
             :data="series"
             paginated
             backend-pagination
-            :total="series.length"
+            :total="paging.total"
             :per-page="paging.pageSize"
             @page-change="onPageChange"
         >

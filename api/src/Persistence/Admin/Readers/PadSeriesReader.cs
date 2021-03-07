@@ -149,7 +149,7 @@ namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
                 // Now get the rest
                 using (var reader = await conn.QueryMultipleAsync(
                     @"
-                    select count(*) from pads p;
+                    select count(*) from pad_series;
                     select * from pad_sizes where pad_series_id = any(@Series);
                     select pi.* from pad_images pi 
                         join pads p on pi.pad_id = p.id 
