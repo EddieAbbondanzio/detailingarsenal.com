@@ -5,7 +5,7 @@ using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Persistence.Users {
-    [DependencyInjection(RegisterAs = typeof(IUserRepo))]
+    [DependencyInjection]
     public class UserRepo : DatabaseInteractor, IUserRepo {
         public UserRepo(IDatabase database) : base(database) { }
 

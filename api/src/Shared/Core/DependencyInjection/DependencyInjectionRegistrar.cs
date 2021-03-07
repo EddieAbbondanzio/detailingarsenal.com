@@ -17,15 +17,15 @@ namespace DetailingArsenal {
         /// Find every type in a collection of assemblies that has the DI attribute
         /// defined on it's class.
         /// </summary>
-        internal static IEnumerable<(Type, DependencyInjectionAttribute)> FindAllDependencies(IEnumerable<Assembly> assemblies) {
-            List<(Type, DependencyInjectionAttribute)> dependencyTypes = new();
+        internal static IEnumerable<DependencyInjectionEntry> FindAllDependencies(IEnumerable<Assembly> assemblies) {
+            List<DependencyInjectionEntry> dependencyTypes = new();
 
             foreach (var assembly in assemblies) {
                 foreach (var type in assembly.GetTypes()) {
                     var attr = type.GetCustomAttribute<DependencyInjectionAttribute>();
 
                     if (attr != null) {
-                        dependencyTypes.Add((type, attr));
+                        dependencyTypes.Add(new(type, attr));
                     }
                 }
             }
@@ -50,31 +50,35 @@ namespace DetailingArsenal {
         /// <summary>
         /// Add each dependency to the service collection with the appropriate lifetime.
         /// </summary>
-        internal static void AddDependencies(IServiceCollection collection, IEnumerable<(Type, DependencyInjectionAttribute)> dependencies, IEnumerable<DependencyInjectionMiddleware> middlewares) {
+        internal static void AddDependencies(IServiceCollection collection, IEnumerable<DependencyInjectionEntry> dependencies, IEnumerable<DependencyInjectionMiddleware> middlewares) {
             var env = GetEnvironment();
 
-            foreach (var dependecy in dependencies) {
+            foreach (var dependency in dependencies) {
                 // Skip over it if the environment isn't a match
-                if (!env.HasFlag(dependecy.Item2.Environment)) {
+                if (!env.HasFlag(dependency.Attribute.Environment)) {
                     continue;
                 }
 
                 // Run through each middleware
                 foreach (var mw in middlewares) {
-                    mw.BeforeEach(dependecy);
+                    mw.BeforeEach(dependency);
                 }
 
-                switch (dependecy.Item2.LifeTime) {
+                if (dependency.Attribute.RegisterAs != null && !dependency.Attribute.RegisterAs.IsAssignableFrom(dependency.Type)) {
+                    throw new NotSupportedException($"Cannot register dependency. Cannot assign {dependency.Type.Name} from {dependency.Attribute.RegisterAs.Name}");
+                }
+
+                switch (dependency.Attribute.LifeTime) {
                     case LifeTime.Transient:
-                        collection.AddTransient(dependecy.Item2.RegisterAs ?? dependecy.Item1, dependecy.Item1);
+                        collection.AddTransient(dependency.Attribute.RegisterAs ?? dependency.Type, dependency.Type);
                         break;
 
                     case LifeTime.Scoped:
-                        collection.AddScoped(dependecy.Item2.RegisterAs ?? dependecy.Item1, dependecy.Item1);
+                        collection.AddScoped(dependency.Attribute.RegisterAs ?? dependency.Type, dependency.Type);
                         break;
 
                     case LifeTime.Singleton:
-                        collection.AddSingleton(dependecy.Item2.RegisterAs ?? dependecy.Item1, dependecy.Item1);
+                        collection.AddSingleton(dependency.Attribute.RegisterAs ?? dependency.Type, dependency.Type);
                         break;
                 }
             }
