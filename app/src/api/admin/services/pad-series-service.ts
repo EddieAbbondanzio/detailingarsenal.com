@@ -10,11 +10,11 @@ import { PadFilterLegend } from '../../product-catalog/data-transfer-objects/pad
 import { PagedArray } from '@/api/shared/data-transfer-objects/paged-array';
 import { PadSeriesCreateRequest } from '../data-transfer-objects/requests/pad-series-create-request';
 import { PadSeriesUpdateRequest } from '../data-transfer-objects/requests/pad-series-update-request';
-import { Measurement, Paging } from '@/api/shared';
+import { Measurement, PagingOptions } from '@/api/shared';
 
 export class PadSeriesService {
-    async get(paging: Paging): Promise<PagedArray<PadSeries>> {
-        const res = await http.get('admin/product-catalog/pad-series');
+    async get(paging: PagingOptions = { pageNumber: 0, pageSize: 20 }): Promise<PagedArray<PadSeries>> {
+        const res = await http.get('admin/product-catalog/pad-series', { params: paging });
 
         return {
             paging: {
@@ -27,31 +27,13 @@ export class PadSeriesService {
         };
     }
 
-    async getById(id: string): Promise<PagedArray<PadSeries>> {
+    async getById(id: string): Promise<PadSeries | null> {
         const res = await http.get(`admin/product-catalog/pad-series/${id}`);
 
         if (res.data != null) {
-            const s = this._map(res.data);
-
-            return {
-                paging: {
-                    total: 1,
-                    pageNumber: 1,
-                    pageSize: 1,
-                    pageCount: 1
-                },
-                values: [s]
-            };
+            return this._map(res.data);
         } else {
-            return {
-                paging: {
-                    total: 1,
-                    pageNumber: 1,
-                    pageSize: 1,
-                    pageCount: 1
-                },
-                values: []
-            };
+            return null;
         }
     }
 
@@ -77,7 +59,7 @@ export class PadSeriesService {
             ps.name,
             new Brand(ps.brand.id, ps.brand.name),
             ps.polisherTypes,
-            (ps.sizes ?? ([] as any[])).map(
+            (ps.sizes ?? []).map(
                 (s: any) =>
                     new PadSize(
                         s.id,
@@ -86,29 +68,25 @@ export class PadSeriesService {
                             ? { amount: s.thickness.amount, unit: s.thickness.unit }
                             : ((null as any) as Measurement)
                     )
+            ),
+            (ps.pads ?? []).map(
+                (c: any) =>
+                    new Pad(
+                        c.id,
+                        c.name,
+                        c.category,
+                        c.material,
+                        c.texture,
+                        c.color,
+                        c.hasCenterHole,
+                        c.imageId,
+                        (c.options ?? ([] as any[])).map((o: any) => ({
+                            id: o.id,
+                            padSizeId: o.padSizeId,
+                            partNumbers: o.partNumbers
+                        }))
+                    )
             )
-            // (ps.pads ?? ([] as any[])).map(
-            //     (c: any) =>
-            //         new Pad(
-            //             c.id,
-            //             ps,
-            //             c.name,
-            //             c.category,
-            //             c.material,
-            //             c.texture,
-            //             c.color,
-            //             c.hasCenterHole,
-            //             c.cut,
-            //             c.finish,
-            //             new Rating(c.rating.stars ?? 0, c.rating.reviewCount ?? 0, c.rating.stats ?? []),
-            //             c.imageId,
-            //             (c.options ?? ([] as any[])).map((o: any) => ({
-            //                 id: o.id,
-            //                 padSizeId: o.padSizeId,
-            //                 partNumbers: o.partNumbers
-            //             }))
-            //         )
-            // )
         );
 
         return series;

@@ -1,4 +1,4 @@
-export interface Paging {
+export interface PagingOptions {
     pageNumber: number;
     pageSize: number;
 }

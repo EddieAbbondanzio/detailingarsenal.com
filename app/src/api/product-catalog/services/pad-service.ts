@@ -4,7 +4,12 @@ import { Pad } from '@/api/product-catalog';
 export class PadService {
     async getAll(req: { paging: any } | null = null): Promise<PagedArray<Pad>> {
         const res = await http.get('product-catalog/pads');
-        return res.data.values.map((d: any) => this.map(d));
+
+        const vals = res.data.values.map((d: any) => this.map(d));
+        return {
+            paging: res.data.paging,
+            values: vals
+        };
     }
 
     async get(id: string): Promise<Pad | null> {

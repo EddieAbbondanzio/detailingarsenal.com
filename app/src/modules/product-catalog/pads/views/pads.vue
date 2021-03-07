@@ -65,7 +65,7 @@
                 </router-link>
             </b-table-column>
             <b-table-column v-slot="props" label="Category" field="category">{{
-                props.row.category | uppercaseFirst
+                props.row.category | uppercaseFirst | commaSeperate
             }}</b-table-column>
             <b-table-column v-slot="props" label="Material" field="material">
                 <span v-if="props.row.material">{{ props.row.material | uppercaseFirst }}</span>

@@ -58,11 +58,11 @@ import adminPadStore from '../../store/admin-pad-store';
 @Component
 export default class Pads extends Vue {
     get series() {
-        return adminPadStore.series.values;
+        return adminPadStore.series;
     }
 
     get paging() {
-        return adminPadStore.series.paging;
+        return adminPadStore.paging;
     }
 
     @displayLoading

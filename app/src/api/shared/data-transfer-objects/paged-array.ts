@@ -1,11 +1,13 @@
-import { Paging } from './paging';
+import { PagingOptions } from './paging-options';
+
+export interface Paging {
+    pageNumber: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+}
 
 export interface PagedArray<T> {
-    paging: {
-        pageNumber: number;
-        pageSize: number;
-        pageCount: number;
-        total: number;
-    };
+    paging: Paging;
     values: T[];
 }

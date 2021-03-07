@@ -4,51 +4,63 @@ import store from '@/core/store/index';
 import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import { padSeriesService, PadSeriesService } from '@/api/admin/services/pad-series-service';
 import { PadSeries, PadSeriesCreateRequest, PadSeriesUpdateRequest } from '@/api/admin';
-import { PagedArray } from '@/api/shared';
+import { PagedArray, Paging, PagingOptions } from '@/api/shared';
 
 @Module({ namespaced: true, name: 'admin-pad', dynamic: true, store })
 class AdminPadStore extends InitableModule {
-    series: PagedArray<PadSeries> = { paging: { pageCount: 1, pageSize: 20, pageNumber: 0, total: 0 }, values: [] };
+    series: PadSeries[] = [];
+    paging: Paging = { pageNumber: 0, pageSize: 0, pageCount: 0, total: 0 };
 
     @Mutation
-    SET_SERIES(series: PagedArray<PadSeries>) {
+    SET_SERIES(series: PadSeries[]) {
         this.series = series;
     }
 
     @Mutation
+    SET_PAGING(paging: Paging) {
+        this.paging = paging;
+    }
+
+    @Mutation
     ADD_SERIES(series: PadSeries) {
-        this.series.values.push(series);
-        this.series.paging.total++;
+        this.series.push(series);
+        this.paging.total++;
     }
 
     @Mutation
     UPDATE_SERIES(series: PadSeries) {
-        this.series.values = [...this.series.values.filter(ps => ps.id != series.id), series];
+        this.series = [...this.series.filter(ps => ps.id != series.id), series];
     }
 
     @Mutation
     DELETE_SERIES(series: PadSeries) {
-        const index = this.series.values.findIndex(ps => ps.id == series.id);
+        const index = this.series.findIndex(ps => ps.id == series.id);
+
         if (index != -1) {
-            this.series.values.splice(index, 1);
-            this.series.paging.total--;
+            this.series.splice(index, 1);
+            this.paging.total--;
         }
     }
 
     @Action({ rawError: true })
     async _init() {
-        // const [series] = await Promise.all([padSeriesService.get()]);
-        // this.context.commit('SET_SERIES', series);
+        const [series] = await Promise.all([padSeriesService.get()]);
+
+        this.context.commit('SET_SERIES', series.values);
+        this.context.commit('SET_PAGING', series.paging);
+
+        console.log(this.series);
     }
 
     @Action({ rawError: true })
     async goToPage(pageNumber: number) {
-        // const series = await padSeriesService.get({
-        //     paging: {
-        //         pageNumber,
-        //         pageSize: this.series.paging.pageSize
-        //     }
-        // });
+        const series = await padSeriesService.get({
+            pageNumber,
+            pageSize: this.paging.pageSize
+        });
+
+        this.context.commit('SET_SERIES', series.values);
+        this.context.commit('SET_PAGING', series.paging);
     }
 
     @Action({ rawError: true })

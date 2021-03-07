@@ -26,9 +26,6 @@ export class Pad {
         public texture: PadTexture | null,
         public color: PadColor | null,
         public hasCenterHole: boolean | null,
-        public cut: number | null, // Comes from review
-        public finish: number | null, // Comes from review
-        public rating: Rating,
         public imageId: string | null = null,
         public options: PadOption[] = []
     ) {}

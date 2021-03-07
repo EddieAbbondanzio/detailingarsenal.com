@@ -37,7 +37,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RawLocation } from 'vue-router';
 
 @Component({
-    name: 'admin-panel',
+    name: 'admin-panel'
 })
 export default class ProductCatalogPanel extends Vue {
     entries: { title: string; description: string; icon?: string; to: RawLocation }[] = [
@@ -45,14 +45,14 @@ export default class ProductCatalogPanel extends Vue {
             title: 'Brands',
             description: 'Product brands',
             icon: 'watermark',
-            to: { name: 'brands' },
+            to: { name: 'brands' }
         },
         {
-            title: 'Pads',
+            title: 'Pad series',
             description: 'Pad series by manufacturers',
             icon: 'checkbox-blank-circle',
-            to: { name: 'padSeries' },
-        },
+            to: { name: 'padSeries' }
+        }
     ];
 }
 </script>
