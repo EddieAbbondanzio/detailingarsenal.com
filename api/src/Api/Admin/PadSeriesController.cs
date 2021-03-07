@@ -41,7 +41,7 @@ namespace DetailingArsenal.Api.Admin.ProductCatalog {
         public async Task<IActionResult> Create(PadSeriesCreateCommand create) {
             var id = await mediator.Dispatch<PadSeriesCreateCommand, Guid>(create, User);
 
-            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
+            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id), User);
 
             return Ok(ps);
         }
@@ -50,7 +50,7 @@ namespace DetailingArsenal.Api.Admin.ProductCatalog {
         public async Task<IActionResult> Update(Guid id, [FromBody] PadSeriesUpdateCommand update) {
             await mediator.Dispatch<PadSeriesUpdateCommand>(update, User);
 
-            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
+            var ps = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id), User);
 
             return Ok(ps);
         }

@@ -118,7 +118,7 @@ import { measurement } from '@/modules/shared/filters/measurement';
 })
 export default class PadSeriesDetails extends Vue {
     get value() {
-        return adminPadStore.series.values.find(s => s.id == this.$route.params.id);
+        return adminPadStore.series.find(s => s.id == this.$route.params.id);
     }
 
     get title() {

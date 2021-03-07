@@ -352,7 +352,7 @@ export default class UpdatePadSeries extends Vue {
         await brandStore.init();
         await adminPadStore.init();
 
-        const padSeries = adminPadStore.series.values.find(s => s.id == this.$route.params.id);
+        const padSeries = adminPadStore.series.find(s => s.id == this.$route.params.id);
 
         if (padSeries == null) {
             this.$router.go(-1);
@@ -378,7 +378,7 @@ export default class UpdatePadSeries extends Vue {
             color: c.color,
             hasCenterHole: c.hasCenterHole,
             image: c.imageId, // Existing images are just ids to real images.
-            options: c.options.map<PadOptionCreateOrUpdate>(o => ({
+            options: c.options.map(o => ({
                 id: o.id,
                 padSizeIndex: this.sizes.findIndex(s => s.id == o.padSizeId),
                 partNumbers: (o.partNumbers ?? []).map(pn => ({ id: pn.id, value: pn.value, notes: pn.notes }))

@@ -393,7 +393,7 @@ export default class CreatePadSeries extends Vue {
             toast(`Created new pad series ${create.name}`);
             this.$router.push({
                 name: 'padSeriesDetails',
-                params: { id: adminPadStore.series.values.find(s => s.name == create.name)!.id }
+                params: { id: adminPadStore.series.find(s => s.name == create.name)!.id }
             });
         } catch (err) {
             displayError(err);

@@ -27,9 +27,9 @@ namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
                             join pads p on pi.pad_id = p.id 
                             where p.pad_series_id = @Id;
                         select p.* from pads p 
-                            where pad_series_id = @Id group by pc.id;
+                            where pad_series_id = @Id;
                         select po.* from pad_options po 
-                            left join pads pc on po.pad_id = pc.id 
+                            left join pads p on po.pad_id = p.id 
                             where pad_series_id = @Id;
                         select po.id as pad_option_id, pn.* from part_numbers pn 
                             join pad_option_part_numbers popn on pn.id = popn.part_number_id 
@@ -159,7 +159,7 @@ namespace DetailingArsenal.Persistence.Admin.ProductCatalog {
                         group by p.id
                         order by name;
                     select po.* from pad_options po 
-                        left join pads pc on po.pad_id = pc.id;
+                        left join pads p on po.pad_id = p.id;
                     select po.id as pad_option_id, pn.* from part_numbers pn 
                         join pad_option_part_numbers popn on pn.id = popn.part_number_id 
                         join pad_options po on po.id = popn.pad_option_id;
