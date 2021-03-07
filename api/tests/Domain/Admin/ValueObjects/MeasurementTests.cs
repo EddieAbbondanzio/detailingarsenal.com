@@ -11,7 +11,7 @@ using DetailingArsenal.Domain.Users;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace DetailingArsenal.Tests.Domain.ProductCatalog {
+namespace DetailingArsenal.Tests.Domain.Admin.ProductCatalog {
     [TestClass]
     public class MeasurementTests {
         [TestMethod]

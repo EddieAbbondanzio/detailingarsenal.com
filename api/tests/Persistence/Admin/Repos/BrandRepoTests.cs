@@ -12,7 +12,7 @@ using DetailingArsenal.Persistence.ProductCatalog;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace DetailingArsenal.Tests.Persistence.ProductCatalog {
+namespace DetailingArsenal.Tests.Persistence.Admin.ProductCatalog {
 
     [TestClass, TestCategory("Integration")]
     public class BrandRepoTests : DatabaseIntegrationTests {
