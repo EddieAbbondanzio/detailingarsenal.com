@@ -5,6 +5,7 @@ using DetailingArsenal.Domain.Users;
 
 namespace DetailingArsenal.Application.Admin.ProductCatalog {
     [DependencyInjection]
+    [Authorization(Scope = "pad-series", Action = "read")]
     public class GetAllPadSeriesHandler : ActionHandler<GetAllPadSeriesQuery, PagedCollection<PadSeriesReadModel>> {
         IPadSeriesReader reader;
 

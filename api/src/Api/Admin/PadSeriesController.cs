@@ -22,17 +22,18 @@ namespace DetailingArsenal.Api.Admin.ProductCatalog {
             this.mediator = mediator;
         }
 
-        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id) {
-            var s = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id));
+            var s = await mediator.Dispatch<GetPadSeriesByIdQuery, PadSeriesReadModel>(new(id), User);
             return Ok(s);
         }
 
-        [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetAll() {
-            var pads = await mediator.Dispatch<GetAllPadSeriesQuery, PagedCollection<PadSeriesReadModel>>();
+        public async Task<IActionResult> GetAll([FromQuery] int pageNumber, [FromQuery] int pageSize) {
+            var pads = await mediator.Dispatch<GetAllPadSeriesQuery, PagedCollection<PadSeriesReadModel>>(
+                new GetAllPadSeriesQuery(new PagingOptions(pageNumber, pageSize)),
+                User
+            );
             return Ok(pads);
         }
 
