@@ -10,15 +10,15 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public PadSeriesReadModel Series { get; }
         public PadBrandReadModel Brand { get; }
         public List<PadCategory> Category { get; }
-        public PadMaterial Material { get; }
-        public PadTexture Texture { get; }
+        public PadMaterial? Material { get; }
+        public PadTexture? Texture { get; }
         public bool HasCenterHole { get; }
         public List<PolisherType> PolisherTypes { get; }
         public float? Cut { get; }
         public float? Finish { get; }
         public PadRatingReadModel Rating { get; }
 
-        public PadReadModel(Guid id, string name, PadSeriesReadModel series, PadBrandReadModel brand, List<PadCategory> category, PadMaterial material, PadTexture texture, bool hasCenterHole, List<PolisherType> polisherTypes, float? cut, float? finish, PadRatingReadModel rating) {
+        public PadReadModel(Guid id, string name, PadSeriesReadModel series, PadBrandReadModel brand, List<PadCategory> category, PadMaterial? material, PadTexture? texture, bool hasCenterHole, List<PolisherType> polisherTypes, float? cut, float? finish, PadRatingReadModel rating) {
             Id = id;
             Name = name;
             Series = series;

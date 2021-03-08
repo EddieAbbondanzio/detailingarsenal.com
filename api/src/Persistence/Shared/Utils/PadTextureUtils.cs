@@ -5,11 +5,12 @@ using DetailingArsenal.Domain.Shared;
 namespace DetailingArsenal.Persistence.Shared {
 
     internal static class PadTextureUtils {
-        public static PadTexture Parse(string texture) => texture switch {
+        public static PadTexture? Parse(string? texture) => texture switch {
             "flat" => PadTexture.Flat,
             "grooved" => PadTexture.Grooved,
             "dimpled" => PadTexture.Dimpled,
             "pile" => PadTexture.Pile,
+            null => null,
             _ => throw new NotSupportedException()
         };
 

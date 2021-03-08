@@ -4,7 +4,7 @@ using DetailingArsenal.Domain.Shared;
 
 namespace DetailingArsenal.Persistence.Shared {
     internal static class PadColorUtils {
-        public static PadColor Parse(string raw) => raw switch {
+        public static PadColor? Parse(string? raw) => raw switch {
             "pink" => PadColor.Pink,
             "red" => PadColor.Red,
             "orange" => PadColor.Orange,
@@ -16,7 +16,8 @@ namespace DetailingArsenal.Persistence.Shared {
             "black" => PadColor.Black,
             "white" => PadColor.White,
             "gray" => PadColor.Gray,
-            _ => throw new NotSupportedException()
+            null => null,
+            _ => throw new InvalidOperationException()
         };
 
         public static string Serialize(this PadColor color) => color switch {
@@ -31,7 +32,7 @@ namespace DetailingArsenal.Persistence.Shared {
             PadColor.Black => "black",
             PadColor.White => "white",
             PadColor.Gray => "gray",
-            _ => throw new NotSupportedException()
+            _ => throw new InvalidOperationException()
         };
     }
 }

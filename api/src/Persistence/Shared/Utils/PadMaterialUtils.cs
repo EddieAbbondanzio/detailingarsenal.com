@@ -4,10 +4,11 @@ using DetailingArsenal.Domain.Shared;
 
 namespace DetailingArsenal.Persistence.Shared {
     internal static class PadMaterialUtils {
-        public static PadMaterial Parse(string material) => material switch {
+        public static PadMaterial? Parse(string? material) => material switch {
             "foam" => PadMaterial.Foam,
             "wool" => PadMaterial.Wool,
             "microfiber" => PadMaterial.Microfiber,
+            null => null,
             _ => throw new NotSupportedException()
         };
 
