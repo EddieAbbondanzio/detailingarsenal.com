@@ -37,5 +37,26 @@ namespace DetailingArsenal.Api.ProductCatalog {
             var pad = await mediator.Dispatch<GetPadByIdQuery, PadReadModel?>(new(id));
             return Ok(pad);
         }
+
+        [HttpGet("{id}/sizes")]
+        public async Task<IActionResult> GetPadSizes(Guid id) {
+            var sizes = await mediator.Dispatch<GetAllSizesForPadQuery, List<PadSizeReadModel>>(
+                new(id),
+                User
+            );
+
+            return Ok(sizes);
+
+        }
+
+        [HttpGet("{id}/reviews")]
+        public async Task<IActionResult> GetReviews(Guid id) {
+            List<ReviewReadModel> reviews = await mediator.Dispatch<GetAllReviewsForPadQuery, List<ReviewReadModel>>(
+                new(id),
+                User
+            );
+
+            return Ok(reviews);
+        }
     }
 }

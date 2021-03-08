@@ -11,12 +11,8 @@ public static class ClaimsPrincipalExts {
     /// </summary>
     /// <param name="principal">The principal.</param>
     /// <returns>The unique Id of the user the principal is for.</returns>
-    public static string GetUserId(this ClaimsPrincipal principal) {
-        if (principal.Claims.Count() == 0) {
-            throw new Exception("No claims exist on principal");
-        }
-
-        Claim subjectClaim = principal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
-        return subjectClaim.Value;
+    public static string? GetUserId(this ClaimsPrincipal principal) {
+        Claim? subjectClaim = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        return subjectClaim?.Value;
     }
 }

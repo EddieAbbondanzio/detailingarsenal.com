@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DetailingArsenal.Application.Shared;
 using DetailingArsenal.Domain;
 using DetailingArsenal.Domain.ProductCatalog;
 using DetailingArsenal.Domain.Shared;
