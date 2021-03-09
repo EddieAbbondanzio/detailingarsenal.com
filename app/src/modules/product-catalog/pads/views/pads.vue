@@ -37,7 +37,7 @@
                 <router-link
                     :to="{
                         name: 'pad',
-                        params: { padId: props.row.id, padSeriesId: props.row.padSeriesId }
+                        params: { padId: props.row.id }
                     }"
                 >
                     <img
@@ -56,7 +56,6 @@
                     :to="{
                         name: 'pad',
                         params: {
-                            padSeriesId: props.row.padSeriesId,
                             padId: props.row.id
                         }
                     }"

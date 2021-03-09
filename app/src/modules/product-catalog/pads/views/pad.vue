@@ -87,7 +87,7 @@
                         </b-table-column>
                         <b-table-column v-slot="props" label="Thickness" field="thickness" sortable>
                             {{ props.row.thickness | measurement }}
-                            <b-tag type="is-info" v-if="isThin(props.row)" size="is-small">Thin</b-tag>
+                            <!-- <b-tag type="is-info" v-if="isThin(props.row)" size="is-small">Thin</b-tag> -->
                         </b-table-column>
                         <b-table-column v-slot="props" label="Part Number" field="partNumber">
                             <ul>
@@ -114,12 +114,12 @@
                                     >Write a review</b-button
                                 >
                             </div>
-                            <rating-stats v-model="value.rating" />
+                            <rating-stats v-model="reviews" />
                         </div>
 
                         <div class="column">
                             <div>
-                                <div class="has-margin-bottom-2" v-for="(review, i) in reviews" :key="i">
+                                <div class="has-margin-bottom-2" v-for="(review, i) in reviews.value" :key="i">
                                     <p class="has-text-weight-bold">
                                         {{ review.username }}
                                         <span class="is-size-7 has-text-weight-normal">{{ review.date | date }}</span>
@@ -193,10 +193,6 @@ export default class PadView extends Vue {
         return this.$route.params.padId;
     }
 
-    get padSeriesId() {
-        return this.$route.params.padSeriesId;
-    }
-
     get title() {
         if (this.value == null) {
             return '';
@@ -238,25 +234,14 @@ export default class PadView extends Vue {
     @displayLoading
     async created() {
         this.value = padStore.pads.values.find(p => p.id == this.padId)!;
-        await padStore.getSizes(this.padId);
-
-        console.log(this.value);
 
         // Only fetch pad if we can't find it
         if (this.value == null) {
-            await padStore.get(this.padSeriesId);
+            await padStore.get(this.padId);
             this.value = padStore.pads.values.find(p => p.id == this.padId)!;
         }
 
-        // this.sizes = this.value.options.map(o => {
-        //     var size = this.value?.series.sizes.find(s => s.id == o.padSizeId)!;
-        //     return {
-        //         diameter: size.diameter,
-        //         thickness: size.thickness,
-        //         partNumbers: o.partNumbers
-        //     };
-        // });
-
+        padStore.getSizes(this.padId);
         reviewStore.loadReviews(this.padId);
     }
 }

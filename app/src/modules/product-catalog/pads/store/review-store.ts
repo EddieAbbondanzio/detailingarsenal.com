@@ -1,20 +1,20 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import { Review, ReviewCreateRequest, reviewService } from '@/api/product-catalog';
+import { PadReviews, Review, ReviewCreateRequest, reviewService } from '@/api/product-catalog';
 
 @Module({ namespaced: true, name: 'review', dynamic: true, store })
 class ReviewStore extends InitableModule {
-    reviews: Review[] = [];
+    reviews: PadReviews = { rating: { reviewCount: 0, stars: null! }, stats: null!, values: [] };
 
     @Mutation
-    SET_REVIEWS(reviews: Review[]) {
+    SET_REVIEWS(reviews: PadReviews) {
         this.reviews = reviews;
     }
 
     @Mutation
     ADD_REVIEW(review: Review) {
-        this.reviews.push(review);
+        this.reviews.values.push(review);
     }
 
     @Action({ rawError: true })

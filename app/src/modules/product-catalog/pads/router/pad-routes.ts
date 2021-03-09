@@ -10,12 +10,12 @@ export const padRoutes = [
         component: () => import('@/modules/product-catalog/pads/views/pads.vue')
     },
     {
-        path: 'pad-series/:padSeriesId/pads/:padId',
+        path: 'pads/:padId',
         name: 'pad',
         component: () => import('@/modules/product-catalog/pads/views/pad.vue')
     },
     {
-        path: 'pad-series/:padSeriesId/pads/:padId/write-review',
+        path: 'pads/:padId/write-review',
         name: 'writeReview',
         component: () => import('@/modules/product-catalog/pads/views/write-review.vue'),
         beforeEnter: authGuard

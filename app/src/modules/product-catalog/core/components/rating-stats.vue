@@ -31,7 +31,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
-import { Rating } from '@/api/product-catalog';
+import { PadReviews, Rating, ReviewStarStat } from '@/api/product-catalog';
 import { Prop } from 'vue-property-decorator';
 
 @Component({
@@ -41,10 +41,10 @@ import { Prop } from 'vue-property-decorator';
 })
 export default class RatingStats extends Vue {
     get stats() {
-        const stats: RatingStarStat[] = [];
+        const stats: ReviewStarStat[] = [];
 
         for (let i = 5; i > 0; i--) {
-            const actual = this.value.stats.find(s => s.star == i);
+            const actual = (this.value.stats ?? []).find(s => s.star == i);
             stats.push(actual ?? { star: i, count: 0, percentage: 0 });
         }
 
@@ -52,6 +52,6 @@ export default class RatingStats extends Vue {
     }
 
     @Prop()
-    value!: Rating;
+    value!: PadReviews;
 }
 </script>
