@@ -10,24 +10,20 @@ import {
     PadSize,
     padSizeService
 } from '@/api/product-catalog';
-import { PagedArray } from '@/api/shared';
+import { PagedArray, Paging } from '@/api/shared';
 import { Pad } from '@/api/product-catalog/data-transfer-objects/pad';
 
 @Module({ namespaced: true, name: 'pad', dynamic: true, store })
 class PadStore extends InitableModule {
     legend: PadFilterLegend = { brands: [], series: [] };
     filter: PadFilter = {};
-    pads: PagedArray<Pad> = { paging: { pageCount: 1, pageSize: 20, pageNumber: 0, total: 0 }, values: [] };
+    pads: Pad[] = [];
     sizes: PadSize[] = [];
+    paging: Paging = { pageCount: 1, pageNumber: 0, pageSize: 20, total: 0 };
 
     @Mutation
     SET_LEGEND(legend: PadFilterLegend) {
         this.legend = legend;
-    }
-
-    @Mutation
-    SET_PADS(pads: PagedArray<Pad>) {
-        this.pads = pads;
     }
 
     @Mutation
@@ -36,8 +32,8 @@ class PadStore extends InitableModule {
     }
 
     @Mutation
-    CLEAR_SIZES() {
-        this.sizes.length = 0;
+    SET_PADS(pads: Pad[]) {
+        this.pads = pads;
     }
 
     @Mutation
@@ -45,12 +41,23 @@ class PadStore extends InitableModule {
         this.sizes = sizes;
     }
 
+    @Mutation
+    CLEAR_SIZES() {
+        this.sizes.length = 0;
+    }
+
+    @Mutation
+    SET_PAGING(paging: Paging) {
+        this.paging = paging;
+    }
+
     @Action({ rawError: true })
     async _init() {
         const [filter, pads] = await Promise.all([padFilterService.get(), padService.getAll()]);
 
         this.context.commit('SET_LEGEND', filter);
-        this.context.commit('SET_PADS', pads);
+        this.context.commit('SET_PADS', pads.values);
+        this.context.commit('SET_PAGING', pads.paging);
     }
 
     @Action({ rawError: true })
@@ -63,29 +70,33 @@ class PadStore extends InitableModule {
     async getAll(filter?: PadFilter) {
         const pads = await padService.getAll({
             ...filter,
-            paging: this.pads.paging
+            paging: this.paging
         });
 
-        this.context.commit('SET_PADS', pads);
+        this.context.commit('SET_PADS', pads.values);
         this.context.commit('SET_FILTER', filter);
+        this.context.commit('SET_PAGING', pads.values);
     }
 
     @Action({ rawError: true })
     async get(id: string) {
-        const pads = await padService.get(id);
-
-        this.context.commit('SET_PADS', [pads]);
+        const pad = await padService.get(id);
+        this.context.commit('SET_PADS', [pad]);
+        this.context.commit('SET_PAGING', { pageCount: 1, pageNumber: 0, pageSize: 20, total: 0 });
     }
 
     @Action({ rawError: true })
     async goToPage(pageNumber: number) {
-        const series = await padService.getAll({
+        const pads = await padService.getAll({
             ...this.filter,
             paging: {
                 pageNumber,
-                pageSize: this.pads.paging.pageSize
+                pageSize: this.paging.pageSize
             }
         });
+
+        this.context.commit('SET_PADS', pads.values);
+        this.context.commit('SET_PAGING', pads.paging);
     }
 
     @Action({ rawError: true })
@@ -97,5 +108,4 @@ class PadStore extends InitableModule {
         this.context.commit('SET_SIZES', sizes);
     }
 }
-
 export default getModule(PadStore);

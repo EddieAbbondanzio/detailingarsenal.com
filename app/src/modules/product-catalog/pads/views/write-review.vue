@@ -69,12 +69,12 @@ export default class WriteReview extends Vue {
 
     @displayLoading
     async created() {
-        this.value = padStore.pads.values.find(p => p.id == this.$route.params.padId)!;
+        this.value = padStore.pads.find(p => p.id == this.$route.params.padId)!;
 
         // Pull in the pad if we can't find it.
         if (this.value == null) {
             await padStore.get(this.$route.params.padSeriesId);
-            this.value = padStore.pads.values.find(p => p.id == this.$route.params.padId)!;
+            this.value = padStore.pads.find(p => p.id == this.$route.params.padId)!;
         }
     }
 

@@ -8,7 +8,7 @@ export interface PadReviews {
 }
 
 export interface ReviewStarStat {
-    star: number;
+    stars: number;
     count: number;
     percentage: number;
 }

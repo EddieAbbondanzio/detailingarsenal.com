@@ -119,7 +119,7 @@
 
                         <div class="column">
                             <div>
-                                <div class="has-margin-bottom-2" v-for="(review, i) in reviews.value" :key="i">
+                                <div class="has-margin-bottom-2" v-for="(review, i) in reviews.values" :key="i">
                                     <p class="has-text-weight-bold">
                                         {{ review.username }}
                                         <span class="is-size-7 has-text-weight-normal">{{ review.date | date }}</span>
@@ -233,12 +233,12 @@ export default class PadView extends Vue {
 
     @displayLoading
     async created() {
-        this.value = padStore.pads.values.find(p => p.id == this.padId)!;
+        this.value = padStore.pads.find(p => p.id == this.padId)!;
 
         // Only fetch pad if we can't find it
         if (this.value == null) {
             await padStore.get(this.padId);
-            this.value = padStore.pads.values.find(p => p.id == this.padId)!;
+            this.value = padStore.pads.find(p => p.id == this.padId)!;
         }
 
         padStore.getSizes(this.padId);

@@ -147,11 +147,11 @@ import { PadMaterial, PolisherType } from '@/api/shared';
 })
 export default class Pads extends Vue {
     get paging() {
-        return padStore.pads.paging;
+        return padStore.paging;
     }
 
     get pads() {
-        return padStore.pads.values;
+        return padStore.pads;
     }
 
     loading = false; // used for b-table
@@ -163,7 +163,7 @@ export default class Pads extends Vue {
         this.loading = false;
 
         // Pull in remainder pads
-        if (padStore.pads.values.length == 1) {
+        if (padStore.pads.length == 1) {
             await padStore.getAll();
         }
     }

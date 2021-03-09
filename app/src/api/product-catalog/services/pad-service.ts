@@ -1,8 +1,8 @@
-import { http, PagedArray } from '@/api/shared';
+import { http, PagedArray, PagingOptions } from '@/api/shared';
 import { Pad } from '@/api/product-catalog';
 
 export class PadService {
-    async getAll(req: { paging: any } | null = null): Promise<PagedArray<Pad>> {
+    async getAll(req: { paging: PagingOptions } | null = null): Promise<PagedArray<Pad>> {
         const res = await http.get('product-catalog/pads');
 
         const vals = res.data.values.map((d: any) => this.map(d));

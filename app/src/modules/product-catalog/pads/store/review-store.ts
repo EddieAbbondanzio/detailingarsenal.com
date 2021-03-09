@@ -14,6 +14,10 @@ class ReviewStore extends InitableModule {
 
     @Mutation
     ADD_REVIEW(review: Review) {
+        if (this.reviews.values == null) {
+            this.reviews.values = [];
+        }
+
         this.reviews.values.push(review);
     }
 

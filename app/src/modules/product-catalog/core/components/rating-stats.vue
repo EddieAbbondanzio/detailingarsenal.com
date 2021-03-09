@@ -14,9 +14,9 @@
                 v-for="s in stats"
                 :key="s.stars"
             >
-                <p class="has-margin-right-1">{{ s.star }} star</p>
+                <p class="has-margin-right-1">{{ s.stars }} star</p>
                 <b-progress
-                    :title="`${s.count} ${s.star} star ${s.count == 1 ? 'review' : 'reviews'}`"
+                    :title="`${s.count} ${s.stars} star ${s.count == 1 ? 'review' : 'reviews'}`"
                     class="has-margin-all-0"
                     :value="s.percentage"
                     :max="1"
@@ -44,8 +44,8 @@ export default class RatingStats extends Vue {
         const stats: ReviewStarStat[] = [];
 
         for (let i = 5; i > 0; i--) {
-            const actual = (this.value.stats ?? []).find(s => s.star == i);
-            stats.push(actual ?? { star: i, count: 0, percentage: 0 });
+            const actual = this.value.stats?.find(s => s.stars == i);
+            stats.push(actual ?? { stars: i, count: 0, percentage: 0 });
         }
 
         return stats;

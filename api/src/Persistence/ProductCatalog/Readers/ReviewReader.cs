@@ -62,7 +62,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     var stars = reader.ReadFirstOrDefault<int?>();
                     var count = reader.ReadFirst<int>();
 
-                    var stats = reader.Read().Select(s => new ReviewStarStat(s.stars, s.count, (float)count / s.count));
+                    var stats = reader.Read().Select(s => new ReviewStarStat((int)s.stars, (int)s.count, (float)count / s.count));
 
 
                     return new PadReviews(new RatingReadModel(stars, count), reviews, stats);
