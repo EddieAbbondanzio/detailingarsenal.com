@@ -42,10 +42,10 @@
 import { PadCut, PadFinish, Stars } from '@/api/product-catalog';
 import { displayError, displayLoading } from '@/core';
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import padStore from '../store/pad/pad-store';
+import padStore from '../store/pad-store';
 import PadCutInput from '@/modules/product-catalog/pads/components/pad-cut-input.vue';
 import PadFinishInput from '@/modules/product-catalog/pads/components/pad-finish-input.vue';
-import reviewStore from '../store/review/review-store';
+import reviewStore from '../store/review-store';
 import { Pad } from '@/api/product-catalog/data-transfer-objects/pad';
 
 @Component({

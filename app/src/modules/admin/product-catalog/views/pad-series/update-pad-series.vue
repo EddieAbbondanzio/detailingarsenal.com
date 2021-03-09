@@ -293,7 +293,7 @@ import InputTextField from '@/core/components/input/input-text-field.vue';
 import { toast, displayLoading, displayError } from '@/core';
 import brandStore from '../../store/brand-store';
 import { Image, PadCategory, PadColor, PadMaterial, PadTexture, PolisherType, SpecificationError } from '@/api/shared';
-import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
+import padStore from '@/modules/product-catalog/pads/store/pad-store';
 import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
 import { measurement } from '@/modules/shared/filters/measurement';

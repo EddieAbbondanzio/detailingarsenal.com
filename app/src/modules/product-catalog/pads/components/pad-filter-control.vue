@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import padStore from '../store/pad/pad-store';
+import padStore from '../store/pad-store';
 import { displayLoading } from '@/core';
 import PadFilterControlSection from '@/modules/product-catalog/pads/components/pad-filter-control-section.vue';
 import appStore from '@/core/store/app-store';

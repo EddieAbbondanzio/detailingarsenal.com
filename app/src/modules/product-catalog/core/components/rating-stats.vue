@@ -31,7 +31,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
-import { Rating, RatingStarStat } from '@/api/product-catalog';
+import { Rating } from '@/api/product-catalog';
 import { Prop } from 'vue-property-decorator';
 
 @Component({

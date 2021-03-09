@@ -7,7 +7,10 @@ export * from './data-transfer-objects/pad-finish';
 export * from './data-transfer-objects/rating';
 export * from './data-transfer-objects/review';
 export * from './data-transfer-objects/stars';
+export * from './data-transfer-objects/pad-size';
+export * from './data-transfer-objects/pad-reviews';
 
 export * from './services/pad-filter-service';
 export * from './services/pad-service';
 export * from './services/review-service';
+export * from './services/pad-size-service';

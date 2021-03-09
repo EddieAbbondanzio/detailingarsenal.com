@@ -30,7 +30,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     ((PolisherTypeBitwise)r.PolisherTypes).ToList(),
                     r.Cut,
                     r.Finish,
-                    new PadRatingReadModel(r.Stars, r.ReviewCount)
+                    new RatingReadModel(r.Stars, r.ReviewCount)
                 );
 
                 return summary;
@@ -55,7 +55,7 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     ((PolisherTypeBitwise)r.PolisherTypes).ToList(),
                     r.Cut,
                     r.Finish,
-                    new PadRatingReadModel(r.Stars, r.ReviewCount)
+                    new RatingReadModel(r.Stars, r.ReviewCount)
                 ));
 
                 return new PagedCollection<PadReadModel>(new Paging(0, 20, summaries.Count()), summaries.ToArray());

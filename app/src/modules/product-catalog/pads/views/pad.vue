@@ -163,11 +163,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import padStore from '../store/pad/pad-store';
+import padStore from '../store/pad-store';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
 import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
-import reviewStore from '../store/review/review-store';
+import reviewStore from '../store/review-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import { measurement } from '@/modules/shared/filters/measurement';
 import { uppercaseFirst } from '@/core/filters/uppercase-first';
@@ -205,6 +205,10 @@ export default class PadView extends Vue {
         return `${this.value?.series?.name ?? ''} ${this.value.name}`;
     }
 
+    get sizes() {
+        return padStore.sizes;
+    }
+
     get description() {
         return `By ${this.value?.brand.name ?? ''}`;
     }
@@ -230,11 +234,13 @@ export default class PadView extends Vue {
     }
 
     value: Pad | null = null;
-    sizes: any[] = [];
 
     @displayLoading
     async created() {
         this.value = padStore.pads.values.find(p => p.id == this.padId)!;
+        await padStore.getSizes(this.padId);
+
+        console.log(this.value);
 
         // Only fetch pad if we can't find it
         if (this.value == null) {

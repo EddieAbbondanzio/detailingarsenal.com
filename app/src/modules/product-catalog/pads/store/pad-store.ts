@@ -2,7 +2,14 @@ import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-dec
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
 import _ from 'lodash';
-import { PadFilter, PadFilterLegend, padFilterService, padService } from '@/api/product-catalog';
+import {
+    PadFilter,
+    PadFilterLegend,
+    padFilterService,
+    padService,
+    PadSize,
+    padSizeService
+} from '@/api/product-catalog';
 import { PagedArray } from '@/api/shared';
 import { Pad } from '@/api/product-catalog/data-transfer-objects/pad';
 
@@ -11,6 +18,7 @@ class PadStore extends InitableModule {
     legend: PadFilterLegend = { brands: [], series: [] };
     filter: PadFilter = {};
     pads: PagedArray<Pad> = { paging: { pageCount: 1, pageSize: 20, pageNumber: 0, total: 0 }, values: [] };
+    sizes: PadSize[] = [];
 
     @Mutation
     SET_LEGEND(legend: PadFilterLegend) {
@@ -25,6 +33,16 @@ class PadStore extends InitableModule {
     @Mutation
     SET_FILTER(filter: PadFilter) {
         this.filter = filter;
+    }
+
+    @Mutation
+    CLEAR_SIZES() {
+        this.sizes.length = 0;
+    }
+
+    @Mutation
+    SET_SIZES(sizes: PadSize[]) {
+        this.sizes = sizes;
     }
 
     @Action({ rawError: true })
@@ -68,6 +86,15 @@ class PadStore extends InitableModule {
                 pageSize: this.pads.paging.pageSize
             }
         });
+    }
+
+    @Action({ rawError: true })
+    async getSizes(padId: string) {
+        // Remove existing sizes in case we've already visited another pad view
+        this.context.commit('CLEAR_SIZES');
+
+        const sizes = await padSizeService.getForPad(padId);
+        this.context.commit('SET_SIZES', sizes);
     }
 }
 

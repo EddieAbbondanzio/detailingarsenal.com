@@ -51,7 +51,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpGet("{id}/reviews")]
         public async Task<IActionResult> GetReviews(Guid id) {
-            List<ReviewReadModel> reviews = await mediator.Dispatch<GetAllReviewsForPadQuery, List<ReviewReadModel>>(
+            var reviews = await mediator.Dispatch<GetAllReviewsForPadQuery, PadReviews>(
                 new(id),
                 User
             );

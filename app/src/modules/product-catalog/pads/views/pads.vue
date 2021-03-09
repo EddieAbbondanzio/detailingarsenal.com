@@ -130,7 +130,7 @@ import PageSidebar from '@/core/components/page/page-sidebar.vue';
 import PadCutBar from '@/modules/product-catalog/pads/components/pad-cut-bar.vue';
 import PadFinishBar from '@/modules/product-catalog/pads/components/pad-finish-bar.vue';
 import Stars from '@/modules/product-catalog/core/components/stars.vue';
-import padStore from '../store/pad/pad-store';
+import padStore from '../store/pad-store';
 import PolisherTypeTag from '@/modules/shared/components/polisher-type-tag.vue';
 import appStore from '@/core/store/app-store';
 import { uppercaseFirst } from '@/core/filters/uppercase-first';

@@ -308,7 +308,7 @@ import {
     SpecificationError,
     MeasurementUnit
 } from '@/api/shared';
-import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
+import padStore from '@/modules/product-catalog/pads/store/pad-store';
 import adminPadStore from '../../store/admin-pad-store';
 import MeasurementInput from '@/modules/shared/components/measurement-input.vue';
 import { PadColor } from '@/api/shared';

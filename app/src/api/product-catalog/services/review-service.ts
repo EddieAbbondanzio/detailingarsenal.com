@@ -1,13 +1,11 @@
 import { http } from '@/api/shared/http';
-import { ReviewCreateRequest } from '..';
+import { PadReviews, ReviewCreateRequest } from '..';
 import { Review } from '../data-transfer-objects/review';
 
 export class ReviewService {
     async getForPad(padId: string) {
-        const res = await http.get(`product-catalog/reviews/pad/${padId}`);
-        return (res.data as any[]).map(
-            d => new Review(d.username, d.createdDate, d.stars, d.cut, d.finish, d.title, d.body)
-        );
+        const res = await http.get(`product-catalog/pads/${padId}/reviews`);
+        return res.data as PadReviews;
     }
 
     async create(request: ReviewCreateRequest) {

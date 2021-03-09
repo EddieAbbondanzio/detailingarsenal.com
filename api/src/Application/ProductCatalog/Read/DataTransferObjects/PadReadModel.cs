@@ -16,9 +16,9 @@ namespace DetailingArsenal.Application.ProductCatalog {
         public List<PolisherType> PolisherTypes { get; }
         public float? Cut { get; }
         public float? Finish { get; }
-        public PadRatingReadModel Rating { get; }
+        public RatingReadModel Rating { get; }
 
-        public PadReadModel(Guid id, string name, PadSeriesReadModel series, PadBrandReadModel brand, List<PadCategory> category, PadMaterial? material, PadTexture? texture, bool hasCenterHole, List<PolisherType> polisherTypes, float? cut, float? finish, PadRatingReadModel rating) {
+        public PadReadModel(Guid id, string name, PadSeriesReadModel series, PadBrandReadModel brand, List<PadCategory> category, PadMaterial? material, PadTexture? texture, bool hasCenterHole, List<PolisherType> polisherTypes, float? cut, float? finish, RatingReadModel rating) {
             Id = id;
             Name = name;
             Series = series;
@@ -37,5 +37,4 @@ namespace DetailingArsenal.Application.ProductCatalog {
 
     public record PadSeriesReadModel(Guid Id, string Name) : IDataTransferObject;
     public record PadBrandReadModel(Guid Id, string Name) : IDataTransferObject;
-    public record PadRatingReadModel(float? Stars, int ReviewCount) : IDataTransferObject;
 }

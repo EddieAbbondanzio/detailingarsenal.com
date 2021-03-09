@@ -1,7 +1,6 @@
 import { Module, VuexModule, Mutation, Action, getModule } from 'vuex-module-decorators';
 import { InitableModule } from '@/core/store/initable-module';
 import store from '@/core/store/index';
-import padStore from '@/modules/product-catalog/pads/store/pad/pad-store';
 import { padSeriesService, PadSeriesService } from '@/api/admin/services/pad-series-service';
 import { PadSeries, PadSeriesCreateRequest, PadSeriesUpdateRequest } from '@/api/admin';
 import { PagedArray, Paging, PagingOptions } from '@/api/shared';
