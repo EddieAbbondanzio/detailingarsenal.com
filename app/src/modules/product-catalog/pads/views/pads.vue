@@ -83,6 +83,7 @@
                     :count="props.row.rating.reviewCount"
                     size="is-small"
                     :readOnly="true"
+                    :labelLink="{ name: 'pad', params: { padId: props.row.id } }"
                 />
                 <span class="has-text-grey" v-else>N/A</span>
             </b-table-column>

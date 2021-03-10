@@ -1,7 +1,9 @@
 <template>
     <div class="is-flex is-flex-row is-align-items-center">
         <b-rate v-model="value" class="has-margin-all-0" :size="size" :disabled="readOnly" />
-        <span class="is-size-6" v-if="!hideCount">({{ count }})</span>
+        <router-link :to="labelLink" @click="onCountClick" class="has-text-grey is-size-6" v-if="!hideCount"
+            >({{ count }})</router-link
+        >
     </div>
 </template>
 
@@ -26,12 +28,19 @@ export default class StarsComponent extends Vue {
     @Prop()
     size!: string;
 
+    @Prop()
+    labelLink!: string;
+
     getIcon(i: number) {
         return this.value == null || i > this.value ? 'star-outline' : 'star';
     }
 
     getColor(i: number) {
         return this.value == null || i > this.value ? 'is-dark' : 'is-orange';
+    }
+
+    mounted() {
+        console.log(this.labelLink);
     }
 }
 </script>
