@@ -22,7 +22,7 @@ namespace DetailingArsenal.Api.ProductCatalog {
 
         [HttpGet("filter")]
         public async Task<IActionResult> GetFilter() {
-            var filter = await mediator.Dispatch<GetPadSeriesFilterQuery, PadFilterReadModel>();
+            var filter = await mediator.Dispatch<GetPadFilterQuery, PadFilterReadModel>();
             return Ok(filter);
         }
 
@@ -36,6 +36,12 @@ namespace DetailingArsenal.Api.ProductCatalog {
         public async Task<IActionResult> GetById(Guid id) {
             var pad = await mediator.Dispatch<GetPadByIdQuery, PadReadModel?>(new(id));
             return Ok(pad);
+        }
+
+        [HttpPost("filter")]
+        public async Task<IActionResult> GetPadsFitered(GetPadsFilteredQuery query) {
+            var pads = await mediator.Dispatch<GetPadsFilteredQuery, PagedCollection<PadReadModel>>(query);
+            return Ok(pads);
         }
 
         [HttpGet("{id}/sizes")]

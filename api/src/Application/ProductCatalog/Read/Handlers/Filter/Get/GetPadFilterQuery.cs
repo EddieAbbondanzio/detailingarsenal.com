@@ -1,3 +1,3 @@
 namespace DetailingArsenal.Application.ProductCatalog {
-    public record GetPadSeriesFilterQuery() : IAction;
+    public record GetPadFilterQuery() : IAction;
 }
