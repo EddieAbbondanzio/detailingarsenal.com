@@ -19,8 +19,6 @@ jobs:
         dotnet-version: '5.0.x'
     - name: Build with dotnet
       run: dotnet build ./api/Backend.sln --configuration Release
-    - name: Run Tests
-      run: dotnet test ./api/Backend.sln --filter TestCategory!=Integration
     - name: dotnet publish 
       run: |
         dotnet publish ./api/Backend.sln --configuration Release -o public
