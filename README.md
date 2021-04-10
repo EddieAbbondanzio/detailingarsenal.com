@@ -67,6 +67,6 @@ The database is running on DigitalOCean
 
 ## Post Morten
 
-While the project is alive, and in deployment it's currently in a dormant state with no active development taking place. When I started this project Vue 3 was still in beta and I opted to stick with Vue 2 as it was what I was most familiar with at the time. Now with the release of Vue 3 it's basically turned the entire project into legacy code as it'll require a full rewrite to be migrate.
+While the project is alive, and in production it's currently in a dormant state with no active development taking place. When I started this project Vue 3 was still in beta and I opted to stick with Vue 2 as it was what I was most familiar with at the time. Now with the release of Vue 3 it's basically turned the entire project into legacy code and it'll require a full rewrite to migrate.
 
-As of right now there's no plans to continue on with development but that may change.
+As of right now there's no plans to continue on with development but that may change. The project was a success to me, and was a lot of fun to design / develop.
