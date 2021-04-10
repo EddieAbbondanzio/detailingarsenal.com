@@ -25,4 +25,5 @@ namespace DetailingArsenal.Application.ProductCatalog {
             HasCenterHole = hasCenterHole;
             Stars = stars;
         }
+    }
 }

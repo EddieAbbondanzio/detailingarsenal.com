@@ -73,7 +73,8 @@ namespace DetailingArsenal.Persistence.ProductCatalog {
                     }
                 );
 
-                return new PagedCollection<PadReadModel>(new Paging(query)) pads.Select(Map).ToList();
+                // TODO: Fix this. Paging is broken.
+                return new PagedCollection<PadReadModel>(new Paging(new PagingOptions(0, 10), pads.Count()), pads.Select(Map).ToList());
             }
         }
 
