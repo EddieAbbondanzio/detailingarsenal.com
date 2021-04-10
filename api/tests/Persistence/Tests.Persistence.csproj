@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="appsettings.Tests.json" CopyToOutputDirectory="Always" />
+    <None Include="appsettings.Tests.json" CopyToOutputDirectory="Never" />
     <ProjectReference Include="..\..\src\Persistence\Persistence.csproj" />
 
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
