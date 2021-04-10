@@ -1,14 +1,11 @@
 {
-  "folders": [
-    {
-      "path": "app"
-    },
-    {
-      "path": "api"
-    },
-    {
-      "path": "documentation"
-    }
-  ],
-  "settings": {}
+    "folders": [
+        {
+            "path": "app"
+        },
+        {
+            "path": "api"
+        }
+    ],
+    "settings": {}
 }
