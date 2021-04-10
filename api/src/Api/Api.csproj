@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="appsettings.Production.json" CopyToPublishDirectory="Always" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
     
     <ProjectReference Include="..\Application\Application.csproj" />
